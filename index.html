@@ -1337,9 +1337,9 @@ input,select{font-family:inherit}
 
 /* MEMORY */
 .mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.mcard{aspect-ratio:1;border-radius:14px;position:relative;background:linear-gradient(135deg,#48dbfb,#1dd1a1);color:#fff;font-weight:700;font-size:13px;transition:.2s;perspective:600px}
-.mcard .mc-front{font-size:28px;display:flex;align-items:center;justify-content:center;height:100%}
-.mcard .mc-back{display:none;padding:8px;line-height:1.3}
+.mcard{aspect-ratio:1;border-radius:14px;position:relative;background:linear-gradient(135deg,#48dbfb,#1dd1a1);color:#fff;font-weight:700;font-size:clamp(13px,1.5vw,22px);transition:.2s;perspective:600px}
+.mcard .mc-front{font-size:clamp(28px,3vw,48px);display:flex;align-items:center;justify-content:center;height:100%}
+.mcard .mc-back{display:none;padding:clamp(8px,1vw,16px);line-height:1.35}
 .mcard.up{background:#fff;border:2px solid var(--c3);color:var(--ink)}
 .mcard.up .mc-front{display:none}.mcard.up .mc-back{display:flex;align-items:center;justify-content:center;height:100%}
 .mcard.done{background:#e7f7ec;border-color:#bce8c9;color:var(--green)}
