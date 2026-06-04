@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDG en Mission — Management 1ère STMG</title>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script>
+/* ============================================================
+   PDG EN MISSION — Données pédagogiques
+   Management 1ère STMG — BO spécial n°1 du 22 janvier 2019
+   3 thèmes / 7 mécaniques de jeu / contextualisation Réunion (974)
+   Entreprises réelles citées : Groupe Caillé, Royal Bourbon Industries,
+   Edena, Cilaos, Brasseries de Bourbon, Isautier, Groupe Ravate, Bourbon.
+============================================================ */
+
+window.GAME_DATA = {
+
+/* -------------------- GLOSSAIRE / NOTIONS (double explication) -------------------- */
+notions: [
+  // --- THÈME 1 ---
+  { id:"organisation", theme:1, terme:"Organisation",
+    aca:"Groupement humain structuré et coordonné qui mobilise des ressources pour atteindre des buts communs.",
+    simple:"C'est un groupe de personnes qui s'organisent ensemble, avec des moyens, pour atteindre un même objectif.",
+    ex:"Le Groupe Caillé (entreprise), la mairie de Saint-Denis (public) ou une association sportive de quartier sont toutes des organisations." },
+  { id:"caracterisation", theme:1, terme:"Caractériser une organisation",
+    aca:"Identifier une organisation à partir de critères : type, finalité, taille (effectif), ressources, statut juridique, nature de la production, secteur d'activité et champ géographique.",
+    simple:"C'est faire la carte d'identité de l'organisation : qui elle est, ce qu'elle produit, sa taille, ses moyens et où elle agit.",
+    ex:"Royal Bourbon Industries : entreprise privée, agroalimentaire, produit des conserves et confitures, agit surtout à La Réunion et dans l'océan Indien." },
+  { id:"finalite", theme:1, terme:"Finalité",
+    aca:"Raison d'être de l'organisation, sa vocation à long terme. Elle diffère selon le type : lucrative (entreprise), intérêt général (organisation publique), but non lucratif (OSC).",
+    simple:"C'est la grande raison pour laquelle l'organisation existe, son « pourquoi ».",
+    ex:"La finalité d'une entreprise privée comme Edena est de réaliser du profit et de durer ; celle d'un hôpital public est de soigner (intérêt général)." },
+  { id:"entreprise-privee", theme:1, terme:"Entreprise privée",
+    aca:"Organisation à finalité lucrative produisant des biens ou services marchands pour réaliser un profit et assurer sa pérennité.",
+    simple:"Une entreprise qui vend des produits ou services pour gagner de l'argent.",
+    ex:"Brasseries de Bourbon, Groupe Caillé, Royal Bourbon Industries." },
+  { id:"organisation-publique", theme:1, terme:"Organisation publique",
+    aca:"Organisation relevant de l'État ou des collectivités, financée par des fonds publics, dont la finalité est la satisfaction de l'intérêt général via des services souvent non marchands.",
+    simple:"Une organisation de l'État ou de la commune, qui rend service à tout le monde, pas pour faire du profit.",
+    ex:"La mairie de Saint-Denis, un hôpital public, le rectorat de La Réunion." },
+  { id:"osc", theme:1, terme:"Organisation de la société civile (OSC)",
+    aca:"Organisation privée à but non lucratif (association, ONG, syndicat, fondation) poursuivant une cause ou un intérêt collectif ou particulier, sans recherche de profit.",
+    simple:"Un groupement (souvent une association) qui défend une cause ou aide les gens, sans chercher à gagner de l'argent.",
+    ex:"Une association sportive de quartier, une ONG environnementale, un syndicat." },
+  { id:"bien-service", theme:1, terme:"Biens et services marchands / non marchands",
+    aca:"Un bien ou service est marchand s'il est vendu à un prix couvrant ses coûts ; il est non marchand s'il est gratuit ou quasi gratuit, financé par l'impôt ou des cotisations.",
+    simple:"Marchand = on le paie (et ça rapporte). Non marchand = c'est gratuit ou presque (financé autrement).",
+    ex:"Une bouteille d'eau Cilaos est un bien marchand ; l'école publique est un service non marchand." },
+  { id:"ressources", theme:1, terme:"Ressources de l'organisation",
+    aca:"Moyens mobilisés par l'organisation, classés en cinq catégories : financières, matérielles, immatérielles, technologiques et humaines.",
+    simple:"Tous les moyens dont dispose l'organisation pour fonctionner : son argent, ses machines, sa réputation, ses outils, ses salariés.",
+    ex:"Pour une usine sucrière : l'argent (financières), les machines (matérielles), la marque (immatérielles), les procédés (technologiques), les ouvriers (humaines)." },
+  { id:"res-financieres", theme:1, terme:"Ressources financières",
+    aca:"Ensemble des moyens monétaires de l'organisation : capitaux, trésorerie, emprunts, subventions.",
+    simple:"C'est l'argent dont dispose l'organisation.",
+    ex:"La trésorerie d'Edena, un emprunt bancaire, une subvention publique." },
+  { id:"res-materielles", theme:1, terme:"Ressources matérielles",
+    aca:"Biens physiques et tangibles : bâtiments, machines, terrains, véhicules, stocks.",
+    simple:"Tout ce qu'on peut toucher : les locaux, les machines, les camions.",
+    ex:"Les usines et les lignes d'embouteillage de Cilaos." },
+  { id:"res-immaterielles", theme:1, terme:"Ressources immatérielles",
+    aca:"Ressources non physiques créatrices de valeur : marque, image, réputation, brevets, savoir-faire, données.",
+    simple:"Tout ce qui a de la valeur mais qu'on ne peut pas toucher : la marque, la réputation, le savoir-faire.",
+    ex:"La notoriété de la marque Bourbon, le savoir-faire culinaire de Royal Bourbon Industries." },
+  { id:"res-technologiques", theme:1, terme:"Ressources technologiques",
+    aca:"Ressources liées aux technologies et procédés : outils numériques, équipements de pointe, procédés de fabrication, systèmes d'information.",
+    simple:"Les technologies et techniques utilisées : logiciels, procédés de fabrication, équipements modernes.",
+    ex:"Les procédés de distillation de la Distillerie de Savanna." },
+  { id:"res-humaines", theme:1, terme:"Ressources humaines",
+    aca:"Ensemble des personnes de l'organisation et de leurs compétences : salariés, dirigeants, bénévoles.",
+    simple:"Ce sont les personnes : les salariés, les dirigeants, et les bénévoles dans une association.",
+    ex:"Les 1 200 collaborateurs du Groupe Caillé." },
+  { id:"rse", theme:1, terme:"Responsabilité sociétale (RSE)",
+    aca:"Prise en compte volontaire par l'organisation des enjeux économiques, sociaux et environnementaux dans ses activités, au-delà des obligations légales. Elle concerne les trois types d'organisations.",
+    simple:"C'est quand une organisation fait attention à la planète, aux gens et pas seulement à l'argent.",
+    ex:"Une entreprise qui réduit ses déchets, une mairie qui installe du solaire, une association qui agit pour l'environnement." },
+
+  // --- THÈME 2 ---
+  { id:"diagnostic", theme:2, terme:"Diagnostic stratégique",
+    aca:"Analyse complète de la situation de l'organisation combinant diagnostic interne (forces/faiblesses) et externe (opportunités/menaces) pour éclairer les choix stratégiques.",
+    simple:"C'est l'examen de santé complet de l'organisation : ses points forts, ses points faibles, et ce qui se passe autour d'elle.",
+    ex:"Avant de se lancer à l'export, Royal Bourbon Industries analyse ses forces (savoir-faire) et le marché extérieur." },
+  { id:"diag-interne", theme:2, terme:"Diagnostic interne",
+    aca:"Analyse des ressources et compétences de l'organisation pour identifier ses forces et ses faiblesses.",
+    simple:"On regarde DEDANS l'organisation : ce qu'elle sait bien faire (forces) et ses points faibles.",
+    ex:"Forte notoriété de la marque (force) mais flotte de véhicules vieillissante (faiblesse)." },
+  { id:"diag-externe", theme:2, terme:"Diagnostic externe",
+    aca:"Analyse de l'environnement de l'organisation pour identifier les opportunités et les menaces, souvent structurée par l'analyse PESTEL.",
+    simple:"On regarde AUTOUR de l'organisation : les bonnes occasions (opportunités) et les dangers (menaces).",
+    ex:"L'essor du tourisme à La Réunion (opportunité), l'arrivée d'un concurrent low-cost (menace)." },
+  { id:"swot", theme:2, terme:"Matrice SWOT (FFOM)",
+    aca:"Outil de synthèse du diagnostic croisant Forces et Faiblesses (interne) avec Opportunités et Menaces (externe).",
+    simple:"Un tableau à 4 cases qui résume le diagnostic : Forces, Faiblesses (dedans) / Opportunités, Menaces (dehors).",
+    ex:"Force : marque connue ; Faiblesse : coûts élevés ; Opportunité : marché en croissance ; Menace : nouveau concurrent." },
+  { id:"pestel", theme:2, terme:"Analyse PESTEL",
+    aca:"Outil d'analyse de l'environnement externe selon six facteurs : Politique, Économique, Socioculturel, Technologique, Écologique et Légal.",
+    simple:"Une grille pour étudier tout ce qui entoure l'entreprise, en 6 thèmes : Politique, Économique, Social, Techno, Écolo, Légal.",
+    ex:"Écologique : la loi anti-plastique pousse Cilaos à revoir ses bouteilles." },
+  { id:"fcs", theme:2, terme:"Facteurs clés de succès (FCS)",
+    aca:"Éléments que toute organisation doit maîtriser sur un marché pour réussir et obtenir un avantage concurrentiel.",
+    simple:"Ce qu'il FAUT absolument réussir pour gagner sur un marché donné.",
+    ex:"Dans l'eau en bouteille : la maîtrise des coûts de transport et la confiance dans la marque." },
+  { id:"competence-distinctive", theme:2, terme:"Compétence distinctive",
+    aca:"Savoir-faire spécifique, difficilement imitable, qui distingue l'organisation de ses concurrents et fonde son avantage concurrentiel.",
+    simple:"Un talent que l'entreprise a et que les autres ont du mal à copier.",
+    ex:"Le savoir-faire historique d'Isautier dans le rhum arrangé." },
+  { id:"objectif", theme:2, terme:"Objectif stratégique",
+    aca:"But précis et daté que se fixe l'organisation, découlant de sa finalité et du diagnostic, dont l'atteinte se mesure par des indicateurs.",
+    simple:"Un but concret et chiffré que l'organisation veut atteindre.",
+    ex:"« Augmenter de 10 % les ventes à Mayotte d'ici deux ans »." },
+  { id:"partie-prenante", theme:2, terme:"Partie prenante",
+    aca:"Tout acteur interne ou externe ayant un intérêt dans l'organisation et pouvant influencer ou être influencé par ses décisions (salariés, clients, actionnaires, État, fournisseurs…).",
+    simple:"Toutes les personnes ou groupes concernés par l'organisation et ses décisions.",
+    ex:"Pour une sucrerie : les salariés, les planteurs de canne, les clients, l'État, les habitants voisins." },
+  { id:"indicateur", theme:2, terme:"Indicateur",
+    aca:"Donnée mesurable permettant d'évaluer l'atteinte d'un objectif stratégique (chiffre d'affaires, part de marché, taux de satisfaction…).",
+    simple:"Un chiffre qui sert à vérifier si on a atteint son but.",
+    ex:"Le chiffre d'affaires, la part de marché, le nombre de clients." },
+
+  // --- THÈME 3 ---
+  { id:"das", theme:3, terme:"Domaine d'activité stratégique (DAS)",
+    aca:"Sous-ensemble homogène d'activités partageant mêmes clients, technologies et concurrents, pour lequel une stratégie propre peut être définie.",
+    simple:"Un « morceau » de l'entreprise qui a son propre marché et sa propre tactique.",
+    ex:"Le Groupe Caillé a un DAS automobile et un DAS grande distribution." },
+  { id:"strat-globale-domaine", theme:3, terme:"Stratégie globale / stratégie de domaine",
+    aca:"La stratégie globale fixe l'éventail des activités (spécialisation, diversification) ; la stratégie de domaine définit comment être compétitif dans chaque DAS (coûts, différenciation).",
+    simple:"Stratégie globale = choisir QUOI faire (combien d'activités). Stratégie de domaine = choisir COMMENT gagner dans une activité.",
+    ex:"Décider de rester dans l'automobile + distribution = global ; baisser les prix en distribution = domaine." },
+  { id:"avantage", theme:3, terme:"Avantage concurrentiel",
+    aca:"Élément permettant de surpasser durablement ses concurrents. Interne (meilleure productivité, coûts plus bas) ou externe (valeur supérieure perçue par le client).",
+    simple:"Le « petit plus » qui fait qu'on préfère cette organisation : soit moins cher, soit meilleur.",
+    ex:"Interne : coûts maîtrisés d'un hard-discount ; externe : image haut de gamme d'Isautier." },
+  { id:"specialisation", theme:3, terme:"Spécialisation",
+    aca:"Stratégie globale consistant à concentrer les ressources sur un seul domaine d'activité pour y développer un savoir-faire distinctif.",
+    simple:"Faire UNE seule chose, mais très bien.",
+    ex:"Cilaos concentré sur l'eau de source." },
+  { id:"diversification", theme:3, terme:"Diversification",
+    aca:"Stratégie globale consistant à développer plusieurs domaines d'activité. Elle est horizontale (métiers proches), verticale (amont/aval de la filière) ou conglomérale (métiers sans lien).",
+    simple:"Faire PLUSIEURS choses différentes pour répartir les risques.",
+    ex:"Le groupe Bourbon est passé du sucre aux services maritimes (diversification conglomérale)." },
+  { id:"div-horizontale", theme:3, terme:"Diversification horizontale",
+    aca:"Développement de nouvelles activités proches du métier d'origine, visant une clientèle ou un savoir-faire voisins.",
+    simple:"Ajouter une activité COUSINE de celle qu'on fait déjà.",
+    ex:"Une brasserie qui se met aussi à produire des jus de fruits locaux." },
+  { id:"div-verticale", theme:3, terme:"Diversification verticale (intégration)",
+    aca:"Extension de l'activité vers l'amont (fournisseurs) ou l'aval (distribution) de la filière, pour maîtriser la chaîne de valeur.",
+    simple:"Prendre en charge une étape AVANT ou APRÈS son activité dans la filière.",
+    ex:"Une marque de café qui rachète des plantations (amont) et ouvre ses boutiques (aval)." },
+  { id:"div-conglomerale", theme:3, terme:"Diversification conglomérale",
+    aca:"Développement d'activités sans lien avec le métier d'origine, pour répartir fortement les risques.",
+    simple:"Se lancer dans une activité TOTALEMENT différente de son métier de base.",
+    ex:"Le groupe Bourbon : du sucre vers les services maritimes pétroliers." },
+  { id:"domination-couts", theme:3, terme:"Domination par les coûts",
+    aca:"Stratégie de domaine reposant sur la réduction des coûts pour proposer des prix plus bas que les concurrents (avantage concurrentiel interne).",
+    simple:"Dépenser le moins possible pour vendre moins cher que les autres.",
+    ex:"Un hard-discount comme Lidl ; une enseigne réunionnaise misant sur les petits prix." },
+  { id:"differenciation", theme:3, terme:"Différenciation",
+    aca:"Stratégie de domaine consistant à proposer une offre perçue comme unique, par le haut (sophistication) ou par le bas (épuration), justifiant un prix différent (avantage externe).",
+    simple:"Se rendre différent des autres : soit en faisant plus chic, soit en faisant plus simple.",
+    ex:"Sophistication : rhums premium Isautier ; épuration : offre réduite à l'essentiel." },
+  { id:"integration", theme:3, terme:"Intégration",
+    aca:"Stratégie consistant à internaliser des maillons de la chaîne de valeur (amont ou aval) pour mieux maîtriser l'activité.",
+    simple:"Faire soi-même une étape qu'on achetait avant aux autres.",
+    ex:"Une sucrerie qui possède aussi ses champs de canne (amont)." },
+  { id:"externalisation", theme:3, terme:"Externalisation",
+    aca:"Stratégie consistant à confier à un prestataire extérieur une activité auparavant interne, pour se recentrer sur son cœur de métier.",
+    simple:"Demander à quelqu'un d'autre de faire une partie du travail à sa place.",
+    ex:"Une entreprise qui confie le nettoyage de ses locaux à une société extérieure." },
+  { id:"croissance-interne", theme:3, terme:"Croissance interne",
+    aca:"Développement par les moyens propres de l'organisation : investissements, nouveaux sites, recrutements.",
+    simple:"Grandir tout seul, avec ses propres forces.",
+    ex:"Une boulangerie qui ouvre chaque année une nouvelle boutique avec ses bénéfices." },
+  { id:"croissance-externe", theme:3, terme:"Croissance externe",
+    aca:"Développement par rachat ou fusion avec d'autres organisations.",
+    simple:"Grandir d'un coup en achetant une autre entreprise.",
+    ex:"Un groupe local qui rachète un concurrent pour grandir vite." },
+  { id:"partenariat", theme:3, terme:"Partenariat",
+    aca:"Coopération entre organisations qui restent indépendantes, pour partager ressources, risques ou marchés.",
+    simple:"S'associer avec une autre organisation pour s'entraider, sans se faire racheter.",
+    ex:"Une compagnie aérienne et une chaîne d'hôtels qui proposent des séjours communs." },
+  { id:"internationalisation", theme:3, terme:"Internationalisation",
+    aca:"Extension des activités à l'étranger pour conquérir de nouveaux marchés.",
+    simple:"Aller vendre dans d'autres pays pour avoir plus de clients.",
+    ex:"Royal Bourbon Industries qui exporte vers l'océan Indien et la métropole." },
+  { id:"strat-publique", theme:3, terme:"Options stratégiques des organisations publiques",
+    aca:"Choix guidés par l'intérêt général : définir les domaines d'action publique, choisir les modes d'intervention (production directe, régulation, redistribution) et le périmètre du service public.",
+    simple:"Les choix de l'État ou des collectivités, faits pour le bien de tous, pas pour le profit.",
+    ex:"Une région qui décide de développer les transports en commun pour tous les habitants." },
+  { id:"strat-osc", theme:3, terme:"Options stratégiques des OSC",
+    aca:"Choix d'une organisation à but non lucratif autour de sa mission : périmètre des actions, mobilisation de ressources (dons, bénévolat, subventions), plaidoyer et partenariats.",
+    simple:"Les choix d'une association : quelles actions mener, comment trouver des bénévoles et de l'argent, comment défendre sa cause.",
+    ex:"Une association qui choisit d'étendre ses maraudes et lance un appel aux dons." },
+  { id:"numerisation", theme:3, terme:"Numérisation, transparence et secret",
+    aca:"La numérisation de l'économie transforme les stratégies ; elle pose la question de la transparence (information partagée) et du secret (protection des données et savoir-faire).",
+    simple:"Le numérique change tout : il faut choisir ce qu'on montre (transparence) et ce qu'on protège (secret).",
+    ex:"Une entreprise qui publie ses engagements écolo en ligne mais garde secrètes ses recettes." }
+],
+
+/* programme officiel par thème */
+programme: [
+  { theme:1, titre:"Thème 1 — À la rencontre du management des organisations",
+    ref:"BO spécial n°1 du 22/01/2019",
+    questions:["Qu'est-ce qu'une organisation ?","Comment distinguer les différents types d'organisations ?"],
+    connaissances:["Finalités, buts, intérêts","Biens et services marchands / non marchands","Entreprises privées, organisations publiques, OSC","Caractérisation des organisations","Ressources : financières, matérielles, immatérielles, technologiques, humaines","Responsabilité sociétale (RSE) des trois types d'organisations"],
+    competences:["Caractériser une organisation","Repérer les types de finalités","Identifier les ressources mobilisées","Repérer la prise en compte de la RSE"] },
+  { theme:2, titre:"Thème 2 — Le management stratégique : du diagnostic à la fixation des objectifs",
+    ref:"BO spécial n°1 du 22/01/2019",
+    questions:["Comment établir un diagnostic stratégique ?","Comment fixer les objectifs et mesurer les résultats ?"],
+    connaissances:["Diagnostic interne : ressources, compétences distinctives","Diagnostic externe : opportunités, menaces, FCS","Outils : SWOT, PESTEL","Avantage concurrentiel","Finalité → objectifs stratégiques","RSE et parties prenantes","Conflits et consensus","Indicateurs"],
+    competences:["Réaliser un diagnostic interne et externe","Caractériser l'avantage concurrentiel","Identifier les FCS","Relier finalité et objectifs","Identifier les parties prenantes"] },
+  { theme:3, titre:"Thème 3 — Les choix stratégiques des organisations",
+    ref:"BO spécial n°1 du 22/01/2019",
+    questions:["Quelles options stratégiques pour les entreprises ?","Quelles stratégies pour les organisations publiques et les OSC ?"],
+    connaissances:["DAS, stratégie globale / de domaine","Avantage concurrentiel (interne/externe)","Spécialisation, diversification (horizontale, verticale, conglomérale)","Domination par les coûts, différenciation","Chaîne de valeur : intégration, externalisation","Modalités : croissance interne/externe, partenariats, internationalisation","Options stratégiques des organisations publiques","Options stratégiques des OSC","Numérisation, transparence et secret"],
+    competences:["Repérer les niveaux des choix stratégiques","Repérer et analyser des choix stratégiques","Caractériser l'avantage concurrentiel","Comparer les choix des trois types d'organisations"] }
+],
+
+/* -------------------- JEU 1 : LE TRIEUR (catégories par thème) -------------------- */
+trieur: {
+  1: { consigne:"Classe chaque organisation dans la bonne catégorie.",
+    bacs:["Entreprise privée","Organisation publique","OSC"],
+    items:[
+      {label:"Groupe Caillé (automobile, distribution)", cat:0},
+      {label:"Royal Bourbon Industries (agroalimentaire)", cat:0},
+      {label:"Edena (eau, boissons)", cat:0},
+      {label:"Mairie de Saint-Denis", cat:1},
+      {label:"Hôpital public de Saint-Pierre", cat:1},
+      {label:"Rectorat de La Réunion", cat:1},
+      {label:"Association sportive de quartier", cat:2},
+      {label:"ONG de protection du lagon", cat:2},
+      {label:"Syndicat de salariés", cat:2}
+    ]},
+  2: { consigne:"Classe chaque élément du diagnostic dans la bonne case du SWOT.",
+    bacs:["Force (interne)","Faiblesse (interne)","Opportunité (externe)","Menace (externe)"],
+    items:[
+      {label:"Marque très connue à La Réunion", cat:0},
+      {label:"Savoir-faire culinaire unique", cat:0},
+      {label:"Coûts de production élevés", cat:1},
+      {label:"Flotte de véhicules vieillissante", cat:1},
+      {label:"Tourisme en hausse sur l'île", cat:2},
+      {label:"Nouveau marché à Mayotte", cat:2},
+      {label:"Arrivée d'un concurrent low-cost", cat:3},
+      {label:"Hausse du prix du carburant", cat:3}
+    ]},
+  3: { consigne:"Classe chaque stratégie selon son niveau de décision.",
+    bacs:["Stratégie globale","Stratégie de domaine","Modalité de développement"],
+    items:[
+      {label:"Spécialisation", cat:0},
+      {label:"Diversification", cat:0},
+      {label:"Domination par les coûts", cat:1},
+      {label:"Différenciation", cat:1},
+      {label:"Croissance externe (rachat)", cat:2},
+      {label:"Partenariat", cat:2},
+      {label:"Internationalisation", cat:2}
+    ]}
+},
+
+/* -------------------- JEU 2 : MEMORY (paires terme / exemple) -------------------- */
+memory: {
+  1:[ {a:"Entreprise privée", b:"Brasseries de Bourbon"},
+      {a:"Organisation publique", b:"Mairie de Saint-Denis"},
+      {a:"OSC", b:"Association sportive"},
+      {a:"Ressource humaine", b:"Les salariés"},
+      {a:"Ressource immatérielle", b:"La réputation de la marque"},
+      {a:"Bien marchand", b:"Une bouteille d'eau Cilaos"} ],
+  2:[ {a:"Force", b:"Savoir-faire unique"},
+      {a:"Faiblesse", b:"Coûts trop élevés"},
+      {a:"Opportunité", b:"Marché en croissance"},
+      {a:"Menace", b:"Nouveau concurrent"},
+      {a:"FCS", b:"Maîtriser les coûts de transport"},
+      {a:"Indicateur", b:"La part de marché"} ],
+  3:[ {a:"Spécialisation", b:"Faire une seule activité"},
+      {a:"Diversification conglomérale", b:"Groupe Bourbon : sucre → maritime"},
+      {a:"Domination par les coûts", b:"Vendre moins cher que les autres"},
+      {a:"Différenciation", b:"Rhums premium Isautier"},
+      {a:"Externalisation", b:"Confier le ménage à un prestataire"},
+      {a:"Internationalisation", b:"Exporter vers l'océan Indien"} ]
+},
+
+/* -------------------- JEU 3 : FLASH QUIZ CHRONO -------------------- */
+flash: {
+  1:[ {q:"Une mairie est une organisation…", o:["privée","publique","OSC"], c:1},
+      {q:"La finalité d'une entreprise privée est…", o:["l'intérêt général","le profit","aucune"], c:1},
+      {q:"Les salariés sont une ressource…", o:["humaine","matérielle","financière"], c:0},
+      {q:"Une marque réputée est une ressource…", o:["matérielle","immatérielle","financière"], c:1},
+      {q:"Une association à but non lucratif est…", o:["une entreprise","une OSC","une administration d'État"], c:1},
+      {q:"L'école publique gratuite produit un service…", o:["marchand","non marchand"], c:1},
+      {q:"La RSE concerne…", o:["seulement les entreprises","les 3 types d'organisations","seulement l'État"], c:1} ],
+  2:[ {q:"« Coûts trop élevés » est…", o:["une force","une faiblesse","une menace"], c:1},
+      {q:"« Nouveau marché à Mayotte » est…", o:["une opportunité","une menace","une faiblesse"], c:0},
+      {q:"Le SWOT croise interne et…", o:["externe","financier","humain"], c:0},
+      {q:"Le « E » écologique appartient au modèle…", o:["SWOT","PESTEL","FCS"], c:1},
+      {q:"Un avantage concurrentiel interne repose sur…", o:["la valeur perçue","des coûts maîtrisés"], c:1},
+      {q:"Un FCS, c'est ce qu'il faut…", o:["maîtriser pour réussir","éviter à tout prix"], c:0},
+      {q:"Les salariés et les clients sont des…", o:["indicateurs","parties prenantes"], c:1} ],
+  3:[ {q:"Faire une seule activité, c'est la…", o:["diversification","spécialisation"], c:1},
+      {q:"Vendre moins cher que les autres, c'est…", o:["la différenciation","la domination par les coûts"], c:1},
+      {q:"Sucre → services maritimes, c'est une diversification…", o:["horizontale","conglomérale"], c:1},
+      {q:"Confier une activité à un prestataire, c'est…", o:["l'intégration","l'externalisation"], c:1},
+      {q:"Racheter un concurrent, c'est la croissance…", o:["interne","externe"], c:1},
+      {q:"Vendre à l'étranger, c'est…", o:["l'internationalisation","la spécialisation"], c:0},
+      {q:"Choisir le nombre d'activités, c'est une stratégie…", o:["globale","de domaine"], c:0} ]
+},
+
+/* -------------------- JEU 4 : CAS D'ENTREPRISE -------------------- */
+cas: {
+  1:[ {cas:"Edena vend des bouteilles d'eau payantes pour réaliser un bénéfice et durer dans le temps.", q:"Quelle est sa finalité ?", o:["L'intérêt général","Le profit (lucrative)","Une cause militante"], c:1, why:"Edena est une entreprise privée : sa finalité est lucrative (profit et pérennité)."},
+      {cas:"Une association de quartier organise des cours de soutien gratuits grâce à des bénévoles.", q:"De quel type d'organisation s'agit-il ?", o:["Entreprise privée","Organisation publique","OSC"], c:2, why:"But non lucratif + bénévoles + cause d'intérêt collectif = organisation de la société civile (OSC)."},
+      {cas:"Pour produire, Royal Bourbon mobilise son argent, ses usines, sa marque, ses procédés et ses salariés.", q:"Combien de catégories de ressources sont citées ?", o:["Trois","Cinq","Deux"], c:1, why:"Financières, matérielles, immatérielles (marque), technologiques (procédés) et humaines : les 5 catégories."} ],
+  2:[ {cas:"Avant de se lancer à Mayotte, une entreprise note : marque connue, mais coûts élevés ; marché porteur, mais concurrent agressif.", q:"Quel outil permet de résumer ces 4 éléments ?", o:["PESTEL","SWOT","DAS"], c:1, why:"Forces/faiblesses (interne) + opportunités/menaces (externe) se résument dans la matrice SWOT."},
+      {cas:"Une nouvelle loi anti-plastique oblige à revoir les emballages.", q:"À quel facteur PESTEL cela correspond-il ?", o:["Économique","Écologique / Légal","Technologique"], c:1, why:"Une contrainte environnementale imposée par la loi relève des facteurs Écologique et Légal du PESTEL."},
+      {cas:"Une distillerie maîtrise un procédé de fabrication que personne d'autre ne sait reproduire.", q:"Comment nomme-t-on cet atout ?", o:["Une menace","Une compétence distinctive","Une faiblesse"], c:1, why:"Un savoir-faire rare et difficilement imitable est une compétence distinctive, source d'avantage concurrentiel."} ],
+  3:[ {cas:"Le Groupe Caillé décide globalement de rester dans l'automobile ET la distribution ; en distribution, il choisit de baisser ses prix.", q:"Quels niveaux de décision reconnaît-on ?", o:["Deux fois global","Global puis de domaine","Deux fois de domaine"], c:1, why:"Choisir l'éventail d'activités = stratégie globale ; choisir de baisser les prix dans un DAS = stratégie de domaine."},
+      {cas:"Le groupe Bourbon, à l'origine sucrier, devient un acteur des services maritimes pétroliers.", q:"De quelle diversification s'agit-il ?", o:["Horizontale","Verticale","Conglomérale"], c:2, why:"Le nouveau métier n'a aucun lien avec le sucre : c'est une diversification conglomérale."},
+      {cas:"Une région décide de financer des transports en commun accessibles à tous les habitants.", q:"Quelle logique guide ce choix ?", o:["Le profit","L'intérêt général","La part de marché"], c:1, why:"Une organisation publique fait ses choix stratégiques au nom de l'intérêt général, pas du profit."},
+      {cas:"Une association étend ses maraudes et lance un appel aux dons et au bénévolat.", q:"Cela illustre les options stratégiques…", o:["d'une entreprise privée","d'une OSC","d'une administration d'État"], c:1, why:"Périmètre d'action + mobilisation de dons et de bénévoles = options stratégiques propres aux OSC."} ]
+},
+
+/* -------------------- JEU 5 : VRAI / FAUX -------------------- */
+vraifaux: {
+  1:[ {p:"Une OSC cherche d'abord à faire du profit.", v:false, why:"Faux : une OSC a un but non lucratif."},
+      {p:"La mairie produit surtout des services non marchands.", v:true, why:"Vrai : services financés par l'impôt, gratuits ou quasi gratuits."},
+      {p:"La réputation d'une marque est une ressource immatérielle.", v:true, why:"Vrai : elle a de la valeur sans être physique."},
+      {p:"Les machines sont des ressources humaines.", v:false, why:"Faux : ce sont des ressources matérielles."},
+      {p:"La RSE ne concerne que les grandes entreprises.", v:false, why:"Faux : elle concerne les 3 types d'organisations."} ],
+  2:[ {p:"Une opportunité provient de l'environnement externe.", v:true, why:"Vrai : opportunités et menaces sont externes."},
+      {p:"Le PESTEL analyse l'intérieur de l'entreprise.", v:false, why:"Faux : le PESTEL analyse l'environnement externe."},
+      {p:"Un FCS est ce qu'il faut maîtriser pour réussir sur un marché.", v:true, why:"Vrai : c'est sa définition."},
+      {p:"Un avantage concurrentiel est forcément définitif.", v:false, why:"Faux : il est souvent éphémère (concurrence, innovations)."},
+      {p:"Les clients sont des parties prenantes.", v:true, why:"Vrai : ils sont concernés par l'organisation."} ],
+  3:[ {p:"La spécialisation consiste à faire plusieurs métiers différents.", v:false, why:"Faux : c'est se concentrer sur UN seul métier."},
+      {p:"La domination par les coûts vise un avantage concurrentiel interne.", v:true, why:"Vrai : elle repose sur des coûts maîtrisés."},
+      {p:"L'externalisation, c'est faire soi-même ce qu'on achetait avant.", v:false, why:"Faux : ça, c'est l'intégration. L'externalisation confie à un tiers."},
+      {p:"La croissance externe se fait par rachat ou fusion.", v:true, why:"Vrai : on grandit en achetant une autre organisation."},
+      {p:"Les organisations publiques décident au nom du profit.", v:false, why:"Faux : elles agissent pour l'intérêt général."} ]
+},
+
+/* -------------------- JEU 6 : L'INTRUS -------------------- */
+intrus: {
+  1:[ {liste:["Argent","Machines","Réputation","Profit"], intrus:3, why:"Profit est une finalité, pas une ressource. Les trois autres sont des ressources."},
+      {liste:["Association","ONG","Syndicat","Entreprise privée"], intrus:3, why:"L'entreprise privée n'est pas une OSC : elle a une finalité lucrative."},
+      {liste:["Mairie","Hôpital public","Rectorat","Royal Bourbon"], intrus:3, why:"Royal Bourbon est une entreprise privée ; les autres sont publiques."} ],
+  2:[ {liste:["Forces","Faiblesses","Opportunités","PESTEL"], intrus:3, why:"PESTEL est un outil ; les trois autres sont des composantes du SWOT (avec Menaces)."},
+      {liste:["Politique","Économique","Financier","Légal"], intrus:2, why:"« Financier » n'est pas un facteur PESTEL. Le PESTEL contient Politique, Économique, Socioculturel, Technologique, Écologique, Légal."},
+      {liste:["Opportunité","Menace","Faiblesse","Force"], intrus:1, why:"Menace est externe ; les autres ici servent de distracteur — l'intrus est celle qui n'est pas du même côté que les forces/faiblesses internes. (Force et Faiblesse internes, Opportunité externe positive ; Menace est la seule externe négative.)"} ],
+  3:[ {liste:["Spécialisation","Diversification","Différenciation","Internationalisation"], intrus:2, why:"Différenciation est une stratégie de domaine ; les autres sont globales ou des modalités de développement."},
+      {liste:["Horizontale","Verticale","Conglomérale","Externalisation"], intrus:3, why:"Externalisation n'est pas une forme de diversification ; les trois autres le sont."},
+      {liste:["Croissance interne","Croissance externe","Partenariat","Domination par les coûts"], intrus:3, why:"Domination par les coûts est une stratégie de domaine ; les autres sont des modalités de développement."} ]
+},
+
+/* -------------------- JEU 7 : MISSION DIRIGEANT (simulation) -------------------- */
+mission: {
+  1:{ titre:"Aux commandes d'Edena",
+    intro:"Tu diriges une entreprise réunionnaise de boissons. Une entreprise privée a une finalité lucrative : faire du profit et durer. Elle doit mobiliser ses ressources et agir de façon responsable (RSE). Tes décisions influencent 4 indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟 et Emplois 👥.",
+    etapes:[
+      {scene:"Un investisseur te demande quelle est la priorité de ton entreprise privée.", choix:[
+        {txt:"Réaliser du profit et durer dans le temps", eff:{treso:10,marche:5,image:0,emploi:0}, fb:"Exact : la finalité d'une entreprise privée est lucrative (profit + pérennité)."},
+        {txt:"Rendre un service gratuit à tous, sans profit", eff:{treso:-15,marche:-5,image:5,emploi:0}, fb:"Cette finalité (intérêt général, non lucratif) est celle d'une organisation publique ou d'une OSC, pas d'une entreprise privée."} ]},
+      {scene:"Une association locale te propose un partenariat pour nettoyer les ravines, à tes frais.", choix:[
+        {txt:"Accepter : c'est de la RSE", eff:{treso:-10,marche:5,image:20,emploi:0}, fb:"Beau geste de RSE : tu prends en compte l'environnement au-delà des obligations. Ton image grimpe."},
+        {txt:"Refuser pour économiser", eff:{treso:5,marche:-5,image:-15,emploi:0}, fb:"Tu économises, mais le public juge l'entreprise peu responsable : la RSE compte aussi pour une entreprise privée."} ]},
+      {scene:"Tes bouteilles d'eau sont vendues à un prix qui couvre tes coûts.", choix:[
+        {txt:"C'est un bien marchand", eff:{treso:10,marche:5,image:0,emploi:0}, fb:"Exact : un bien vendu à un prix qui couvre ses coûts est un bien marchand."},
+        {txt:"C'est un bien non marchand", eff:{treso:-10,marche:-5,image:0,emploi:0}, fb:"Non : un bien non marchand est gratuit ou quasi gratuit (ex. l'école publique). Ici tu vends, donc c'est marchand."} ]},
+      {scene:"Ta production est limitée. Pour fabriquer plus, il faut renforcer tes moyens.", choix:[
+        {txt:"Investir dans une nouvelle machine et embaucher", eff:{treso:-20,marche:15,image:5,emploi:15}, fb:"Tu renforces tes ressources matérielles (machine) et humaines (salariés) : ta capacité augmente et tu crées des emplois."},
+        {txt:"Ne rien changer", eff:{treso:5,marche:-10,image:0,emploi:0}, fb:"Prudent, mais sans renforcer tes ressources, tu plafonnes et tes concurrents avancent."} ]},
+      {scene:"Une banque accepte de te prêter de l'argent, et ta marque est très connue sur l'île.", choix:[
+        {txt:"M'appuyer sur mes ressources financières et immatérielles", eff:{treso:15,marche:15,image:10,emploi:5}, fb:"Bien vu : le prêt est une ressource financière, la notoriété de ta marque une ressource immatérielle. Les deux te font grandir."},
+        {txt:"Refuser : l'argent et la réputation ne servent à rien", eff:{treso:-10,marche:-10,image:-10,emploi:0}, fb:"Erreur : ressources financières (argent) et immatérielles (marque, réputation) sont de vrais atouts pour une organisation."} ]} ]},
+  2:{ titre:"Manager chez Royal Bourbon",
+    intro:"Tu pilotes la stratégie. Avant d'agir, le diagnostic guide tes choix. Indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟, Emplois 👥.",
+    etapes:[
+      {scene:"Diagnostic : forte notoriété mais coûts élevés. Le marché bio est en plein essor.", choix:[
+        {txt:"Saisir l'opportunité : lancer une gamme bio", eff:{treso:-10,marche:20,image:15,emploi:10}, fb:"Tu transformes une opportunité en avantage concurrentiel."},
+        {txt:"Ignorer la tendance", eff:{treso:5,marche:-10,image:-5,emploi:0}, fb:"Tu passes à côté d'un facteur clé de succès du moment."} ]},
+      {scene:"Tes coûts restent un point faible (faiblesse interne).", choix:[
+        {txt:"Externaliser la logistique", eff:{treso:15,marche:5,image:0,emploi:-10}, fb:"Tu réduis les coûts en te recentrant, mais quelques emplois partent."},
+        {txt:"Tout garder en interne", eff:{treso:-10,marche:0,image:5,emploi:5}, fb:"Tu gardes la maîtrise et l'emploi, mais les coûts pèsent."} ]},
+      {scene:"Un concurrent low-cost arrive (menace externe).", choix:[
+        {txt:"Différenciation : miser sur la qualité et le terroir", eff:{treso:-5,marche:15,image:20,emploi:5}, fb:"Tu te distingues par la valeur perçue : avantage concurrentiel externe."},
+        {txt:"Baisser tes prix coûte que coûte", eff:{treso:-20,marche:5,image:-10,emploi:-5}, fb:"La guerre des prix t'épuise face à un spécialiste des coûts."} ]} ]},
+  3:{ titre:"PDG d'un groupe réunionnais",
+    intro:"Ton groupe doit choisir sa trajectoire stratégique sur plusieurs années. Indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟, Emplois 👥.",
+    etapes:[
+      {scene:"Ton activité unique est rentable mais te rend dépendant d'un seul marché.", choix:[
+        {txt:"Diversification horizontale (métier voisin)", eff:{treso:-10,marche:15,image:5,emploi:10}, fb:"Tu répartis le risque sur une activité proche : prudent et cohérent."},
+        {txt:"Rester spécialisé", eff:{treso:10,marche:-5,image:0,emploi:0}, fb:"Savoir-faire renforcé, mais dépendance maintenue : risqué si le marché chute."} ]},
+      {scene:"Tu veux maîtriser ta filière de la matière première au client.", choix:[
+        {txt:"Intégration (amont + aval)", eff:{treso:-20,marche:15,image:10,emploi:20}, fb:"Tu contrôles toute la chaîne de valeur : moins de dépendance."},
+        {txt:"Continuer à tout acheter dehors", eff:{treso:5,marche:-5,image:0,emploi:0}, fb:"Souplesse, mais tu subis les prix de tes fournisseurs."} ]},
+      {scene:"Un concurrent fragilisé est à vendre.", choix:[
+        {txt:"Croissance externe : le racheter", eff:{treso:-25,marche:30,image:5,emploi:15}, fb:"Tu grandis vite et gagnes des parts de marché, mais la trésorerie souffre."},
+        {txt:"Partenariat plutôt que rachat", eff:{treso:-5,marche:10,image:10,emploi:5}, fb:"Coopération à moindre risque, en gardant chacun son indépendance."} ]} ]}
+}
+};
+
+</script>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+const D = window.GAME_DATA;
+
+/* ====== Catalogue des 7 jeux (Bloom croissant) ====== */
+const GAMES = [
+  { id:"trieur",  nom:"Le Trieur",        icon:"🗂️", bloom:"Reconnaître",  diff:"Facile",   desc:"Classe les éléments dans les bonnes catégories.", color:"#0ea5e9" },
+  { id:"memory",  nom:"Memory",           icon:"🃏", bloom:"Mémoriser",    diff:"Facile",   desc:"Retrouve les paires notion / exemple.",           color:"#f59e0b" },
+  { id:"flash",   nom:"Flash Quiz",       icon:"⚡", bloom:"Comprendre",   diff:"Moyen",    desc:"QCM contre la montre, avec combos.",              color:"#ef4444" },
+  { id:"vraifaux",nom:"Vrai ou Faux",     icon:"⚖️", bloom:"Comprendre",   diff:"Facile",   desc:"Tranche vite : vrai ou faux ?",                   color:"#8b5cf6" },
+  { id:"intrus",  nom:"L'Intrus",         icon:"🔎", bloom:"Analyser",     diff:"Difficile",desc:"Trouve l'élément qui ne va pas avec les autres.",  color:"#14b8a6" },
+  { id:"cas",     nom:"Cas d'entreprise", icon:"📂", bloom:"Appliquer",    diff:"Moyen",    desc:"Étudie un cas réunionnais et décide.",            color:"#2563eb" },
+  { id:"mission", nom:"Mission Dirigeant",icon:"👑", bloom:"Décider",      diff:"Difficile",desc:"Dirige une entreprise, vis les conséquences.",    color:"#db2777" }
+];
+const DIFF_COLOR = { "Facile":"#16a34a", "Moyen":"#f59e0b", "Difficile":"#dc2626" };
+const THEMES = [
+  { n:1, nom:"À la rencontre des organisations", short:"Les organisations", color:"#0ea5e9" },
+  { n:2, nom:"Du diagnostic aux objectifs",      short:"Le diagnostic",     color:"#8b5cf6" },
+  { n:3, nom:"Les choix stratégiques",           short:"La stratégie",      color:"#db2777" }
+];
+const TEACHER_CODE = "PROF2024";
+const PASS = 60; // % de réussite pour valider
+
+/* ====== Stockage local (localStorage) ====== */
+const LS_KEY = "pdg_scores_v1";
+function loadScores(){
+  try{ const raw = localStorage.getItem(LS_KEY); return raw ? JSON.parse(raw) : []; }
+  catch(e){ return []; }
+}
+function saveScore(rec){
+  try{ const all = loadScores(); all.push(rec); localStorage.setItem(LS_KEY, JSON.stringify(all)); }
+  catch(e){}
+}
+function clearScores(){ try{ localStorage.removeItem(LS_KEY); }catch(e){} }
+function exportScoresCSV(){
+  const all = loadScores();
+  if(!all.length){ alert("Aucun résultat à exporter."); return; }
+  const head = ["Nom","Prenom","Pseudo","Classe","Theme","Jeu","Score(%)","Date"];
+  const lines = all.map(r=>[r.nom,r.prenom,r.pseudo,r.classe,r.theme,r.game,r.pct,r.date].map(v=>'"'+String(v||"").replace(/"/g,'""')+'"').join(";"));
+  const csv = "\uFEFF"+head.join(";")+"\n"+lines.join("\n");
+  const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob); const a=document.createElement("a");
+  a.href=url; a.download="resultats_pdg_en_mission.csv"; a.click(); URL.revokeObjectURL(url);
+}
+
+/* ====== Bouton magique ====== */
+function Magic({n}){
+  const [o,setO]=useState(false);
+  return (<div className="magic">
+    <button className={"mbtn"+(o?" on":"")} onClick={()=>setO(!o)}><span className="spk">✨</span>{o?"Masquer l'explication simple":"Bouton magique : explique simplement"}</button>
+    {o&&(<div className="mbox"><div className="mlab">💡 En version simple</div><p>{n.simple}</p><div className="mex">🟢 Exemple : {n.ex}</div></div>)}
+  </div>);
+}
+
+/* ====== LOGIN ====== */
+function Login({onStudent,onTeacher}){
+  const [m,setM]=useState("eleve");
+  const [f,setF]=useState({nom:"",prenom:"",pseudo:"",classe:""});
+  const [code,setCode]=useState(""); const [err,setErr]=useState("");
+  const up=(k,v)=>setF(s=>({...s,[k]:v}));
+  const go=()=>{ if(m==="eleve"){ if(!f.nom||!f.prenom||!f.classe){setErr("Indique nom, prénom et classe.");return;} onStudent({...f,pseudo:f.pseudo||f.prenom}); }
+    else { code.trim().toUpperCase()===TEACHER_CODE ? onTeacher() : setErr("Code professeur incorrect."); } };
+  return (<div className="login">
+    <div className="hero">
+      <div className="kick">JEU SÉRIEUX · MANAGEMENT 1ʳᵉ STMG · 974</div>
+      <h1>PDG en <span className="grad">Mission</span></h1>
+      <p className="sub">7 jeux, 3 thèmes, toute l'année. Deviens stratège, des organisations aux grandes décisions.</p>
+    </div>
+    <div className="card">
+      <div className="tabs">
+        <button className={m==="eleve"?"tab on":"tab"} onClick={()=>{setM("eleve");setErr("")}}>👤 Élève</button>
+        <button className={m==="prof"?"tab on":"tab"} onClick={()=>{setM("prof");setErr("")}}>👩‍🏫 Professeur</button>
+      </div>
+      {m==="eleve"?(<div className="form">
+        <div className="r2"><input placeholder="Nom" value={f.nom} onChange={e=>up("nom",e.target.value)}/><input placeholder="Prénom" value={f.prenom} onChange={e=>up("prenom",e.target.value)}/></div>
+        <input placeholder="Pseudonyme (facultatif)" value={f.pseudo} onChange={e=>up("pseudo",e.target.value)}/>
+        <input placeholder="Classe (ex : 1STMG2)" value={f.classe} onChange={e=>up("classe",e.target.value)}/>
+      </div>):(<div className="form"><input placeholder="Code professeur" value={code} onChange={e=>setCode(e.target.value)}/><div className="hint">Code par défaut : <code>PROF2024</code></div></div>)}
+      {err&&<div className="err">{err}</div>}
+      <button className="cta" onClick={go}>{m==="eleve"?"C'est parti ! 🚀":"Tableau de bord"}</button>
+    </div>
+    <div className="fnote">Programme officiel — BO spécial n°1 du 22/01/2019 · Entreprises réunionnaises réelles citées à titre d'exemple.</div>
+  </div>);
+}
+
+/* ====== HUB ÉLÈVE ====== */
+function Hub({student,onLogout}){
+  const [tab,setTab]=useState("jouer");
+  const [theme,setTheme]=useState(1);
+  const [progress,setProgress]=useState({}); // {"theme-game": bestPct}
+  const [playing,setPlaying]=useState(null);
+
+  const key=(t,g)=>t+"-"+g;
+  const best=(t,g)=>progress[key(t,g)]||0;
+  // Accès libre : tous les jeux d'un thème débloqué sont accessibles dans n'importe quel ordre.
+  const unlocked=(t,gi)=> true;
+  // thème débloqué si thème précédent a au moins 4 jeux validés
+  const themeValidated=(t)=>GAMES.filter(g=>best(t,g.id)>=PASS).length;
+  const themeUnlocked=(t)=> t===1 ? true : themeValidated(t-1)>=4;
+
+  const finish=(t,g,pct)=>{
+    setProgress(p=>({...p,[key(t,g)]:Math.max(p[key(t,g)]||0,pct)}));
+    saveScore({...student,theme:t,game:g,pct,date:new Date().toISOString()});
+    setPlaying(null);
+  };
+
+  if(playing) return <Stage student={student} theme={playing.theme} game={playing.game}
+    onDone={(pct)=>finish(playing.theme,playing.game,pct)} onQuit={()=>setPlaying(null)} />;
+
+  return (<div className="app">
+    <header className="top">
+      <div className="brand">🎯 PDG en Mission</div>
+      <div className="who">{student.pseudo} · <span className="cl">{student.classe}</span></div>
+      <button className="lo" onClick={onLogout}>Quitter</button>
+    </header>
+    <nav className="nav">
+      <button className={tab==="jouer"?"nb on":"nb"} onClick={()=>setTab("jouer")}>🎮 Jouer</button>
+      <button className={tab==="cours"?"nb on":"nb"} onClick={()=>setTab("cours")}>📘 Cours</button>
+      <button className={tab==="prog"?"nb on":"nb"} onClick={()=>setTab("prog")}>📋 Programme</button>
+      <button className={tab==="lex"?"nb on":"nb"} onClick={()=>setTab("lex")}>📖 Glossaire</button>
+    </nav>
+    <main className="main">
+      {tab==="jouer"&&(<>
+        <div className="theme-pick">
+          {THEMES.map(t=>{ const ok=themeUnlocked(t.n);
+            return <button key={t.n} disabled={!ok} className={"tpill"+(theme===t.n?" on":"")+(ok?"":" lock")} style={{"--c":t.color}} onClick={()=>ok&&setTheme(t.n)}>
+              {ok?"":"🔒 "}<b>Thème {t.n}</b><span>{t.short}</span></button>; })}
+        </div>
+        {!themeUnlocked(theme) ? <div className="locked-msg">🔒 Valide au moins 4 jeux du thème précédent pour débloquer ce thème.</div> :
+        <>
+        <div className="contract">📜 <b>Contrat de confiance</b> — Aucun piège : tout est dans le Cours et le Glossaire. Droit à l'erreur, chaque réponse s'explique. Tous les jeux du thème sont accessibles librement, dans l'ordre que tu veux. Valide 4 jeux (≥ {PASS}%) pour ouvrir le thème suivant.</div>
+        <div className="games">
+          {GAMES.map((g,gi)=>{ const ok=unlocked(theme,gi); const b=best(theme,g.id);
+            return (<div key={g.id} className={"gcard"+(ok?"":" lock")} style={{"--c":g.color}}>
+              <div className="gicon">{ok?g.icon:"🔒"}</div>
+              <div className="gtags">
+                <span className="gbloom">{g.bloom}</span>
+                <span className="gdiff" style={{background:DIFF_COLOR[g.diff]}}>{g.diff}</span>
+              </div>
+              <h3>{g.nom}</h3>
+              <p>{g.desc}</p>
+              {b>0&&<div className="gbest">{b>=PASS?"✅ ":""}Record : {b}%</div>}
+              <button disabled={!ok} onClick={()=>setPlaying({theme,game:g.id})}>{ok?(b>0?"Rejouer":"Jouer"):"Verrouillé"}</button>
+            </div>); })}
+        </div></>}
+      </>)}
+      {tab==="cours"&&<Cours/>}
+      {tab==="prog"&&<Prog/>}
+      {tab==="lex"&&<Lex/>}
+    </main>
+  </div>);
+}
+
+/* ====== STAGE : routeur de jeux ====== */
+function Stage({student,theme,game,onDone,onQuit}){
+  const meta=GAMES.find(g=>g.id===game);
+  const head=<Ghead title={meta.nom+" — Thème "+theme} sub={meta.bloom} onQuit={onQuit}/>;
+  if(game==="trieur")  return <Trieur theme={theme} head={head} onDone={onDone}/>;
+  if(game==="memory")  return <Memory theme={theme} head={head} onDone={onDone}/>;
+  if(game==="flash")   return <Flash theme={theme} head={head} onDone={onDone}/>;
+  if(game==="vraifaux")return <VraiFaux theme={theme} head={head} onDone={onDone}/>;
+  if(game==="intrus")  return <Intrus theme={theme} head={head} onDone={onDone}/>;
+  if(game==="cas")     return <Cas theme={theme} head={head} onDone={onDone}/>;
+  if(game==="mission") return <Mission theme={theme} head={head} onDone={onDone}/>;
+  return null;
+}
+
+function Ghead({title,sub,onQuit}){
+  return (<div className="ghead"><button className="back" onClick={onQuit}>← Jeux</button>
+    <div className="gh-t">{title}<span className="gh-s">{sub}</span></div></div>);
+}
+function Result({score,total,onDone,extra}){
+  const pct=Math.round(score/total*100); const ok=pct>=PASS;
+  return (<div className="res"><div className="medal">{pct>=90?"🏆":ok?"🎉":"💪"}</div>
+    <h2>{score} / {total}</h2><div className="rpct" style={{color:ok?"#16a34a":"#dc2626"}}>{pct}%</div>
+    {extra}<p>{ok?"Bravo, jeu validé ! Le suivant est débloqué.":"Presque ! Relis le cours et retente, tu vas y arriver."}</p>
+    <button className="cta sm" onClick={()=>onDone(pct)}>Continuer</button></div>);
+}
+
+/* ====== JEU 1 : TRIEUR ====== */
+function Trieur({theme,head,onDone}){
+  const cfg=D.trieur[theme];
+  const [items]=useState(()=>[...cfg.items].map((it,i)=>({...it,_i:i})).sort(()=>Math.random()-0.5));
+  const [sel,setSel]=useState(null);
+  const [placed,setPlaced]=useState({}); // _i -> bac
+  const [score,setScore]=useState(0); const [err,setErr]=useState(0); const [done,setDone]=useState(false);
+  const remaining=items.filter(it=>placed[it._i]===undefined);
+
+  const drop=(bac)=>{ if(sel===null) return; const it=items.find(x=>x._i===sel);
+    const good=it.cat===bac;
+    setPlaced(p=>({...p,[sel]:bac})); good?setScore(s=>s+1):setErr(e=>e+1); setSel(null);
+    if(items.filter(x=>placed[x._i]===undefined && x._i!==sel).length===0) setTimeout(()=>setDone(true),250);
+  };
+  return (<div className="game">{head}
+    <p className="help">{cfg.consigne} <span className="muted">Clique un élément, puis sa catégorie.</span></p>
+    <div className="tray">{remaining.map(it=>(
+      <button key={it._i} className={"tkn"+(sel===it._i?" sel":"")} onClick={()=>setSel(it._i)}>{it.label}</button>))}
+      {remaining.length===0&&<span className="muted">Tous les éléments sont classés ✅</span>}</div>
+    <div className="bacs">{cfg.bacs.map((b,bi)=>(
+      <div key={bi} className="bac" onClick={()=>drop(bi)}>
+        <div className="bac-h">{b}</div>
+        <div className="bac-body">{items.filter(it=>placed[it._i]===bi).map(it=>(
+          <span key={it._i} className={"chip2 "+(it.cat===bi?"ok":"no")}>{it.cat===bi?"✓":"✗"} {it.label}</span>))}</div>
+      </div>))}</div>
+    {done&&<Result score={score} total={items.length} onDone={onDone}/>}
+  </div>);
+}
+
+/* ====== JEU 2 : MEMORY ====== */
+function Memory({theme,head,onDone}){
+  const pairs=D.memory[theme];
+  const [cards]=useState(()=>{ let id=0; const arr=[];
+    pairs.forEach((p,pi)=>{ arr.push({id:id++,pair:pi,txt:p.a}); arr.push({id:id++,pair:pi,txt:p.b}); });
+    return arr.sort(()=>Math.random()-0.5); });
+  const [flipped,setFlipped]=useState([]); const [matched,setMatched]=useState([]);
+  const [tries,setTries]=useState(0); const [lock,setLock]=useState(false);
+  const click=(c)=>{ if(lock||flipped.includes(c.id)||matched.includes(c.pair)) return;
+    const nf=[...flipped,c.id]; setFlipped(nf);
+    if(nf.length===2){ setLock(true); setTries(t=>t+1);
+      const [a,b]=nf.map(id=>cards.find(x=>x.id===id));
+      if(a.pair===b.pair){ setTimeout(()=>{setMatched(m=>[...m,a.pair]);setFlipped([]);setLock(false);},450); }
+      else setTimeout(()=>{setFlipped([]);setLock(false);},800);
+    } };
+  const done=matched.length===pairs.length;
+  return (<div className="game">{head}
+    <p className="help">Retrouve les paires. Essais : <b>{tries}</b> <span className="muted">— pas de note ici, l'important c'est de tout retrouver !</span></p>
+    <div className="mem-grid">{cards.map(c=>{ const show=flipped.includes(c.id)||matched.includes(c.pair);
+      return <button key={c.id} className={"mcard"+(show?" up":"")+(matched.includes(c.pair)?" done":"")} onClick={()=>click(c)}>
+        <span className="mc-front">?</span><span className="mc-back">{c.txt}</span></button>; })}</div>
+    {done&&(<div className="res"><div className="medal">🎉</div><h2>Bravo !</h2>
+      <p>Toutes les paires sont retrouvées. Le jeu suivant est débloqué.</p>
+      <p className="muted">Terminé en {tries} essais — ici, peu importe le nombre d'erreurs : l'essentiel est d'avoir tout associé.</p>
+      <button className="cta sm" onClick={()=>onDone(100)}>Continuer</button></div>)}
+  </div>);
+}
+
+/* ====== JEU 3 : FLASH QUIZ (chrono + combo) ====== */
+function Flash({theme,head,onDone}){
+  const qs=D.flash[theme];
+  const [i,setI]=useState(0); const [score,setScore]=useState(0); const [combo,setCombo]=useState(0);
+  const [t,setT]=useState(10); const [picked,setPicked]=useState(null); const [done,setDone]=useState(false);
+  const q=qs[i];
+  useEffect(()=>{ if(done||picked!==null) return; if(t<=0){ choose(-1); return; }
+    const id=setTimeout(()=>setT(x=>x-1),1000); return ()=>clearTimeout(id); },[t,picked,done]);
+  const choose=(idx)=>{ if(picked!==null) return; setPicked(idx);
+    const good=idx===q.c; if(good){ setScore(s=>s+1); setCombo(c=>c+1);} else setCombo(0);
+    setTimeout(()=>{ if(i+1>=qs.length){setDone(true);} else {setI(i+1);setPicked(null);setT(10);} },700); };
+  if(done) return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone}/></div>;
+  return (<div className="game">{head}
+    <div className="flash-bar"><div className="combo">🔥 Combo ×{combo}</div>
+      <div className="timer"><div className="tfill" style={{width:(t/10*100)+"%",background:t<=3?"#ef4444":"#f59e0b"}}/></div>
+      <div className="qn">{i+1}/{qs.length}</div></div>
+    <div className="flash-q">{q.q}</div>
+    <div className="opts">{q.o.map((o,idx)=>{ let c="opt";
+      if(picked!==null){ if(idx===q.c)c+=" right"; else if(idx===picked)c+=" bad"; }
+      return <button key={idx} className={c} onClick={()=>choose(idx)}>{o}</button>; })}</div>
+  </div>);
+}
+
+/* ====== JEU 4 : VRAI / FAUX ====== */
+function VraiFaux({theme,head,onDone}){
+  const qs=D.vraifaux[theme];
+  const [i,setI]=useState(0); const [score,setScore]=useState(0); const [picked,setPicked]=useState(null); const [done,setDone]=useState(false);
+  const q=qs[i];
+  const ans=(v)=>{ if(picked!==null) return; setPicked(v); if(v===q.v) setScore(s=>s+1); };
+  const next=()=>{ if(i+1>=qs.length) setDone(true); else {setI(i+1);setPicked(null);} };
+  if(done) return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone}/></div>;
+  return (<div className="game">{head}
+    <div className="qn r">{i+1}/{qs.length}</div>
+    <div className="vf-card">« {q.p} »</div>
+    <div className="vf-btns">
+      <button className={"vf v"+(picked!==null&&q.v===true?" right":"")+(picked===true&&q.v!==true?" bad":"")} onClick={()=>ans(true)} disabled={picked!==null}>✓ VRAI</button>
+      <button className={"vf f"+(picked!==null&&q.v===false?" right":"")+(picked===false&&q.v!==false?" bad":"")} onClick={()=>ans(false)} disabled={picked!==null}>✗ FAUX</button>
+    </div>
+    {picked!==null&&(<div className={"fb "+(picked===q.v?"good":"no")}><strong>{picked===q.v?"✅ Exact !":"❌ Raté."}</strong><p>{q.why}</p>
+      <button className="next" onClick={next}>{i+1>=qs.length?"Voir mon score":"Suivant →"}</button></div>)}
+  </div>);
+}
+
+/* ====== JEU 5 : L'INTRUS ====== */
+function Intrus({theme,head,onDone}){
+  const qs=D.intrus[theme];
+  const [i,setI]=useState(0); const [score,setScore]=useState(0); const [picked,setPicked]=useState(null); const [done,setDone]=useState(false);
+  const q=qs[i];
+  const pick=(idx)=>{ if(picked!==null) return; setPicked(idx); if(idx===q.intrus) setScore(s=>s+1); };
+  const next=()=>{ if(i+1>=qs.length) setDone(true); else {setI(i+1);setPicked(null);} };
+  if(done) return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone}/></div>;
+  return (<div className="game">{head}
+    <div className="qn r">{i+1}/{qs.length}</div>
+    <p className="help">Quel élément ne va pas avec les autres ?</p>
+    <div className="intrus-grid">{q.liste.map((el,idx)=>{ let c="iel";
+      if(picked!==null){ if(idx===q.intrus)c+=" right"; else if(idx===picked)c+=" bad"; }
+      return <button key={idx} className={c} onClick={()=>pick(idx)}>{el}</button>; })}</div>
+    {picked!==null&&(<div className={"fb "+(picked===q.intrus?"good":"no")}><strong>{picked===q.intrus?"✅ Bien vu !":"❌ Ce n'était pas lui."}</strong><p>{q.why}</p>
+      <button className="next" onClick={next}>{i+1>=qs.length?"Voir mon score":"Suivant →"}</button></div>)}
+  </div>);
+}
+
+/* ====== JEU 6 : CAS D'ENTREPRISE ====== */
+function Cas({theme,head,onDone}){
+  const qs=D.cas[theme];
+  const [i,setI]=useState(0); const [score,setScore]=useState(0); const [picked,setPicked]=useState(null); const [done,setDone]=useState(false);
+  const q=qs[i];
+  const choose=(idx)=>{ if(picked!==null) return; setPicked(idx); if(idx===q.c) setScore(s=>s+1); };
+  const next=()=>{ if(i+1>=qs.length) setDone(true); else {setI(i+1);setPicked(null);} };
+  if(done) return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone}/></div>;
+  return (<div className="game">{head}
+    <div className="case"><div className="ctag">📂 Situation — Réunion 974</div><p className="ctxt">{q.cas}</p><p className="cq">{q.q}</p></div>
+    <div className="opts">{q.o.map((o,idx)=>{ let c="opt";
+      if(picked!==null){ if(idx===q.c)c+=" right"; else if(idx===picked)c+=" bad"; }
+      return <button key={idx} className={c} onClick={()=>choose(idx)}>{o}</button>; })}</div>
+    {picked!==null&&(<div className={"fb "+(picked===q.c?"good":"no")}><strong>{picked===q.c?"✅ Bonne décision !":"❌ Pas le meilleur choix."}</strong><p>{q.why}</p>
+      <button className="next" onClick={next}>{i+1>=qs.length?"Voir mon score":"Cas suivant →"}</button></div>)}
+  </div>);
+}
+
+/* ====== JEU 7 : MISSION DIRIGEANT (simulation) ====== */
+function Mission({theme,head,onDone}){
+  const sim=D.mission[theme];
+  const [step,setStep]=useState(0);
+  const [stats,setStats]=useState({treso:50,marche:50,image:50,emploi:50});
+  const [fb,setFb]=useState(null); const [done,setDone]=useState(false);
+  const clamp=v=>Math.max(0,Math.min(100,v));
+  const decide=(ch)=>{ if(fb) return;
+    setStats(s=>({treso:clamp(s.treso+ch.eff.treso),marche:clamp(s.marche+ch.eff.marche),image:clamp(s.image+ch.eff.image),emploi:clamp(s.emploi+ch.eff.emploi)}));
+    setFb(ch.fb); };
+  const next=()=>{ setFb(null); if(step+1>=sim.etapes.length) setDone(true); else setStep(step+1); };
+  const total=Math.round((stats.treso+stats.marche+stats.image+stats.emploi)/4);
+  const gauges=[["💰 Trésorerie","treso","#16a34a"],["📈 Part de marché","marche","#2563eb"],["🌟 Image","image","#f59e0b"],["👥 Emplois","emploi","#db2777"]];
+  if(done){
+    const verdict= total>=70?"Entreprise florissante ! Tes choix stratégiques ont porté leurs fruits 🏆"
+      : total>=50?"Entreprise stable. Des décisions correctes, à affiner. 👍" : "Entreprise fragilisée. Reprends le cours et retente tes choix. 💪";
+    return (<div className="game">{head}
+      <div className="res"><div className="medal">{total>=70?"🏆":total>=50?"📊":"💪"}</div>
+        <h2>Bilan : {total}/100</h2>
+        <div className="gauges">{gauges.map(([lab,k,c])=>(<div key={k} className="gauge"><span>{lab}</span><div className="gbar"><div className="gfill" style={{width:stats[k]+"%",background:c}}/></div><b>{stats[k]}</b></div>))}</div>
+        <p>{verdict}</p><button className="cta sm" onClick={()=>onDone(total)}>Continuer</button></div>
+    </div>);
+  }
+  const e=sim.etapes[step];
+  return (<div className="game">{head}
+    <div className="mission-top"><div className="mtitle">👑 {sim.titre}</div>
+      <div className="mgauges">{gauges.map(([lab,k,c])=>(<div key={k} className="mg"><span>{lab.split(" ")[0]}</span><div className="mbar"><div className="mfill" style={{width:stats[k]+"%",background:c}}/></div></div>))}</div></div>
+    {step===0&&!fb&&<p className="mintro">{sim.intro}</p>}
+    <div className="scene"><div className="stag">Décision {step+1}/{sim.etapes.length}</div><p>{e.scene}</p></div>
+    {!fb?(<div className="opts">{e.choix.map((ch,idx)=>(<button key={idx} className="opt big" onClick={()=>decide(ch)}>{ch.txt}</button>))}</div>)
+      :(<div className="fb good"><strong>Conséquences</strong><p>{fb}</p><button className="next" onClick={next}>{step+1>=sim.etapes.length?"Voir le bilan":"Décision suivante →"}</button></div>)}
+  </div>);
+}
+
+/* ====== CONTENU : COURS / PROGRAMME / GLOSSAIRE ====== */
+function Cours(){
+  const [theme,setTheme]=useState(1);
+  const list=D.notions.filter(n=>n.theme===theme);
+  return (<div className="content">
+    <h2 className="ptitle">📘 Le cours</h2>
+    <div className="theme-tabs">{THEMES.map(t=><button key={t.n} className={theme===t.n?"tt on":"tt"} style={{"--c":t.color}} onClick={()=>setTheme(t.n)}>Thème {t.n}</button>)}</div>
+    <p className="intro">Clique le <span className="sp">bouton magique ✨</span> sous chaque notion pour la version simple + un exemple réunionnais.</p>
+    <div className="ngrid">{list.map(n=>(<div key={n.id} className="ncard">
+      <h3>{n.terme}</h3><div className="alab">🎓 Définition académique</div><p className="atxt">{n.aca}</p><Magic n={n}/>
+    </div>))}</div>
+  </div>);
+}
+function Prog(){
+  const [theme,setTheme]=useState(1); const p=D.programme.find(x=>x.theme===theme);
+  return (<div className="content">
+    <h2 className="ptitle">📋 Le programme officiel</h2>
+    <div className="theme-tabs">{THEMES.map(t=><button key={t.n} className={theme===t.n?"tt on":"tt"} style={{"--c":t.color}} onClick={()=>setTheme(t.n)}>Thème {t.n}</button>)}</div>
+    <div className="pbox"><div className="pref">{p.ref}</div><h3>{p.titre}</h3>
+      <h4>Questions de gestion</h4><ul className="plist q">{p.questions.map((q,i)=><li key={i}>{q}</li>)}</ul>
+      <h4>Notions à connaître</h4><ul className="plist">{p.connaissances.map((c,i)=><li key={i}>{c}</li>)}</ul>
+      <h4>Capacités attendues</h4><ul className="plist cap">{p.competences.map((c,i)=><li key={i}>{c}</li>)}</ul>
+    </div>
+  </div>);
+}
+function Lex(){
+  const [s,setS]=useState(""); const [theme,setTheme]=useState(0);
+  let list=D.notions; if(theme) list=list.filter(n=>n.theme===theme);
+  if(s) list=list.filter(n=>n.terme.toLowerCase().includes(s.toLowerCase()));
+  return (<div className="content">
+    <h2 className="ptitle">📖 Glossaire</h2>
+    <div className="theme-tabs"><button className={theme===0?"tt on":"tt"} style={{"--c":"#475569"}} onClick={()=>setTheme(0)}>Tous</button>
+      {THEMES.map(t=><button key={t.n} className={theme===t.n?"tt on":"tt"} style={{"--c":t.color}} onClick={()=>setTheme(t.n)}>Thème {t.n}</button>)}</div>
+    <input className="search" placeholder="Rechercher un mot…" value={s} onChange={e=>setS(e.target.value)}/>
+    <div className="lex">{list.map(n=>(<div key={n.id} className="litem"><div className="lterm">{n.terme}</div><p className="ldef">{n.aca}</p><Magic n={n}/></div>))}</div>
+  </div>);
+}
+
+/* ====== TABLEAU DE BORD PROF ====== */
+function Teacher({onLogout}){
+  const [scores,setScores]=useState(null);
+  const [fc,setFc]=useState("Toutes"); const [view,setView]=useState("eleves");
+  const refresh=()=>setScores(loadScores());
+  useEffect(()=>{refresh();},[]);
+  if(scores===null) return <div className="loading">Chargement des résultats…</div>;
+  const classes=["Toutes",...Array.from(new Set(scores.map(s=>s.classe)))];
+  const fl= fc==="Toutes"?scores:scores.filter(s=>s.classe===fc);
+
+  // par élève : meilleur pct par (theme,game)
+  const byS={};
+  fl.forEach(s=>{ const k=s.classe+"|"+s.pseudo;
+    if(!byS[k]) byS[k]={nom:s.nom,prenom:s.prenom,pseudo:s.pseudo,classe:s.classe,cells:{},parties:0};
+    const ck=s.theme+"-"+s.game; byS[k].cells[ck]=Math.max(byS[k].cells[ck]||0,s.pct); byS[k].parties++; });
+  const students=Object.values(byS).map(st=>{
+    const valid=Object.values(st.cells).filter(v=>v>=PASS).length;
+    const vals=Object.values(st.cells); const moy=vals.length?Math.round(vals.reduce((a,b)=>a+b,0)/vals.length):0;
+    const themeProg=[1,2,3].map(t=>GAMES.filter(g=>(st.cells[t+"-"+g.id]||0)>=PASS).length);
+    return {...st,valid,moy,themeProg};
+  }).sort((a,b)=>b.valid-a.valid||b.moy-a.moy);
+
+  // par classe
+  const byC={};
+  scores.forEach(s=>{ if(!byC[s.classe]) byC[s.classe]={classe:s.classe,pcts:[],el:new Set()}; byC[s.classe].pcts.push(s.pct); byC[s.classe].el.add(s.pseudo); });
+  const cstats=Object.values(byC).map(c=>({classe:c.classe,moy:Math.round(c.pcts.reduce((a,b)=>a+b,0)/c.pcts.length),nb:c.el.size,parties:c.pcts.length})).sort((a,b)=>b.moy-a.moy);
+
+  return (<div className="app">
+    <header className="top prof"><div className="brand">👩‍🏫 Espace Professeur</div><button className="lo" onClick={onLogout}>Déconnexion</button></header>
+    <div className="ptool">
+      <div className="seg"><button className={view==="eleves"?"on":""} onClick={()=>setView("eleves")}>👤 Élèves</button>
+        <button className={view==="themes"?"on":""} onClick={()=>setView("themes")}>📚 Par thème</button>
+        <button className={view==="classes"?"on":""} onClick={()=>setView("classes")}>🏫 Classes</button></div>
+      <select value={fc} onChange={e=>setFc(e.target.value)}>{classes.map(c=><option key={c}>{c}</option>)}</select>
+      <button className="rf" onClick={refresh}>↻ Actualiser</button>
+      <button className="rf alt" onClick={exportScoresCSV}>⬇ Export Excel (CSV)</button>
+      <button className="rf danger" onClick={()=>{ if(confirm("Effacer TOUS les résultats enregistrés sur cet appareil ?")){ clearScores(); refresh(); } }}>🗑 Réinitialiser</button>
+    </div>
+    {scores.length===0&&<div className="empty">Aucun résultat pour l'instant. Les scores apparaîtront dès que les élèves auront joué.</div>}
+
+    {view==="eleves"&&scores.length>0&&(<div className="twrap"><table className="pt">
+      <thead><tr><th>#</th><th>Élève</th><th>Classe</th><th>Jeux validés</th><th>Moyenne</th><th>Progression (T1·T2·T3)</th></tr></thead>
+      <tbody>{students.map((st,i)=>(<tr key={i}>
+        <td className="rk">{i+1}</td><td className="nm">{st.prenom} {st.nom}<span className="ps">{st.pseudo}</span></td><td>{st.classe}</td>
+        <td><b>{st.valid}</b>/21</td>
+        <td><b className="moy" style={{color:st.moy>=PASS?"#16a34a":"#dc2626"}}>{st.moy}%</b></td>
+        <td><div className="tp">{st.themeProg.map((v,ti)=><span key={ti} className="tpb"><i style={{width:(v/7*100)+"%",background:THEMES[ti].color}}/></span>)} <span className="tpn">{st.themeProg.join(" · ")}/7</span></div></td>
+      </tr>))}</tbody></table></div>)}
+
+    {view==="themes"&&scores.length>0&&(<div className="twrap"><table className="pt">
+      <thead><tr><th>Élève</th>{[1,2,3].map(t=>GAMES.map(g=><th key={t+g.id} className="th-mini" title={"T"+t+" "+g.nom}>{g.icon}<small>T{t}</small></th>))}</tr></thead>
+      <tbody>{students.map((st,i)=>(<tr key={i}><td className="nm">{st.prenom} {st.nom}</td>
+        {[1,2,3].map(t=>GAMES.map(g=>{ const v=st.cells[t+"-"+g.id]; return <td key={t+g.id}><Cell v={v}/></td>; }))}</tr>))}</tbody>
+    </table><div className="legend">Chaque colonne = un jeu pour un thème. Vert ≥ {PASS}%.</div></div>)}
+
+    {view==="classes"&&scores.length>0&&(<div className="twrap"><table className="pt">
+      <thead><tr><th>#</th><th>Classe</th><th>Élèves actifs</th><th>Parties</th><th>Moyenne classe</th></tr></thead>
+      <tbody>{cstats.map((c,i)=>(<tr key={i}><td className="rk">{i+1}</td><td className="nm">{c.classe}</td><td>{c.nb}</td><td>{c.parties}</td>
+        <td><div className="cbar"><div className="cfill" style={{width:c.moy+"%",background:c.moy>=PASS?"#16a34a":"#f59e0b"}}/></div><span className="cval">{c.moy}%</span></td></tr>))}</tbody>
+    </table></div>)}
+    <div className="pn">Un jeu est « validé » à {PASS}%. 21 jeux au total (7 × 3 thèmes). Les résultats sont enregistrés sur CET appareil (navigateur). Utilise l'export CSV pour les conserver ou les ouvrir dans Excel.</div>
+  </div>);
+}
+function Cell({v}){ if(v===undefined) return <span className="nc">·</span>;
+  const c=v>=PASS?"#16a34a":v>0?"#f59e0b":"#dc2626";
+  return <span className="sc" style={{background:c+"22",color:c,borderColor:c+"55"}}>{v}</span>; }
+
+/* ====== ROOT ====== */
+function App(){
+  const [screen,setScreen]=useState("login"); const [student,setStudent]=useState(null);
+  return (<>{screen==="login"&&<Login onStudent={s=>{setStudent(s);setScreen("student")}} onTeacher={()=>setScreen("teacher")}/>}
+    {screen==="student"&&<Hub student={student} onLogout={()=>setScreen("login")}/>}
+    {screen==="teacher"&&<Teacher onLogout={()=>setScreen("login")}/>}</>);
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Outfit:wght@400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--ink:#1a1430;--c1:#ff6b6b;--c2:#feca57;--c3:#48dbfb;--c4:#1dd1a1;--green:#16a34a;--blue:#2563eb}
+body{font-family:'Outfit',sans-serif;color:var(--ink);min-height:100vh;background:
+ radial-gradient(circle at 8% 10%,#ffe9d6 0,transparent 36%),
+ radial-gradient(circle at 92% 6%,#d6f0ff 0,transparent 34%),
+ radial-gradient(circle at 50% 100%,#e7ffe9 0,transparent 40%),#fefcf8}
+button{font-family:inherit;cursor:pointer;border:none}
+input,select{font-family:inherit}
+
+/* LOGIN */
+.login{max-width:580px;margin:0 auto;padding:44px 20px 30px;text-align:center}
+.kick{display:inline-block;background:var(--ink);color:#fff;padding:7px 16px;border-radius:30px;font-size:11px;font-weight:700;letter-spacing:1.3px}
+.hero h1{font-family:'Fraunces',serif;font-size:62px;font-weight:800;margin:16px 0 6px;line-height:1}
+.grad{background:linear-gradient(120deg,var(--c1),var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:17px;color:#5a5470;margin-bottom:26px}
+.card{background:#fff;border-radius:24px;padding:26px;box-shadow:0 30px 60px -20px rgba(80,40,120,.25);border:1px solid #f0eafa;text-align:left}
+.tabs{display:flex;gap:8px;background:#f5f1fb;padding:6px;border-radius:14px;margin-bottom:18px}
+.tab{flex:1;padding:11px;border-radius:10px;background:transparent;font-weight:700;color:#7a7390;font-size:15px}
+.tab.on{background:#fff;color:var(--ink);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.form{display:flex;flex-direction:column;gap:11px}.r2{display:flex;gap:11px}.r2 input{flex:1}
+.form input{padding:13px 15px;border:2px solid #ece6f7;border-radius:12px;font-size:15px;background:#faf8fe}
+.form input:focus{outline:none;border-color:var(--c1);background:#fff}
+.hint{font-size:13px;color:#8a84a0}code{background:#f0eafa;padding:2px 7px;border-radius:6px;font-weight:700;color:#db2777}
+.err{background:#fee2e2;color:#dc2626;padding:10px 14px;border-radius:10px;font-size:14px;margin-top:12px;font-weight:600}
+.cta{width:100%;margin-top:16px;padding:15px;border-radius:14px;background:linear-gradient(120deg,var(--c1),var(--c2));color:#fff;font-size:17px;font-weight:800;box-shadow:0 12px 24px -6px rgba(255,107,107,.5);transition:.2s}
+.cta:hover{transform:translateY(-2px)}.cta.sm{max-width:260px;margin:14px auto 0}
+.fnote{margin-top:20px;font-size:12px;color:#9a94aa}
+
+/* SHELL */
+.app{max-width:1120px;margin:0 auto;padding:0 16px 60px}
+.top{display:flex;align-items:center;gap:14px;padding:18px 4px}
+.brand{font-family:'Fraunces',serif;font-weight:800;font-size:22px}
+.who{margin-left:auto;font-weight:600;color:#5a5470;font-size:14px}.who .cl{color:var(--blue);font-weight:700}
+.lo{background:#f0eafa;padding:9px 16px;border-radius:10px;font-weight:700;color:#6b6485;font-size:14px}
+.top.prof .lo{margin-left:auto}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.nb{padding:11px 18px;border-radius:12px;background:#fff;font-weight:700;font-size:15px;color:#6b6485;box-shadow:0 4px 14px -6px rgba(80,40,120,.2)}
+.nb.on{background:var(--ink);color:#fff}
+
+/* THEME PICK */
+.theme-pick{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.tpill{flex:1;min-width:160px;display:flex;flex-direction:column;gap:2px;padding:14px 16px;border-radius:16px;background:#fff;border:2px solid #eee4f5;text-align:left;transition:.2s;box-shadow:0 6px 18px -10px rgba(80,40,120,.25)}
+.tpill b{font-size:13px;color:var(--c)}.tpill span{font-size:15px;font-weight:700;color:var(--ink)}
+.tpill.on{border-color:var(--c);background:#fff}
+.tpill.lock{opacity:.55;cursor:not-allowed}
+.locked-msg{background:#fff;border-radius:16px;padding:30px;text-align:center;color:#6b6485;font-weight:600;box-shadow:0 10px 30px -16px rgba(80,40,120,.2)}
+.contract{background:linear-gradient(120deg,#fff6e8,#fef0f0);border:1.5px solid #fcd9b8;border-radius:16px;padding:14px 18px;font-size:14px;line-height:1.6;margin-bottom:20px}
+
+/* GAMES GRID */
+.games{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.gcard{background:#fff;border-radius:18px;padding:20px;box-shadow:0 16px 36px -18px rgba(80,40,120,.28);border-top:4px solid var(--c);text-align:center;transition:.22s}
+.gcard:hover:not(.lock){transform:translateY(-4px)}
+.gcard.lock{opacity:.55;filter:grayscale(.4)}
+.gicon{font-size:38px}
+.gtags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:6px 0}
+.gbloom{display:inline-block;background:var(--c);color:#fff;font-size:10.5px;font-weight:700;padding:3px 11px;border-radius:20px;letter-spacing:.4px}
+.gdiff{display:inline-block;color:#fff;font-size:10.5px;font-weight:700;padding:3px 11px;border-radius:20px;letter-spacing:.4px}
+.gcard h3{font-family:'Fraunces',serif;font-size:18px;margin:4px 0}
+.gcard p{color:#6b6485;font-size:13.5px;min-height:38px}
+.gbest{font-size:12.5px;font-weight:700;color:var(--c);margin:6px 0}
+.gcard button{margin-top:8px;width:100%;padding:11px;border-radius:11px;background:var(--c);color:#fff;font-weight:800;font-size:14px;transition:.2s}
+.gcard button:hover:not(:disabled){filter:brightness(1.08)}
+.gcard button:disabled{background:#d8d2e6;cursor:not-allowed}
+
+/* GAME SHELL */
+.game{background:#fff;border-radius:22px;padding:24px;box-shadow:0 22px 50px -22px rgba(80,40,120,.3)}
+.ghead{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.back{background:#f0eafa;padding:9px 15px;border-radius:10px;font-weight:700;color:#6b6485}
+.gh-t{font-family:'Fraunces',serif;font-weight:800;font-size:19px;display:flex;flex-direction:column}
+.gh-s{font-family:'Outfit';font-size:12px;font-weight:700;color:#9a94aa;letter-spacing:.5px;text-transform:uppercase}
+.help{color:#5a5470;margin-bottom:14px}.muted{color:#9a94aa;font-weight:500}
+.qn{margin-left:auto;font-weight:800;color:#9a94aa}.qn.r{text-align:right;margin-bottom:8px}
+
+/* TRIEUR */
+.tray{display:flex;flex-wrap:wrap;gap:9px;min-height:48px;margin-bottom:18px;padding:12px;background:#faf8fe;border-radius:14px;border:1.5px dashed #e0d8ef}
+.tkn{padding:10px 14px;border-radius:11px;background:#fff;border:2px solid #eee4f5;font-weight:600;font-size:13.5px;transition:.15s}
+.tkn.sel{border-color:var(--blue);background:#eef4ff;transform:scale(1.04);box-shadow:0 6px 16px -6px rgba(37,99,235,.5)}
+.bacs{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.bac{background:#faf8fe;border:2px solid #eee4f5;border-radius:16px;padding:12px;min-height:120px;cursor:pointer;transition:.15s}
+.bac:hover{border-color:var(--c3);background:#f0fbff}
+.bac-h{font-weight:800;font-size:13.5px;text-align:center;padding:8px;border-radius:10px;background:#fff;margin-bottom:8px;color:var(--ink)}
+.bac-body{display:flex;flex-direction:column;gap:6px}
+.chip2{font-size:12.5px;font-weight:600;padding:7px 10px;border-radius:9px}
+.chip2.ok{background:#e7f7ec;color:var(--green)}.chip2.no{background:#fee2e2;color:#dc2626}
+
+/* MEMORY */
+.mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.mcard{aspect-ratio:1;border-radius:14px;position:relative;background:linear-gradient(135deg,#48dbfb,#1dd1a1);color:#fff;font-weight:700;font-size:13px;transition:.2s;perspective:600px}
+.mcard .mc-front{font-size:28px;display:flex;align-items:center;justify-content:center;height:100%}
+.mcard .mc-back{display:none;padding:8px;line-height:1.3}
+.mcard.up{background:#fff;border:2px solid var(--c3);color:var(--ink)}
+.mcard.up .mc-front{display:none}.mcard.up .mc-back{display:flex;align-items:center;justify-content:center;height:100%}
+.mcard.done{background:#e7f7ec;border-color:#bce8c9;color:var(--green)}
+@media(max-width:560px){.mem-grid{grid-template-columns:repeat(3,1fr)}}
+
+/* FLASH */
+.flash-bar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.combo{font-weight:800;color:#ef4444;font-size:14px}
+.timer{flex:1;height:10px;background:#eee4f5;border-radius:8px;overflow:hidden}
+.tfill{height:100%;transition:width 1s linear}
+.flash-q{font-size:19px;font-weight:700;margin-bottom:16px;text-align:center;font-family:'Fraunces',serif}
+
+/* OPTS générique */
+.opts{display:flex;flex-direction:column;gap:11px}
+.opt{padding:15px 17px;border-radius:14px;background:#f7f5fb;text-align:left;font-weight:600;font-size:15px;border:2px solid transparent;transition:.15s}
+.opt:hover{background:#efeaf8}.opt.big{font-size:15.5px;padding:18px}
+.opt.right{background:#e7f7ec;border-color:var(--green);color:var(--green)}
+.opt.bad{background:#fee2e2;border-color:#dc2626;color:#dc2626}
+
+/* VRAI FAUX */
+.vf-card{font-family:'Fraunces',serif;font-size:21px;text-align:center;padding:28px 18px;background:linear-gradient(120deg,#f0f7ff,#f7f0ff);border-radius:18px;margin-bottom:16px;line-height:1.4}
+.vf-btns{display:flex;gap:14px}
+.vf{flex:1;padding:20px;border-radius:16px;font-size:18px;font-weight:800;color:#fff;transition:.15s}
+.vf.v{background:#16a34a}.vf.f{background:#dc2626}
+.vf:disabled{opacity:.85}.vf.right{outline:4px solid #16a34a55}.vf.bad{outline:4px solid #dc262655;opacity:.6}
+
+/* INTRUS */
+.intrus-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.iel{padding:22px 16px;border-radius:14px;background:#f7f5fb;font-weight:700;font-size:16px;transition:.15s}
+.iel:hover{background:#efeaf8}
+.iel.right{background:#e7f7ec;border:2px solid var(--green);color:var(--green)}
+.iel.bad{background:#fee2e2;border:2px solid #dc2626;color:#dc2626}
+
+/* CAS */
+.case{background:linear-gradient(120deg,#f0f7ff,#f7f0ff);border-radius:16px;padding:18px;margin-bottom:16px}
+.ctag{display:inline-block;background:var(--blue);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:.4px}
+.ctxt{font-size:16px;line-height:1.55;margin:11px 0}.cq{font-weight:700;font-size:16px}
+
+/* FEEDBACK */
+.fb{margin-top:16px;padding:17px;border-radius:16px}
+.fb.good{background:#e7f7ec}.fb.no{background:#fff3f0}
+.fb p{margin:7px 0 13px;line-height:1.55}
+.next{padding:11px 19px;border-radius:12px;background:var(--ink);color:#fff;font-weight:800}
+
+/* RESULT */
+.res{text-align:center;padding:14px}
+.medal{font-size:58px}.res h2{font-family:'Fraunces',serif;font-size:38px}
+.rpct{font-size:28px;font-weight:800}.res p{color:#6b6485;margin:10px 0 4px}
+
+/* MISSION */
+.mission-top{background:#faf8fe;border-radius:16px;padding:14px;margin-bottom:14px}
+.mtitle{font-family:'Fraunces',serif;font-weight:800;font-size:17px;margin-bottom:10px}
+.mgauges{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.mg{font-size:11px;font-weight:700;color:#6b6485;text-align:center}
+.mbar{height:8px;background:#eee4f5;border-radius:6px;overflow:hidden;margin-top:4px}.mfill{height:100%;transition:width .5s}
+.mintro{background:#fff6e8;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.5;margin-bottom:12px}
+.scene{background:linear-gradient(120deg,#fdf0f7,#f7f0ff);border-radius:16px;padding:18px;margin-bottom:14px}
+.stag{display:inline-block;background:#db2777;color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px}
+.scene p{font-size:16px;line-height:1.5;margin-top:10px}
+.gauges{display:flex;flex-direction:column;gap:10px;max-width:340px;margin:14px auto}
+.gauge{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700}
+.gauge span{width:120px;text-align:left;color:#6b6485}
+.gbar{flex:1;height:12px;background:#eee4f5;border-radius:8px;overflow:hidden}.gfill{height:100%}
+
+/* CONTENT */
+.content{background:#fff;border-radius:22px;padding:26px;box-shadow:0 18px 44px -22px rgba(80,40,120,.25)}
+.ptitle{font-family:'Fraunces',serif;font-size:28px;margin-bottom:14px}
+.theme-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tt{padding:9px 16px;border-radius:11px;background:#f5f1fb;font-weight:700;color:#6b6485;font-size:14px;border:2px solid transparent}
+.tt.on{background:#fff;border-color:var(--c);color:var(--c)}
+.intro{color:#5a5470;line-height:1.6;margin-bottom:20px;font-size:15px}
+.sp{background:linear-gradient(120deg,var(--c1),var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.ngrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.ncard{background:#faf8fe;border-radius:18px;padding:18px;border:1px solid #f0eafa}
+.ncard h3{font-family:'Fraunces',serif;font-size:18px;margin-bottom:9px}
+.alab{font-size:11.5px;font-weight:700;color:#8b5cf6;letter-spacing:.4px}
+.atxt{font-size:14px;line-height:1.55;color:#3a3450;margin:5px 0 12px}
+
+/* MAGIC */
+.magic{margin-top:4px}
+.mbtn{width:100%;padding:11px 13px;border-radius:12px;background:linear-gradient(120deg,#48dbfb,#1dd1a1);color:#063;font-weight:800;font-size:13px;box-shadow:0 8px 18px -8px rgba(29,209,161,.6);transition:.2s}
+.mbtn:hover{transform:translateY(-1px)}.mbtn.on{background:linear-gradient(120deg,#1dd1a1,#10ac84);color:#fff}
+.spk{display:inline-block;margin-right:6px;animation:tw 1.6s infinite}
+@keyframes tw{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.25)}}
+.mbox{margin-top:11px;background:linear-gradient(120deg,#effcf9,#f0fbff);border:1.5px dashed #7fe3cf;border-radius:14px;padding:15px;animation:pop .3s}
+@keyframes pop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.mlab{font-weight:800;color:#10ac84;font-size:14px;margin-bottom:5px}
+.mbox p{font-size:14.5px;line-height:1.6;color:#1a4a40}
+.mex{margin-top:9px;font-size:13px;color:#2a6a5a;background:#fff;padding:9px 11px;border-radius:10px;font-weight:600}
+
+/* PROGRAMME */
+.pbox{background:#faf8fe;border-radius:18px;padding:22px;border:1px solid #f0eafa}
+.pref{display:inline-block;background:var(--ink);color:#fff;font-size:12px;font-weight:700;padding:5px 14px;border-radius:20px}
+.pbox h3{font-family:'Fraunces',serif;font-size:22px;margin:12px 0 4px}
+.pbox h4{font-size:14px;margin:18px 0 8px;color:#8b5cf6;text-transform:uppercase;letter-spacing:.5px}
+.plist{list-style:none;display:flex;flex-direction:column;gap:7px}
+.plist li{padding:10px 15px;background:#fff;border-radius:10px;font-size:14px;border-left:4px solid var(--c2)}
+.plist.q li{border-left-color:var(--c3);font-style:italic}.plist.cap li{border-left-color:var(--c4)}
+
+/* LEXIQUE */
+.search{width:100%;padding:13px 17px;border:2px solid #ece6f7;border-radius:14px;font-size:15px;margin-bottom:18px;background:#faf8fe}
+.search:focus{outline:none;border-color:var(--c3);background:#fff}
+.lex{display:flex;flex-direction:column;gap:12px}
+.litem{background:#faf8fe;border-radius:16px;padding:16px 18px;border:1px solid #f0eafa}
+.lterm{font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:5px}
+.ldef{font-size:14px;line-height:1.55;color:#3a3450;margin-bottom:11px}
+
+/* PROF */
+.ptool{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.seg{display:flex;background:#f0eafa;border-radius:12px;padding:5px}
+.seg button{padding:9px 15px;border-radius:9px;background:transparent;font-weight:700;color:#6b6485;font-size:14px}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 3px 8px rgba(0,0,0,.08)}
+.ptool select{padding:10px 13px;border:2px solid #ece6f7;border-radius:11px;font-weight:600;background:#fff;font-size:14px}
+.rf{margin-left:auto;background:var(--ink);color:#fff;padding:10px 17px;border-radius:11px;font-weight:700;font-size:14px}
+.rf.alt{margin-left:8px;background:#16a34a}
+.rf.danger{margin-left:8px;background:#dc2626}
+.empty,.loading{background:#fff;border-radius:18px;padding:40px;text-align:center;color:#6b6485;font-size:16px;box-shadow:0 10px 30px -16px rgba(80,40,120,.2)}
+.twrap{background:#fff;border-radius:18px;padding:8px;box-shadow:0 14px 36px -20px rgba(80,40,120,.25);overflow-x:auto}
+.pt{width:100%;border-collapse:collapse;min-width:560px}
+.pt th{text-align:left;padding:13px 11px;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;color:#8a84a0;border-bottom:2px solid #f0eafa}
+.pt td{padding:13px 11px;border-bottom:1px solid #f5f1fb;font-size:14px}
+.pt tr:hover td{background:#faf8fe}
+.th-mini{text-align:center!important;font-size:15px!important}.th-mini small{display:block;font-size:9px;color:#b0a8c4}
+.rk{font-weight:800;color:#b0a8c4}.nm{font-weight:700}.nm .ps{display:block;font-size:12px;color:#9a94aa;font-weight:500}
+.moy{font-size:15px}
+.tp{display:flex;align-items:center;gap:4px}.tpb{display:inline-block;width:36px;height:8px;background:#eee4f5;border-radius:6px;overflow:hidden}.tpb i{display:block;height:100%}.tpn{font-size:12px;font-weight:700;color:#8a84a0;margin-left:4px}
+.sc{display:inline-block;min-width:30px;text-align:center;padding:3px 7px;border-radius:8px;font-weight:800;font-size:12px;border:1px solid}
+.nc{color:#cfc8dd}
+.cbar{display:inline-block;width:110px;height:9px;background:#eee4f5;border-radius:8px;overflow:hidden;vertical-align:middle}.cfill{height:100%}.cval{margin-left:8px;font-weight:800;font-size:14px}
+.legend,.pn{margin-top:14px;font-size:12.5px;color:#9a94aa;text-align:center}
+
+@media(max-width:600px){.hero h1{font-size:44px}.r2{flex-direction:column}.intrus-grid{grid-template-columns:1fr}.gauge span{width:90px}}
+</style>
+</body>
+</html>
