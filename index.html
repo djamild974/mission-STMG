@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDG en Mission — Management 1ère STMG</title>
+<title>Mission Management — 1ère STMG</title>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -11,6 +11,7 @@
 <body>
 <div id="root"></div>
 <script>
+/*__DATA_START__*/
 /* ============================================================
    PDG EN MISSION — Données pédagogiques
    Management 1ère STMG — BO spécial n°1 du 22 janvier 2019
@@ -409,6 +410,20 @@ intrusExtra: {
       {liste:["Marque","Réputation","Savoir-faire","Camion de livraison"], intrus:3, why:"Le camion est une ressource matérielle ; les trois autres sont immatérielles."},
       {liste:["Association","Fondation","ONG","Mairie"], intrus:3, why:"La mairie est une organisation publique ; les trois autres sont des OSC."},
       {liste:["Pilier économique","Pilier social","Pilier environnemental","Pilier financier"], intrus:3, why:"La RSE repose sur trois piliers : économique, social et environnemental. Le « pilier financier » n'en fait pas partie."} ],
+  2:[ {liste:["Marque connue","Savoir-faire rare","Coûts maîtrisés","Marché en croissance"], intrus:3, why:"Le marché en croissance est une opportunité (externe) ; les trois autres sont des forces internes."},
+      {liste:["Politique","Écologique","Technologique","Concurrentiel"], intrus:3, why:"« Concurrentiel » n'est pas une lettre du PESTEL (Politique, Économique, Socioculturel, Technologique, Écologique, Légal)."},
+      {liste:["Nouveau concurrent","Hausse du carburant","Loi plus stricte","Machines vieillissantes"], intrus:3, why:"Les machines vieillissantes sont une faiblesse interne ; les trois autres sont des menaces externes."},
+      {liste:["Chiffre d'affaires","Part de marché","Taux de satisfaction","Finalité"], intrus:3, why:"La finalité est la raison d'être ; les trois autres sont des indicateurs mesurables."},
+      {liste:["Salariés","Clients","Fournisseurs","SWOT"], intrus:3, why:"Le SWOT est un outil de diagnostic ; les trois autres sont des parties prenantes."},
+      {liste:["Diagnostic interne","Forces","Faiblesses","Menaces"], intrus:3, why:"Les menaces relèvent du diagnostic externe ; forces et faiblesses sont internes."},
+      {liste:["Augmenter les ventes de 10 % en 2 ans","Ouvrir 3 magasins d'ici 2027","Réduire les déchets de 20 % cette année","Être une bonne entreprise"], intrus:3, why:"Un objectif stratégique doit être précis et daté ; « être une bonne entreprise » est trop vague."} ],
+  3:[ {liste:["Croissance interne","Croissance externe","Partenariat","Différenciation"], intrus:3, why:"La différenciation est une stratégie de domaine ; les trois autres sont des modalités de développement."},
+      {liste:["Diversification horizontale","Diversification verticale","Diversification conglomérale","Diversification financière"], intrus:3, why:"La « diversification financière » n'existe pas dans le programme : les trois formes sont horizontale, verticale et conglomérale."},
+      {liste:["Intérêt général","Service public","Redistribution","Profit"], intrus:3, why:"Le profit est la finalité d'une entreprise privée ; les trois autres relèvent des organisations publiques."},
+      {liste:["Dons","Bénévolat","Subventions","Dividendes"], intrus:3, why:"Les dividendes rémunèrent les actionnaires d'une entreprise ; les trois autres sont des ressources typiques des OSC."},
+      {liste:["Un seul métier","Savoir-faire distinctif","Concentration des ressources","Plusieurs activités sans lien"], intrus:3, why:"Plusieurs activités sans lien = diversification conglomérale ; les trois autres caractérisent la spécialisation."},
+      {liste:["Sophistication","Épuration","Offre perçue comme unique","Prix le plus bas du marché"], intrus:3, why:"Le prix le plus bas relève de la domination par les coûts ; les trois autres caractérisent la différenciation."},
+      {liste:["Racheter un concurrent","Fusionner","Acquérir une entreprise","Ouvrir un site avec ses bénéfices"], intrus:3, why:"Ouvrir un site avec ses propres moyens = croissance interne ; les trois autres sont de la croissance externe."} ],
 },
 casExtra: {
   1:[ {cas:"La mairie organise un transport scolaire quasi gratuit, financé par les impôts locaux.", q:"Comment qualifier ce service ?", o:["Service marchand","Service non marchand","Bien matériel"], c:1, why:"Gratuit ou quasi gratuit et financé par l'impôt : c'est un service non marchand, typique d'une organisation publique."},
@@ -418,6 +433,19 @@ casExtra: {
       {cas:"Un syndicat défend les intérêts des salariés d'un secteur, sans chercher de profit.", q:"De quel type d'organisation s'agit-il ?", o:["Entreprise privée","Organisation publique","OSC"], c:2, why:"But non lucratif et défense d'intérêts collectifs : le syndicat est une organisation de la société civile."},
       {cas:"Une entreprise de livraison achète trois nouveaux camions.", q:"Quelle catégorie de ressources augmente ?", o:["Matérielles","Immatérielles","Humaines"], c:0, why:"Les camions sont des biens physiques : ce sont des ressources matérielles."},
       {cas:"L'hôpital public de Saint-Pierre soigne tous les patients, quels que soient leurs revenus.", q:"Quelle est sa finalité ?", o:["Lucrative","L'intérêt général","Conquérir un marché"], c:1, why:"Une organisation publique a pour finalité la satisfaction de l'intérêt général, pas le profit."} ],
+  2:[ {cas:"Une nouvelle machine d'embouteillage ultra-rapide révolutionne le secteur des boissons.", q:"À quel facteur PESTEL ce changement correspond-il ?", o:["Politique","Technologique","Socioculturel"], c:1, why:"Une évolution des équipements et procédés relève du facteur Technologique du PESTEL."},
+      {cas:"Sur le marché des boissons à La Réunion, impossible de réussir sans être présent dans les grandes surfaces.", q:"Comment appelle-t-on cet élément à maîtriser absolument ?", o:["Une faiblesse","Un facteur clé de succès (FCS)","Un indicateur"], c:1, why:"Ce que toute organisation doit maîtriser sur un marché pour réussir est un facteur clé de succès."},
+      {cas:"Les clients d'Isautier acceptent de payer plus cher car ils perçoivent ses rhums comme uniques.", q:"Quel type d'avantage concurrentiel est-ce ?", o:["Interne (coûts)","Externe (valeur perçue)","Aucun"], c:1, why:"Quand l'avantage repose sur la valeur perçue par le client, il est externe."},
+      {cas:"Des riverains se plaignent du bruit de l'usine et demandent des aménagements.", q:"Que représentent les riverains pour l'entreprise ?", o:["Des concurrents","Des parties prenantes","Des indicateurs"], c:1, why:"Les riverains sont concernés par l'activité : ce sont des parties prenantes externes, ici en situation de conflit."},
+      {cas:"L'objectif fixé : « +10 % de ventes en 2 ans ». Le manager veut vérifier régulièrement l'avancée.", q:"Que doit-il choisir pour mesurer l'atteinte de l'objectif ?", o:["Une finalité","Un indicateur (ex. chiffre d'affaires)","Une menace"], c:1, why:"L'atteinte d'un objectif se mesure avec des indicateurs : chiffre d'affaires, part de marché…"},
+      {cas:"Une distillerie détient une recette transmise depuis des générations, que personne ne sait imiter.", q:"Comment qualifier cet atout dans le diagnostic interne ?", o:["Compétence distinctive","Menace","Opportunité"], c:0, why:"Un savoir-faire rare et difficilement imitable est une compétence distinctive, source d'avantage concurrentiel."},
+      {cas:"Une nouvelle ligne aérienne directe relie La Réunion à un grand marché étranger.", q:"Pour une entreprise exportatrice locale, c'est…", o:["Une opportunité (externe)","Une force (interne)","Une faiblesse"], c:0, why:"Un événement favorable venant de l'environnement est une opportunité, repérée par le diagnostic externe."} ],
+  3:[ {cas:"Cilaos choisit de rester concentrée sur l'eau de source, son unique métier.", q:"Quelle stratégie globale reconnaît-on ?", o:["Diversification","Spécialisation","Intégration"], c:1, why:"Concentrer ses ressources sur un seul domaine d'activité, c'est la spécialisation."},
+      {cas:"Une brasserie réunionnaise lance une gamme de jus de fruits locaux, métier proche de ses boissons actuelles.", q:"De quelle diversification s'agit-il ?", o:["Horizontale","Verticale","Conglomérale"], c:0, why:"Nouvelle activité proche du métier d'origine : c'est une diversification horizontale."},
+      {cas:"Une sucrerie achète des champs de canne pour maîtriser son approvisionnement.", q:"Quelle stratégie reconnaît-on ?", o:["Externalisation","Intégration (vers l'amont)","Différenciation"], c:1, why:"Internaliser un maillon situé avant son activité dans la filière, c'est l'intégration vers l'amont (diversification verticale)."},
+      {cas:"Isautier lance une édition très limitée, vieillie en fût rare, vendue bien plus cher.", q:"Quelle stratégie de domaine est menée ?", o:["Domination par les coûts","Différenciation par sophistication","Épuration"], c:1, why:"Offre perçue comme supérieure justifiant un prix élevé : différenciation par le haut (sophistication)."},
+      {cas:"La Région finance un réseau de bus à tarif réduit, accessible à tous les habitants.", q:"Quelle logique stratégique guide ce choix ?", o:["Le profit","L'intérêt général (organisation publique)","La part de marché"], c:1, why:"Les options stratégiques des organisations publiques sont guidées par l'intérêt général."},
+      {cas:"Une ONG environnementale lance une campagne pour alerter sur l'état du lagon et appelle aux dons et au bénévolat.", q:"Cela illustre les options stratégiques…", o:["d'une entreprise privée","d'une organisation publique","d'une OSC"], c:2, why:"Plaidoyer pour une cause + mobilisation de dons et bénévoles : choix stratégiques typiques d'une OSC."} ],
 },
 missionExtra: {
   1:[ {scene:"Tes salariés demandent une formation pour mieux maîtriser les nouvelles machines.", choix:[
@@ -434,14 +462,61 @@ missionExtra: {
         {txt:"« On fait des trucs, on verra bien. »", eff:{treso:0,marche:-5,image:-15,emploi:0}, fb:"Réponse floue : savoir caractériser son organisation (type, finalité, ressources, production) inspire confiance."} ]},
       {scene:"Une association culturelle locale sollicite un don pour son festival.", choix:[
         {txt:"Faire un don (mécénat)", eff:{treso:-5,marche:5,image:15,emploi:0}, fb:"Soutenir une OSC locale : engagement RSE qui ancre l'entreprise dans son territoire."},
-        {txt:"Décliner poliment", eff:{treso:5,marche:0,image:-5,emploi:0}, fb:"Choix défendable financièrement, mais une occasion manquée de renforcer ton image localement."} ]} ]
+        {txt:"Décliner poliment", eff:{treso:5,marche:0,image:-5,emploi:0}, fb:"Choix défendable financièrement, mais une occasion manquée de renforcer ton image localement."} ]} ],
+  2:[ {scene:"Tu veux lancer un nouveau produit. Ton équipe te presse de foncer.", choix:[
+        {txt:"Réaliser d'abord un diagnostic (SWOT)", eff:{treso:-5,marche:15,image:5,emploi:0}, fb:"Bonne méthode : forces, faiblesses, opportunités, menaces — tu décides en connaissance de cause."},
+        {txt:"Foncer sans analyse", eff:{treso:-15,marche:-10,image:-5,emploi:0}, fb:"Sans diagnostic, tu découvres trop tard un concurrent déjà installé : décision risquée."} ]},
+      {scene:"Une loi anti-plastique est annoncée pour l'an prochain (facteur Légal/Écologique du PESTEL).", choix:[
+        {txt:"Anticiper : adapter les emballages dès maintenant", eff:{treso:-10,marche:10,image:15,emploi:0}, fb:"Tu transformes une contrainte de l'environnement en avantage : prêt avant les concurrents."},
+        {txt:"Attendre le dernier moment", eff:{treso:5,marche:-10,image:-10,emploi:0}, fb:"La menace devient un problème : production bloquée, image écornée."} ]},
+      {scene:"Des riverains (parties prenantes) se plaignent des odeurs de l'usine.", choix:[
+        {txt:"Dialoguer et installer des filtres", eff:{treso:-10,marche:0,image:20,emploi:0}, fb:"Tu transformes un conflit en consensus avec une partie prenante : image préservée."},
+        {txt:"Ignorer les plaintes", eff:{treso:5,marche:-5,image:-20,emploi:0}, fb:"Le conflit s'envenime, la presse s'en mêle : une partie prenante négligée peut coûter cher."} ]},
+      {scene:"Tu dois fixer l'objectif annuel de ton équipe commerciale.", choix:[
+        {txt:"« +10 % de ventes à Mayotte d'ici fin 2027 »", eff:{treso:0,marche:10,image:5,emploi:0}, fb:"Objectif précis, chiffré et daté : ton équipe sait exactement où aller."},
+        {txt:"« Vendre plus, on verra bien »", eff:{treso:0,marche:-10,image:-5,emploi:0}, fb:"Trop vague : sans objectif précis et daté, impossible de mobiliser et de mesurer."} ]},
+      {scene:"L'objectif est fixé. Comment suivre sa réalisation ?", choix:[
+        {txt:"Suivre des indicateurs (CA, part de marché)", eff:{treso:5,marche:10,image:0,emploi:0}, fb:"Les indicateurs permettent de mesurer l'atteinte des objectifs et de corriger le tir à temps."},
+        {txt:"Ne rien mesurer", eff:{treso:-5,marche:-10,image:0,emploi:0}, fb:"Sans indicateurs, tu découvres l'échec trop tard pour réagir."} ]},
+      {scene:"Sur ton marché, être référencé en grandes surfaces est un facteur clé de succès.", choix:[
+        {txt:"Négocier le référencement en grandes surfaces", eff:{treso:-10,marche:20,image:5,emploi:5}, fb:"Tu maîtrises un FCS du marché : tes produits deviennent visibles partout."},
+        {txt:"Vendre uniquement à l'usine", eff:{treso:5,marche:-15,image:0,emploi:0}, fb:"En ignorant un FCS, tu restes invisible face aux concurrents distribués partout."} ]},
+      {scene:"Ta recette unique repose sur deux salariés expérimentés proches de la retraite.", choix:[
+        {txt:"Organiser la transmission du savoir-faire", eff:{treso:-5,marche:5,image:5,emploi:5}, fb:"Tu protèges ta compétence distinctive : l'avantage concurrentiel survit aux départs."},
+        {txt:"Ne rien prévoir", eff:{treso:5,marche:-10,image:-5,emploi:-5}, fb:"À leur départ, la compétence distinctive disparaît — et ton avantage avec."} ]} ],
+  3:[ {scene:"Un concurrent casse les prix. Ton produit phare est un rhum arrangé artisanal réputé.", choix:[
+        {txt:"Différenciation : miser sur le terroir et la qualité « péi »", eff:{treso:-5,marche:15,image:20,emploi:5}, fb:"Tu joues la valeur perçue (avantage externe) plutôt que la guerre des prix : ton offre devient unique."},
+        {txt:"T'aligner sur les prix les plus bas", eff:{treso:-20,marche:5,image:-10,emploi:-5}, fb:"Sans structure de coûts adaptée, la domination par les coûts t'épuise face à un spécialiste."} ]},
+      {scene:"Ta logistique interne coûte cher et n'est pas ton cœur de métier.", choix:[
+        {txt:"Externaliser auprès d'un transporteur local", eff:{treso:15,marche:5,image:0,emploi:-10}, fb:"Externalisation : tu te recentres sur ton métier, mais des emplois internes disparaissent."},
+        {txt:"Tout garder en interne", eff:{treso:-10,marche:0,image:5,emploi:5}, fb:"Tu gardes maîtrise et emplois, mais les coûts pèsent sur ta compétitivité."} ]},
+      {scene:"Tes produits plaisent. Maurice et Mayotte semblent intéressés.", choix:[
+        {txt:"Internationalisation : exporter dans l'océan Indien", eff:{treso:-10,marche:20,image:10,emploi:10}, fb:"Tu conquiers de nouveaux marchés à l'étranger : internationalisation réussie."},
+        {txt:"Rester uniquement à La Réunion", eff:{treso:5,marche:-5,image:0,emploi:0}, fb:"Choix prudent, mais tu laisses ces marchés aux concurrents."} ]},
+      {scene:"Le numérique transforme ton secteur. Que mets-tu en ligne ?", choix:[
+        {txt:"Vente en ligne + transparence sur l'origine, recettes gardées secrètes", eff:{treso:5,marche:15,image:10,emploi:0}, fb:"Bon équilibre numérique : transparence sur ce qui rassure le client, secret sur ce qui fonde ton avantage."},
+        {txt:"Tout publier, y compris les recettes", eff:{treso:0,marche:-10,image:5,emploi:0}, fb:"Trop de transparence : tes concurrents copient ton savoir-faire. Certaines informations doivent rester secrètes."} ]},
+      {scene:"Tu envisages d'ajouter un second domaine d'activité : le snacking local, proche de ton métier.", choix:[
+        {txt:"Créer ce nouveau DAS (diversification horizontale)", eff:{treso:-15,marche:15,image:5,emploi:10}, fb:"Un second DAS proche de ton métier répartit les risques en s'appuyant sur ton savoir-faire."},
+        {txt:"Rester sur un seul DAS", eff:{treso:5,marche:-5,image:0,emploi:0}, fb:"La spécialisation renforce ton expertise, mais te laisse dépendant d'un seul marché."} ]},
+      {scene:"Une chaîne d'hôtels de l'île te propose de coopérer : tes produits dans leurs minibars, sans rachat.", choix:[
+        {txt:"Signer le partenariat", eff:{treso:5,marche:15,image:10,emploi:0}, fb:"Coopération entre organisations indépendantes : un partenariat gagnant-gagnant à moindre risque."},
+        {txt:"Refuser toute coopération", eff:{treso:0,marche:-5,image:0,emploi:0}, fb:"Tu restes seul : c'est ton droit, mais tu rates des ressources et des clients partagés."} ]},
+      {scene:"La mairie te propose d'installer des fontaines à eau dans les écoles, projet d'intérêt général peu rentable.", choix:[
+        {txt:"Participer au projet public", eff:{treso:-5,marche:5,image:20,emploi:0}, fb:"Tu coopères avec une organisation publique guidée par l'intérêt général : faible profit, forte image."},
+        {txt:"Refuser, pas assez rentable", eff:{treso:5,marche:0,image:-10,emploi:0}, fb:"Logique de profit assumée, mais l'occasion d'un ancrage territorial fort est manquée."} ]} ]
 }
 };
 
+
+/*__DATA_END__*/
 </script>
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef } = React;
-const D = window.GAME_DATA;
+/* Données : si l'éditeur prof a enregistré des modifications locales, elles priment (aperçu). */
+const OV_KEY="mm_data_overrides_v1";
+function loadData(){ try{ const o=localStorage.getItem(OV_KEY); if(o) return JSON.parse(o); }catch(e){} return window.GAME_DATA; }
+const D = loadData();
 
 /* ====== Catalogue des 7 jeux (Bloom croissant) ====== */
 const GAMES = [
@@ -498,6 +573,20 @@ function exportScoresCSV(){
   a.href=url; a.download="resultats_pdg_en_mission.csv"; a.click(); URL.revokeObjectURL(url);
 }
 
+/* ====== Média de question (image / audio / vidéo / YouTube) ======
+   Ajouter à n'importe quelle question :  media:{type:"image", src:"media/photo.jpg", legende:"..."}
+   Types : "image" | "audio" | "video" | "youtube" (avec id:"CODE_VIDEO") */
+function Media({m}){
+  if(!m) return null;
+  return (<div className="qmedia">
+    {m.type==="image"&&<img src={m.src} alt={m.legende||"illustration"}/>}
+    {m.type==="audio"&&<audio controls src={m.src}></audio>}
+    {m.type==="video"&&<video controls src={m.src}></video>}
+    {m.type==="youtube"&&<iframe src={"https://www.youtube.com/embed/"+m.id} title="vidéo" allowFullScreen></iframe>}
+    {m.legende&&<div className="mleg">{m.legende}</div>}
+  </div>);
+}
+
 /* ====== Bouton magique ====== */
 function Magic({n}){
   const [o,setO]=useState(false);
@@ -518,8 +607,8 @@ function Login({onStudent,onTeacher}){
   return (<div className="login">
     <div className="hero">
       <div className="kick">JEU SÉRIEUX · MANAGEMENT 1ʳᵉ STMG · 974</div>
-      <h1>PDG en <span className="grad">Mission</span></h1>
-      <p className="sub">7 jeux, 3 thèmes, toute l'année. Deviens stratège, des organisations aux grandes décisions.</p>
+      <h1>MISSION <span className="grad">MANAGEMENT</span></h1>
+      <p className="sub">7 jeux, 3 thèmes, pour réviser le programme de l'année de 1ère. Deviens stratège, comprends les enjeux, prends les bonnes décisions et mesure l'impact sur ton organisation. Des organisations aux grandes décisions.</p>
     </div>
     <div className="card">
       <div className="tabs">
@@ -534,7 +623,7 @@ function Login({onStudent,onTeacher}){
       {err&&<div className="err">{err}</div>}
       <button className="cta" onClick={go}>{m==="eleve"?"C'est parti ! 🚀":"Tableau de bord"}</button>
     </div>
-    <div className="fnote">Programme officiel — BO spécial n°1 du 22/01/2019 · Entreprises réunionnaises réelles citées à titre d'exemple.</div>
+    <div className="fnote">Programme officiel — BO spécial n°1 du 22/01/2019 · Info : des entreprises réunionnaises réelles seront citées à titre d'exemple.<br/>Djamil DINDAR, Lycée Ambroise Vollard, Juin 2026</div>
   </div>);
 }
 
@@ -564,7 +653,7 @@ function Hub({student,onLogout}){
 
   return (<div className="app">
     <header className="top">
-      <div className="brand">🎯 PDG en Mission</div>
+      <div className="brand">🎯 Mission Management</div>
       <div className="who">{student.pseudo} · <span className="cl">{student.classe}</span></div>
       <button className="lo" onClick={onLogout}>Quitter</button>
     </header>
@@ -706,6 +795,7 @@ function Flash({theme,head,onDone}){
       <div className="timer"><div className="tfill" style={{width:(t/10*100)+"%",background:t<=3?"#ef4444":"#f59e0b"}}/></div>
       <div className="qn">{i+1}/{qs.length}</div></div>
     <div className="flash-q">{q.q}</div>
+    <Media m={q.media}/>
     <div className="opts">{q.o.map((o,idx)=>{ let c="opt";
       if(picked!==null){ if(idx===q.c)c+=" right"; else if(idx===picked)c+=" bad"; }
       return <button key={idx} className={c} onClick={()=>choose(idx)}>{o}</button>; })}</div>
@@ -723,6 +813,7 @@ function VraiFaux({theme,head,onDone}){
   return (<div className="game">{head}
     <div className="qn r">{i+1}/{qs.length}</div>
     <div className="vf-card">« {q.p} »</div>
+    <Media m={q.media}/>
     <div className="vf-btns">
       <button className={"vf v"+(picked!==null&&q.v===true?" right":"")+(picked===true&&q.v!==true?" bad":"")} onClick={()=>ans(true)} disabled={picked!==null}>✓ VRAI</button>
       <button className={"vf f"+(picked!==null&&q.v===false?" right":"")+(picked===false&&q.v!==false?" bad":"")} onClick={()=>ans(false)} disabled={picked!==null}>✗ FAUX</button>
@@ -747,6 +838,7 @@ function Intrus({theme,head,onDone}){
   return (<div className="game">{head}
     <div className="qn r">{i+1}/{qs.length}</div>
     <p className="help">Quel élément ne va pas avec les autres ?</p>
+    <Media m={q.media}/>
     <div className="intrus-grid">{q.liste.map((el,idx)=>{ let c="iel";
       if(picked!==null){ if(idx===q.intrus)c+=" right"; else if(idx===picked)c+=" bad"; }
       return <button key={idx} className={c} onClick={()=>pick(idx)}>{el}</button>; })}</div>
@@ -768,7 +860,7 @@ function Cas({theme,head,onDone}){
   if(done) return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone}
     extra={(!ext&&extras.length>0)&&(<button className="more" onClick={extend}>➕ Cas supplémentaires (jusqu'à 10)</button>)}/></div>;
   return (<div className="game">{head}
-    <div className="case"><div className="ctag">📂 Situation — Réunion 974</div><p className="ctxt">{q.cas}</p><p className="cq">{q.q}</p></div>
+    <div className="case"><div className="ctag">📂 Situation — Réunion 974</div><Media m={q.media}/><p className="ctxt">{q.cas}</p><p className="cq">{q.q}</p></div>
     <div className="opts">{q.o.map((o,idx)=>{ let c="opt";
       if(picked!==null){ if(idx===q.c)c+=" right"; else if(idx===picked)c+=" bad"; }
       return <button key={idx} className={c} onClick={()=>choose(idx)}>{o}</button>; })}</div>
@@ -811,7 +903,7 @@ function Mission({theme,head,onDone}){
     <div className="mission-top"><div className="mtitle">👑 {sim.titre}</div>
       <div className="mgauges">{gauges.map(([lab,k,c])=>(<div key={k} className="mg"><span>{lab.split(" ")[0]}</span><div className="mbar"><div className="mfill" style={{width:stats[k]+"%",background:c}}/></div></div>))}</div></div>
     {step===0&&!fb&&<p className="mintro">{sim.intro}</p>}
-    <div className="scene"><div className="stag">Décision {step+1}/{etapes.length}</div><p>{e.scene}</p></div>
+    <div className="scene"><div className="stag">Décision {step+1}/{etapes.length}</div><Media m={e.media}/><p>{e.scene}</p></div>
     {!fb?(<div className="opts">{e.choix.map((ch,idx)=>(<button key={idx} className="opt big" onClick={()=>decide(ch)}>{ch.txt}</button>))}</div>)
       :(<div className="fb good"><strong>Conséquences</strong><p>{fb}</p><button className="next" onClick={next}>{step+1>=etapes.length?"Voir le bilan":"Décision suivante →"}</button></div>)}
   </div>);
@@ -852,6 +944,181 @@ function Lex(){
       {THEMES.map(t=><button key={t.n} className={theme===t.n?"tt on":"tt"} style={{"--c":t.color}} onClick={()=>setTheme(t.n)}>Thème {t.n}</button>)}</div>
     <input className="search" placeholder="Rechercher un mot…" value={s} onChange={e=>setS(e.target.value)}/>
     <div className="lex">{list.map(n=>(<div key={n.id} className="litem"><div className="lterm">{n.terme}</div><p className="ldef">{n.aca}</p><Magic n={n}/></div>))}</div>
+  </div>);
+}
+
+/* ====== ÉDITEUR DE QUESTIONS (espace professeur) ====== */
+async function publishHTML(data){
+  let src=null;
+  try{ const r=await fetch(window.location.href); src=await r.text(); }catch(e){}
+  if(!src||src.indexOf("/*__DATA_START__*/")<0){
+    alert("Impossible de générer le fichier depuis cette page. Ouvre la version EN LIGNE du site (lien GitHub Pages), pas un fichier local, puis réessaie."); return;
+  }
+  const a0=src.indexOf("/*__DATA_START__*/"), a1=src.indexOf("/*__DATA_END__*/");
+  const out=src.slice(0,a0)+"/*__DATA_START__*/\nwindow.GAME_DATA = "+JSON.stringify(data,null,1)+";\n/*__DATA_END__*/"+src.slice(a1+16);
+  const blob=new Blob([out],{type:"text/html;charset=utf-8"});
+  const u=URL.createObjectURL(blob); const el=document.createElement("a");
+  el.href=u; el.download="index.html"; el.click(); URL.revokeObjectURL(u);
+}
+
+function MediaEd({m,on}){
+  const t=(m&&m.type)||"";
+  return (<div className="med">
+    <label>Média (facultatif)</label>
+    <select value={t} onChange={e=>{const v=e.target.value; on(v?{type:v,src:"",id:"",legende:""}:undefined);}}>
+      <option value="">Aucun</option><option value="image">Image</option><option value="audio">Audio</option>
+      <option value="video">Vidéo (fichier)</option><option value="youtube">Vidéo YouTube</option>
+    </select>
+    {t&&t!=="youtube"&&<input value={m.src||""} onChange={e=>on({...m,src:e.target.value})} placeholder="Adresse du fichier (ex : media/photo.jpg)"/>}
+    {t==="youtube"&&<input value={m.id||""} onChange={e=>on({...m,id:e.target.value})} placeholder="Code de la vidéo (ce qui suit v= dans le lien)"/>}
+    {t&&<input value={m.legende||""} onChange={e=>on({...m,legende:e.target.value})} placeholder="Légende (facultatif)"/>}
+  </div>);
+}
+
+function Editor(){
+  const [data,setData]=useState(()=>JSON.parse(JSON.stringify(D)));
+  const [theme,setTheme]=useState(1);
+  const [bank,setBank]=useState("flash");
+  const [msg,setMsg]=useState("");
+  const hasOv=(()=>{try{return !!localStorage.getItem(OV_KEY);}catch(e){return false;}})();
+  const upd=(fn)=>setData(d=>{const n=JSON.parse(JSON.stringify(d)); fn(n); return n;});
+  const ensure=(n)=>{
+    if(bank==="trieur") return n.trieur[theme].items;
+    if(bank==="memory") return n.memory[theme];
+    if(bank==="mission") return n.mission[theme].etapes;
+    if(bank==="missionExtra"){ n.missionExtra=n.missionExtra||{}; n.missionExtra[theme]=n.missionExtra[theme]||[]; return n.missionExtra[theme]; }
+    if(bank==="intrusExtra"){ n.intrusExtra=n.intrusExtra||{}; n.intrusExtra[theme]=n.intrusExtra[theme]||[]; return n.intrusExtra[theme]; }
+    if(bank==="casExtra"){ n.casExtra=n.casExtra||{}; n.casExtra[theme]=n.casExtra[theme]||[]; return n.casExtra[theme]; }
+    return n[bank][theme];
+  };
+  const list=ensure(JSON.parse(JSON.stringify(data)));
+  const type= bank==="trieur"?"trieur": bank==="memory"?"memory": bank==="flash"?"flash": bank==="vraifaux"?"vraifaux": bank.indexOf("intrus")===0?"intrus": bank.indexOf("cas")===0?"cas":"mission";
+  const fam= type==="intrus"?"intrus": type==="cas"?"cas": type==="mission"?"mission":null;
+  const totalFam=()=>{ if(!fam) return 0;
+    const b= fam==="mission"? data.mission[theme].etapes.length : data[fam][theme].length;
+    const x= ((data[fam+"Extra"]&&data[fam+"Extra"][theme])||[]).length; return b+x; };
+  const canAdd= !fam || totalFam()<10;
+  const setItem=(i,patch)=>upd(n=>{ Object.assign(ensure(n)[i],patch); });
+  const del=(i)=>{ if(confirm("Supprimer cet élément ?")) upd(n=>{ ensure(n).splice(i,1); }); };
+  const newItem=()=>{
+    if(bank==="trieur") return {label:"Nouvel élément",cat:0};
+    if(bank==="memory") return {a:"Notion",b:"Exemple associé"};
+    if(bank==="flash") return {q:"Nouvelle question ?",o:["Réponse A","Réponse B"],c:0};
+    if(bank==="vraifaux") return {p:"Nouvelle affirmation.",v:true,why:"Explication."};
+    if(type==="intrus") return {liste:["Élément A","Élément B","Élément C","Intrus"],intrus:3,why:"Explication."};
+    if(type==="cas") return {cas:"Décris la situation…",q:"Quelle est la bonne réponse ?",o:["Réponse A","Réponse B","Réponse C"],c:0,why:"Explication."};
+    return {scene:"Nouvelle situation…",choix:[{txt:"Choix 1",eff:{treso:0,marche:0,image:0,emploi:0},fb:"Conséquence du choix 1."},{txt:"Choix 2",eff:{treso:0,marche:0,image:0,emploi:0},fb:"Conséquence du choix 2."}]};
+  };
+  const add=()=>upd(n=>{ ensure(n).push(newItem()); });
+  const save=()=>{ try{ localStorage.setItem(OV_KEY,JSON.stringify(data)); setMsg("✅ Enregistré sur cet appareil. Recharge la page pour tester en jeu. Pour que les ÉLÈVES voient les changements : clique « Publier » puis dépose le fichier sur GitHub."); }catch(e){ setMsg("Erreur d'enregistrement."); } };
+  const reset=()=>{ if(confirm("Abandonner les modifications locales et revenir aux questions publiées ?")){ try{localStorage.removeItem(OV_KEY);}catch(e){} window.location.reload(); } };
+
+  const renderItem=(it,i)=>{
+    if(type==="trieur") return (<div className="edopt" key={i}>
+      <input value={it.label} onChange={e=>setItem(i,{label:e.target.value})}/>
+      <select value={it.cat} onChange={e=>setItem(i,{cat:+e.target.value})}>
+        {data.trieur[theme].bacs.map((b,bi)=><option key={bi} value={bi}>{b}</option>)}
+      </select>
+      <button className="edx" onClick={()=>del(i)}>✕</button>
+    </div>);
+    if(type==="memory") return (<div className="edopt" key={i}>
+      <input value={it.a} onChange={e=>setItem(i,{a:e.target.value})} placeholder="Notion"/>
+      <input value={it.b} onChange={e=>setItem(i,{b:e.target.value})} placeholder="Exemple associé"/>
+      <button className="edx" onClick={()=>del(i)}>✕</button>
+    </div>);
+    if(type==="flash"||type==="cas") return (<div className="edcard" key={i}>
+      <div className="edhead"><b>{type==="cas"?"Cas":"Question"} {i+1}</b><button className="edx" onClick={()=>del(i)}>🗑 Supprimer</button></div>
+      {type==="cas"&&(<><label className="edlab">Situation</label>
+      <textarea value={it.cas} onChange={e=>setItem(i,{cas:e.target.value})}/></>)}
+      <label className="edlab">Question</label>
+      <textarea value={it.q} onChange={e=>setItem(i,{q:e.target.value})}/>
+      <label className="edlab">Réponses — coche la bonne</label>
+      {it.o.map((o,oi)=>(<div className="edopt" key={oi}>
+        <input type="radio" checked={it.c===oi} onChange={()=>setItem(i,{c:oi})}/>
+        <input value={o} onChange={e=>upd(n=>{ensure(n)[i].o[oi]=e.target.value;})}/>
+        {it.o.length>2&&<button className="edx" onClick={()=>upd(n=>{const q=ensure(n)[i]; q.o.splice(oi,1); if(q.c>=q.o.length)q.c=0;})}>✕</button>}
+      </div>))}
+      <button className="edadd2" onClick={()=>upd(n=>{ensure(n)[i].o.push("Nouvelle réponse");})}>+ ajouter une réponse</button>
+      {type==="cas"&&(<><label className="edlab">Explication (feedback)</label>
+      <textarea value={it.why} onChange={e=>setItem(i,{why:e.target.value})}/></>)}
+      <MediaEd m={it.media} on={m=>setItem(i,{media:m})}/>
+    </div>);
+    if(type==="vraifaux") return (<div className="edcard" key={i}>
+      <div className="edhead"><b>Affirmation {i+1}</b><button className="edx" onClick={()=>del(i)}>🗑 Supprimer</button></div>
+      <textarea value={it.p} onChange={e=>setItem(i,{p:e.target.value})}/>
+      <div className="edvf">
+        <label><input type="radio" checked={it.v===true} onChange={()=>setItem(i,{v:true})}/> VRAI</label>
+        <label><input type="radio" checked={it.v===false} onChange={()=>setItem(i,{v:false})}/> FAUX</label>
+      </div>
+      <label className="edlab">Explication</label>
+      <textarea value={it.why} onChange={e=>setItem(i,{why:e.target.value})}/>
+      <MediaEd m={it.media} on={m=>setItem(i,{media:m})}/>
+    </div>);
+    if(type==="intrus") return (<div className="edcard" key={i}>
+      <div className="edhead"><b>Série {i+1}</b><button className="edx" onClick={()=>del(i)}>🗑 Supprimer</button></div>
+      <label className="edlab">Éléments — coche l'intrus</label>
+      {it.liste.map((el,li)=>(<div className="edopt" key={li}>
+        <input type="radio" checked={it.intrus===li} onChange={()=>setItem(i,{intrus:li})}/>
+        <input value={el} onChange={e=>upd(n=>{ensure(n)[i].liste[li]=e.target.value;})}/>
+      </div>))}
+      <label className="edlab">Explication</label>
+      <textarea value={it.why} onChange={e=>setItem(i,{why:e.target.value})}/>
+      <MediaEd m={it.media} on={m=>setItem(i,{media:m})}/>
+    </div>);
+    return (<div className="edcard" key={i}>
+      <div className="edhead"><b>Décision {i+1}</b><button className="edx" onClick={()=>del(i)}>🗑 Supprimer</button></div>
+      <label className="edlab">Situation</label>
+      <textarea value={it.scene} onChange={e=>setItem(i,{scene:e.target.value})}/>
+      {it.choix.map((ch,ci)=>(<div className="edchoice" key={ci}>
+        <label className="edlab">Choix {ci+1}</label>
+        <input value={ch.txt} onChange={e=>upd(n=>{ensure(n)[i].choix[ci].txt=e.target.value;})}/>
+        <label className="edlab">Conséquence affichée</label>
+        <textarea value={ch.fb} onChange={e=>upd(n=>{ensure(n)[i].choix[ci].fb=e.target.value;})}/>
+        <label className="edlab">Effets sur les jauges (de -30 à +30)</label>
+        <div className="edeff">
+          {[["treso","💰 Trésorerie"],["marche","📈 Marché"],["image","🌟 Image"],["emploi","👥 Emplois"]].map(([k,lab])=>(<div key={k}><label>{lab}</label>
+            <input type="number" min="-30" max="30" value={ch.eff[k]} onChange={e=>upd(n=>{ensure(n)[i].choix[ci].eff[k]=+e.target.value||0;})}/></div>))}
+        </div>
+      </div>))}
+      <MediaEd m={it.media} on={m=>setItem(i,{media:m})}/>
+    </div>);
+  };
+
+  return (<div className="ed">
+    <div className="edbar">
+      <select value={theme} onChange={e=>setTheme(+e.target.value)}>
+        <option value={1}>Thème 1 — Organisations</option><option value={2}>Thème 2 — Diagnostic</option><option value={3}>Thème 3 — Stratégie</option>
+      </select>
+      <select value={bank} onChange={e=>setBank(e.target.value)}>
+        <option value="trieur">🗂️ Le Trieur</option><option value="memory">🃏 Memory</option>
+        <option value="flash">⚡ Flash Quiz</option><option value="vraifaux">⚖️ Vrai ou Faux</option>
+        <option value="intrus">🔎 L'Intrus — base</option><option value="intrusExtra">🔎 L'Intrus — supplémentaires</option>
+        <option value="cas">📂 Cas — base</option><option value="casExtra">📂 Cas — supplémentaires</option>
+        <option value="mission">👑 Mission — base</option><option value="missionExtra">👑 Mission — supplémentaires</option>
+      </select>
+      <button className="rf alt nb-l" onClick={save}>💾 Enregistrer (aperçu)</button>
+      <button className="rf nb-l" onClick={()=>publishHTML(data)}>⬇ Publier : télécharger index.html</button>
+      <button className="rf danger nb-l" onClick={reset}>↩ Revenir aux questions publiées</button>
+    </div>
+    <p className="edhint">1️⃣ Modifie les questions ci-dessous · 2️⃣ « Enregistrer » pour tester sur CET appareil (recharge la page) · 3️⃣ « Publier » télécharge un <b>index.html</b> à déposer sur GitHub (Add file → Upload → Commit) pour que les élèves voient tes changements.{hasOv&&<b> ⚠️ Des modifications locales non publiées sont actives sur cet appareil.</b>}</p>
+    {msg&&<div className="edmsg">{msg}</div>}
+    {fam&&<div className="edcount">Limite : {totalFam()}/10 (base + supplémentaires confondues, thème {theme})</div>}
+    {bank==="trieur"&&(<div className="edcard">
+      <label className="edlab">Consigne</label>
+      <textarea value={data.trieur[theme].consigne} onChange={e=>upd(n=>{n.trieur[theme].consigne=e.target.value;})}/>
+      <label className="edlab">Catégories (bacs)</label>
+      {data.trieur[theme].bacs.map((b,bi)=>(<div className="edopt" key={bi}>
+        <input value={b} onChange={e=>upd(n=>{n.trieur[theme].bacs[bi]=e.target.value;})}/>
+      </div>))}
+    </div>)}
+    {bank==="mission"&&(<div className="edcard">
+      <label className="edlab">Titre de la mission</label>
+      <input value={data.mission[theme].titre} onChange={e=>upd(n=>{n.mission[theme].titre=e.target.value;})}/>
+      <label className="edlab">Introduction</label>
+      <textarea value={data.mission[theme].intro} onChange={e=>upd(n=>{n.mission[theme].intro=e.target.value;})}/>
+    </div>)}
+    {list.map((it,i)=>renderItem(it,i))}
+    <button className="edadd" disabled={!canAdd} onClick={add}>{canAdd?"➕ Ajouter un élément":"Limite de 10 atteinte (base + supplémentaires)"}</button>
   </div>);
 }
 
@@ -903,7 +1170,8 @@ function Teacher({onLogout}){
       <div className="seg"><button className={view==="eleves"?"on":""} onClick={()=>setView("eleves")}>👤 Élèves</button>
         <button className={view==="themes"?"on":""} onClick={()=>setView("themes")}>📚 Par thème</button>
         <button className={view==="classes"?"on":""} onClick={()=>setView("classes")}>🏫 Classes</button>
-        <button className={view==="detail"?"on":""} onClick={()=>setView("detail")}>📝 Détail</button></div>
+        <button className={view==="detail"?"on":""} onClick={()=>setView("detail")}>📝 Détail</button>
+        <button className={view==="editor"?"on":""} onClick={()=>setView("editor")}>✏️ Éditeur</button></div>
       <select value={fc} onChange={e=>setFc(e.target.value)}>{classes.map(c=><option key={c}>{c}</option>)}</select>
       <button className="rf" onClick={refresh}>↻ Actualiser</button>
       <button className="rf alt" onClick={exportScoresCSV}>⬇ Export Excel (CSV)</button>
@@ -920,7 +1188,7 @@ function Teacher({onLogout}){
       </div>
       {pwMsg&&<div className="pwmsg">{pwMsg}</div>}
     </div>)}
-    {scores.length===0&&<div className="empty">Aucun résultat pour l'instant. Les scores apparaîtront dès que les élèves auront joué.</div>}
+    {view!=="editor"&&scores.length===0&&<div className="empty">Aucun résultat pour l'instant. Les scores apparaîtront dès que les élèves auront joué.</div>}
 
     {view==="eleves"&&scores.length>0&&(<div className="twrap"><table className="pt">
       <thead><tr><th>#</th><th>Élève</th><th>Classe</th><th>Jeux validés</th><th>Moyenne</th><th>Progression (T1·T2·T3)</th></tr></thead>
@@ -961,6 +1229,8 @@ function Teacher({onLogout}){
         </tr>))}</tbody>
       </table></div>
     </>)}
+
+    {view==="editor"&&<Editor/>}
     <div className="pn">Un jeu est « validé » à {PASS}%. 21 jeux au total (7 × 3 thèmes). Les résultats sont enregistrés sur CET appareil (navigateur). Utilise l'export CSV pour les conserver ou les ouvrir dans Excel.</div>
   </div>);
 }
@@ -1203,6 +1473,39 @@ input,select{font-family:inherit}
 .dt{font-size:12.5px;color:#8a84a0;white-space:nowrap}
 .more{margin:10px auto 4px;display:block;padding:13px 22px;border-radius:13px;background:#2563eb;color:#fff;font-weight:800;font-size:14.5px;box-shadow:0 10px 22px -10px rgba(37,99,235,.6);transition:.2s}
 .more:hover{transform:translateY(-2px)}
+.qmedia{margin:10px 0;text-align:center}
+.qmedia img,.qmedia video{max-width:100%;max-height:280px;border-radius:12px;box-shadow:0 8px 20px -10px rgba(0,0,0,.25)}
+.qmedia audio{width:100%;max-width:420px}
+.qmedia iframe{width:100%;max-width:560px;aspect-ratio:16/9;border:0;border-radius:12px}
+.mleg{font-size:12.5px;color:#8a84a0;margin-top:5px;font-style:italic}
+.ed{background:#fff;border-radius:18px;padding:20px;box-shadow:0 14px 36px -20px rgba(80,40,120,.25)}
+.edbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.edbar select{padding:10px 12px;border:2px solid #ece6f7;border-radius:11px;font-weight:600;background:#fff;font-size:14px}
+.edhint{font-size:13px;color:#8a84a0;line-height:1.6;margin:8px 0 12px}
+.edmsg{background:#e7f7ec;color:#16a34a;font-weight:700;padding:10px 14px;border-radius:10px;margin-bottom:12px;font-size:13.5px;line-height:1.5}
+.edcount{display:inline-block;background:#fff6e8;color:#b45309;font-weight:700;font-size:13px;padding:7px 13px;border-radius:9px;margin-bottom:12px}
+.edcard{background:#faf8fe;border:1px solid #f0eafa;border-radius:14px;padding:14px;margin-bottom:14px}
+.edhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.edlab{display:block;font-size:11.5px;font-weight:800;color:#8b5cf6;text-transform:uppercase;letter-spacing:.4px;margin:10px 0 4px}
+.ed textarea,.ed input:not([type="radio"]):not([type="number"]):not([type="checkbox"]){width:100%;padding:10px 12px;border:2px solid #ece6f7;border-radius:10px;font-size:14px;background:#fff;font-family:inherit}
+.ed textarea{min-height:58px;resize:vertical}
+.ed textarea:focus,.ed input:focus,.ed select:focus{outline:none;border-color:#8b5cf6}
+.edopt{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.edopt input[type="radio"]{width:19px;height:19px;accent-color:#16a34a;flex:none;cursor:pointer}
+.edvf{display:flex;gap:20px;margin:8px 0;font-weight:700}
+.edvf input[type="radio"]{width:18px;height:18px;accent-color:#16a34a;margin-right:6px}
+.edx{background:#fee2e2;color:#dc2626;border-radius:8px;padding:7px 11px;font-weight:800;font-size:13px;flex:none}
+.edadd2{background:#eef4ff;color:#2563eb;border-radius:9px;padding:8px 13px;font-weight:700;font-size:13px;margin-top:4px}
+.edadd{width:100%;padding:14px;border-radius:12px;background:#2563eb;color:#fff;font-weight:800;font-size:15px;margin-top:6px}
+.edadd:disabled{background:#d8d2e6;cursor:not-allowed}
+.edchoice{background:#fff;border:1px solid #eee4f5;border-radius:10px;padding:11px;margin:8px 0}
+.edeff{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.edeff label{display:block;font-size:10.5px;font-weight:700;color:#6b6485;margin-bottom:3px}
+.edeff input{width:100%;padding:8px;border:2px solid #ece6f7;border-radius:8px;font-size:14px}
+.med{background:#f0fbff;border:1.5px dashed #bae6fd;border-radius:10px;padding:10px;margin-top:10px;display:flex;flex-direction:column;gap:7px}
+.med label{font-size:11.5px;font-weight:800;color:#0284c7;text-transform:uppercase;letter-spacing:.4px}
+.med select,.med input{padding:9px 11px;border:2px solid #e0f2fe;border-radius:9px;font-size:13.5px;background:#fff;font-family:inherit}
+@media(max-width:600px){.edeff{grid-template-columns:repeat(2,1fr)}}
 .empty,.loading{background:#fff;border-radius:18px;padding:40px;text-align:center;color:#6b6485;font-size:16px;box-shadow:0 10px 30px -16px rgba(80,40,120,.2)}
 .twrap{background:#fff;border-radius:18px;padding:8px;box-shadow:0 14px 36px -20px rgba(80,40,120,.25);overflow-x:auto}
 .pt{width:100%;border-collapse:collapse;min-width:560px}
