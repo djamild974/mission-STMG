@@ -398,6 +398,43 @@ mission: {
       {scene:"Un concurrent fragilisé est à vendre.", choix:[
         {txt:"Croissance externe : le racheter", eff:{treso:-25,marche:30,image:5,emploi:15}, fb:"Tu grandis vite et gagnes des parts de marché, mais la trésorerie souffre."},
         {txt:"Partenariat plutôt que rachat", eff:{treso:-5,marche:10,image:10,emploi:5}, fb:"Coopération à moindre risque, en gardant chacun son indépendance."} ]} ]}
+},
+
+/* -------- QUESTIONS SUPPLÉMENTAIRES (Thème 1 — limite 10 au total par jeu) -------- */
+intrusExtra: {
+  1:[ {liste:["Salariés","Bénévoles","Dirigeants","Bâtiments"], intrus:3, why:"Les bâtiments sont une ressource matérielle ; les trois autres sont des ressources humaines."},
+      {liste:["Profit","Pérennité","Intérêt général","Chiffre d'affaires"], intrus:2, why:"L'intérêt général est la finalité d'une organisation publique ; les autres renvoient à la finalité lucrative d'une entreprise privée."},
+      {liste:["Subvention","Emprunt","Trésorerie","Brevet"], intrus:3, why:"Le brevet est une ressource immatérielle ; les trois autres sont des ressources financières."},
+      {liste:["École publique","Hôpital public","Police","Supermarché"], intrus:3, why:"Le supermarché est une entreprise privée (service marchand) ; les autres sont des organisations publiques."},
+      {liste:["Marque","Réputation","Savoir-faire","Camion de livraison"], intrus:3, why:"Le camion est une ressource matérielle ; les trois autres sont immatérielles."},
+      {liste:["Association","Fondation","ONG","Mairie"], intrus:3, why:"La mairie est une organisation publique ; les trois autres sont des OSC."},
+      {liste:["Pilier économique","Pilier social","Pilier environnemental","Pilier financier"], intrus:3, why:"La RSE repose sur trois piliers : économique, social et environnemental. Le « pilier financier » n'en fait pas partie."} ],
+},
+casExtra: {
+  1:[ {cas:"La mairie organise un transport scolaire quasi gratuit, financé par les impôts locaux.", q:"Comment qualifier ce service ?", o:["Service marchand","Service non marchand","Bien matériel"], c:1, why:"Gratuit ou quasi gratuit et financé par l'impôt : c'est un service non marchand, typique d'une organisation publique."},
+      {cas:"Une association réunionnaise recrute dix nouveaux bénévoles pour ses maraudes.", q:"Quelle catégorie de ressources renforce-t-elle ?", o:["Financières","Humaines","Technologiques"], c:1, why:"Les bénévoles, comme les salariés, sont des ressources humaines — essentielles pour une OSC."},
+      {cas:"Brasseries de Bourbon investit pour réduire la consommation d'eau de son usine.", q:"De quoi s'agit-il ?", o:["D'une démarche RSE (pilier environnemental)","D'un bien non marchand","D'une finalité publique"], c:0, why:"Réduire son impact environnemental au-delà des obligations relève de la RSE, pilier environnemental."},
+      {cas:"Le Groupe Caillé : plus de 1 000 salariés, activités automobile et distribution, vend des biens à un prix couvrant les coûts.", q:"Comment caractériser cette organisation ?", o:["Organisation publique","Entreprise privée","OSC"], c:1, why:"Production marchande + finalité lucrative + capitaux privés : c'est une entreprise privée (de grande taille)."},
+      {cas:"Un syndicat défend les intérêts des salariés d'un secteur, sans chercher de profit.", q:"De quel type d'organisation s'agit-il ?", o:["Entreprise privée","Organisation publique","OSC"], c:2, why:"But non lucratif et défense d'intérêts collectifs : le syndicat est une organisation de la société civile."},
+      {cas:"Une entreprise de livraison achète trois nouveaux camions.", q:"Quelle catégorie de ressources augmente ?", o:["Matérielles","Immatérielles","Humaines"], c:0, why:"Les camions sont des biens physiques : ce sont des ressources matérielles."},
+      {cas:"L'hôpital public de Saint-Pierre soigne tous les patients, quels que soient leurs revenus.", q:"Quelle est sa finalité ?", o:["Lucrative","L'intérêt général","Conquérir un marché"], c:1, why:"Une organisation publique a pour finalité la satisfaction de l'intérêt général, pas le profit."} ],
+},
+missionExtra: {
+  1:[ {scene:"Tes salariés demandent une formation pour mieux maîtriser les nouvelles machines.", choix:[
+        {txt:"Financer la formation", eff:{treso:-10,marche:10,image:10,emploi:5}, fb:"Tu développes tes ressources humaines : des salariés mieux formés rendent l'entreprise plus performante (et c'est aussi le pilier social de la RSE)."},
+        {txt:"Refuser, trop cher", eff:{treso:5,marche:-5,image:-10,emploi:0}, fb:"Économie à court terme, mais tes ressources humaines stagnent et le climat social se dégrade."} ]},
+      {scene:"Ta gestion se fait encore sur papier. Un logiciel moderne de gestion existe.", choix:[
+        {txt:"Acheter le logiciel", eff:{treso:-10,marche:10,image:5,emploi:0}, fb:"Tu renforces tes ressources technologiques : la gestion devient plus rapide et plus fiable."},
+        {txt:"Rester au papier", eff:{treso:5,marche:-10,image:-5,emploi:0}, fb:"Sans ressources technologiques à jour, tu perds du temps et des informations face aux concurrents."} ]},
+      {scene:"Un audit montre que les conditions de travail à l'atelier peuvent être améliorées.", choix:[
+        {txt:"Améliorer les conditions de travail", eff:{treso:-10,marche:5,image:15,emploi:5}, fb:"Pilier social de la RSE : des salariés mieux traités, une image renforcée."},
+        {txt:"Ne rien changer", eff:{treso:5,marche:0,image:-15,emploi:-5}, fb:"Tu négliges le pilier social de la RSE : démissions et mauvaise réputation te guettent."} ]},
+      {scene:"Un journaliste te demande de présenter ton organisation en quelques mots.", choix:[
+        {txt:"« Entreprise privée réunionnaise, finalité lucrative, environ 200 salariés, production de boissons (biens marchands). »", eff:{treso:0,marche:5,image:15,emploi:0}, fb:"Parfaite caractérisation : type, finalité, taille, nature de la production. Clair et professionnel."},
+        {txt:"« On fait des trucs, on verra bien. »", eff:{treso:0,marche:-5,image:-15,emploi:0}, fb:"Réponse floue : savoir caractériser son organisation (type, finalité, ressources, production) inspire confiance."} ]},
+      {scene:"Une association culturelle locale sollicite un don pour son festival.", choix:[
+        {txt:"Faire un don (mécénat)", eff:{treso:-5,marche:5,image:15,emploi:0}, fb:"Soutenir une OSC locale : engagement RSE qui ancre l'entreprise dans son territoire."},
+        {txt:"Décliner poliment", eff:{treso:5,marche:0,image:-5,emploi:0}, fb:"Choix défendable financièrement, mais une occasion manquée de renforcer ton image localement."} ]} ]
 }
 };
 
@@ -422,20 +459,34 @@ const THEMES = [
   { n:2, nom:"Du diagnostic aux objectifs",      short:"Le diagnostic",     color:"#8b5cf6" },
   { n:3, nom:"Les choix stratégiques",           short:"La stratégie",      color:"#db2777" }
 ];
-const TEACHER_CODE = "PROF2024";
+const DEFAULT_TEACHER_CODE = "PROF2024";
 const PASS = 60; // % de réussite pour valider
+
+/* ====== Mot de passe professeur (modifiable, stocké sur l'appareil) ====== */
+const PW_KEY = "pdg_teacher_pw_v1";
+function getTeacherPw(){ try{ return localStorage.getItem(PW_KEY) || DEFAULT_TEACHER_CODE; }catch(e){ return DEFAULT_TEACHER_CODE; } }
+function setTeacherPw(pw){ try{ localStorage.setItem(PW_KEY, pw); }catch(e){} }
 
 /* ====== Stockage local (localStorage) ====== */
 const LS_KEY = "pdg_scores_v1";
 function loadScores(){
-  try{ const raw = localStorage.getItem(LS_KEY); return raw ? JSON.parse(raw) : []; }
+  try{ const raw = localStorage.getItem(LS_KEY); const arr = raw ? JSON.parse(raw) : [];
+    let changed=false;
+    arr.forEach((r,i)=>{ if(!r.id){ r.id = "e"+i+"_"+(r.date||"")+"_"+Math.random().toString(36).slice(2,7); changed=true; } });
+    if(changed){ try{ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }catch(e){} }
+    return arr; }
   catch(e){ return []; }
 }
 function saveScore(rec){
-  try{ const all = loadScores(); all.push(rec); localStorage.setItem(LS_KEY, JSON.stringify(all)); }
+  try{ const all = loadScores(); rec.id = "e_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
+    all.push(rec); localStorage.setItem(LS_KEY, JSON.stringify(all)); }
   catch(e){}
 }
 function clearScores(){ try{ localStorage.removeItem(LS_KEY); }catch(e){} }
+function deleteScores(ids){
+  try{ const set=new Set(ids); const all=loadScores().filter(r=>!set.has(r.id));
+    localStorage.setItem(LS_KEY, JSON.stringify(all)); }catch(e){}
+}
 function exportScoresCSV(){
   const all = loadScores();
   if(!all.length){ alert("Aucun résultat à exporter."); return; }
@@ -463,7 +514,7 @@ function Login({onStudent,onTeacher}){
   const [code,setCode]=useState(""); const [err,setErr]=useState("");
   const up=(k,v)=>setF(s=>({...s,[k]:v}));
   const go=()=>{ if(m==="eleve"){ if(!f.nom||!f.prenom||!f.classe){setErr("Indique nom, prénom et classe.");return;} onStudent({...f,pseudo:f.pseudo||f.prenom}); }
-    else { code.trim().toUpperCase()===TEACHER_CODE ? onTeacher() : setErr("Code professeur incorrect."); } };
+    else { code.trim()===getTeacherPw() ? onTeacher() : setErr("Code professeur incorrect."); } };
   return (<div className="login">
     <div className="hero">
       <div className="kick">JEU SÉRIEUX · MANAGEMENT 1ʳᵉ STMG · 974</div>
@@ -479,7 +530,7 @@ function Login({onStudent,onTeacher}){
         <div className="r2"><input placeholder="Nom" value={f.nom} onChange={e=>up("nom",e.target.value)}/><input placeholder="Prénom" value={f.prenom} onChange={e=>up("prenom",e.target.value)}/></div>
         <input placeholder="Pseudonyme (facultatif)" value={f.pseudo} onChange={e=>up("pseudo",e.target.value)}/>
         <input placeholder="Classe (ex : 1STMG2)" value={f.classe} onChange={e=>up("classe",e.target.value)}/>
-      </div>):(<div className="form"><input placeholder="Code professeur" value={code} onChange={e=>setCode(e.target.value)}/><div className="hint">Code par défaut : <code>PROF2024</code></div></div>)}
+      </div>):(<div className="form"><input type="password" placeholder="Code professeur" value={code} onChange={e=>setCode(e.target.value)} onKeyDown={e=>e.key==="Enter"&&go()}/><div className="hint">Accès réservé à l'enseignant.</div></div>)}
       {err&&<div className="err">{err}</div>}
       <button className="cta" onClick={go}>{m==="eleve"?"C'est parti ! 🚀":"Tableau de bord"}</button>
     </div>
@@ -683,12 +734,16 @@ function VraiFaux({theme,head,onDone}){
 
 /* ====== JEU 5 : L'INTRUS ====== */
 function Intrus({theme,head,onDone}){
-  const qs=D.intrus[theme];
+  const [qs,setQs]=useState(()=>[...D.intrus[theme]]);
   const [i,setI]=useState(0); const [score,setScore]=useState(0); const [picked,setPicked]=useState(null); const [done,setDone]=useState(false);
+  const extras=(D.intrusExtra&&D.intrusExtra[theme])||[];
+  const [ext,setExt]=useState(false);
+  const extend=()=>{ const start=qs.length; setQs(x=>[...x,...extras].slice(0,10)); setExt(true); setDone(false); setI(start); setPicked(null); };
   const q=qs[i];
   const pick=(idx)=>{ if(picked!==null) return; setPicked(idx); if(idx===q.intrus) setScore(s=>s+1); };
   const next=()=>{ if(i+1>=qs.length) setDone(true); else {setI(i+1);setPicked(null);} };
-  if(done) return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone}/></div>;
+  if(done) return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone}
+    extra={(!ext&&extras.length>0)&&(<button className="more" onClick={extend}>➕ Questions supplémentaires (jusqu'à 10)</button>)}/></div>;
   return (<div className="game">{head}
     <div className="qn r">{i+1}/{qs.length}</div>
     <p className="help">Quel élément ne va pas avec les autres ?</p>
@@ -702,12 +757,16 @@ function Intrus({theme,head,onDone}){
 
 /* ====== JEU 6 : CAS D'ENTREPRISE ====== */
 function Cas({theme,head,onDone}){
-  const qs=D.cas[theme];
+  const [qs,setQs]=useState(()=>[...D.cas[theme]]);
   const [i,setI]=useState(0); const [score,setScore]=useState(0); const [picked,setPicked]=useState(null); const [done,setDone]=useState(false);
+  const extras=(D.casExtra&&D.casExtra[theme])||[];
+  const [ext,setExt]=useState(false);
+  const extend=()=>{ const start=qs.length; setQs(x=>[...x,...extras].slice(0,10)); setExt(true); setDone(false); setI(start); setPicked(null); };
   const q=qs[i];
   const choose=(idx)=>{ if(picked!==null) return; setPicked(idx); if(idx===q.c) setScore(s=>s+1); };
   const next=()=>{ if(i+1>=qs.length) setDone(true); else {setI(i+1);setPicked(null);} };
-  if(done) return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone}/></div>;
+  if(done) return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone}
+    extra={(!ext&&extras.length>0)&&(<button className="more" onClick={extend}>➕ Cas supplémentaires (jusqu'à 10)</button>)}/></div>;
   return (<div className="game">{head}
     <div className="case"><div className="ctag">📂 Situation — Réunion 974</div><p className="ctxt">{q.cas}</p><p className="cq">{q.q}</p></div>
     <div className="opts">{q.o.map((o,idx)=>{ let c="opt";
@@ -721,14 +780,18 @@ function Cas({theme,head,onDone}){
 /* ====== JEU 7 : MISSION DIRIGEANT (simulation) ====== */
 function Mission({theme,head,onDone}){
   const sim=D.mission[theme];
+  const [etapes,setEtapes]=useState(()=>[...sim.etapes]);
   const [step,setStep]=useState(0);
   const [stats,setStats]=useState({treso:50,marche:50,image:50,emploi:50});
   const [fb,setFb]=useState(null); const [done,setDone]=useState(false);
+  const extras=(D.missionExtra&&D.missionExtra[theme])||[];
+  const [ext,setExt]=useState(false);
+  const extend=()=>{ const start=etapes.length; setEtapes(es=>[...es,...extras].slice(0,10)); setExt(true); setDone(false); setStep(start); setFb(null); };
   const clamp=v=>Math.max(0,Math.min(100,v));
   const decide=(ch)=>{ if(fb) return;
     setStats(s=>({treso:clamp(s.treso+ch.eff.treso),marche:clamp(s.marche+ch.eff.marche),image:clamp(s.image+ch.eff.image),emploi:clamp(s.emploi+ch.eff.emploi)}));
     setFb(ch.fb); };
-  const next=()=>{ setFb(null); if(step+1>=sim.etapes.length) setDone(true); else setStep(step+1); };
+  const next=()=>{ setFb(null); if(step+1>=etapes.length) setDone(true); else setStep(step+1); };
   const total=Math.round((stats.treso+stats.marche+stats.image+stats.emploi)/4);
   const gauges=[["💰 Trésorerie","treso","#16a34a"],["📈 Part de marché","marche","#2563eb"],["🌟 Image","image","#f59e0b"],["👥 Emplois","emploi","#db2777"]];
   if(done){
@@ -738,17 +801,19 @@ function Mission({theme,head,onDone}){
       <div className="res"><div className="medal">{total>=70?"🏆":total>=50?"📊":"💪"}</div>
         <h2>Bilan : {total}/100</h2>
         <div className="gauges">{gauges.map(([lab,k,c])=>(<div key={k} className="gauge"><span>{lab}</span><div className="gbar"><div className="gfill" style={{width:stats[k]+"%",background:c}}/></div><b>{stats[k]}</b></div>))}</div>
-        <p>{verdict}</p><button className="cta sm" onClick={()=>onDone(total)}>Continuer</button></div>
+        <p>{verdict}</p>
+        {(!ext&&extras.length>0)&&(<button className="more" onClick={extend}>➕ Décisions supplémentaires (jusqu'à 10)</button>)}
+        <button className="cta sm" onClick={()=>onDone(total)}>Continuer</button></div>
     </div>);
   }
-  const e=sim.etapes[step];
+  const e=etapes[step];
   return (<div className="game">{head}
     <div className="mission-top"><div className="mtitle">👑 {sim.titre}</div>
       <div className="mgauges">{gauges.map(([lab,k,c])=>(<div key={k} className="mg"><span>{lab.split(" ")[0]}</span><div className="mbar"><div className="mfill" style={{width:stats[k]+"%",background:c}}/></div></div>))}</div></div>
     {step===0&&!fb&&<p className="mintro">{sim.intro}</p>}
-    <div className="scene"><div className="stag">Décision {step+1}/{sim.etapes.length}</div><p>{e.scene}</p></div>
+    <div className="scene"><div className="stag">Décision {step+1}/{etapes.length}</div><p>{e.scene}</p></div>
     {!fb?(<div className="opts">{e.choix.map((ch,idx)=>(<button key={idx} className="opt big" onClick={()=>decide(ch)}>{ch.txt}</button>))}</div>)
-      :(<div className="fb good"><strong>Conséquences</strong><p>{fb}</p><button className="next" onClick={next}>{step+1>=sim.etapes.length?"Voir le bilan":"Décision suivante →"}</button></div>)}
+      :(<div className="fb good"><strong>Conséquences</strong><p>{fb}</p><button className="next" onClick={next}>{step+1>=etapes.length?"Voir le bilan":"Décision suivante →"}</button></div>)}
   </div>);
 }
 
@@ -794,11 +859,21 @@ function Lex(){
 function Teacher({onLogout}){
   const [scores,setScores]=useState(null);
   const [fc,setFc]=useState("Toutes"); const [view,setView]=useState("eleves");
-  const refresh=()=>setScores(loadScores());
+  const [sel,setSel]=useState({}); // id -> true
+  const [pwOpen,setPwOpen]=useState(false);
+  const [pw1,setPw1]=useState(""); const [pw2,setPw2]=useState(""); const [pwMsg,setPwMsg]=useState("");
+  const refresh=()=>{ setScores(loadScores()); setSel({}); };
   useEffect(()=>{refresh();},[]);
   if(scores===null) return <div className="loading">Chargement des résultats…</div>;
   const classes=["Toutes",...Array.from(new Set(scores.map(s=>s.classe)))];
   const fl= fc==="Toutes"?scores:scores.filter(s=>s.classe===fc);
+
+  const selIds=Object.keys(sel).filter(id=>sel[id]);
+  const toggle=(id)=>setSel(s=>({...s,[id]:!s[id]}));
+  const toggleAll=(rows)=>{ const allSel=rows.every(r=>sel[r.id]); const n={...sel}; rows.forEach(r=>n[r.id]=!allSel); setSel(n); };
+  const delSel=()=>{ if(!selIds.length) return; if(confirm("Supprimer "+selIds.length+" entrée(s) sélectionnée(s) ?")){ deleteScores(selIds); refresh(); } };
+  const changePw=()=>{ if(pw1.length<4){setPwMsg("4 caractères minimum.");return;} if(pw1!==pw2){setPwMsg("Les deux saisies diffèrent.");return;}
+    setTeacherPw(pw1); setPwMsg("✅ Mot de passe modifié sur cet appareil."); setPw1("");setPw2(""); setTimeout(()=>{setPwOpen(false);setPwMsg("");},1400); };
 
   // par élève : meilleur pct par (theme,game)
   const byS={};
@@ -817,17 +892,34 @@ function Teacher({onLogout}){
   scores.forEach(s=>{ if(!byC[s.classe]) byC[s.classe]={classe:s.classe,pcts:[],el:new Set()}; byC[s.classe].pcts.push(s.pct); byC[s.classe].el.add(s.pseudo); });
   const cstats=Object.values(byC).map(c=>({classe:c.classe,moy:Math.round(c.pcts.reduce((a,b)=>a+b,0)/c.pcts.length),nb:c.el.size,parties:c.pcts.length})).sort((a,b)=>b.moy-a.moy);
 
+  // détail des parties (entrées individuelles, filtrées)
+  const gameName=(id)=>{ const g=GAMES.find(x=>x.id===id); return g?g.nom:id; };
+  const fmtDate=(d)=>{ try{ return new Date(d).toLocaleString("fr-FR",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"}); }catch(e){ return ""; } };
+  const detail=[...fl].sort((a,b)=> (b.date||"").localeCompare(a.date||""));
+
   return (<div className="app">
     <header className="top prof"><div className="brand">👩‍🏫 Espace Professeur</div><button className="lo" onClick={onLogout}>Déconnexion</button></header>
     <div className="ptool">
       <div className="seg"><button className={view==="eleves"?"on":""} onClick={()=>setView("eleves")}>👤 Élèves</button>
         <button className={view==="themes"?"on":""} onClick={()=>setView("themes")}>📚 Par thème</button>
-        <button className={view==="classes"?"on":""} onClick={()=>setView("classes")}>🏫 Classes</button></div>
+        <button className={view==="classes"?"on":""} onClick={()=>setView("classes")}>🏫 Classes</button>
+        <button className={view==="detail"?"on":""} onClick={()=>setView("detail")}>📝 Détail</button></div>
       <select value={fc} onChange={e=>setFc(e.target.value)}>{classes.map(c=><option key={c}>{c}</option>)}</select>
       <button className="rf" onClick={refresh}>↻ Actualiser</button>
       <button className="rf alt" onClick={exportScoresCSV}>⬇ Export Excel (CSV)</button>
-      <button className="rf danger" onClick={()=>{ if(confirm("Effacer TOUS les résultats enregistrés sur cet appareil ?")){ clearScores(); refresh(); } }}>🗑 Réinitialiser</button>
+      <button className="rf pw" onClick={()=>{setPwOpen(!pwOpen);setPwMsg("");}}>🔑 Mot de passe</button>
+      <button className="rf danger" onClick={()=>{ if(confirm("Effacer TOUS les résultats enregistrés sur cet appareil ?")){ clearScores(); refresh(); } }}>🗑 Tout effacer</button>
     </div>
+    {pwOpen&&(<div className="pwbox">
+      <div className="pwt">🔑 Changer le mot de passe professeur</div>
+      <p className="pwh">Il est enregistré sur cet appareil uniquement. Note-le bien : il n'est affiché nulle part.</p>
+      <div className="pwrow">
+        <input type="password" placeholder="Nouveau mot de passe" value={pw1} onChange={e=>setPw1(e.target.value)}/>
+        <input type="password" placeholder="Confirmer" value={pw2} onChange={e=>setPw2(e.target.value)} onKeyDown={e=>e.key==="Enter"&&changePw()}/>
+        <button className="rf alt" onClick={changePw}>Enregistrer</button>
+      </div>
+      {pwMsg&&<div className="pwmsg">{pwMsg}</div>}
+    </div>)}
     {scores.length===0&&<div className="empty">Aucun résultat pour l'instant. Les scores apparaîtront dès que les élèves auront joué.</div>}
 
     {view==="eleves"&&scores.length>0&&(<div className="twrap"><table className="pt">
@@ -850,6 +942,25 @@ function Teacher({onLogout}){
       <tbody>{cstats.map((c,i)=>(<tr key={i}><td className="rk">{i+1}</td><td className="nm">{c.classe}</td><td>{c.nb}</td><td>{c.parties}</td>
         <td><div className="cbar"><div className="cfill" style={{width:c.moy+"%",background:c.moy>=PASS?"#16a34a":"#f59e0b"}}/></div><span className="cval">{c.moy}%</span></td></tr>))}</tbody>
     </table></div>)}
+
+    {view==="detail"&&scores.length>0&&(<>
+      <div className="selbar">
+        <span>{selIds.length} entrée(s) sélectionnée(s)</span>
+        <button className="rf danger nb-l" disabled={!selIds.length} onClick={delSel}>🗑 Supprimer la sélection</button>
+      </div>
+      <div className="twrap"><table className="pt">
+        <thead><tr>
+          <th><input type="checkbox" checked={detail.length>0&&detail.every(r=>sel[r.id])} onChange={()=>toggleAll(detail)}/></th>
+          <th>Élève</th><th>Classe</th><th>Thème</th><th>Jeu</th><th>Score</th><th>Date</th>
+        </tr></thead>
+        <tbody>{detail.map(r=>(<tr key={r.id} className={sel[r.id]?"selrow":""}>
+          <td><input type="checkbox" checked={!!sel[r.id]} onChange={()=>toggle(r.id)}/></td>
+          <td className="nm">{r.prenom} {r.nom}<span className="ps">{r.pseudo}</span></td>
+          <td>{r.classe}</td><td>T{r.theme}</td><td>{gameName(r.game)}</td>
+          <td><Cell v={r.pct}/></td><td className="dt">{fmtDate(r.date)}</td>
+        </tr>))}</tbody>
+      </table></div>
+    </>)}
     <div className="pn">Un jeu est « validé » à {PASS}%. 21 jeux au total (7 × 3 thèmes). Les résultats sont enregistrés sur CET appareil (navigateur). Utilise l'export CSV pour les conserver ou les ouvrir dans Excel.</div>
   </div>);
 }
@@ -1075,6 +1186,23 @@ input,select{font-family:inherit}
 .rf{margin-left:auto;background:var(--ink);color:#fff;padding:10px 17px;border-radius:11px;font-weight:700;font-size:14px}
 .rf.alt{margin-left:8px;background:#16a34a}
 .rf.danger{margin-left:8px;background:#dc2626}
+.rf.pw{margin-left:8px;background:#8b5cf6}
+.rf.nb-l{margin-left:0}
+.rf:disabled{opacity:.45;cursor:not-allowed}
+.pwbox{background:#fff;border:1.5px solid #e9d5ff;border-radius:16px;padding:16px 18px;margin-bottom:16px;box-shadow:0 10px 28px -16px rgba(139,92,246,.35)}
+.pwt{font-weight:800;margin-bottom:4px}
+.pwh{font-size:13px;color:#8a84a0;margin-bottom:10px}
+.pwrow{display:flex;gap:10px;flex-wrap:wrap}
+.pwrow input{flex:1;min-width:160px;padding:11px 13px;border:2px solid #ece6f7;border-radius:11px;font-size:14px;background:#faf8fe}
+.pwrow input:focus{outline:none;border-color:#8b5cf6;background:#fff}
+.pwrow .rf{margin-left:0}
+.pwmsg{margin-top:9px;font-weight:700;font-size:14px;color:#16a34a}
+.selbar{display:flex;align-items:center;gap:14px;margin-bottom:12px;font-weight:700;color:#6b6485;font-size:14px}
+.selrow td{background:#fff1f2!important}
+.pt input[type="checkbox"]{width:17px;height:17px;cursor:pointer;accent-color:#dc2626}
+.dt{font-size:12.5px;color:#8a84a0;white-space:nowrap}
+.more{margin:10px auto 4px;display:block;padding:13px 22px;border-radius:13px;background:#2563eb;color:#fff;font-weight:800;font-size:14.5px;box-shadow:0 10px 22px -10px rgba(37,99,235,.6);transition:.2s}
+.more:hover{transform:translateY(-2px)}
 .empty,.loading{background:#fff;border-radius:18px;padding:40px;text-align:center;color:#6b6485;font-size:16px;box-shadow:0 10px 30px -16px rgba(80,40,120,.2)}
 .twrap{background:#fff;border-radius:18px;padding:8px;box-shadow:0 14px 36px -20px rgba(80,40,120,.25);overflow-x:auto}
 .pt{width:100%;border-collapse:collapse;min-width:560px}
