@@ -602,7 +602,10 @@ function Login({onStudent,onTeacher}){
   const [f,setF]=useState({nom:"",prenom:"",pseudo:"",classe:""});
   const [code,setCode]=useState(""); const [err,setErr]=useState("");
   const up=(k,v)=>setF(s=>({...s,[k]:v}));
-  const go=()=>{ if(m==="eleve"){ if(!f.nom||!f.prenom||!f.classe){setErr("Indique nom, prénom et classe.");return;} onStudent({...f,pseudo:f.pseudo||f.prenom}); }
+  const go=()=>{ if(m==="eleve"){
+    if(!f.classe.trim()){setErr("Indique ta classe.");return;}
+    if(!f.pseudo.trim()&&!(f.nom.trim()&&f.prenom.trim())){setErr("Indique un pseudonyme, ou bien ton nom et ton prénom.");return;}
+    onStudent({nom:f.nom.trim(),prenom:f.prenom.trim(),classe:f.classe.trim(),pseudo:f.pseudo.trim()||f.prenom.trim()}); }
     else { code.trim()===getTeacherPw() ? onTeacher() : setErr("Code professeur incorrect."); } };
   return (<div className="login">
     <div className="hero">
@@ -616,8 +619,9 @@ function Login({onStudent,onTeacher}){
         <button className={m==="prof"?"tab on":"tab"} onClick={()=>{setM("prof");setErr("")}}>👩‍🏫 Professeur</button>
       </div>
       {m==="eleve"?(<div className="form">
-        <div className="r2"><input placeholder="Nom" value={f.nom} onChange={e=>up("nom",e.target.value)}/><input placeholder="Prénom" value={f.prenom} onChange={e=>up("prenom",e.target.value)}/></div>
-        <input placeholder="Pseudonyme (facultatif)" value={f.pseudo} onChange={e=>up("pseudo",e.target.value)}/>
+        <input placeholder="Pseudonyme" value={f.pseudo} onChange={e=>up("pseudo",e.target.value)}/>
+        <div className="r2"><input placeholder="Nom (facultatif)" value={f.nom} onChange={e=>up("nom",e.target.value)}/><input placeholder="Prénom (facultatif)" value={f.prenom} onChange={e=>up("prenom",e.target.value)}/></div>
+        <div className="hint">Un pseudonyme et ta classe suffisent — nom et prénom facultatifs.</div>
         <input placeholder="Classe (ex : 1STMG2)" value={f.classe} onChange={e=>up("classe",e.target.value)}/>
       </div>):(<div className="form"><input type="password" placeholder="Code professeur" value={code} onChange={e=>setCode(e.target.value)} onKeyDown={e=>e.key==="Enter"&&go()}/><div className="hint">Accès réservé à l'enseignant.</div></div>)}
       {err&&<div className="err">{err}</div>}
@@ -1193,7 +1197,7 @@ function Teacher({onLogout}){
     {view==="eleves"&&scores.length>0&&(<div className="twrap"><table className="pt">
       <thead><tr><th>#</th><th>Élève</th><th>Classe</th><th>Jeux validés</th><th>Moyenne</th><th>Progression (T1·T2·T3)</th></tr></thead>
       <tbody>{students.map((st,i)=>(<tr key={i}>
-        <td className="rk">{i+1}</td><td className="nm">{st.prenom} {st.nom}<span className="ps">{st.pseudo}</span></td><td>{st.classe}</td>
+        <td className="rk">{i+1}</td><td className="nm">{(st.prenom||st.nom)?(st.prenom+" "+st.nom).trim():st.pseudo}{(st.prenom||st.nom)?<span className="ps">{st.pseudo}</span>:null}</td><td>{st.classe}</td>
         <td><b>{st.valid}</b>/21</td>
         <td><b className="moy" style={{color:st.moy>=PASS?"#16a34a":"#dc2626"}}>{st.moy}%</b></td>
         <td><div className="tp">{st.themeProg.map((v,ti)=><span key={ti} className="tpb"><i style={{width:(v/7*100)+"%",background:THEMES[ti].color}}/></span>)} <span className="tpn">{st.themeProg.join(" · ")}/7</span></div></td>
@@ -1201,7 +1205,7 @@ function Teacher({onLogout}){
 
     {view==="themes"&&scores.length>0&&(<div className="twrap"><table className="pt">
       <thead><tr><th>Élève</th>{[1,2,3].map(t=>GAMES.map(g=><th key={t+g.id} className="th-mini" title={"T"+t+" "+g.nom}>{g.icon}<small>T{t}</small></th>))}</tr></thead>
-      <tbody>{students.map((st,i)=>(<tr key={i}><td className="nm">{st.prenom} {st.nom}</td>
+      <tbody>{students.map((st,i)=>(<tr key={i}><td className="nm">{(st.prenom||st.nom)?(st.prenom+" "+st.nom).trim():st.pseudo}</td>
         {[1,2,3].map(t=>GAMES.map(g=>{ const v=st.cells[t+"-"+g.id]; return <td key={t+g.id}><Cell v={v}/></td>; }))}</tr>))}</tbody>
     </table><div className="legend">Chaque colonne = un jeu pour un thème. Vert ≥ {PASS}%.</div></div>)}
 
@@ -1223,7 +1227,7 @@ function Teacher({onLogout}){
         </tr></thead>
         <tbody>{detail.map(r=>(<tr key={r.id} className={sel[r.id]?"selrow":""}>
           <td><input type="checkbox" checked={!!sel[r.id]} onChange={()=>toggle(r.id)}/></td>
-          <td className="nm">{r.prenom} {r.nom}<span className="ps">{r.pseudo}</span></td>
+          <td className="nm">{(r.prenom||r.nom)?(r.prenom+" "+r.nom).trim():r.pseudo}{(r.prenom||r.nom)?<span className="ps">{r.pseudo}</span>:null}</td>
           <td>{r.classe}</td><td>T{r.theme}</td><td>{gameName(r.game)}</td>
           <td><Cell v={r.pct}/></td><td className="dt">{fmtDate(r.date)}</td>
         </tr>))}</tbody>
