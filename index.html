@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mission Management — 1ère STMG</title>
+<title>Mission STMG — Management &amp; SDGN — 1ère STMG</title>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -14,13 +14,30 @@
 /*__DATA_START__*/
 /* ============================================================
    PDG EN MISSION — Données pédagogiques
-   Management 1ère STMG — BO spécial n°1 du 22 janvier 2019
+   Management & SDGN 1ère STMG — BO spécial n°1 du 22 janvier 2019
    3 thèmes / 7 mécaniques de jeu / contextualisation Réunion (974)
    Entreprises réelles citées : Groupe Caillé, Royal Bourbon Industries,
    Edena, Cilaos, Brasseries de Bourbon, Isautier, Groupe Ravate, Bourbon.
 ============================================================ */
 
 window.GAME_DATA = {
+MGT: {
+
+/* -------------------- RESSOURCES (liens) -------------------- */
+ressources: [
+  { cat:"syntheses", titre:"\ud83d\udcc1 Synthèses du professeur — dossier complet",
+    desc:"Toutes les synthèses de ton professeur, chapitre par chapitre (Google Drive).",
+    url:"https://drive.google.com/drive/folders/1e3JmxirfutXBHzVpGw0G9MhFfuXwUYV4?usp=drive_link" },
+  { cat:"syntheses", titre:"Assistance scolaire — Management 1ʳᵉ STMG",
+    desc:"Fiches de révision claires et exercices interactifs, point par point. Gratuit (partenariat MAIF).",
+    url:"https://www.assistancescolaire.com/eleve/1STMG/management" },
+  { cat:"syntheses", titre:"digiSchool — Management 1ʳᵉ STMG",
+    desc:"Fiches de cours et quiz conformes au programme officiel (une partie des contenus est premium).",
+    url:"https://www.digischool.fr/lycee/premiere-stmg/management" },
+  { cat:"syntheses", titre:"Comprendre la compta-gestion — synthèses Management 1ʳᵉ",
+    desc:"Synthèses gratuites rédigées par un professeur d'économie-gestion, chapitre par chapitre.",
+    url:"https://www.comprendre-la-compta-gestion.com/cours-management-1%C3%A8re" }
+],
 
 /* -------------------- GLOSSAIRE / NOTIONS (double explication) -------------------- */
 notions: [
@@ -506,20 +523,657 @@ missionExtra: {
         {txt:"Participer au projet public", eff:{treso:-5,marche:5,image:20,emploi:0}, fb:"Tu coopères avec une organisation publique guidée par l'intérêt général : faible profit, forte image."},
         {txt:"Refuser, pas assez rentable", eff:{treso:5,marche:0,image:-10,emploi:0}, fb:"Logique de profit assumée, mais l'occasion d'un ancrage territorial fort est manquée."} ]} ]
 }
-};
+},
 
+SDG: {
+
+/* -------------------- RESSOURCES (liens) -------------------- */
+ressources: [
+  { cat:"syntheses", titre:"Assistance scolaire — SDGN 1ʳᵉ STMG",
+    desc:"Fiches de révision et exercices interactifs sur tous les points clés du programme. Gratuit (partenariat MAIF).",
+    url:"https://www.assistancescolaire.com/eleve/1STMG/sciences-de-gestion-et-numerique/reviser-le-cours" },
+  { cat:"syntheses", titre:"digiSchool — Sciences de gestion et numérique 1ʳᵉ",
+    desc:"Fiches de cours et quiz conformes au programme officiel (une partie des contenus est premium).",
+    url:"https://www.digischool.fr/lycee/premiere-stmg/sciences-gestion-numerique" },
+  { cat:"syntheses", titre:"BacSTMG.com — fiches SDGN par chapitre",
+    desc:"Fiches de révision, synthèses de chapitre et exercices type bac, organisés selon les thèmes du programme.",
+    url:"https://www.bacstmg.com/sgn/" }
+],
+/* ============================================================
+   SDGN — Sciences de gestion et numérique 1ère STMG
+   BO spécial n°1 du 22 janvier 2019 (annexe 3)
+   4 thèmes / 10 questions de gestion / 8 mécaniques de jeu
+   Contextualisation Réunion (974)
+============================================================ */
+notions: [
+  { id:"sdg-action-collective", theme:1, terme:"Action collective organisée",
+    aca:"Action menée par un groupe structuré (l'organisation) qui coordonne des individus, des ressources et des règles pour atteindre des buts communs durables.",
+    simple:"Quand plusieurs personnes s'organisent ensemble, avec des règles et des moyens, pour atteindre un même but.",
+    ex:"Chez Air Austral, pilotes, hôtesses, mécaniciens et agents au sol coordonnent leur travail pour faire décoller chaque vol à l'heure." },
+  { id:"sdg-gouvernement", theme:1, terme:"Gouvernement de l'organisation",
+    aca:"Manière dont l'organisation est dirigée et contrôlée : structure de propriété (qui la possède), buts poursuivis et mode de contrôle des dirigeants.",
+    simple:"Qui possède l'organisation, qui commande, et qui surveille ceux qui commandent.",
+    ex:"Dans une entreprise familiale comme Isautier, la famille actionnaire choisit les dirigeants et contrôle leurs décisions." },
+  { id:"sdg-individu", theme:1, terme:"Individu : personnalité, perception, attitude",
+    aca:"Chaque individu possède des caractéristiques propres — personnalité, émotions, perception des situations, attitudes — qui influencent son comportement au travail.",
+    simple:"Chacun arrive au travail avec son caractère, ses émotions et sa façon de voir les choses, et cela influence sa manière d'agir.",
+    ex:"Face à un client pressé, un vendeur calme et un vendeur stressé d'un magasin Ravate ne réagiront pas de la même façon." },
+  { id:"sdg-competence-qualification", theme:1, terme:"Compétence et qualification",
+    aca:"La qualification est reconnue par un diplôme, un titre ou l'expérience validée ; la compétence est la capacité à agir efficacement en situation de travail (savoir, savoir-faire, savoir-être).",
+    simple:"La qualification, c'est ce qui est écrit sur le diplôme. La compétence, c'est ce qu'on sait vraiment faire sur le terrain.",
+    ex:"Un BTS tourisme est une qualification ; savoir calmer un passager mécontent à l'aéroport de Gillot est une compétence." },
+  { id:"sdg-identite-numerique", theme:1, terme:"Identité numérique",
+    aca:"Ensemble des traces qu'un individu laisse en ligne (profils, publications, photos, commentaires) qui construisent son image numérique, avec des enjeux de réputation et de bonnes pratiques.",
+    simple:"Tout ce qu'on trouve sur toi quand on tape ton nom sur Internet.",
+    ex:"Avant un entretien de stage, un recruteur réunionnais peut consulter tes réseaux sociaux : tes publications parlent pour toi." },
+  { id:"sdg-communication", theme:1, terme:"Communication interpersonnelle",
+    aca:"Échange entre individus mettant en jeu des composantes (émetteur, récepteur, message, canal, contexte) et des phénomènes relationnels (écoute, argumentation, influence).",
+    simple:"La façon dont deux personnes échangent : qui parle, à qui, comment, où, et tout ce qui peut déformer le message.",
+    ex:"Un chef d'équipe d'Edena qui explique une consigne à l'atelier choisit ses mots, son ton et le bon moment." },
+  { id:"sdg-groupe", theme:1, terme:"Interactions individu / groupe",
+    aca:"Au sein d'un groupe, l'individu acquiert une identité et un statut ; il s'inscrit dans des groupes d'appartenance et se compare à des groupes de référence, ce qui influence ses comportements.",
+    simple:"Dans un groupe, chacun a une place et un rôle, et le groupe influence notre façon d'être.",
+    ex:"Être élu délégué du personnel donne un statut particulier dans l'équipe d'une usine de Saint-Pierre." },
+  { id:"sdg-culture", theme:1, terme:"Culture, normes, codes et rituels",
+    aca:"Ensemble des valeurs, règles implicites, codes (langage, tenue) et rituels partagés qui caractérisent une organisation et orientent les comportements de ses membres.",
+    simple:"Les habitudes, les valeurs et les « manières de faire » propres à chaque organisation.",
+    ex:"Le café d'équipe du lundi matin et le tutoiement général font partie de la culture d'une PME réunionnaise." },
+  { id:"sdg-leadership", theme:1, terme:"Relation d'autorité et leadership",
+    aca:"L'autorité découle de la position hiérarchique (pouvoir légitime) ; le leadership est la capacité d'influencer et d'entraîner les autres, indépendamment du statut. Motivations et incitations soutiennent l'engagement.",
+    simple:"L'autorité, c'est le pouvoir donné par le poste ; le leadership, c'est entraîner les autres parce qu'ils ont envie de te suivre.",
+    ex:"Dans une équipe des Brasseries de Bourbon, un ouvrier expérimenté sans galon peut être le vrai leader du groupe." },
+  { id:"sdg-conditions-travail", theme:1, terme:"Conditions de travail",
+    aca:"Environnement physique (bruit, chaleur, sécurité), organisationnel (horaires, rythme) et relationnel du travail. Elles influencent la santé, la motivation et la performance des salariés.",
+    simple:"Tout ce qui entoure le travail : le confort, la sécurité, les horaires, l'ambiance.",
+    ex:"Climatiser un atelier de conditionnement à Saint-Pierre améliore le confort et réduit l'absentéisme." },
+  { id:"sdg-cout-travail", theme:1, terme:"Rémunération et coût du travail",
+    aca:"Le coût du travail comprend la rémunération brute (salaire, primes) et les cotisations sociales patronales. Il s'arbitre avec la valeur créée par le travail.",
+    simple:"Ce que le salarié coûte vraiment à l'entreprise : son salaire + les cotisations payées en plus par l'employeur.",
+    ex:"Un salaire brut de 2 000 € avec 800 € de cotisations patronales représente un coût du travail de 2 800 €." },
+  { id:"sdg-productivite", theme:1, terme:"Indicateurs d'activité et de productivité",
+    aca:"Données chiffrées issues de tableaux de bord mesurant l'activité (quantités produites, heures travaillées) et la productivité (production rapportée aux moyens utilisés).",
+    simple:"Des chiffres pour mesurer combien on produit, et combien on produit par heure de travail.",
+    ex:"12 000 barquettes produites en 600 heures = une productivité de 20 barquettes par heure." },
+  { id:"sdg-conflit-consensus", theme:1, terme:"Conflits et consensus",
+    aca:"Les relations de travail peuvent être conflictuelles (désaccords d'intérêts) ou consensuelles. La négociation et le dialogue social permettent de dépasser les conflits et de construire un accord.",
+    simple:"Au travail, il y a parfois des désaccords : on peut les régler en discutant pour trouver un accord qui convient à tous.",
+    ex:"Après une grève sur les plannings, la direction d'un transporteur réunionnais négocie un accord avec les salariés." },
+  { id:"sdg-donnee-info", theme:2, terme:"Donnée, information, connaissance",
+    aca:"La donnée est un élément brut, sans contexte ; l'information est une donnée mise en contexte qui prend du sens ; la connaissance résulte de l'interprétation et de l'expérience permettant d'agir.",
+    simple:"Donnée = chiffre brut. Information = chiffre qui veut dire quelque chose. Connaissance = savoir s'en servir.",
+    ex:"« 350 » est une donnée ; « 350 bouteilles Cilaos vendues samedi » est une information ; savoir réapprovisionner avant le week-end est une connaissance." },
+  { id:"sdg-donnees-perso", theme:2, terme:"Données à caractère personnel",
+    aca:"Toute information se rapportant à une personne identifiable. Leur utilisation est encadrée par le RGPD, sous le contrôle de la CNIL : consentement, sécurité, durée de conservation, droits d'accès et de suppression.",
+    simple:"Les informations qui permettent de t'identifier. La loi (RGPD) oblige à demander ton accord et à les protéger.",
+    ex:"Un magasin du Port doit obtenir ton consentement avant de t'envoyer des SMS publicitaires." },
+  { id:"sdg-bigdata", theme:2, terme:"Big data et open data",
+    aca:"Le big data désigne des volumes massifs de données, variés et produits à grande vitesse. L'open data désigne des données publiques librement accessibles et réutilisables.",
+    simple:"Big data = des montagnes de données à analyser. Open data = des données publiques que tout le monde peut réutiliser.",
+    ex:"Une start-up péi peut créer une appli d'horaires de bus à partir des données ouvertes de la Région Réunion." },
+  { id:"sdg-valeur-info", theme:2, terme:"Valeur de l'information",
+    aca:"L'information est une ressource stratégique : sa valeur dépend de sa fiabilité, de son actualité, de sa pertinence et de son accessibilité pour les bons acteurs au bon moment.",
+    simple:"Une information a de la valeur si elle est juste, fraîche, utile et disponible quand on en a besoin.",
+    ex:"Connaître avant ses concurrents la hausse du tourisme à La Réunion permet d'adapter son offre en premier." },
+  { id:"sdg-si", theme:2, terme:"Système d'information (SI)",
+    aca:"Ensemble organisé de ressources (humains, matériels, logiciels, données, procédures) qui collecte, stocke, traite et diffuse l'information nécessaire au fonctionnement de l'organisation.",
+    simple:"Tout ce qui permet à l'organisation de récolter, ranger, traiter et faire circuler l'information.",
+    ex:"Chez Royal Bourbon, le SI relie les commandes, les stocks, la production et la comptabilité." },
+  { id:"sdg-ecommunication", theme:2, terme:"E-communication et collaboration",
+    aca:"Usages numériques qui facilitent la communication et la collaboration : messageries, visioconférences, documents partagés, communautés en ligne et réseaux sociaux d'entreprise.",
+    simple:"Tous les outils en ligne qui permettent de communiquer et de travailler ensemble, même à distance.",
+    ex:"Les équipes de Saint-Denis et de Saint-Pierre co-rédigent le même document partagé au lieu de s'envoyer dix versions par e-mail." },
+  { id:"sdg-intelligence-collective", theme:2, terme:"Intelligence collective",
+    aca:"Capacité d'un groupe à produire, grâce au partage de l'information et à la collaboration, des connaissances et des solutions supérieures à la somme des contributions individuelles.",
+    simple:"À plusieurs, en partageant ce qu'on sait, on devient plus intelligents qu'une seule personne.",
+    ex:"Un wiki interne où chaque technicien note ses astuces de réparation fait progresser toute l'entreprise." },
+  { id:"sdg-ia", theme:2, terme:"Intelligence artificielle et automatisation",
+    aca:"Technologies capables d'automatiser des tâches organisationnelles (réponses aux clients, tri de données, prévisions), transformant la répartition du travail entre humains et machines.",
+    simple:"Des programmes qui font automatiquement certaines tâches à la place des humains.",
+    ex:"Un chatbot répond aux questions simples des clients d'une enseigne réunionnaise ; les conseillers gardent les cas compliqués." },
+  { id:"sdg-processus", theme:2, terme:"Processus de gestion",
+    aca:"Enchaînement d'activités coordonnées qui transforme des éléments d'entrée en résultat pour un bénéficiaire. Il peut être représenté par un schéma.",
+    simple:"La suite d'étapes qu'on suit toujours pour faire quelque chose, du début à la fin.",
+    ex:"Commande sur le site → paiement → préparation en entrepôt → livraison : c'est le processus de vente en ligne." },
+  { id:"sdg-pgi", theme:2, terme:"Progiciel de gestion intégré (PGI)",
+    aca:"Logiciel unique reposant sur une base de données commune qui intègre les processus de l'organisation (ventes, stocks, comptabilité, RH) : une information saisie une fois est partagée par tous.",
+    simple:"Un grand logiciel unique où tous les services travaillent sur les mêmes informations.",
+    ex:"Avec un PGI, quand un commercial enregistre une vente, le stock et la comptabilité sont mis à jour automatiquement." },
+  { id:"sdg-cloud", theme:2, terme:"Cloud et travail à distance",
+    aca:"Stockage et applications accessibles via Internet, qui favorisent la mobilité et le télétravail, sources d'agilité organisationnelle mais aussi de dépendance et d'enjeux de sécurité.",
+    simple:"Tes fichiers et logiciels sont sur Internet : tu peux travailler de n'importe où.",
+    ex:"Pendant une alerte cyclonique, les équipes administratives continuent de travailler depuis chez elles grâce au cloud." },
+  { id:"sdg-agilite", theme:2, terme:"Agilité ou rigidité organisationnelle",
+    aca:"Le numérique peut rendre l'organisation plus agile (réactivité, travail à distance, automatisation) ou plus rigide (procédures imposées par les logiciels, dépendance technique).",
+    simple:"Le numérique peut rendre l'organisation plus souple… ou l'enfermer dans des procédures trop strictes.",
+    ex:"Un logiciel de caisse qui impose dix étapes pour un simple échange d'article ralentit les vendeurs : c'est de la rigidité." },
+  { id:"sdg-va", theme:3, terme:"Valeur ajoutée : création et répartition",
+    aca:"Richesse créée par l'organisation : production − consommations intermédiaires. Elle est répartie entre les salariés (salaires), l'État (impôts), les prêteurs (intérêts), les actionnaires (dividendes) et l'organisation elle-même (autofinancement).",
+    simple:"La richesse vraiment créée par l'entreprise, qu'on partage ensuite entre tous ceux qui y ont contribué.",
+    ex:"Edena vend pour 100, achète pour 40 de matières et services : la valeur ajoutée est de 60, à répartir." },
+  { id:"sdg-valeur-financiere", theme:3, terme:"Valeur financière et actionnariale",
+    aca:"Valeur mesurée par les documents comptables : le compte de résultat (produits − charges = résultat) et le bilan (patrimoine). La valeur actionnariale et boursière reflète l'enrichissement des actionnaires.",
+    simple:"La valeur en argent : le bénéfice réalisé et ce que vaut l'entreprise pour ses propriétaires.",
+    ex:"Un bénéfice de 110 k€ au compte de résultat d'une PME de Saint-Pierre mesure sa valeur financière de l'année." },
+  { id:"sdg-valeur-percue", theme:3, terme:"Valeur perçue",
+    aca:"Valeur attribuée par les clients : image de marque, notoriété, satisfaction, qualité perçue, e-réputation (avis, notes, recommandations sur les médias sociaux).",
+    simple:"Ce que le produit ou la marque « vaut » dans la tête des clients.",
+    ex:"Les rhums Isautier, notés 4,8/5 et réputés dans toute l'île, bénéficient d'une forte valeur perçue." },
+  { id:"sdg-valeur-partenariale", theme:3, terme:"Valeur partenariale",
+    aca:"Valeur créée par et pour l'ensemble des partenaires de l'organisation (salariés, fournisseurs, clients, collectivités…), au-delà des seuls actionnaires.",
+    simple:"La valeur créée pour tous ceux qui travaillent avec l'organisation, pas seulement pour ses propriétaires.",
+    ex:"Une enseigne qui donne ses invendus alimentaires à une association réunionnaise crée de la valeur partenariale." },
+  { id:"sdg-prix-cout-marge", theme:3, terme:"Prix, coût, marge, charges",
+    aca:"Le coût regroupe les charges consommées pour produire ; la marge est la différence entre le prix de vente et le coût ; la relation prix / coût / qualité guide les décisions de gestion.",
+    simple:"Coût = ce que ça coûte à faire. Prix = ce que paie le client. Marge = la différence entre les deux.",
+    ex:"Un sorbet péi vendu 4 € avec un coût de revient de 2,50 € dégage une marge de 1,50 €." },
+  { id:"sdg-efficacite-efficience", theme:3, terme:"Efficacité et efficience",
+    aca:"L'efficacité est l'atteinte des objectifs fixés ; l'efficience est l'atteinte des objectifs en minimisant les ressources consommées (performance des processus).",
+    simple:"Efficace = atteindre son but. Efficient = atteindre son but sans gaspiller de moyens.",
+    ex:"Deux boutiques atteignent 100 ventes ; celle qui a dépensé deux fois moins de publicité est la plus efficiente." },
+  { id:"sdg-perf-commerciale", theme:3, terme:"Performance commerciale",
+    aca:"Capacité à conquérir et fidéliser les clients, mesurée par le chiffre d'affaires, la part de marché et la fidélité de la clientèle.",
+    simple:"Est-ce que l'organisation vend bien et garde ses clients ?",
+    ex:"La part de marché des Brasseries de Bourbon sur les boissons à La Réunion mesure sa performance commerciale." },
+  { id:"sdg-perf-financiere", theme:3, terme:"Performance financière",
+    aca:"Capacité à créer de la valeur financière : profitabilité (résultat/CA), rentabilité (résultat/moyens engagés), dividendes versés et autofinancement dégagé.",
+    simple:"Est-ce que l'organisation gagne de l'argent par rapport à ce qu'elle a investi ?",
+    ex:"Une rentabilité en hausse permet à une PME du Port d'autofinancer une nouvelle machine sans emprunter." },
+  { id:"sdg-perf-sociale-env", theme:3, terme:"Performance sociale et environnementale",
+    aca:"La performance sociale s'apprécie via le bilan social (absentéisme, accidents, formation, climat) ; la performance environnementale via l'impact écologique (énergie, déchets, émissions).",
+    simple:"Est-ce que l'organisation traite bien ses salariés et respecte l'environnement ?",
+    ex:"Réduire de 20 % la consommation d'eau d'une usine d'embouteillage améliore sa performance environnementale." },
+  { id:"sdg-perf-globale", theme:3, terme:"Performance globale",
+    aca:"Équilibre entre les dimensions organisationnelle, commerciale, financière, sociale et environnementale de la performance. Améliorer l'une peut dégrader une autre : elles peuvent être contradictoires.",
+    simple:"La vraie performance, c'est d'être bon partout à la fois : ventes, finances, salariés, environnement.",
+    ex:"Baisser les coûts en dégradant les conditions de travail améliore le financier mais détruit le social." },
+  { id:"sdg-tdb", theme:3, terme:"Tableau de bord et indicateurs",
+    aca:"Document regroupant des indicateurs quantitatifs et qualitatifs pertinents, permettant de mesurer et comparer les performances dans le temps et dans l'espace pour piloter l'organisation.",
+    simple:"Le « tableau de bord » de l'organisation : des chiffres clés pour savoir où elle en est et corriger le cap.",
+    ex:"Un hôtel de Saint-Gilles suit chaque mois : taux d'occupation, satisfaction client, consommation d'eau, absentéisme." },
+  { id:"sdg-horizon", theme:4, terme:"Horizon et période",
+    aca:"L'horizon ordonne les décisions en court, moyen et long terme ; la période découpe le temps de gestion selon des contraintes institutionnelles, sectorielles ou technologiques.",
+    simple:"L'horizon, c'est jusqu'où on regarde (court ou long terme) ; la période, c'est comment on découpe le temps.",
+    ex:"Recruter un saisonnier pour décembre (court terme) ou construire une usine (long terme) ; la haute saison touristique rythme l'année d'un hôtel de l'Ouest." },
+  { id:"sdg-veille", theme:4, terme:"Veille informationnelle",
+    aca:"Surveillance continue et organisée de l'environnement (marchés, concurrents, technologies, réglementation) pour disposer d'une information actualisée et anticiper les évolutions.",
+    simple:"Garder un œil en permanence sur ce qui se passe autour, pour ne pas être pris par surprise.",
+    ex:"Un gérant de vidéoclub qui aurait surveillé l'essor du streaming aurait pu transformer son activité à temps." },
+  { id:"sdg-asymetrie", theme:4, terme:"Asymétrie et rétention d'information",
+    aca:"Situation où certains acteurs détiennent plus d'informations que d'autres ; la rétention consiste à garder une information pour soi, ce qui nuit à la qualité des décisions collectives.",
+    simple:"Quand quelqu'un en sait plus que les autres et garde l'info pour lui.",
+    ex:"Un commercial qui ne signale pas le mécontentement d'un gros client prive sa direction d'une information cruciale." },
+  { id:"sdg-prospective", theme:4, terme:"Prospective : enquête et prévision",
+    aca:"Démarches qui réduisent l'incertitude liée au temps : enquêtes (intentions des clients), prévisions d'activité, simulations, calendriers prévisionnels et outils de planification.",
+    simple:"Essayer de prévoir l'avenir avec des enquêtes, des calculs et des plannings, pour décider moins à l'aveugle.",
+    ex:"Avant de lancer une gamme « zéro plastique », une PME péi sonde ses clients : 64 % se disent prêts à l'acheter." },
+  { id:"sdg-budget", theme:4, terme:"Budget et budget de trésorerie",
+    aca:"Traduction chiffrée et prévisionnelle de l'activité. Le budget de trésorerie prévoit mois par mois les encaissements et décaissements pour anticiper les soldes et les besoins de financement.",
+    simple:"Un tableau qui prévoit l'argent qui va entrer et sortir chaque mois, pour éviter la panne de trésorerie.",
+    ex:"Le budget d'une PME de l'Ouest révèle un solde négatif en février : elle négocie un découvert avec sa banque avant le creux." },
+  { id:"sdg-seuil", theme:4, terme:"Seuil de rentabilité",
+    aca:"Chiffre d'affaires pour lequel l'organisation ne réalise ni bénéfice ni perte (résultat = 0). Il se calcule en divisant les charges fixes par le taux de marge sur coûts variables.",
+    simple:"Le chiffre d'affaires minimum à atteindre pour ne pas perdre d'argent.",
+    ex:"30 000 € de charges fixes et une marge sur coûts variables de 50 % : il faut vendre pour 60 000 € avant de gagner le premier euro." },
+  { id:"sdg-temps-valeur", theme:4, terme:"Lien entre temps et valeur financière",
+    aca:"La valeur de l'argent dépend du temps : une somme disponible aujourd'hui vaut plus que la même somme dans le futur (incertitude, possibilité de placement).",
+    simple:"100 € tout de suite valent plus que 100 € dans cinq ans.",
+    ex:"Entre 1 000 € maintenant et 1 000 € dans trois ans, un gestionnaire préfère maintenant : il peut les placer ou les investir." },
+  { id:"sdg-risque", theme:4, terme:"Risques externes",
+    aca:"Événements défavorables venant de l'environnement : évolution de la demande, cycle de vie et obsolescence, rupture technologique, dépendance énergétique ou technologique, approvisionnement, empreinte environnementale.",
+    simple:"Les dangers qui viennent de l'extérieur de l'organisation : clients, technologies, fournisseurs, climat…",
+    ex:"Un cyclone qui bloque le port de la Pointe des Galets perturbe l'approvisionnement de toute l'île." },
+  { id:"sdg-risque-interne", theme:4, terme:"Risques internes",
+    aca:"Risques générés par les décisions de l'organisation elle-même : investissement hasardeux, lancement sans étude, mauvais recrutement, endettement excessif, négligence des conséquences écologiques.",
+    simple:"Les dangers que l'organisation crée elle-même par ses propres choix.",
+    ex:"Ouvrir un second magasin sans calculer son seuil de rentabilité est un risque interne." },
+  { id:"sdg-obsolescence", theme:4, terme:"Cycle de vie, obsolescence, rupture technologique",
+    aca:"Tout produit suit un cycle de vie (lancement, croissance, maturité, déclin) ; une rupture technologique peut rendre une offre obsolète et bouleverser un secteur entier.",
+    simple:"Les produits vieillissent ; parfois une nouvelle technologie les rend complètement dépassés.",
+    ex:"Le streaming a rendu obsolètes les vidéoclubs de location de DVD, à La Réunion comme ailleurs." },
+  { id:"sdg-empreinte", theme:4, terme:"Empreinte environnementale",
+    aca:"Impact écologique de l'activité (énergie, eau, déchets, émissions). La recherche de performance peut générer des risques pour l'environnement, qui doivent être mesurés et limités.",
+    simple:"La trace que l'activité de l'organisation laisse sur la planète.",
+    ex:"Produire plus de barquettes augmente les déchets plastiques : l'usine doit mesurer et réduire cet impact." }
+],
+programme: [
+  { theme:1, titre:"Thème 1 — De l'individu à l'acteur",
+    ref:"BO spécial n°1 du 22/01/2019 — annexe 3 (SDGN)",
+    questions:["Comment définir les différents types d'organisation ?","Comment un individu devient-il acteur dans une organisation ?","Comment concilier gestion efficace des ressources humaines et coût du travail ?"],
+    connaissances:["Action collective organisée ; buts de l'organisation","Gouvernement des organisations : structure de propriété, mode de contrôle des dirigeants","Individu : personnalité, émotion, perception, attitude, comportement, compétences, identité numérique","Communication interpersonnelle","Interactions individu/groupe : identité, statut, appartenance et référence","Interactions individu/organisation : culture, normes, codes, rituels, stéréotypes, fiche de poste, hiérarchie","Phénomènes relationnels : relations formelles et informelles, argumentation et influence, autorité, leadership, motivation/incitations","Activité de travail : conditions de travail, compétences et qualification","Évaluation et rétribution : tableaux de bord, indicateurs d'activité et de productivité, rémunération et coût du travail","Nouveaux liens de travail (contractualisation, auto-entrepreneuriat)","Conflits et consensus"],
+    competences:["Caractériser les comportements individuels au sein des groupes","Identifier les bonnes pratiques de gestion de l'identité numérique","Repérer ce qui révèle la culture et les valeurs de l'organisation","Décrire et analyser une situation de communication","Distinguer l'approche par la qualification de l'approche par la compétence","Mesurer l'activité de travail à l'aide d'indicateurs pertinents","Évaluer le coût global du travail et la productivité","Relier conditions de travail et comportements"] },
+  { theme:2, titre:"Thème 2 — Numérique et intelligence collective",
+    ref:"BO spécial n°1 du 22/01/2019 — annexe 3 (SDGN)",
+    questions:["En quoi les technologies transforment-elles l'information en ressource ?","Comment le partage de l'information contribue-t-il à l'émergence d'une « intelligence collective » ?","Le numérique crée-t-il de l'agilité ou de la rigidité organisationnelle ?"],
+    connaissances:["Donnée, information et connaissance","Données à caractère personnel (RGPD)","Mégadonnées (big data), données ouvertes (open data)","Rôles, accessibilité et valeur de l'information","Système d'information (SI)","E-communication, partage de l'information, collaboration, communautés en ligne et réseaux sociaux","Intelligence artificielle et automatisation de tâches","Processus : nature et représentation","Systèmes de gestion intégrés (PGI), e-commerce, applications métier","Travail à distance, mobilité, informatique en nuage (cloud)"],
+    competences:["Repérer l'origine d'une information et les étapes de sa transformation","Distinguer les données personnelles et les contraintes de leur utilisation","Manipuler des données ouvertes pour créer de l'information","Se situer dans un environnement numérique (rôles, droits, responsabilités)","Identifier et schématiser les étapes d'un processus de gestion","Repérer les effets de l'automatisation sur l'information, le travail et les acteurs","Imaginer une organisation des tâches intégrant l'intelligence artificielle"] },
+  { theme:3, titre:"Thème 3 — Création de valeur et performance",
+    ref:"BO spécial n°1 du 22/01/2019 — annexe 3 (SDGN)",
+    questions:["Peut-on mesurer la contribution de chaque acteur à la création de valeur ?","La création de valeur conduit-elle toujours à une performance globale ?"],
+    connaissances:["Valeur ajoutée : création et répartition","Valeur financière et actionnariale, valeur boursière","Valeur partenariale","Valeur perçue : image de marque, notoriété, satisfaction, qualité, e-réputation","Indicateurs quantitatifs et qualitatifs","Prix, coût, marge, charges","Performance des processus : efficacité et efficience","Performance commerciale : fidélité, chiffre d'affaires, part de marché","Performance financière : rentabilité, profitabilité, dividendes, autofinancement","Performance sociale : bilan social","Performance environnementale","Tableaux de bord"],
+    competences:["Identifier le rôle des acteurs dans la création de valeur","Caractériser les différents types de valeur et les attentes des acteurs","Repérer les répartitions possibles de la valeur ajoutée","Utiliser un bilan et un compte de résultat pour repérer la valeur financière","Analyser la relation entre prix, coût et qualité","Identifier des indicateurs pertinents de performance","Comparer les performances dans le temps et dans l'espace","Percevoir le caractère potentiellement contradictoire des performances"] },
+  { theme:4, titre:"Thème 4 — Temps et risque",
+    ref:"BO spécial n°1 du 22/01/2019 — annexe 3 (SDGN)",
+    questions:["Quelle prise en compte du temps dans la gestion de l'organisation ?","L'amélioration de la performance est-elle sans risque ?"],
+    connaissances:["Horizon et période","Actualité et pérennité de l'information, veille informationnelle","Prospective : enquête, budget, seuil de rentabilité","Lien entre temps et valeur financière","Outils de planification, de gestion du temps et de simulation, calendrier prévisionnel","Facteurs externes de risque : demande, cycle de vie, obsolescence, rupture technologique, dépendances, approvisionnement, empreinte environnementale","Facteurs internes de risque (liés aux décisions de l'organisation)"],
+    competences:["Expliquer en quoi le temps est source d'incertitude","Identifier les temps caractéristiques de l'organisation","Expliquer les rétentions et asymétries d'information","Repérer l'importance d'une information actualisée pour décider","Utiliser le seuil de rentabilité pour anticiper l'incidence d'une évolution d'activité","Utiliser la démarche budgétaire pour anticiper la trésorerie","Repérer les risques externes et internes et leur incidence sur la performance","Mesurer les conséquences écologiques de la recherche de performance"] }
+],
+trieur: {
+  1: { consigne:"Classe chaque élément selon ce qu'il révèle : l'individu, le groupe ou l'organisation.",
+    bacs:["L'individu","Le groupe","L'organisation"],
+    items:[
+      {label:"Personnalité réservée d'un salarié", cat:0},
+      {label:"Émotion de fierté après une vente", cat:0},
+      {label:"Compétence : gérer un client mécontent", cat:0},
+      {label:"Identité numérique d'un candidat", cat:0},
+      {label:"Statut de délégué du personnel", cat:1},
+      {label:"Esprit d'équipe à l'atelier", cat:1},
+      {label:"Leader qui entraîne ses collègues", cat:1},
+      {label:"Organigramme de l'entreprise", cat:2},
+      {label:"Rituel du café du lundi matin", cat:2},
+      {label:"Fiche de poste du vendeur", cat:2}
+    ]},
+  2: { consigne:"Donnée brute, information ou connaissance ? Classe chaque élément.",
+    bacs:["Donnée","Information","Connaissance"],
+    items:[
+      {label:"« 350 » saisi dans une base", cat:0},
+      {label:"Températures relevées chaque heure", cat:0},
+      {label:"Liste brute des passages en caisse", cat:0},
+      {label:"« Les ventes ont augmenté de 10 % en mai »", cat:1},
+      {label:"« Ce client préfère être livré le matin »", cat:1},
+      {label:"« Les glaces se vendent surtout le samedi »", cat:1},
+      {label:"Savoir-faire d'un technicien expérimenté", cat:2},
+      {label:"Savoir quand réapprovisionner le rayon", cat:2},
+      {label:"Maîtriser les règles de gestion des stocks", cat:2}
+    ]},
+  3: { consigne:"Classe chaque indicateur dans la bonne dimension de la performance.",
+    bacs:["Commerciale","Financière","Sociale","Environnementale"],
+    items:[
+      {label:"Part de marché", cat:0},
+      {label:"Taux de fidélité des clients", cat:0},
+      {label:"Chiffre d'affaires", cat:0},
+      {label:"Rentabilité", cat:1},
+      {label:"Dividendes versés", cat:1},
+      {label:"Autofinancement", cat:1},
+      {label:"Taux d'absentéisme", cat:2},
+      {label:"Accidents du travail", cat:2},
+      {label:"Émissions de CO₂", cat:3},
+      {label:"Déchets recyclés", cat:3}
+    ]},
+  4: { consigne:"Risque externe, risque interne ou outil de prévision ? Classe chaque élément.",
+    bacs:["Risque externe","Risque interne","Outil de prévision"],
+    items:[
+      {label:"Baisse de la demande sur l'île", cat:0},
+      {label:"Rupture technologique (ex : streaming)", cat:0},
+      {label:"Cyclone qui bloque l'approvisionnement", cat:0},
+      {label:"Hausse du prix du fret maritime", cat:0},
+      {label:"Investissement décidé sans étude", cat:1},
+      {label:"Mauvais recrutement", cat:1},
+      {label:"Endettement excessif", cat:1},
+      {label:"Budget de trésorerie", cat:2},
+      {label:"Seuil de rentabilité", cat:2},
+      {label:"Enquête prévisionnelle auprès des clients", cat:2}
+    ]}
+},
+memory: {
+  1:[ {a:"Qualification", b:"Bac STMG, BTS, diplôme"},
+      {a:"Compétence", b:"Savoir gérer un client mécontent"},
+      {a:"Identité numérique", b:"Profils et publications en ligne"},
+      {a:"Leadership", b:"Entraîner le groupe sans donner d'ordres"},
+      {a:"Rituel", b:"Le café d'équipe du lundi matin"},
+      {a:"Productivité", b:"Production ÷ heures travaillées"} ],
+  2:[ {a:"Donnée", b:"« 350 » saisi en caisse"},
+      {a:"Information", b:"« Ventes en hausse de 10 % »"},
+      {a:"Connaissance", b:"Savoir interpréter les ventes"},
+      {a:"Open data", b:"Données publiques réutilisables"},
+      {a:"PGI", b:"Un logiciel, une base de données unique"},
+      {a:"Cloud", b:"Fichiers accessibles partout via Internet"} ],
+  3:[ {a:"Valeur ajoutée", b:"Production − consommations intermédiaires"},
+      {a:"Marge", b:"Prix de vente − coût"},
+      {a:"Efficacité", b:"Atteindre l'objectif fixé"},
+      {a:"Efficience", b:"Atteindre l'objectif en économisant les moyens"},
+      {a:"Valeur perçue", b:"4,8★ d'avis clients en ligne"},
+      {a:"Dividende", b:"Part du bénéfice versée aux actionnaires"} ],
+  4:[ {a:"Horizon", b:"Court, moyen ou long terme"},
+      {a:"Veille informationnelle", b:"Surveiller en continu son environnement"},
+      {a:"Budget de trésorerie", b:"Prévoir encaissements et décaissements"},
+      {a:"Seuil de rentabilité", b:"CA pour lequel le résultat = 0"},
+      {a:"Obsolescence", b:"Produit dépassé par la technologie"},
+      {a:"Risque interne", b:"Conséquence d'une décision de l'organisation"} ]
+},
+flash: {
+  1:[ {q:"Un diplôme correspond à…", o:["une compétence","une qualification"], c:1},
+      {q:"Savoir calmer un client mécontent est…", o:["une qualification","une compétence"], c:1},
+      {q:"L'ensemble de tes traces en ligne forme…", o:["ton identité numérique","ton organigramme","ton statut"], c:0},
+      {q:"Le café d'équipe chaque lundi est…", o:["un rituel","un conflit","un indicateur"], c:0},
+      {q:"Production ÷ heures travaillées =", o:["coût du travail","productivité"], c:1},
+      {q:"Le coût du travail, c'est…", o:["le salaire net seulement","salaires + cotisations sociales"], c:1},
+      {q:"Entraîner un groupe sans donner d'ordres, c'est…", o:["l'autorité hiérarchique","le leadership"], c:1} ],
+  2:[ {q:"« 350 » seul, sans contexte, est…", o:["une donnée","une information"], c:0},
+      {q:"Le RGPD protège…", o:["les données personnelles","les bénéfices","les machines"], c:0},
+      {q:"Des données publiques librement réutilisables :", o:["le big data","l'open data"], c:1},
+      {q:"Le SI collecte, stocke, traite et…", o:["diffuse l'information","fabrique les produits"], c:0},
+      {q:"Un PGI repose sur…", o:["une base de données unique","des logiciels séparés"], c:0},
+      {q:"Un wiki où chacun partage ses astuces illustre…", o:["l'intelligence collective","la rigidité"], c:0},
+      {q:"Travailler ses fichiers de n'importe où via Internet :", o:["le cloud","l'open data"], c:0} ],
+  3:[ {q:"Valeur ajoutée = production −", o:["consommations intermédiaires","salaires"], c:0},
+      {q:"Prix de vente − coût =", o:["la marge","le chiffre d'affaires"], c:0},
+      {q:"Atteindre l'objectif avec moins de moyens :", o:["efficacité","efficience"], c:1},
+      {q:"Les dividendes rémunèrent…", o:["les salariés","les actionnaires"], c:1},
+      {q:"La part de marché mesure la performance…", o:["commerciale","sociale"], c:0},
+      {q:"Le bilan social mesure la performance…", o:["financière","sociale"], c:1},
+      {q:"Une note de 4,8★ sur les avis nourrit la valeur…", o:["perçue","boursière"], c:0} ],
+  4:[ {q:"Court, moyen, long terme : c'est…", o:["l'horizon","la période"], c:0},
+      {q:"Le CA pour lequel on ne gagne ni ne perd :", o:["le budget","le seuil de rentabilité"], c:1},
+      {q:"Prévoir encaissements et décaissements :", o:["le budget de trésorerie","le bilan social"], c:0},
+      {q:"Surveiller en continu marchés et concurrents :", o:["la veille","la rétention"], c:0},
+      {q:"Garder une information pour soi, c'est…", o:["de la rétention d'information","du partage"], c:0},
+      {q:"Un produit dépassé techniquement est…", o:["obsolète","rentable"], c:0},
+      {q:"Un cyclone qui bloque le port est un risque…", o:["interne","externe"], c:1} ]
+},
+cas: {
+  1:[ {cas:"Chez Air Austral, une hôtesse garde le sourire et adapte son ton face à un passager stressé par un retard.", q:"Quelle notion reconnaît-on ?", o:["Une qualification","Une compétence (contrôle de soi)","Un rituel d'entreprise"], c:1, why:"Gérer ses émotions et s'adapter en situation de travail relève des compétences de l'individu, pas du diplôme."},
+      {cas:"Dans un magasin Ravate, l'équipe partage chaque matin un café avant l'ouverture, et chaque nouveau y est présenté.", q:"Que révèle cette habitude ?", o:["Un conflit","Un rituel, élément de la culture de l'organisation","Un indicateur de productivité"], c:1, why:"Les rituels (café d'équipe, présentation des nouveaux) expriment la culture et les valeurs de l'organisation."},
+      {cas:"Un lycéen poste des photos polémiques en ligne. Deux ans plus tard, un recruteur réunionnais tape son nom sur Internet.", q:"Quelle notion est en jeu ?", o:["L'identité numérique","Le seuil de rentabilité","L'open data"], c:0, why:"Les traces laissées en ligne construisent l'identité numérique : elle peut servir… ou desservir."},
+      {cas:"Une usine agroalimentaire de Saint-Pierre produit 12 000 barquettes en 600 heures de travail.", q:"Quel indicateur peut-elle calculer ?", o:["La productivité : 20 barquettes par heure","Le coût du travail","La part de marché"], c:0, why:"Productivité = production ÷ heures travaillées = 12 000 ÷ 600 = 20 barquettes/heure."} ],
+  2:[ {cas:"En caisse, chaque passage enregistre « article, prix, heure ». Le siège en tire : « les ventes de glaces doublent le samedi ».", q:"Comment qualifier ces deux éléments ?", o:["Deux données","Une donnée brute, puis une information","Deux connaissances"], c:1, why:"Les enregistrements bruts sont des données ; mises en contexte et porteuses de sens, elles deviennent une information."},
+      {cas:"Une enseigne réunionnaise veut envoyer des SMS publicitaires à partir de numéros récupérés sans le consentement des clients.", q:"Que risque-t-elle ?", o:["Rien, les numéros circulent librement","Une sanction : le RGPD protège les données personnelles","Une simple remarque de la mairie"], c:1, why:"Les données personnelles ne s'utilisent qu'avec consentement : le RGPD prévoit des sanctions (contrôle de la CNIL)."},
+      {cas:"Royal Bourbon installe un PGI : commandes, stocks et comptabilité partagent désormais la même base de données.", q:"Quel est l'intérêt principal ?", o:["Une information unique, saisie une fois et partagée par tous","Supprimer le papier des bureaux","Réduire le nombre de clients"], c:0, why:"Le PGI intègre les processus autour d'une base unique : fin des doubles saisies et des informations contradictoires."},
+      {cas:"Pendant une alerte cyclonique, les équipes administratives d'une entreprise dionysienne travaillent depuis chez elles grâce au cloud.", q:"Qu'illustre ce cas ?", o:["L'agilité permise par le numérique (travail à distance)","La rigidité organisationnelle","L'obsolescence"], c:0, why:"Cloud + télétravail = continuité de l'activité malgré l'imprévu : le numérique rend l'organisation agile."} ],
+  3:[ {cas:"Edena vend pour 100 de production et a consommé 40 de matières et services achetés à ses fournisseurs.", q:"Quelle est sa valeur ajoutée ?", o:["140","60","40"], c:1, why:"VA = production − consommations intermédiaires = 100 − 40 = 60."},
+      {cas:"Avec sa valeur ajoutée, une PME de Saint-Pierre paie les salaires, les impôts, les intérêts à la banque, des dividendes, et garde le reste pour investir.", q:"Que décrit ce cas ?", o:["La répartition de la valeur ajoutée entre les acteurs","Le seuil de rentabilité","L'identité numérique"], c:0, why:"La VA est partagée entre salariés, État, prêteurs, actionnaires et l'entreprise elle-même (autofinancement)."},
+      {cas:"Une boutique du Port atteint son objectif de 100 ventes, mais en doublant son budget publicitaire par rapport au prévu.", q:"Comment qualifier sa performance ?", o:["Efficace mais pas efficiente","Efficiente mais pas efficace","Ni efficace ni efficiente"], c:0, why:"L'objectif est atteint (efficacité) mais en surconsommant des ressources : l'efficience n'y est pas."},
+      {cas:"Les rhums Isautier affichent 4,8/5 sur les avis en ligne et une forte notoriété dans toute l'île.", q:"Quelle forme de valeur ces éléments nourrissent-ils ?", o:["La valeur perçue","La valeur boursière","La valeur ajoutée"], c:0, why:"Notoriété, satisfaction, e-réputation : autant d'éléments de la valeur perçue par les clients."} ],
+  4:[ {cas:"Un glacier de Saint-Gilles réalise l'essentiel de ses ventes pendant l'été austral et les vacances scolaires.", q:"Quelle contrainte temporelle reconnaît-on ?", o:["La saisonnalité (fluctuations périodiques)","L'asymétrie d'information","Le leadership"], c:0, why:"L'activité est rythmée par des périodes sectorielles : la saisonnalité contraint la gestion (stocks, embauches, trésorerie)."},
+      {cas:"Charges fixes : 30 000 €. Marge sur coûts variables : 50 % du CA. Un restaurateur veut savoir quel chiffre d'affaires atteindre pour ne pas perdre d'argent.", q:"Quel CA minimal doit-il viser ?", o:["15 000 €","60 000 €","30 000 €"], c:1, why:"Seuil de rentabilité = charges fixes ÷ taux de marge = 30 000 ÷ 0,5 = 60 000 €."},
+      {cas:"Une PME de l'Ouest prévoit ses encaissements et décaissements mois par mois et repère un solde négatif en février.", q:"Quel outil utilise-t-elle ?", o:["Le budget de trésorerie","Le bilan social","Le tableau de répartition de la VA"], c:0, why:"Le budget de trésorerie anticipe les difficultés de paiement : la PME peut négocier un financement AVANT le creux."},
+      {cas:"Un loueur de DVD réunionnais a vu sa clientèle disparaître avec l'arrivée du streaming.", q:"Quel risque externe illustre ce cas ?", o:["Une rupture technologique rendant l'offre obsolète","Un conflit interne","Une asymétrie d'information"], c:0, why:"La rupture technologique (streaming) a rendu l'activité obsolète : un risque externe typique lié au cycle de vie."} ]
+},
+vraifaux: {
+  1:[ {p:"La qualification se prouve par un diplôme, un titre ou une expérience reconnue.", v:true, why:"Vrai : la qualification est la reconnaissance officielle (diplôme, titre, validation des acquis)."},
+      {p:"Une compétence ne s'observe que sur le diplôme.", v:false, why:"Faux : la compétence s'observe en situation de travail (savoir agir efficacement)."},
+      {p:"Le coût du travail comprend le salaire ET les cotisations sociales.", v:true, why:"Vrai : coût du travail = rémunération brute + cotisations patronales."},
+      {p:"Les relations informelles n'existent pas dans les organisations.", v:false, why:"Faux : à côté de l'organigramme officiel, les affinités et discussions de couloir créent des relations informelles bien réelles."},
+      {p:"De bonnes conditions de travail peuvent améliorer la motivation et la productivité.", v:true, why:"Vrai : conditions de travail et comportements des salariés sont liés."} ],
+  2:[ {p:"Une donnée brute devient une information quand elle prend du sens dans un contexte.", v:true, why:"Vrai : donnée + contexte + sens = information."},
+      {p:"On peut collecter et diffuser librement les données personnelles des clients.", v:false, why:"Faux : le RGPD impose consentement, sécurité et durée de conservation limitée."},
+      {p:"Le big data désigne des volumes massifs de données, variés et produits à grande vitesse.", v:true, why:"Vrai : volume, variété, vitesse — les « 3 V » des mégadonnées."},
+      {p:"Avec un PGI, chaque service doit ressaisir les mêmes données.", v:false, why:"Faux : c'est l'inverse. La base unique du PGI évite les doubles saisies."},
+      {p:"Le numérique peut créer de la rigidité si le logiciel impose des procédures trop strictes.", v:true, why:"Vrai : un outil mal adapté enferme les acteurs dans des étapes imposées — c'est la rigidité organisationnelle."} ],
+  3:[ {p:"La valeur ajoutée est partagée entre salariés, État, prêteurs, actionnaires et l'entreprise elle-même.", v:true, why:"Vrai : c'est la répartition de la VA (salaires, impôts, intérêts, dividendes, autofinancement)."},
+      {p:"Être efficient, c'est atteindre son objectif quel qu'en soit le coût.", v:false, why:"Faux : ça, c'est l'efficacité seule. L'efficience ajoute l'économie de moyens."},
+      {p:"Le chiffre d'affaires suffit à mesurer toute la performance d'une organisation.", v:false, why:"Faux : la performance est globale — commerciale, financière, sociale ET environnementale."},
+      {p:"La performance environnementale fait partie de la performance globale.", v:true, why:"Vrai : l'impact écologique est une dimension à part entière de la performance."},
+      {p:"Améliorer une performance peut en dégrader une autre.", v:true, why:"Vrai : baisser les coûts en dégradant les conditions de travail améliore le financier mais détruit le social."} ],
+  4:[ {p:"Plus l'horizon est lointain, plus l'information disponible est incertaine.", v:true, why:"Vrai : le temps est source d'incertitude ; à long terme, l'information perd en fiabilité."},
+      {p:"Le seuil de rentabilité indique le bénéfice maximal possible.", v:false, why:"Faux : c'est le CA pour lequel le résultat est NUL — ni perte ni bénéfice."},
+      {p:"Le budget de trésorerie permet d'anticiper les difficultés de paiement.", v:true, why:"Vrai : en prévoyant encaissements et décaissements, on repère les creux avant qu'ils n'arrivent."},
+      {p:"Tous les risques viennent de l'extérieur de l'organisation.", v:false, why:"Faux : les décisions de l'organisation créent aussi des risques internes (mauvais investissement, lancement sans étude…)."},
+      {p:"100 € disponibles aujourd'hui valent plus que 100 € dans cinq ans.", v:true, why:"Vrai : c'est le lien entre temps et valeur financière (incertitude, possibilité de placement)."} ]
+},
+intrus: {
+  1:[ {liste:["Personnalité","Émotion","Perception","Organigramme"], intrus:3, why:"L'organigramme relève de l'organisation ; les trois autres caractérisent l'individu."},
+      {liste:["Diplôme","Titre professionnel","Expérience validée","Savoir gérer un conflit"], intrus:3, why:"Savoir gérer un conflit est une compétence (en situation) ; les trois autres relèvent de la qualification."},
+      {liste:["Salaire brut","Cotisations patronales","Primes","Prix de vente"], intrus:3, why:"Le prix de vente concerne le client ; les trois autres composent le coût du travail."} ],
+  2:[ {liste:["Donnée","Information","Connaissance","Dividende"], intrus:3, why:"Le dividende relève de la création de valeur ; les trois autres décrivent la transformation de la donnée en ressource."},
+      {liste:["Collecter","Stocker","Traiter","Imprimer en 3D"], intrus:3, why:"Le SI collecte, stocke, traite et diffuse l'information ; l'impression 3D est une technologie de production."},
+      {liste:["PGI","Application métier","Site e-commerce","Machine à café"], intrus:3, why:"PGI, applications métier et e-commerce sont des systèmes de gestion numériques ; pas la machine à café !"} ],
+  3:[ {liste:["Salariés","État","Actionnaires","Concurrents"], intrus:3, why:"Les concurrents ne reçoivent rien de la VA ! Elle est répartie entre salariés, État, prêteurs, actionnaires et l'entreprise."},
+      {liste:["Image de marque","Notoriété","Satisfaction client","Autofinancement"], intrus:3, why:"L'autofinancement relève de la valeur financière ; les trois autres composent la valeur perçue."},
+      {liste:["Rentabilité","Profitabilité","Dividendes","Taux d'absentéisme"], intrus:3, why:"L'absentéisme est un indicateur de performance sociale ; les trois autres sont financiers."} ],
+  4:[ {liste:["Court terme","Moyen terme","Long terme","Marge"], intrus:3, why:"La marge est une notion de coût/prix ; les trois autres sont les horizons de la décision."},
+      {liste:["Enquête prévisionnelle","Budget","Seuil de rentabilité","Bilan social"], intrus:3, why:"Le bilan social mesure le passé social ; les trois autres sont des outils de prospective."},
+      {liste:["Baisse de la demande","Rupture technologique","Cyclone","Mauvais recrutement"], intrus:3, why:"Le mauvais recrutement est un risque interne (décision de l'organisation) ; les trois autres sont externes."} ]
+},
+mission: {
+  1:{ titre:"DRH d'une entreprise du Port",
+    intro:"Tu diriges les ressources humaines d'une entreprise réunionnaise de 80 salariés. Les individus, avec leurs personnalités et leurs compétences, deviennent des acteurs de l'organisation : à toi de les recruter, de les motiver et de gérer les tensions. Indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟, Emplois 👥.",
+    etapes:[
+      {scene:"Deux candidats pour un poste de vendeur : l'un a le meilleur diplôme, l'autre a brillamment géré un client difficile lors de la mise en situation.", choix:[
+        {txt:"Évaluer la qualification ET les compétences en situation", eff:{treso:0,marche:10,image:5,emploi:5}, fb:"Bonne approche : le diplôme (qualification) ne dit pas tout. La compétence s'observe en situation de travail."},
+        {txt:"Choisir uniquement sur le diplôme", eff:{treso:0,marche:-5,image:0,emploi:0}, fb:"Risqué : tu confonds qualification et compétence. Un diplômé peut être démuni face à un client mécontent."} ]},
+      {scene:"Un conflit éclate sur les nouveaux plannings : une partie de l'équipe menace de débrayer.", choix:[
+        {txt:"Ouvrir une négociation pour construire un consensus", eff:{treso:-5,marche:5,image:10,emploi:5}, fb:"Le dialogue social transforme le conflit en accord accepté par tous : l'organisation en sort renforcée."},
+        {txt:"Imposer les plannings sans discussion", eff:{treso:5,marche:-10,image:-15,emploi:-5}, fb:"Le conflit s'envenime : démotivation, absentéisme, mauvaise ambiance. L'autorité seule ne suffit pas."} ]},
+      {scene:"L'atelier est bruyant et mal ventilé ; l'absentéisme y atteint 8 % contre 4 % ailleurs.", choix:[
+        {txt:"Investir dans les conditions de travail", eff:{treso:-15,marche:5,image:10,emploi:10}, fb:"Conditions de travail et comportements sont liés : moins d'absences, plus de motivation, meilleure productivité."},
+        {txt:"Ne rien changer pour économiser", eff:{treso:5,marche:-5,image:-10,emploi:-5}, fb:"L'économie est illusoire : l'absentéisme et le turn-over coûtent cher à l'organisation."} ]},
+      {scene:"Un salarié a publié des propos déplacés sur un réseau social en citant l'entreprise.", choix:[
+        {txt:"Former toute l'équipe aux bonnes pratiques de l'identité numérique", eff:{treso:-5,marche:0,image:15,emploi:0}, fb:"L'identité numérique de chacun rejaillit sur l'organisation : former aux bonnes pratiques protège tout le monde."},
+        {txt:"Ignorer : ce qui se passe en ligne ne compte pas", eff:{treso:0,marche:-5,image:-15,emploi:0}, fb:"Erreur : les traces en ligne sont publiques et durables. L'image de l'entreprise en souffre."} ]},
+      {scene:"Tu veux récompenser l'équipe de vente qui a dépassé ses objectifs.", choix:[
+        {txt:"Verser une prime liée à des indicateurs clairs et connus de tous", eff:{treso:-10,marche:10,image:10,emploi:5}, fb:"Les incitations soutiennent la motivation quand elles s'appuient sur des indicateurs transparents (tableau de bord)."},
+        {txt:"Ne rien faire : c'est leur travail après tout", eff:{treso:5,marche:-5,image:-10,emploi:-5}, fb:"Sans reconnaissance ni rétribution, la motivation s'effrite et les meilleurs partent à la concurrence."} ]} ]},
+  2:{ titre:"Responsable numérique chez Royal Bourbon",
+    intro:"Tu pilotes la transformation numérique d'une entreprise agroalimentaire réunionnaise. L'information est une ressource stratégique : à toi d'en organiser la collecte, le partage et la protection. Indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟, Emplois 👥.",
+    etapes:[
+      {scene:"Le service marketing veut constituer un fichier clients pour des offres par SMS.", choix:[
+        {txt:"Collecter les numéros avec le consentement des clients (RGPD)", eff:{treso:-5,marche:10,image:10,emploi:0}, fb:"Les données personnelles ne s'utilisent qu'avec consentement : tu respectes le RGPD et la confiance des clients."},
+        {txt:"Acheter un fichier de numéros d'origine douteuse", eff:{treso:5,marche:5,image:-20,emploi:0}, fb:"Sanction de la CNIL et bad buzz garantis : les données personnelles sont protégées par la loi."} ]},
+      {scene:"Tu déploies un PGI qui reliera ventes, stocks et comptabilité.", choix:[
+        {txt:"Former les équipes et accompagner le changement", eff:{treso:-15,marche:15,image:5,emploi:5}, fb:"Une information saisie une fois, partagée par tous : le PGI crée de l'agilité… à condition que chacun sache l'utiliser."},
+        {txt:"Installer le logiciel sans formation", eff:{treso:-5,marche:-10,image:-5,emploi:0}, fb:"Procédures mal maîtrisées, erreurs de saisie, rejet de l'outil : le numérique devient une source de rigidité."} ]},
+      {scene:"Chaque technicien garde ses astuces de maintenance dans son carnet personnel.", choix:[
+        {txt:"Créer un wiki interne où chacun documente ses solutions", eff:{treso:-5,marche:10,image:5,emploi:5}, fb:"Le partage de l'information fait émerger une intelligence collective : le savoir de chacun profite à tous."},
+        {txt:"Laisser chacun garder son savoir pour soi", eff:{treso:0,marche:-10,image:0,emploi:0}, fb:"Quand un technicien part, son savoir part avec lui : la rétention d'information appauvrit l'organisation."} ]},
+      {scene:"Le service client est débordé par des questions simples et répétitives.", choix:[
+        {txt:"Installer un chatbot pour les questions simples, garder l'humain pour les cas complexes", eff:{treso:-10,marche:10,image:10,emploi:0}, fb:"L'IA automatise les tâches répétitives et libère du temps pour les demandes à forte valeur : bonne répartition humain/machine."},
+        {txt:"Tout automatiser et réduire l'équipe au minimum", eff:{treso:10,marche:-5,image:-15,emploi:-15}, fb:"Les clients se heurtent à un robot pour leurs vrais problèmes : l'automatisation totale dégrade la relation et l'emploi."} ]},
+      {scene:"La saison cyclonique approche. Tes données sont stockées sur un seul ordinateur au bureau.", choix:[
+        {txt:"Migrer vers le cloud avec sauvegardes et accès à distance", eff:{treso:-10,marche:10,image:5,emploi:0}, fb:"Cloud + télétravail = continuité d'activité même en cas d'alerte : le numérique rend l'organisation agile."},
+        {txt:"Ne rien changer", eff:{treso:5,marche:-15,image:-5,emploi:0}, fb:"Un dégât des eaux ou une coupure et tout s'arrête : l'information, ressource stratégique, n'était pas protégée."} ]} ]},
+  3:{ titre:"À la tête de « Saveurs Péi »",
+    intro:"Tu diriges une PME agroalimentaire réunionnaise qui crée de la valeur. À toi de la mesurer, de la répartir et de viser une performance globale : commerciale, financière, sociale et environnementale. Indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟, Emplois 👥.",
+    etapes:[
+      {scene:"L'année est excellente : la valeur ajoutée a bondi. Les actionnaires réclament le maximum de dividendes.", choix:[
+        {txt:"Répartir : primes aux salariés, dividendes raisonnables, autofinancement pour investir", eff:{treso:5,marche:5,image:10,emploi:5}, fb:"La VA se partage entre tous les acteurs qui l'ont créée — et l'autofinancement prépare l'avenir."},
+        {txt:"Tout verser en dividendes", eff:{treso:-15,marche:0,image:-10,emploi:-5}, fb:"Salariés démotivés, aucun investissement : privilégier un seul acteur fragilise la création de valeur future."} ]},
+      {scene:"Pour augmenter la marge, ton directeur propose de remplacer la vanille Bourbon par un arôme artificiel.", choix:[
+        {txt:"Garder la qualité qui fonde la valeur perçue", eff:{treso:-5,marche:10,image:15,emploi:0}, fb:"Les clients paient pour la qualité péi : rogner dessus détruirait la valeur perçue et la fidélité."},
+        {txt:"Passer à l'arôme artificiel", eff:{treso:10,marche:-15,image:-15,emploi:0}, fb:"La marge unitaire monte… mais avis négatifs et clients perdus : la relation prix/coût/qualité est rompue."} ]},
+      {scene:"Pour piloter l'entreprise, que mets-tu en place ?", choix:[
+        {txt:"Un tableau de bord : CA, marge, satisfaction, absentéisme, déchets", eff:{treso:0,marche:10,image:5,emploi:5}, fb:"Des indicateurs variés mesurent la performance dans toutes ses dimensions et permettent de comparer et corriger."},
+        {txt:"Suivre uniquement le chiffre d'affaires", eff:{treso:0,marche:5,image:-5,emploi:-5}, fb:"Le CA monte… mais tu ne vois ni l'absentéisme qui explose ni les coûts qui dérapent : pilotage borgne."} ]},
+      {scene:"Le bilan social révèle un absentéisme de 9 %, bien au-dessus du secteur.", choix:[
+        {txt:"Analyser les causes et améliorer les conditions de travail", eff:{treso:-10,marche:5,image:10,emploi:10}, fb:"La performance sociale est une dimension de la performance globale : la soigner profite à toutes les autres."},
+        {txt:"Sanctionner les absents", eff:{treso:0,marche:-5,image:-10,emploi:-5}, fb:"Tu traites le symptôme, pas la cause : le climat se dégrade encore et la performance sociale s'effondre."} ]},
+      {scene:"Ta facture d'électricité explose. Un installateur propose des panneaux solaires sur le toit de l'usine.", choix:[
+        {txt:"Investir dans le solaire", eff:{treso:-15,marche:5,image:15,emploi:0}, fb:"Performance environnementale ET économies à long terme : sous le soleil réunionnais, l'investissement a du sens."},
+        {txt:"Refuser l'investissement", eff:{treso:5,marche:0,image:-5,emploi:0}, fb:"Choix prudent à court terme, mais la facture continue de grimper et l'image écologique reste terne."} ]} ]},
+  4:{ titre:"Dirigeant face au temps et aux risques",
+    intro:"Tu diriges une entreprise réunionnaise dans un environnement incertain : saisons, cyclones, technologies, fournisseurs… Gérer, c'est prévoir et prendre des risques calculés. Indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟, Emplois 👥.",
+    etapes:[
+      {scene:"Ton équipe veut lancer immédiatement une nouvelle gamme de boissons.", choix:[
+        {txt:"Réaliser d'abord une enquête prévisionnelle auprès des clients", eff:{treso:-5,marche:15,image:5,emploi:0}, fb:"La prospective réduit l'incertitude : tu lances la gamme en connaissant les intentions d'achat."},
+        {txt:"Lancer sans étude", eff:{treso:-20,marche:-5,image:-5,emploi:0}, fb:"Risque interne typique : la demande n'était pas au rendez-vous et les invendus s'accumulent."} ]},
+      {scene:"Ton budget de trésorerie prévoit un solde négatif en février, après les fêtes.", choix:[
+        {txt:"Négocier dès maintenant un découvert avec la banque", eff:{treso:10,marche:0,image:5,emploi:0}, fb:"Anticiper grâce à la démarche budgétaire : tu obtiens de meilleures conditions AVANT la difficulté."},
+        {txt:"Attendre de voir en février", eff:{treso:-15,marche:0,image:-10,emploi:0}, fb:"Impayés, agios, fournisseurs inquiets : subir coûte toujours plus cher que prévoir."} ]},
+      {scene:"Tu hésites à ouvrir un second point de vente à Saint-Benoît. Charges fixes prévues : 18 000 €, marge sur coûts variables : 40 %.", choix:[
+        {txt:"Calculer le seuil de rentabilité (45 000 € de CA) avant de décider", eff:{treso:0,marche:10,image:5,emploi:5}, fb:"18 000 ÷ 0,4 = 45 000 € : tu sais quel CA minimal viser et tu décides en connaissance de cause."},
+        {txt:"Ouvrir sans calcul, au feeling", eff:{treso:-15,marche:5,image:0,emploi:5}, fb:"Sans seuil de rentabilité, tu découvres trop tard que le point de vente perd de l'argent chaque mois."} ]},
+      {scene:"Ton produit phare se vend bien, mais une nouvelle technologie émerge chez les concurrents métropolitains.", choix:[
+        {txt:"Organiser une veille et préparer le renouvellement de l'offre", eff:{treso:-5,marche:10,image:5,emploi:0}, fb:"La veille informationnelle permet d'anticiper la rupture technologique avant que ton produit ne devienne obsolète."},
+        {txt:"Rester sur tes acquis", eff:{treso:5,marche:-15,image:-5,emploi:0}, fb:"Comme les vidéoclubs face au streaming : ignorer le cycle de vie des produits mène à l'obsolescence."} ]},
+      {scene:"Ton unique fournisseur d'emballages est en métropole ; une grève portuaire menace.", choix:[
+        {txt:"Diversifier les approvisionnements (second fournisseur, stock de sécurité)", eff:{treso:-10,marche:5,image:5,emploi:0}, fb:"Tu réduis le risque externe de dépendance : une rupture d'approvisionnement ne t'arrêtera plus."},
+        {txt:"Garder le fournisseur unique, moins cher", eff:{treso:5,marche:-10,image:-5,emploi:0}, fb:"L'économie se paie cher : à la première grève, la production s'arrête. Île oblige, l'approvisionnement est un risque majeur."} ]} ]}
+},
+docs: {
+  1:[ {titre:"Extrait de fiche de poste — Vendeur(se) polyvalent(e)",
+       source:"Magasin de bricolage, Saint-Pierre (974)",
+       texte:"Intitulé : Vendeur(se) polyvalent(e) — rayon outillage.\nRattachement hiérarchique : responsable de rayon.\nQualification requise : Bac professionnel Commerce ou expérience équivalente validée.\nCompétences attendues : accueillir et conseiller les clients, gérer les réclamations avec calme, travailler en équipe, tenir le rayon (réassort, étiquetage).\nHoraires : du mardi au samedi, 35 h hebdomadaires.",
+       questions:[
+         {q:"Quelle est la qualification exigée pour ce poste ?", o:["Savoir gérer les réclamations","Le Bac professionnel Commerce (ou expérience validée)","Travailler le samedi"], c:1, why:"La qualification est la reconnaissance officielle : diplôme, titre ou expérience validée. Ici, le Bac pro Commerce."},
+         {q:"« Gérer les réclamations avec calme » est…", o:["une qualification","une compétence","un rituel"], c:1, why:"C'est un savoir-agir en situation de travail : une compétence (qui mobilise aussi le contrôle de soi)."},
+         {q:"Le rattachement au responsable de rayon traduit…", o:["la relation d'autorité hiérarchique","une relation informelle","l'identité numérique"], c:0, why:"La fiche de poste inscrit le salarié dans la hiérarchie : c'est la relation d'autorité formelle de l'organisation."}]},
+      {titre:"Tableau de bord social — Atelier de conditionnement (extrait mensuel)",
+       source:"Entreprise agroalimentaire, zone industrielle de Saint-Pierre",
+       texte:"Production du mois : 24 000 unités.\nHeures travaillées : 1 200 heures.\nSalaires bruts versés : 36 000 €.\nCotisations sociales patronales : 14 400 €.\nTaux d'absentéisme : 8 % (moyenne du secteur : 4 %).",
+       questions:[
+         {q:"Quelle est la productivité du travail de l'atelier ?", o:["20 unités par heure","2 unités par heure","1 200 unités par heure"], c:0, why:"Productivité = production ÷ heures = 24 000 ÷ 1 200 = 20 unités/heure."},
+         {q:"Quel est le coût du travail total du mois ?", o:["36 000 €","14 400 €","50 400 €"], c:2, why:"Coût du travail = salaires bruts + cotisations patronales = 36 000 + 14 400 = 50 400 €."},
+         {q:"Que suggère le taux d'absentéisme de 8 % ?", o:["Tout va bien : c'est la moyenne","Il faut interroger les conditions de travail","Il faut baisser les salaires"], c:1, why:"Deux fois la moyenne du secteur : un signal d'alerte qui invite à examiner les conditions de travail et le climat social."}]} ],
+  2:[ {titre:"Charte d'utilisation des données clients (extrait)",
+       source:"Enseigne de distribution réunionnaise — document interne",
+       texte:"Art. 1 — Les données clients (nom, e-mail, téléphone, historique d'achats) ne sont collectées qu'avec le consentement explicite de la personne.\nArt. 2 — Elles sont conservées au maximum trois ans après le dernier achat, puis supprimées.\nArt. 3 — Tout client peut demander l'accès à ses données, leur rectification ou leur suppression.\nArt. 4 — Le responsable du fichier répond de leur sécurité devant la CNIL.",
+       questions:[
+         {q:"Quelle réglementation cette charte applique-t-elle ?", o:["Le RGPD (protection des données personnelles)","Le Code de la route","La loi sur l'open data"], c:0, why:"Consentement, durée de conservation, droits d'accès et de suppression, contrôle de la CNIL : c'est le RGPD."},
+         {q:"Pourquoi le consentement est-il exigé (art. 1) ?", o:["Pour faire joli dans la charte","Parce que ces données identifient une personne : ce sont des données à caractère personnel","Parce que les données coûtent cher"], c:1, why:"Toute donnée se rapportant à une personne identifiable est protégée : son utilisation exige le consentement."},
+         {q:"L'article 3 garantit au client…", o:["un droit d'accès, de rectification et de suppression","une remise de 10 %","l'anonymat sur les réseaux sociaux"], c:0, why:"Le RGPD donne à chacun la maîtrise de ses données : y accéder, les corriger, les faire effacer."}]},
+      {titre:"Description du processus de commande en ligne",
+       source:"Site e-commerce d'une entreprise du Port",
+       texte:"Étape 1 — Le client passe commande sur le site.\nÉtape 2 — Le paiement est validé par la plateforme sécurisée.\nÉtape 3 — Le PGI transmet la commande à l'entrepôt, met à jour le stock et la comptabilité.\nÉtape 4 — Un SMS automatique informe le client de l'expédition.\nÉtape 5 — Le transporteur livre le colis.",
+       questions:[
+         {q:"Combien d'étapes ce processus enchaîne-t-il ?", o:["Trois","Cinq","Dix"], c:1, why:"Un processus est un enchaînement ordonné d'activités : ici, cinq étapes, de la commande à la livraison."},
+         {q:"Quel outil partage la même information entre entrepôt, stock et comptabilité (étape 3) ?", o:["Le PGI, grâce à sa base de données unique","Le SMS","Le transporteur"], c:0, why:"Le progiciel de gestion intégré relie les services autour d'une information saisie une seule fois."},
+         {q:"Le SMS envoyé sans intervention humaine (étape 4) illustre…", o:["la rétention d'information","l'automatisation d'une tâche","l'open data"], c:1, why:"Une tâche répétitive prise en charge par le système : c'est l'automatisation permise par le numérique."}]} ],
+  3:[ {titre:"Compte de résultat simplifié — « Saveurs Péi » SARL (en k€)",
+       source:"Exercice clos au 31 décembre — Saint-Pierre (974)",
+       texte:"PRODUITS — Ventes de produits finis : 820.\nCHARGES — Achats de matières consommées : 310 ; Services extérieurs (transport, énergie) : 90 ; Salaires et cotisations : 260 ; Impôts : 40 ; Intérêts versés à la banque : 10.\nRÉSULTAT DE L'EXERCICE (bénéfice) : 110.",
+       questions:[
+         {q:"Quelle est la valeur ajoutée de l'entreprise ?", o:["820 k€","420 k€","110 k€"], c:1, why:"VA = production − consommations intermédiaires = 820 − (310 + 90) = 420 k€."},
+         {q:"Quel acteur reçoit la plus grande part de cette valeur ajoutée ?", o:["L'État (40)","Les salariés (260)","La banque (10)"], c:1, why:"Avec 260 k€ de salaires et cotisations, les salariés sont les premiers bénéficiaires de la répartition de la VA."},
+         {q:"Le bénéfice de 110 k€ mesure…", o:["la valeur perçue","la valeur financière créée sur l'exercice","l'identité numérique"], c:1, why:"Le résultat du compte de résultat (produits − charges) mesure la valeur financière produite par l'organisation."}]},
+      {titre:"Tableau de bord trimestriel — Hôtel des Lataniers",
+       source:"Direction de l'hôtel, Saint-Gilles-les-Bains",
+       texte:"Taux d'occupation : 78 % (objectif : 75 %).\nNote de satisfaction client : 4,6 / 5.\nChiffre d'affaires : + 6 % par rapport au même trimestre l'an dernier.\nTaux d'absentéisme du personnel : 9 % (en hausse de 3 points).\nConsommation d'eau : + 12 %.",
+       questions:[
+         {q:"L'objectif commercial (75 % d'occupation) est dépassé : l'hôtel est…", o:["efficace sur cet objectif","forcément efficient sur tous les plans","en difficulté commerciale"], c:0, why:"L'objectif est atteint et dépassé : il y a efficacité. L'efficience exigerait d'examiner les moyens consommés."},
+         {q:"Quels indicateurs signalent un problème ?", o:["Le taux d'occupation et la satisfaction","L'absentéisme et la consommation d'eau","Le chiffre d'affaires"], c:1, why:"Absentéisme en hausse (performance sociale) et eau +12 % (performance environnementale) se dégradent."},
+         {q:"Que conclure sur la performance de l'hôtel ?", o:["Elle est globale : tout va bien","Bonne performance commerciale, mais performance globale fragilisée par le social et l'environnemental","Il faut fermer l'hôtel"], c:1, why:"Les dimensions de la performance peuvent être contradictoires : le commercial progresse pendant que le social et l'environnemental se dégradent."}]} ],
+  4:[ {titre:"Budget de trésorerie — Janvier à mars (en k€)",
+       source:"« Atelier Vanille Bleue », artisan transformateur — Saint-Philippe",
+       texte:"JANVIER — Encaissements : 40 ; Décaissements : 38 ; Solde du mois : +2 ; Solde cumulé : +2.\nFÉVRIER — Encaissements : 22 ; Décaissements : 31 ; Solde du mois : −9 ; Solde cumulé : −7.\nMARS — Encaissements : 35 ; Décaissements : 30 ; Solde du mois : +5 ; Solde cumulé : −2.",
+       questions:[
+         {q:"Quel est le mois critique pour la trésorerie ?", o:["Janvier","Février","Mars"], c:1, why:"En février, le solde du mois est de −9 et le solde cumulé passe à −7 : la caisse est à découvert."},
+         {q:"Que permet ce budget de trésorerie ?", o:["D'anticiper la difficulté et de négocier un financement AVANT février","De connaître la valeur perçue","De calculer la productivité"], c:0, why:"La démarche budgétaire sert à prévoir : l'entreprise peut négocier un découvert ou décaler un décaissement à temps."},
+         {q:"Fin mars, le solde cumulé est de −2. Qu'en déduire ?", o:["Tout est rentré dans l'ordre","La situation s'améliore mais la trésorerie reste négative","L'entreprise a fait faillite"], c:1, why:"Le solde mensuel redevient positif (+5) mais le cumul reste négatif (−2) : la vigilance s'impose encore."}]},
+      {titre:"Note interne — Projet de gamme « zéro plastique »",
+       source:"Direction d'une PME de boissons, Saint-Denis",
+       texte:"Enquête réalisée auprès de 400 clients : 64 % se déclarent prêts à acheter la nouvelle gamme.\nCharges fixes supplémentaires liées au projet : 18 000 € par an.\nMarge sur coûts variables prévue : 40 % du chiffre d'affaires.\nRisques identifiés : fournisseur unique d'emballages situé en métropole ; hausse possible du prix du fret maritime.",
+       questions:[
+         {q:"Quel chiffre d'affaires la gamme doit-elle atteindre pour ne pas perdre d'argent ?", o:["18 000 €","45 000 €","7 200 €"], c:1, why:"Seuil de rentabilité = charges fixes ÷ taux de marge = 18 000 ÷ 0,40 = 45 000 €."},
+         {q:"L'enquête auprès des 400 clients est…", o:["un outil de prospective qui réduit l'incertitude","une donnée personnelle","un risque interne"], c:0, why:"L'enquête prévisionnelle éclaire la décision en estimant la demande future : c'est de la prospective."},
+         {q:"Le fournisseur unique en métropole constitue…", o:["un risque externe de dépendance d'approvisionnement","une opportunité sans danger","un outil de planification"], c:0, why:"Dépendre d'un seul fournisseur lointain expose à la rupture d'approvisionnement : un risque externe majeur sur une île."}]} ]
+},
+intrusExtra: {
+  1:[ {liste:["Statut dans le groupe","Identité","Esprit d'équipe","Compte de résultat"], intrus:3, why:"Le compte de résultat est un document comptable ; les trois autres relèvent des interactions individu/groupe."},
+      {liste:["Culture","Normes","Rituels","Productivité"], intrus:3, why:"La productivité est un indicateur chiffré ; les trois autres caractérisent l'identité de l'organisation."},
+      {liste:["Leadership","Autorité","Influence","Obsolescence"], intrus:3, why:"L'obsolescence concerne les produits et technologies ; les trois autres sont des phénomènes relationnels."},
+      {liste:["Photo de profil","Publications en ligne","Commentaires postés","Fiche de paie"], intrus:3, why:"La fiche de paie relève de la rémunération ; les trois autres composent l'identité numérique."},
+      {liste:["Bruit de l'atelier","Horaires","Sécurité","Part de marché"], intrus:3, why:"La part de marché mesure la performance commerciale ; les trois autres sont des conditions de travail."},
+      {liste:["Conflit","Négociation","Consensus","Cloud computing"], intrus:3, why:"Le cloud est une technologie ; les trois autres décrivent la dynamique des relations sociales au travail."},
+      {liste:["Émetteur","Récepteur","Message","Dividende"], intrus:3, why:"Le dividende relève de la valeur financière ; les trois autres sont des composantes de la communication."} ],
+  2:[ {liste:["Nom","Adresse e-mail","Numéro de téléphone","Météo du jour"], intrus:3, why:"La météo n'identifie personne ; les trois autres sont des données à caractère personnel protégées par le RGPD."},
+      {liste:["Volume","Vitesse","Variété","Vieillesse"], intrus:3, why:"Les « 3 V » du big data sont volume, vitesse et variété — pas la vieillesse !"},
+      {liste:["Wiki interne","Forum d'entraide","Document partagé","Carnet personnel fermé à clé"], intrus:3, why:"Le carnet gardé pour soi est de la rétention ; les trois autres outils nourrissent l'intelligence collective."},
+      {liste:["Open data","Données publiques","Réutilisation libre","Fichier clients confidentiel"], intrus:3, why:"Le fichier clients est protégé (données personnelles) ; les trois autres définissent les données ouvertes."},
+      {liste:["Télétravail","Mobilité","Cloud","Pointeuse mécanique"], intrus:3, why:"La pointeuse mécanique appartient au monde d'avant ; les trois autres incarnent l'agilité numérique."},
+      {liste:["Commande","Préparation","Livraison","Personnalité"], intrus:3, why:"La personnalité caractérise l'individu ; les trois autres sont des étapes d'un processus de gestion."},
+      {liste:["Chatbot","Tri automatique des e-mails","Prévision automatisée","Cahier de brouillon"], intrus:3, why:"Le cahier de brouillon n'automatise rien ; les trois autres illustrent l'IA et l'automatisation des tâches."} ],
+  3:[ {liste:["Chiffre d'affaires","Part de marché","Fidélité","Émissions de CO₂"], intrus:3, why:"Les émissions de CO₂ mesurent la performance environnementale ; les trois autres la performance commerciale."},
+      {liste:["Bilan social","Absentéisme","Accidents du travail","Marge commerciale"], intrus:3, why:"La marge est un indicateur financier ; les trois autres relèvent de la performance sociale."},
+      {liste:["Prix","Coût","Marge","Rituel"], intrus:3, why:"Le rituel relève de la culture d'organisation ; les trois autres forment le triptyque prix/coût/marge."},
+      {liste:["Salaires","Impôts","Intérêts","Consommations intermédiaires"], intrus:3, why:"Les consommations intermédiaires se déduisent AVANT le calcul de la VA ; les trois autres en reçoivent une part."},
+      {liste:["Recyclage des déchets","Émissions de CO₂","Consommation d'énergie","Cours de bourse"], intrus:3, why:"Le cours de bourse mesure la valeur boursière ; les trois autres la performance environnementale."},
+      {liste:["Compte de résultat","Bilan","Résultat de l'exercice","Enquête de satisfaction"], intrus:3, why:"L'enquête de satisfaction mesure la valeur perçue ; les trois autres sont des éléments comptables (valeur financière)."},
+      {liste:["Image de marque","Notoriété","Avis en ligne","Autofinancement"], intrus:3, why:"L'autofinancement est la part de VA conservée par l'entreprise ; les trois autres nourrissent la valeur perçue."} ],
+  4:[ {liste:["Veille","Information actualisée","Abonnement à la presse pro","Donnée périmée"], intrus:3, why:"La donnée périmée est exactement ce que la veille permet d'éviter ; les trois autres entretiennent une information fraîche."},
+      {liste:["Encaissements","Décaissements","Solde de trésorerie","Notoriété"], intrus:3, why:"La notoriété relève de la valeur perçue ; les trois autres composent le budget de trésorerie."},
+      {liste:["Charges fixes","Taux de marge sur coûts variables","Seuil de rentabilité","Leadership"], intrus:3, why:"Le leadership est un phénomène relationnel ; les trois autres servent au calcul du seuil de rentabilité."},
+      {liste:["Lancement","Croissance","Déclin","Esprit d'équipe"], intrus:3, why:"L'esprit d'équipe relève du groupe ; les trois autres sont des phases du cycle de vie d'un produit."},
+      {liste:["Dépendance énergétique","Rupture d'approvisionnement","Hausse du fret","Mauvais choix d'investissement"], intrus:3, why:"Le mauvais investissement est un risque interne (décision propre) ; les trois autres sont des risques externes."},
+      {liste:["Planning","Calendrier prévisionnel","Outil de simulation","Compte Instagram"], intrus:3, why:"Le compte Instagram relève de la communication ; les trois autres sont des outils de gestion du temps."},
+      {liste:["Saisonnalité touristique","Durée légale du travail","Date de publication des comptes","Couleur du logo"], intrus:3, why:"La couleur du logo n'a rien de temporel ; les trois autres sont des contraintes qui découpent le temps en périodes."} ],
+},
+casExtra: {
+  1:[ {cas:"L'annonce de Royal Bourbon exige un BTS ; lors de l'entretien, on demande au candidat de gérer un imprévu simulé.", q:"Quelles approches l'entreprise combine-t-elle ?", o:["Qualification (diplôme) ET compétence (mise en situation)","Deux fois la qualification","Deux fois la compétence"], c:0, why:"Le diplôme atteste la qualification ; la mise en situation révèle la compétence : les deux approches se complètent."},
+      {cas:"Chez un transporteur réunionnais, salariés et direction, en désaccord sur les plannings, signent finalement un accord après négociation.", q:"Comment décrire cette évolution ?", o:["Du conflit au consensus grâce à la négociation","Une rétention d'information","Une externalisation"], c:0, why:"Le dialogue social a transformé une relation conflictuelle en accord accepté : c'est le consensus."},
+      {cas:"À l'embouteillage d'Edena, un chef d'équipe obtient l'adhésion de tous sans jamais hausser le ton ; on le suit naturellement.", q:"Quelle notion reconnaît-on ?", o:["Le leadership","L'autorité disciplinaire","La rigidité organisationnelle"], c:0, why:"Entraîner les autres par l'influence et la confiance, indépendamment des sanctions : c'est le leadership."},
+      {cas:"Sur une fiche de paie : salaire brut 2 000 €, cotisations patronales 800 €.", q:"Quel est le coût du travail pour l'employeur ?", o:["2 000 €","2 800 €","800 €"], c:1, why:"Coût du travail = rémunération brute + cotisations patronales = 2 000 + 800 = 2 800 €."},
+      {cas:"Une entreprise de Sainte-Marie installe la climatisation et de nouveaux sièges dans son atelier ; six mois après, l'absentéisme recule.", q:"Quel lien ce cas illustre-t-il ?", o:["Conditions de travail → comportements des salariés","Open data → information","Prix → marge"], c:0, why:"Améliorer les conditions de travail agit sur la motivation, la santé et la présence : le lien est direct."},
+      {cas:"Un nouveau salarié observe que tout le monde se tutoie, mange ensemble le vendredi et porte le polo de l'entreprise.", q:"Que découvre-t-il ?", o:["La culture, les codes et les rituels de l'organisation","Le seuil de rentabilité","Le bilan comptable"], c:0, why:"Tutoiement, repas partagé, tenue commune : autant de codes et rituels qui révèlent la culture de l'organisation."} ],
+  2:[ {cas:"Une start-up de Saint-Denis croise les données publiques de la Région sur les bus avec la météo pour créer une appli d'horaires intelligente.", q:"Quelle ressource exploite-t-elle ?", o:["L'open data (données ouvertes)","Des données personnelles volées","Le bilan social"], c:0, why:"Les données publiques librement réutilisables (open data) deviennent, retraitées, une information à forte valeur."},
+      {cas:"Dans le SI d'une entreprise, le stagiaire ne peut pas consulter les salaires, mais le DRH oui.", q:"Que montre cette différence ?", o:["Chacun a des rôles et des droits définis dans l'environnement numérique","Le SI est en panne","Une rétention d'information illégale"], c:0, why:"Se situer dans un environnement numérique, c'est connaître ses rôles, ses droits et ses responsabilités d'accès."},
+      {cas:"Le logiciel de caisse d'une boutique impose dix écrans de validation pour un simple échange d'article ; les files s'allongent.", q:"Qu'illustre ce cas ?", o:["La rigidité organisationnelle créée par l'outil numérique","L'intelligence collective","L'open data"], c:0, why:"Quand le logiciel impose des procédures inadaptées, le numérique contraint au lieu de servir : c'est la rigidité."},
+      {cas:"Une marque péi anime une communauté en ligne où les clients partagent recettes et astuces autour de ses produits.", q:"Quel usage du numérique reconnaît-on ?", o:["Les communautés en ligne et réseaux sociaux","Le budget de trésorerie","La pointeuse"], c:0, why:"La marque s'appuie sur l'e-communication et sa communauté : partage d'information et fidélisation."},
+      {cas:"Avant transformation : « 17 ; 23 ; 31 ». Après : « les ventes augmentent chaque mois du trimestre ».", q:"Quelle étape s'est produite ?", o:["Des données ont été transformées en information","Une connaissance a été supprimée","Un processus a été externalisé"], c:0, why:"Les nombres bruts (données), mis en contexte et interprétés, prennent du sens : ils deviennent une information."},
+      {cas:"Une PME sauvegarde automatiquement chaque soir ses fichiers sur des serveurs distants accessibles par Internet.", q:"Quelle solution utilise-t-elle ?", o:["L'informatique en nuage (cloud)","Le big data","La fiche de poste"], c:0, why:"Stockage distant accessible via Internet : c'est le cloud, qui sécurise l'information et permet la mobilité."} ],
+  3:[ {cas:"Compte de résultat d'une PME : produits 500 k€, charges 450 k€.", q:"Quel est son résultat et que mesure-t-il ?", o:["Un bénéfice de 50 k€ : la valeur financière créée","Une perte de 50 k€","Une valeur ajoutée de 950 k€"], c:0, why:"Produits − charges = 500 − 450 = +50 k€ de bénéfice : c'est la valeur financière de l'exercice."},
+      {cas:"Aux Brasseries de Bourbon, le chiffre d'affaires progresse, mais le bilan social révèle un absentéisme en forte hausse.", q:"Que montre ce cas ?", o:["Les performances peuvent être contradictoires entre elles","La performance est forcément globale","Le CA mesure le social"], c:0, why:"Performance commerciale en hausse, performance sociale en baisse : les dimensions peuvent s'opposer."},
+      {cas:"Pour gagner un marché, une entreprise baisse son prix de 10 % sans réduire ses coûts.", q:"Quelle est la conséquence directe ?", o:["Sa marge unitaire diminue","Sa valeur ajoutée disparaît","Son identité numérique change"], c:0, why:"Marge = prix − coût : si le prix baisse à coût constant, la marge se réduit d'autant."},
+      {cas:"Une grande surface réunionnaise donne chaque soir ses invendus alimentaires à une association d'aide.", q:"Quelle forme de valeur crée-t-elle ?", o:["De la valeur partenariale","De la valeur boursière","Aucune valeur"], c:0, why:"La valeur créée bénéficie à des partenaires au-delà des actionnaires : c'est la valeur partenariale."},
+      {cas:"Une usine d'embouteillage réduit de 20 % sa consommation d'eau grâce à un circuit de recyclage.", q:"Quelle performance améliore-t-elle ?", o:["Environnementale","Boursière","Commerciale uniquement"], c:0, why:"Réduire l'impact écologique de l'activité améliore la performance environnementale (et souvent l'image)."},
+      {cas:"Après une bonne année, le dirigeant hésite : verser plus de dividendes ou conserver le bénéfice pour acheter une machine.", q:"Quel arbitrage réalise-t-il ?", o:["Dividendes (actionnaires) contre autofinancement (investissement)","Prix contre coût","Donnée contre information"], c:0, why:"La part de valeur conservée (autofinancement) finance l'avenir ; la part distribuée rémunère les actionnaires : il faut arbitrer."} ],
+  4:[ {cas:"Chaque semaine, la gérante d'une boutique de Saint-Paul lit la presse professionnelle et surveille les nouveautés de ses concurrents.", q:"Quelle pratique adopte-t-elle ?", o:["La veille informationnelle","La rétention d'information","L'externalisation"], c:0, why:"Surveiller en continu son environnement pour disposer d'une information actualisée : c'est la veille."},
+      {cas:"Un commercial sait depuis un mois qu'un gros client envisage de partir, mais ne dit rien à sa direction.", q:"Quel phénomène reconnaît-on ?", o:["Une rétention d'information (asymétrie)","Une enquête prévisionnelle","Un consensus"], c:0, why:"Il détient une information cruciale qu'il garde pour lui : l'asymétrie d'information dégrade la décision collective."},
+      {cas:"Persuadé de son idée, un gérant achète une machine à 80 000 € sans aucune étude de la demande. Les ventes ne suivent pas.", q:"Comment qualifier ce risque ?", o:["Un risque interne, lié à la décision du dirigeant","Un risque externe (cyclone)","Une obsolescence subie"], c:0, why:"Le danger vient de la décision de l'organisation elle-même : investissement sans prospective = risque interne."},
+      {cas:"Une entreprise réunionnaise dépend d'un seul fournisseur métropolitain ; une grève portuaire bloque ses livraisons trois semaines.", q:"Quel risque s'est réalisé ?", o:["Un risque externe d'approvisionnement (dépendance)","Un risque de leadership","Un risque d'efficience"], c:0, why:"Dépendre d'un fournisseur unique et lointain expose à la rupture d'approvisionnement — risque majeur en milieu insulaire."},
+      {cas:"Pour produire davantage, une usine augmente ses cadences… et la quantité de déchets plastiques rejetés.", q:"Que doit-elle prendre en compte ?", o:["Les conséquences écologiques de la recherche de performance","La couleur de son logo","Le statut de ses groupes"], c:0, why:"L'amélioration de la performance n'est pas sans risque : l'empreinte environnementale doit être mesurée et limitée."},
+      {cas:"Un hôtelier de l'Ouest recrute deux saisonniers pour décembre et lance en parallèle un projet d'extension prévu pour dans quatre ans.", q:"Que distingue-t-il ?", o:["Le court terme et le long terme (horizons)","Le prix et le coût","La donnée et la connaissance"], c:0, why:"Recruter pour la saison relève du court terme ; l'extension engage le long terme : deux horizons de décision."} ],
+},
+missionExtra: {
+  1:[ {scene:"Un manager refuse d'embaucher un candidat « trop jeune pour être fiable », sans même lire son dossier.", choix:[
+        {txt:"Rappeler que c'est un stéréotype et évaluer le candidat sur ses compétences", eff:{treso:0,marche:5,image:10,emploi:5}, fb:"Les stéréotypes faussent la perception : évaluer les compétences réelles évite de passer à côté d'un bon profil."},
+        {txt:"Suivre l'avis du manager", eff:{treso:0,marche:-5,image:-10,emploi:-5}, fb:"Décider sur un stéréotype, c'est se priver de talents et risquer la discrimination."} ]},
+      {scene:"Tu dois mesurer l'activité de l'atelier pour préparer les entretiens annuels.", choix:[
+        {txt:"Construire un tableau de bord : production, heures, absentéisme", eff:{treso:0,marche:5,image:5,emploi:0}, fb:"Des indicateurs d'activité et de productivité objectivent l'évaluation et la rétribution du travail."},
+        {txt:"Évaluer « au ressenti »", eff:{treso:0,marche:-5,image:-5,emploi:-5}, fb:"Sans indicateurs, l'évaluation paraît arbitraire : frustrations et sentiment d'injustice garantis."} ]},
+      {scene:"Une graphiste demande à passer en télétravail deux jours par semaine.", choix:[
+        {txt:"Accepter avec des objectifs clairs et un point hebdomadaire", eff:{treso:5,marche:0,image:10,emploi:5}, fb:"Les nouveaux liens de travail (distance, autonomie) fonctionnent quand le cadre et la confiance sont posés."},
+        {txt:"Refuser par principe", eff:{treso:0,marche:0,image:-10,emploi:-5}, fb:"Refus sans motif : démotivation et risque de départ vers une organisation plus souple."} ]} ],
+  2:[ {scene:"La Région publie en open data les flux touristiques par commune.", choix:[
+        {txt:"Croiser ces données ouvertes avec tes ventes pour adapter l'offre", eff:{treso:0,marche:15,image:0,emploi:0}, fb:"Manipuler l'open data crée une information nouvelle : tu adaptes ton offre aux flux réels de visiteurs."},
+        {txt:"Ignorer ces données publiques", eff:{treso:0,marche:-5,image:0,emploi:0}, fb:"Gratuites et fiables, ces données auraient éclairé tes décisions : une ressource gâchée."} ]},
+      {scene:"Un stagiaire demande l'accès complet au fichier paie « pour apprendre ».", choix:[
+        {txt:"Limiter ses droits d'accès à ce que sa mission exige", eff:{treso:0,marche:0,image:10,emploi:0}, fb:"Dans un environnement numérique, chacun a des rôles, des droits et des responsabilités : l'accès se justifie par la mission."},
+        {txt:"Lui donner tous les accès", eff:{treso:0,marche:0,image:-15,emploi:0}, fb:"Données sensibles exposées sans nécessité : une faille de sécurité et une faute de gestion du SI."} ]},
+      {scene:"Ton site e-commerce note chaque clic des visiteurs. La direction veut tout conserver « pour toujours, on ne sait jamais ».", choix:[
+        {txt:"Définir une durée de conservation et informer les visiteurs", eff:{treso:0,marche:5,image:10,emploi:0}, fb:"Le RGPD impose des durées limitées et la transparence : la confiance des clients est aussi un actif."},
+        {txt:"Tout garder indéfiniment en secret", eff:{treso:0,marche:0,image:-15,emploi:0}, fb:"Conservation illimitée et opaque de données personnelles : sanction et perte de confiance à la clé."} ]} ],
+  3:[ {scene:"Tes clients fidèles représentent 60 % du chiffre d'affaires.", choix:[
+        {txt:"Lancer un programme de fidélité et mesurer le taux de réachat", eff:{treso:-5,marche:15,image:5,emploi:0}, fb:"La fidélité est un pilier de la performance commerciale : la mesurer permet de la renforcer."},
+        {txt:"Concentrer tous les efforts sur les nouveaux clients", eff:{treso:-10,marche:5,image:0,emploi:0}, fb:"Conquérir coûte plus cher que fidéliser : tu négliges la base qui fait vivre l'entreprise."} ]},
+      {scene:"Sur les réseaux, un avis négatif circulant beaucoup critique ton service de livraison.", choix:[
+        {txt:"Répondre publiquement, corriger le problème et le faire savoir", eff:{treso:-5,marche:5,image:15,emploi:0}, fb:"L'e-réputation se gère : une réponse rapide et honnête transforme une critique en preuve de sérieux."},
+        {txt:"Supprimer le commentaire et ne rien changer", eff:{treso:0,marche:-5,image:-15,emploi:0}, fb:"Censurer sans corriger aggrave tout : la valeur perçue s'effondre quand la confiance est trahie."} ]},
+      {scene:"Deux ateliers produisent la même quantité, mais l'un consomme 30 % d'énergie en plus.", choix:[
+        {txt:"Analyser et aligner l'atelier énergivore sur le plus efficient", eff:{treso:10,marche:0,image:5,emploi:0}, fb:"Même résultat, moins de ressources : tu améliores l'efficience des processus (et la performance environnementale)."},
+        {txt:"Ne rien changer puisque la production est identique", eff:{treso:-5,marche:0,image:-5,emploi:0}, fb:"Être efficace ne suffit pas : ignorer l'efficience, c'est laisser filer marge et énergie chaque mois."} ]} ],
+  4:[ {scene:"La saison cyclonique commence dans deux mois.", choix:[
+        {txt:"Préparer un plan : assurance à jour, stock de sécurité, sauvegardes", eff:{treso:-10,marche:5,image:10,emploi:0}, fb:"Le risque climatique ne se supprime pas, mais ses conséquences se limitent par l'anticipation."},
+        {txt:"On verra bien, ça passera à côté", eff:{treso:5,marche:-10,image:-10,emploi:0}, fb:"Sans préparation, le premier coup de vent coûte des semaines d'activité : le risque n'était pas géré."} ]},
+      {scene:"Ton produit vedette entre en phase de déclin : les ventes baissent depuis trois trimestres.", choix:[
+        {txt:"Préparer la relève : nouveau produit et calendrier prévisionnel", eff:{treso:-10,marche:15,image:5,emploi:5}, fb:"Anticiper le cycle de vie évite l'obsolescence : la relève est prête avant que le déclin ne s'accélère."},
+        {txt:"Soutenir le produit déclinant à coups de promotions", eff:{treso:-15,marche:-5,image:0,emploi:0}, fb:"Tu retardes l'inévitable en sacrifiant ta marge : le temps joue contre les produits en fin de vie."} ]},
+      {scene:"On te propose : 10 000 € de subvention versés maintenant, ou 10 500 € dans trois ans.", choix:[
+        {txt:"Prendre les 10 000 € maintenant", eff:{treso:10,marche:0,image:0,emploi:0}, fb:"Le temps a une valeur financière : une somme disponible aujourd'hui se place, s'investit, et l'avenir reste incertain."},
+        {txt:"Attendre trois ans pour 500 € de plus", eff:{treso:-5,marche:0,image:0,emploi:0}, fb:"500 € pour trois ans d'attente et d'incertitude : un très mauvais arbitrage temps/valeur."} ]} ]
+}
+
+}
+};
 
 /*__DATA_END__*/
 </script>
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef } = React;
 /* Données : si l'éditeur prof a enregistré des modifications locales, elles priment (aperçu). */
-const OV_KEY="mm_data_overrides_v1";
-function loadData(){ try{ const o=localStorage.getItem(OV_KEY); if(o) return JSON.parse(o); }catch(e){} return window.GAME_DATA; }
-const D = loadData();
+const OV_KEY="mm_data_overrides_v2";
+function loadData(){
+  try{ const o=localStorage.getItem(OV_KEY);
+    if(o){ const d=JSON.parse(o);
+      if(d && d.MGT && d.SDG) return d;
+      if(d && d.trieur) return {MGT:d, SDG:window.GAME_DATA.SDG};
+    } }catch(e){}
+  try{ const v1=localStorage.getItem("mm_data_overrides_v1");
+    if(v1){ const d=JSON.parse(v1); if(d && d.trieur) return {MGT:d, SDG:window.GAME_DATA.SDG}; } }catch(e){}
+  return window.GAME_DATA;
+}
+const ALL = loadData();
 
-/* ====== Catalogue des 7 jeux (Bloom croissant) ====== */
-const GAMES = [
+/* ====== Catalogue des jeux (Bloom croissant) ====== */
+const GAMES_BASE = [
   { id:"trieur",  nom:"Le Trieur",        icon:"🗂️", bloom:"Reconnaître",  diff:"Facile",   desc:"Classe les éléments dans les bonnes catégories.", color:"#0ea5e9" },
   { id:"memory",  nom:"Memory",           icon:"🃏", bloom:"Mémoriser",    diff:"Facile",   desc:"Retrouve les paires notion / exemple.",           color:"#f59e0b" },
   { id:"flash",   nom:"Flash Quiz",       icon:"⚡", bloom:"Comprendre",   diff:"Moyen",    desc:"QCM contre la montre, avec combos.",              color:"#ef4444" },
@@ -528,12 +1182,26 @@ const GAMES = [
   { id:"cas",     nom:"Cas d'entreprise", icon:"📂", bloom:"Appliquer",    diff:"Moyen",    desc:"Étudie un cas réunionnais et décide.",            color:"#2563eb" },
   { id:"mission", nom:"Mission Dirigeant",icon:"👑", bloom:"Décider",      diff:"Difficile",desc:"Dirige une entreprise, vis les conséquences.",    color:"#db2777" }
 ];
+const DOCS_GAME = { id:"docs", nom:"Étude de docs", icon:"📄", bloom:"Analyser", diff:"Difficile", desc:"Analyse de vrais documents, comme à l'examen.", color:"#7c3aed" };
 const DIFF_COLOR = { "Facile":"#16a34a", "Moyen":"#f59e0b", "Difficile":"#dc2626" };
-const THEMES = [
-  { n:1, nom:"À la rencontre des organisations", short:"Les organisations", color:"#0ea5e9" },
-  { n:2, nom:"Du diagnostic aux objectifs",      short:"Le diagnostic",     color:"#8b5cf6" },
-  { n:3, nom:"Les choix stratégiques",           short:"La stratégie",      color:"#db2777" }
-];
+/* ====== Matières ====== */
+const SUBJ = {
+  MGT:{ code:"MGT", icon:"\ud83e\udded", nom:"Management", short:"Management",
+    themes:[
+      { n:1, nom:"À la rencontre des organisations", short:"Les organisations", color:"#0ea5e9" },
+      { n:2, nom:"Du diagnostic aux objectifs",      short:"Le diagnostic",     color:"#8b5cf6" },
+      { n:3, nom:"Les choix stratégiques",           short:"La stratégie",      color:"#db2777" } ] },
+  SDG:{ code:"SDG", icon:"\ud83d\udda5\ufe0f", nom:"Sciences de gestion et numérique", short:"SDGN",
+    themes:[
+      { n:1, nom:"De l'individu à l'acteur",             short:"L'individu acteur",    color:"#f59e0b" },
+      { n:2, nom:"Numérique et intelligence collective", short:"Le numérique",         color:"#0ea5e9" },
+      { n:3, nom:"Création de valeur et performance",    short:"Valeur & performance", color:"#16a34a" },
+      { n:4, nom:"Temps et risque",                      short:"Temps & risque",       color:"#db2777" } ] }
+};
+function gamesFor(code){
+  const d=ALL[code]||{}; const hasDocs=d.docs&&Object.keys(d.docs).some(k=>(d.docs[k]||[]).length>0);
+  return hasDocs?[...GAMES_BASE,DOCS_GAME]:[...GAMES_BASE];
+}
 const DEFAULT_TEACHER_CODE = "PROF2024";
 const PASS = 60; // % de réussite pour valider
 
@@ -565,8 +1233,8 @@ function deleteScores(ids){
 function exportScoresCSV(){
   const all = loadScores();
   if(!all.length){ alert("Aucun résultat à exporter."); return; }
-  const head = ["Nom","Prenom","Pseudo","Classe","Theme","Jeu","Score(%)","Date"];
-  const lines = all.map(r=>[r.nom,r.prenom,r.pseudo,r.classe,r.theme,r.game,r.pct,r.date].map(v=>'"'+String(v||"").replace(/"/g,'""')+'"').join(";"));
+  const head = ["Matiere","Nom","Prenom","Pseudo","Classe","Theme","Jeu","Score(%)","Date"];
+  const lines = all.map(r=>[(r.matiere||"MGT"),r.nom,r.prenom,r.pseudo,r.classe,r.theme,r.game,r.pct,r.date].map(v=>'"'+String(v||"").replace(/"/g,'""')+'"').join(";"));
   const csv = "\uFEFF"+head.join(";")+"\n"+lines.join("\n");
   const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
   const url = URL.createObjectURL(blob); const a=document.createElement("a");
@@ -609,9 +1277,9 @@ function Login({onStudent,onTeacher}){
     else { code.trim()===getTeacherPw() ? onTeacher() : setErr("Code professeur incorrect."); } };
   return (<div className="login">
     <div className="hero">
-      <div className="kick">JEU SÉRIEUX · MANAGEMENT 1ʳᵉ STMG · 974</div>
-      <h1>MISSION <span className="grad">MANAGEMENT</span></h1>
-      <p className="sub">7 jeux, 3 thèmes, pour réviser le programme de l'année de 1ère. Deviens stratège, comprends les enjeux, prends les bonnes décisions et mesure l'impact sur ton organisation. Des organisations aux grandes décisions.</p>
+      <div className="kick">JEUX SÉRIEUX · 1ʳᵉ STMG · MANAGEMENT &amp; SDGN · 974</div>
+      <h1>MISSION <span className="grad">STMG</span></h1>
+      <p className="sub">Deux matières, jusqu'à 8 jeux par thème, pour réviser tout le programme de 1ʳᵉ : <b>Management</b> et <b>Sciences de gestion et numérique</b>. Deviens acteur, stratège et gestionnaire — et mesure l'impact de tes décisions.</p>
     </div>
     <div className="card">
       <div className="tabs">
@@ -627,12 +1295,35 @@ function Login({onStudent,onTeacher}){
       {err&&<div className="err">{err}</div>}
       <button className="cta" onClick={go}>{m==="eleve"?"C'est parti ! 🚀":"Tableau de bord"}</button>
     </div>
-    <div className="fnote">Programme officiel — BO spécial n°1 du 22/01/2019 · Info : des entreprises réunionnaises réelles seront citées à titre d'exemple.<br/>Djamil DINDAR, Lycée Ambroise Vollard, Juin 2026</div>
+    <div className="fnote">Programmes officiels Management &amp; SDGN — BO spécial n°1 du 22/01/2019 · Info : des entreprises réunionnaises réelles seront citées à titre d'exemple.<br/>Djamil DINDAR, Lycée Ambroise Vollard, Juin 2026</div>
+  </div>);
+}
+
+/* ====== MENU MATIÈRE ====== */
+function Matiere({student,onPick,onLogout}){
+  const opts=[
+    {code:"MGT",icon:SUBJ.MGT.icon,titre:"Management",sous:"3 thèmes · 7 jeux — des organisations aux choix stratégiques.",color:"#ff6b6b"},
+    {code:"SDG",icon:SUBJ.SDG.icon,titre:"Sciences de gestion et numérique",sous:"4 thèmes · 8 jeux — de l'individu acteur au temps et au risque.",color:"#2563eb"}
+  ];
+  return (<div className="login">
+    <div className="hero">
+      <div className="kick">CHOISIS TA MATIÈRE</div>
+      <h1>Bonjour <span className="grad">{student.pseudo}</span> !</h1>
+      <p className="sub">Deux enseignements de spécialité, un même contrat de confiance : aucun piège, droit à l'erreur, tout est dans le Cours et le Glossaire.</p>
+    </div>
+    <div className="mat-grid">{opts.map(o=>(
+      <button key={o.code} className="mat-card" style={{"--c":o.color}} onClick={()=>onPick(o.code)}>
+        <div className="mat-icon">{o.icon}</div>
+        <h3>{o.titre}</h3><p>{o.sous}</p>
+        <span className="mat-go">Jouer →</span>
+      </button>))}</div>
+    <button className="lo center" onClick={onLogout}>← Changer de profil</button>
   </div>);
 }
 
 /* ====== HUB ÉLÈVE ====== */
-function Hub({student,onLogout}){
+function Hub({student,subject,onSwitch,onLogout}){
+  const SD=ALL[subject]; const GAMES=gamesFor(subject); const THEMES=SUBJ[subject].themes;
   const [tab,setTab]=useState("jouer");
   const [theme,setTheme]=useState(1);
   const [progress,setProgress]=useState({}); // {"theme-game": bestPct}
@@ -648,17 +1339,18 @@ function Hub({student,onLogout}){
 
   const finish=(t,g,pct)=>{
     setProgress(p=>({...p,[key(t,g)]:Math.max(p[key(t,g)]||0,pct)}));
-    saveScore({...student,theme:t,game:g,pct,date:new Date().toISOString()});
+    saveScore({...student,matiere:subject,theme:t,game:g,pct,date:new Date().toISOString()});
     setPlaying(null);
   };
 
-  if(playing) return <Stage student={student} theme={playing.theme} game={playing.game}
+  if(playing) return <Stage student={student} subject={subject} theme={playing.theme} game={playing.game}
     onDone={(pct)=>finish(playing.theme,playing.game,pct)} onQuit={()=>setPlaying(null)} />;
 
   return (<div className="app">
     <header className="top">
-      <div className="brand">🎯 Mission Management</div>
+      <div className="brand">{SUBJ[subject].icon} Mission {SUBJ[subject].short}</div>
       <div className="who">{student.pseudo} · <span className="cl">{student.classe}</span></div>
+      <button className="lo" onClick={onSwitch}>⇄ Matière</button>
       <button className="lo" onClick={onLogout}>Quitter</button>
     </header>
     <nav className="nav">
@@ -666,6 +1358,7 @@ function Hub({student,onLogout}){
       <button className={tab==="cours"?"nb on":"nb"} onClick={()=>setTab("cours")}>📘 Cours</button>
       <button className={tab==="prog"?"nb on":"nb"} onClick={()=>setTab("prog")}>📋 Programme</button>
       <button className={tab==="lex"?"nb on":"nb"} onClick={()=>setTab("lex")}>📖 Glossaire</button>
+      <button className={tab==="res"?"nb on":"nb"} onClick={()=>setTab("res")}>🧰 Ressources</button>
     </nav>
     <main className="main">
       {tab==="jouer"&&(<>
@@ -678,7 +1371,7 @@ function Hub({student,onLogout}){
         <>
         <div className="contract">📜 <b>Contrat de confiance</b> — Aucun piège : tout est dans le Cours et le Glossaire. Droit à l'erreur, chaque réponse s'explique. Tous les jeux du thème sont accessibles librement, dans l'ordre que tu veux. Valide 4 jeux (≥ {PASS}%) pour ouvrir le thème suivant.</div>
         <div className="games">
-          {GAMES.map((g,gi)=>{ const ok=unlocked(theme,gi); const b=best(theme,g.id);
+          {GAMES.map((g,gi)=>{ const ok = g.id==="docs" ? !!(SD.docs&&SD.docs[theme]&&SD.docs[theme].length) : unlocked(theme,gi); const b=best(theme,g.id);
             return (<div key={g.id} className={"gcard"+(ok?"":" lock")} style={{"--c":g.color}}>
               <div className="gicon">{ok?g.icon:"🔒"}</div>
               <div className="gtags">
@@ -692,24 +1385,27 @@ function Hub({student,onLogout}){
             </div>); })}
         </div></>}
       </>)}
-      {tab==="cours"&&<Cours/>}
-      {tab==="prog"&&<Prog/>}
-      {tab==="lex"&&<Lex/>}
+      {tab==="cours"&&<Cours subject={subject}/>}
+      {tab==="prog"&&<Prog subject={subject}/>}
+      {tab==="lex"&&<Lex subject={subject}/>}
+      {tab==="res"&&<Res subject={subject}/>}
     </main>
   </div>);
 }
 
 /* ====== STAGE : routeur de jeux ====== */
-function Stage({student,theme,game,onDone,onQuit}){
-  const meta=GAMES.find(g=>g.id===game);
+function Stage({student,subject,theme,game,onDone,onQuit}){
+  const SD=ALL[subject];
+  const meta=gamesFor(subject).find(g=>g.id===game)||GAMES_BASE[0];
   const head=<Ghead title={meta.nom+" — Thème "+theme} sub={meta.bloom} onQuit={onQuit}/>;
-  if(game==="trieur")  return <Trieur theme={theme} head={head} onDone={onDone}/>;
-  if(game==="memory")  return <Memory theme={theme} head={head} onDone={onDone}/>;
-  if(game==="flash")   return <Flash theme={theme} head={head} onDone={onDone}/>;
-  if(game==="vraifaux")return <VraiFaux theme={theme} head={head} onDone={onDone}/>;
-  if(game==="intrus")  return <Intrus theme={theme} head={head} onDone={onDone}/>;
-  if(game==="cas")     return <Cas theme={theme} head={head} onDone={onDone}/>;
-  if(game==="mission") return <Mission theme={theme} head={head} onDone={onDone}/>;
+  if(game==="trieur")  return <Trieur D={SD} theme={theme} head={head} onDone={onDone}/>;
+  if(game==="memory")  return <Memory D={SD} theme={theme} head={head} onDone={onDone}/>;
+  if(game==="flash")   return <Flash D={SD} theme={theme} head={head} onDone={onDone}/>;
+  if(game==="vraifaux")return <VraiFaux D={SD} theme={theme} head={head} onDone={onDone}/>;
+  if(game==="intrus")  return <Intrus D={SD} theme={theme} head={head} onDone={onDone}/>;
+  if(game==="cas")     return <Cas D={SD} theme={theme} head={head} onDone={onDone}/>;
+  if(game==="mission") return <Mission D={SD} theme={theme} head={head} onDone={onDone}/>;
+  if(game==="docs")    return <Docs D={SD} theme={theme} head={head} onDone={onDone}/>;
   return null;
 }
 
@@ -726,7 +1422,7 @@ function Result({score,total,onDone,extra}){
 }
 
 /* ====== JEU 1 : TRIEUR ====== */
-function Trieur({theme,head,onDone}){
+function Trieur({theme,head,onDone,D}){
   const cfg=D.trieur[theme];
   const [items]=useState(()=>[...cfg.items].map((it,i)=>({...it,_i:i})).sort(()=>Math.random()-0.5));
   const [sel,setSel]=useState(null);
@@ -755,7 +1451,7 @@ function Trieur({theme,head,onDone}){
 }
 
 /* ====== JEU 2 : MEMORY ====== */
-function Memory({theme,head,onDone}){
+function Memory({theme,head,onDone,D}){
   const pairs=D.memory[theme];
   const [cards]=useState(()=>{ let id=0; const arr=[];
     pairs.forEach((p,pi)=>{ arr.push({id:id++,pair:pi,txt:p.a}); arr.push({id:id++,pair:pi,txt:p.b}); });
@@ -783,7 +1479,7 @@ function Memory({theme,head,onDone}){
 }
 
 /* ====== JEU 3 : FLASH QUIZ (chrono + combo) ====== */
-function Flash({theme,head,onDone}){
+function Flash({theme,head,onDone,D}){
   const qs=D.flash[theme];
   const [i,setI]=useState(0); const [score,setScore]=useState(0); const [combo,setCombo]=useState(0);
   const [t,setT]=useState(10); const [picked,setPicked]=useState(null); const [done,setDone]=useState(false);
@@ -807,7 +1503,7 @@ function Flash({theme,head,onDone}){
 }
 
 /* ====== JEU 4 : VRAI / FAUX ====== */
-function VraiFaux({theme,head,onDone}){
+function VraiFaux({theme,head,onDone,D}){
   const qs=D.vraifaux[theme];
   const [i,setI]=useState(0); const [score,setScore]=useState(0); const [picked,setPicked]=useState(null); const [done,setDone]=useState(false);
   const q=qs[i];
@@ -828,7 +1524,7 @@ function VraiFaux({theme,head,onDone}){
 }
 
 /* ====== JEU 5 : L'INTRUS ====== */
-function Intrus({theme,head,onDone}){
+function Intrus({theme,head,onDone,D}){
   const [qs,setQs]=useState(()=>[...D.intrus[theme]]);
   const [i,setI]=useState(0); const [score,setScore]=useState(0); const [picked,setPicked]=useState(null); const [done,setDone]=useState(false);
   const extras=(D.intrusExtra&&D.intrusExtra[theme])||[];
@@ -852,7 +1548,7 @@ function Intrus({theme,head,onDone}){
 }
 
 /* ====== JEU 6 : CAS D'ENTREPRISE ====== */
-function Cas({theme,head,onDone}){
+function Cas({theme,head,onDone,D}){
   const [qs,setQs]=useState(()=>[...D.cas[theme]]);
   const [i,setI]=useState(0); const [score,setScore]=useState(0); const [picked,setPicked]=useState(null); const [done,setDone]=useState(false);
   const extras=(D.casExtra&&D.casExtra[theme])||[];
@@ -874,7 +1570,7 @@ function Cas({theme,head,onDone}){
 }
 
 /* ====== JEU 7 : MISSION DIRIGEANT (simulation) ====== */
-function Mission({theme,head,onDone}){
+function Mission({theme,head,onDone,D}){
   const sim=D.mission[theme];
   const [etapes,setEtapes]=useState(()=>[...sim.etapes]);
   const [step,setStep]=useState(0);
@@ -913,24 +1609,54 @@ function Mission({theme,head,onDone}){
   </div>);
 }
 
+/* ====== JEU 8 : ÉTUDE DE DOCS (documents comme à l'examen) ====== */
+function Docs({theme,head,onDone,D}){
+  const dlist=(D.docs&&D.docs[theme])||[];
+  const flat=[]; dlist.forEach((d,di)=>(d.questions||[]).forEach(q=>flat.push({di,q})));
+  const [i,setI]=useState(0); const [score,setScore]=useState(0);
+  const [picked,setPicked]=useState(null); const [done,setDone]=useState(false);
+  if(!flat.length) return (<div className="game">{head}<p className="help">Aucun document n'est encore disponible pour ce thème.</p></div>);
+  if(done) return <div className="game">{head}<Result score={score} total={flat.length} onDone={onDone}/></div>;
+  const cur=flat[i]; const doc=dlist[cur.di]; const q=cur.q;
+  const choose=(idx)=>{ if(picked!==null) return; setPicked(idx); if(idx===q.c) setScore(s=>s+1); };
+  const next=()=>{ if(i+1>=flat.length) setDone(true); else {setI(i+1);setPicked(null);} };
+  return (<div className="game">{head}
+    <div className="qn r">{i+1}/{flat.length}</div>
+    <div className="docbox">
+      <div className="dochead">📄 Document {cur.di+1} — {doc.titre}</div>
+      <Media m={doc.media}/>
+      <div className="doctxt">{String(doc.texte||"").split("\n").map((l,li)=><p key={li}>{l}</p>)}</div>
+      {doc.source&&<div className="docsrc">Source : {doc.source}</div>}
+    </div>
+    <p className="cq">{q.q}</p>
+    <div className="opts">{q.o.map((o,idx)=>{ let c="opt";
+      if(picked!==null){ if(idx===q.c)c+=" right"; else if(idx===picked)c+=" bad"; }
+      return <button key={idx} className={c} onClick={()=>choose(idx)}>{o}</button>; })}</div>
+    {picked!==null&&(<div className={"fb "+(picked===q.c?"good":"no")}><strong>{picked===q.c?"\u2705 Bonne lecture !":"\u274c Relis le document."}</strong><p>{q.why}</p>
+      <button className="next" onClick={next}>{i+1>=flat.length?"Voir mon score":"Question suivante →"}</button></div>)}
+  </div>);
+}
+
 /* ====== CONTENU : COURS / PROGRAMME / GLOSSAIRE ====== */
-function Cours(){
+function Cours({subject}){
+  const D=ALL[subject], TH=SUBJ[subject].themes;
   const [theme,setTheme]=useState(1);
   const list=D.notions.filter(n=>n.theme===theme);
   return (<div className="content">
     <h2 className="ptitle">📘 Le cours</h2>
-    <div className="theme-tabs">{THEMES.map(t=><button key={t.n} className={theme===t.n?"tt on":"tt"} style={{"--c":t.color}} onClick={()=>setTheme(t.n)}>Thème {t.n}</button>)}</div>
+    <div className="theme-tabs">{TH.map(t=><button key={t.n} className={theme===t.n?"tt on":"tt"} style={{"--c":t.color}} onClick={()=>setTheme(t.n)}>Thème {t.n}</button>)}</div>
     <p className="intro">Clique le <span className="sp">bouton magique ✨</span> sous chaque notion pour la version simple + un exemple réunionnais.</p>
     <div className="ngrid">{list.map(n=>(<div key={n.id} className="ncard">
       <h3>{n.terme}</h3><div className="alab">🎓 Définition académique</div><p className="atxt">{n.aca}</p><Magic n={n}/>
     </div>))}</div>
   </div>);
 }
-function Prog(){
+function Prog({subject}){
+  const D=ALL[subject], TH=SUBJ[subject].themes;
   const [theme,setTheme]=useState(1); const p=D.programme.find(x=>x.theme===theme);
   return (<div className="content">
     <h2 className="ptitle">📋 Le programme officiel</h2>
-    <div className="theme-tabs">{THEMES.map(t=><button key={t.n} className={theme===t.n?"tt on":"tt"} style={{"--c":t.color}} onClick={()=>setTheme(t.n)}>Thème {t.n}</button>)}</div>
+    <div className="theme-tabs">{TH.map(t=><button key={t.n} className={theme===t.n?"tt on":"tt"} style={{"--c":t.color}} onClick={()=>setTheme(t.n)}>Thème {t.n}</button>)}</div>
     <div className="pbox"><div className="pref">{p.ref}</div><h3>{p.titre}</h3>
       <h4>Questions de gestion</h4><ul className="plist q">{p.questions.map((q,i)=><li key={i}>{q}</li>)}</ul>
       <h4>Notions à connaître</h4><ul className="plist">{p.connaissances.map((c,i)=><li key={i}>{c}</li>)}</ul>
@@ -938,14 +1664,15 @@ function Prog(){
     </div>
   </div>);
 }
-function Lex(){
+function Lex({subject}){
+  const D=ALL[subject], TH=SUBJ[subject].themes;
   const [s,setS]=useState(""); const [theme,setTheme]=useState(0);
   let list=D.notions; if(theme) list=list.filter(n=>n.theme===theme);
   if(s) list=list.filter(n=>n.terme.toLowerCase().includes(s.toLowerCase()));
   return (<div className="content">
     <h2 className="ptitle">📖 Glossaire</h2>
     <div className="theme-tabs"><button className={theme===0?"tt on":"tt"} style={{"--c":"#475569"}} onClick={()=>setTheme(0)}>Tous</button>
-      {THEMES.map(t=><button key={t.n} className={theme===t.n?"tt on":"tt"} style={{"--c":t.color}} onClick={()=>setTheme(t.n)}>Thème {t.n}</button>)}</div>
+      {TH.map(t=><button key={t.n} className={theme===t.n?"tt on":"tt"} style={{"--c":t.color}} onClick={()=>setTheme(t.n)}>Thème {t.n}</button>)}</div>
     <input className="search" placeholder="Rechercher un mot…" value={s} onChange={e=>setS(e.target.value)}/>
     <div className="lex">{list.map(n=>(<div key={n.id} className="litem"><div className="lterm">{n.terme}</div><p className="ldef">{n.aca}</p><Magic n={n}/></div>))}</div>
   </div>);
@@ -959,7 +1686,7 @@ async function publishHTML(data){
     alert("Impossible de générer le fichier depuis cette page. Ouvre la version EN LIGNE du site (lien GitHub Pages), pas un fichier local, puis réessaie."); return;
   }
   const a0=src.indexOf("/*__DATA_START__*/"), a1=src.indexOf("/*__DATA_END__*/");
-  const out=src.slice(0,a0)+"/*__DATA_START__*/\nwindow.GAME_DATA = "+JSON.stringify(data,null,1)+";\n/*__DATA_END__*/"+src.slice(a1+16);
+  const out=src.slice(0,a0)+"/*__DATA_START__*/\nwindow.GAME_DATA = "+JSON.stringify(data,null,1).replace(/<\//g,"<\\/")+";\n/*__DATA_END__*/"+src.slice(a1+16);
   const blob=new Blob([out],{type:"text/html;charset=utf-8"});
   const u=URL.createObjectURL(blob); const el=document.createElement("a");
   el.href=u; el.download="index.html"; el.click(); URL.revokeObjectURL(u);
@@ -979,36 +1706,118 @@ function MediaEd({m,on}){
   </div>);
 }
 
+/* ====== ÉDITEUR VISUEL (WYSIWYG) ====== */
+function RichEd({html,onChange}){
+  const ref=React.useRef(null);
+  useEffect(()=>{ if(ref.current) ref.current.innerHTML=html||""; },[]);
+  const cmd=(c,v)=>{ if(!ref.current) return; ref.current.focus(); document.execCommand(c,false,v||null); onChange(ref.current.innerHTML); };
+  const link=()=>{ const u=prompt("Adresse du lien (https://…) :"); if(u) cmd("createLink",u); };
+  const B=(label,fn,title)=><button type="button" className="rb" title={title||""} onMouseDown={e=>e.preventDefault()} onClick={fn}>{label}</button>;
+  return (<div className="riched">
+    <div className="rtools">
+      {B(<b>G</b>,()=>cmd("bold"),"Gras")}
+      {B(<i>I</i>,()=>cmd("italic"),"Italique")}
+      {B(<u>S</u>,()=>cmd("underline"),"Souligné")}
+      <span className="rsep"/>
+      {B("Titre",()=>cmd("formatBlock","<h2>"),"Grand titre")}
+      {B("Sous-titre",()=>cmd("formatBlock","<h3>"),"Sous-titre")}
+      {B("Texte",()=>cmd("formatBlock","<p>"),"Paragraphe normal")}
+      <span className="rsep"/>
+      {B("• Liste",()=>cmd("insertUnorderedList"),"Liste à puces")}
+      {B("1. Liste",()=>cmd("insertOrderedList"),"Liste numérotée")}
+      {B("❝ Encadré",()=>cmd("formatBlock","<blockquote>"),"Citation / encadré important")}
+      <span className="rsep"/>
+      <label className="rcolor" title="Couleur du texte">🎨<input type="color" defaultValue="#1f2937" onChange={e=>cmd("foreColor",e.target.value)}/></label>
+      <label className="rcolor" title="Surligner">🖍️<input type="color" defaultValue="#fff3b0" onChange={e=>cmd("hiliteColor",e.target.value)}/></label>
+      {B("🔗",link,"Insérer un lien")}
+      <span className="rsep"/>
+      {B("↶",()=>cmd("undo"),"Annuler")}
+      {B("↷",()=>cmd("redo"),"Rétablir")}
+      {B("🧹",()=>cmd("removeFormat"),"Nettoyer la mise en forme de la sélection")}
+    </div>
+    <div className="rarea" ref={ref} contentEditable suppressContentEditableWarning
+      onInput={()=>onChange(ref.current.innerHTML)} onBlur={()=>onChange(ref.current.innerHTML)}/>
+  </div>);
+}
+
+/* ====== RESSOURCES ====== */
+const RES_CATS=[
+  {id:"syntheses",icon:"\ud83d\udcd1",nom:"Synthèses",desc:"L'essentiel de chaque thème, prêt à réviser."},
+  {id:"methodo",icon:"\ud83d\udee0\ufe0f",nom:"Méthodologie",desc:"Analyser un document, argumenter, réussir l'étude de gestion…"},
+  {id:"exos",icon:"\u270d\ufe0f",nom:"Exercices",desc:"S'entraîner avec des exercices et des sujets corrigés."},
+  {id:"videos",icon:"\ud83c\udfac",nom:"Vidéos",desc:"Comprendre les notions en images."},
+  {id:"audio",icon:"\ud83c\udfa7",nom:"Cours en audio",desc:"Réviser en écoutant, même en déplacement."}
+];
+function Res({subject}){
+  const D=ALL[subject];
+  const [cat,setCat]=useState("syntheses");
+  const [page,setPage]=useState(null);
+  const items=(D.ressources||[]).filter(r=>r.cat===cat);
+  const meta=RES_CATS.find(c=>c.id===cat);
+  if(page) return (<div className="res">
+    <button className="back" onClick={()=>setPage(null)}>← Retour aux ressources</button>
+    <div className="page-doc">
+      <h1>{page.titre}</h1>
+      <div dangerouslySetInnerHTML={{__html:page.html||""}}/>
+    </div>
+  </div>);
+  return (<div className="res">
+    <div className="theme-tabs">{RES_CATS.map(c=>
+      <button key={c.id} className={cat===c.id?"tt on":"tt"} style={{"--c":"#7c3aed"}} onClick={()=>setCat(c.id)}>{c.icon} {c.nom}</button>)}</div>
+    <p className="res-desc">{meta.desc}</p>
+    {items.length===0&&<div className="res-empty">\ud83d\udea7 Cette rubrique sera bientôt remplie — reviens vite !</div>}
+    <div className="res-grid">{items.map((r,i)=> r.type==="page" ? (
+      <button key={i} className="res-card page" onClick={()=>setPage(r)}>
+        <h4>{r.titre}</h4>
+        <p>{r.desc}</p>
+        <span className="res-go">Lire 📖</span>
+      </button>) : (
+      <a key={i} className="res-card" href={r.url} target="_blank" rel="noopener noreferrer">
+        <h4>{r.titre}</h4>
+        <p>{r.desc}</p>
+        <span className="res-go">Ouvrir \u2197</span>
+      </a>))}</div>
+  </div>);
+}
+
 function Editor(){
-  const [data,setData]=useState(()=>JSON.parse(JSON.stringify(D)));
+  const [data,setData]=useState(()=>JSON.parse(JSON.stringify(ALL)));
+  const [sub,setSub]=useState("MGT");
   const [theme,setTheme]=useState(1);
   const [bank,setBank]=useState("flash");
   const [msg,setMsg]=useState("");
   const hasOv=(()=>{try{return !!localStorage.getItem(OV_KEY);}catch(e){return false;}})();
+  const TH=SUBJ[sub].themes;
   const upd=(fn)=>setData(d=>{const n=JSON.parse(JSON.stringify(d)); fn(n); return n;});
-  const ensure=(n)=>{
-    if(bank==="trieur") return n.trieur[theme].items;
-    if(bank==="memory") return n.memory[theme];
-    if(bank==="mission") return n.mission[theme].etapes;
-    if(bank==="missionExtra"){ n.missionExtra=n.missionExtra||{}; n.missionExtra[theme]=n.missionExtra[theme]||[]; return n.missionExtra[theme]; }
-    if(bank==="intrusExtra"){ n.intrusExtra=n.intrusExtra||{}; n.intrusExtra[theme]=n.intrusExtra[theme]||[]; return n.intrusExtra[theme]; }
-    if(bank==="casExtra"){ n.casExtra=n.casExtra||{}; n.casExtra[theme]=n.casExtra[theme]||[]; return n.casExtra[theme]; }
-    return n[bank][theme];
+  const ensure=(n)=>{ const d=n[sub];
+    if(bank==="trieur") return d.trieur[theme].items;
+    if(bank==="memory") return d.memory[theme];
+    if(bank==="mission") return d.mission[theme].etapes;
+    if(bank==="docs"){ d.docs=d.docs||{}; d.docs[theme]=d.docs[theme]||[]; return d.docs[theme]; }
+    if(bank==="ressources"){ d.ressources=d.ressources||[]; return d.ressources; }
+    if(bank==="missionExtra"){ d.missionExtra=d.missionExtra||{}; d.missionExtra[theme]=d.missionExtra[theme]||[]; return d.missionExtra[theme]; }
+    if(bank==="intrusExtra"){ d.intrusExtra=d.intrusExtra||{}; d.intrusExtra[theme]=d.intrusExtra[theme]||[]; return d.intrusExtra[theme]; }
+    if(bank==="casExtra"){ d.casExtra=d.casExtra||{}; d.casExtra[theme]=d.casExtra[theme]||[]; return d.casExtra[theme]; }
+    return d[bank][theme];
   };
   const list=ensure(JSON.parse(JSON.stringify(data)));
-  const type= bank==="trieur"?"trieur": bank==="memory"?"memory": bank==="flash"?"flash": bank==="vraifaux"?"vraifaux": bank.indexOf("intrus")===0?"intrus": bank.indexOf("cas")===0?"cas":"mission";
+  const type= bank==="trieur"?"trieur": bank==="memory"?"memory": bank==="flash"?"flash": bank==="vraifaux"?"vraifaux": bank==="docs"?"docs": bank==="ressources"?"ressources": bank.indexOf("intrus")===0?"intrus": bank.indexOf("cas")===0?"cas":"mission";
   const fam= type==="intrus"?"intrus": type==="cas"?"cas": type==="mission"?"mission":null;
+  const D0=data[sub];
   const totalFam=()=>{ if(!fam) return 0;
-    const b= fam==="mission"? data.mission[theme].etapes.length : data[fam][theme].length;
-    const x= ((data[fam+"Extra"]&&data[fam+"Extra"][theme])||[]).length; return b+x; };
+    const b= fam==="mission"? D0.mission[theme].etapes.length : D0[fam][theme].length;
+    const x= ((D0[fam+"Extra"]&&D0[fam+"Extra"][theme])||[]).length; return b+x; };
   const canAdd= !fam || totalFam()<10;
   const setItem=(i,patch)=>upd(n=>{ Object.assign(ensure(n)[i],patch); });
-  const del=(i)=>{ if(confirm("Supprimer cet élément ?")) upd(n=>{ ensure(n).splice(i,1); }); };
+  const [rv,setRv]=useState(0);
+  const del=(i)=>{ if(confirm("Supprimer cet élément ?")) { upd(n=>{ ensure(n).splice(i,1); }); setRv(v=>v+1); } };
   const newItem=()=>{
     if(bank==="trieur") return {label:"Nouvel élément",cat:0};
     if(bank==="memory") return {a:"Notion",b:"Exemple associé"};
     if(bank==="flash") return {q:"Nouvelle question ?",o:["Réponse A","Réponse B"],c:0};
     if(bank==="vraifaux") return {p:"Nouvelle affirmation.",v:true,why:"Explication."};
+    if(bank==="docs") return {titre:"Titre du document",source:"Source du document",texte:"Texte du document…",questions:[{q:"Question sur le document ?",o:["Réponse A","Réponse B"],c:0,why:"Explication."}]};
+    if(bank==="ressources") return {cat:"syntheses",type:"lien",titre:"Titre de la ressource",desc:"Courte description.",url:"https://",html:""};
     if(type==="intrus") return {liste:["Élément A","Élément B","Élément C","Intrus"],intrus:3,why:"Explication."};
     if(type==="cas") return {cas:"Décris la situation…",q:"Quelle est la bonne réponse ?",o:["Réponse A","Réponse B","Réponse C"],c:0,why:"Explication."};
     return {scene:"Nouvelle situation…",choix:[{txt:"Choix 1",eff:{treso:0,marche:0,image:0,emploi:0},fb:"Conséquence du choix 1."},{txt:"Choix 2",eff:{treso:0,marche:0,image:0,emploi:0},fb:"Conséquence du choix 2."}]};
@@ -1021,7 +1830,7 @@ function Editor(){
     if(type==="trieur") return (<div className="edopt" key={i}>
       <input value={it.label} onChange={e=>setItem(i,{label:e.target.value})}/>
       <select value={it.cat} onChange={e=>setItem(i,{cat:+e.target.value})}>
-        {data.trieur[theme].bacs.map((b,bi)=><option key={bi} value={bi}>{b}</option>)}
+        {D0.trieur[theme].bacs.map((b,bi)=><option key={bi} value={bi}>{b}</option>)}
       </select>
       <button className="edx" onClick={()=>del(i)}>✕</button>
     </div>);
@@ -1029,6 +1838,52 @@ function Editor(){
       <input value={it.a} onChange={e=>setItem(i,{a:e.target.value})} placeholder="Notion"/>
       <input value={it.b} onChange={e=>setItem(i,{b:e.target.value})} placeholder="Exemple associé"/>
       <button className="edx" onClick={()=>del(i)}>✕</button>
+    </div>);
+    if(type==="docs") return (<div className="edcard" key={i}>
+      <div className="edhead"><b>Document {i+1}</b><button className="edx" onClick={()=>del(i)}>🗑 Supprimer</button></div>
+      <label className="edlab">Titre du document</label>
+      <input value={it.titre} onChange={e=>setItem(i,{titre:e.target.value})}/>
+      <label className="edlab">Source</label>
+      <input value={it.source||""} onChange={e=>setItem(i,{source:e.target.value})}/>
+      <label className="edlab">Texte du document (une ligne par information)</label>
+      <textarea value={it.texte} onChange={e=>setItem(i,{texte:e.target.value})}/>
+      {it.questions.map((qq,qi)=>(<div className="edchoice" key={qi}>
+        <div className="edhead"><b>Question {qi+1}</b>{it.questions.length>1&&<button className="edx" onClick={()=>upd(n=>{ensure(n)[i].questions.splice(qi,1);})}>✕</button>}</div>
+        <textarea value={qq.q} onChange={e=>upd(n=>{ensure(n)[i].questions[qi].q=e.target.value;})}/>
+        <label className="edlab">Réponses — coche la bonne</label>
+        {qq.o.map((o,oi)=>(<div className="edopt" key={oi}>
+          <input type="radio" checked={qq.c===oi} onChange={()=>upd(n=>{ensure(n)[i].questions[qi].c=oi;})}/>
+          <input value={o} onChange={e=>upd(n=>{ensure(n)[i].questions[qi].o[oi]=e.target.value;})}/>
+          {qq.o.length>2&&<button className="edx" onClick={()=>upd(n=>{const q=ensure(n)[i].questions[qi]; q.o.splice(oi,1); if(q.c>=q.o.length)q.c=0;})}>✕</button>}
+        </div>))}
+        <button className="edadd2" onClick={()=>upd(n=>{ensure(n)[i].questions[qi].o.push("Nouvelle réponse");})}>+ ajouter une réponse</button>
+        <label className="edlab">Explication (feedback)</label>
+        <textarea value={qq.why} onChange={e=>upd(n=>{ensure(n)[i].questions[qi].why=e.target.value;})}/>
+      </div>))}
+      <button className="edadd2" onClick={()=>upd(n=>{ensure(n)[i].questions.push({q:"Nouvelle question ?",o:["Réponse A","Réponse B"],c:0,why:"Explication."});})}>+ ajouter une question</button>
+    </div>);
+    if(type==="ressources") return (<div className="edcard" key={i}>
+      <div className="edhead"><b>Ressource {i+1}</b><button className="edx" onClick={()=>del(i)}>\ud83d\uddd1 Supprimer</button></div>
+      <label className="edlab">Catégorie</label>
+      <select value={it.cat} onChange={e=>setItem(i,{cat:e.target.value})}>
+        {RES_CATS.map(c=><option key={c.id} value={c.id}>{c.icon} {c.nom}</option>)}
+      </select>
+      <label className="edlab">Titre</label>
+      <input value={it.titre} onChange={e=>setItem(i,{titre:e.target.value})}/>
+      <label className="edlab">Description</label>
+      <textarea value={it.desc} onChange={e=>setItem(i,{desc:e.target.value})}/>
+      <label className="edlab">Type de ressource</label>
+      <select value={it.type||"lien"} onChange={e=>setItem(i,{type:e.target.value})}>
+        <option value="lien">🔗 Lien externe (site, Drive, PDF…)</option>
+        <option value="page">📝 Page de contenu — texte mis en forme dans le jeu</option>
+      </select>
+      {(it.type||"lien")==="lien"?(<React.Fragment>
+        <label className="edlab">Lien (URL complète, commençant par https://)</label>
+        <input value={it.url} onChange={e=>setItem(i,{url:e.target.value})}/>
+      </React.Fragment>):(<React.Fragment>
+        <label className="edlab">Contenu de la page — colle ton texte (la mise en forme est conservée) puis ajuste avec la barre d'outils</label>
+        <RichEd key={"re"+rv+"-"+sub+"-"+i} html={it.html} onChange={h=>setItem(i,{html:h})}/>
+      </React.Fragment>)}
     </div>);
     if(type==="flash"||type==="cas") return (<div className="edcard" key={i}>
       <div className="edhead"><b>{type==="cas"?"Cas":"Question"} {i+1}</b><button className="edx" onClick={()=>del(i)}>🗑 Supprimer</button></div>
@@ -1090,8 +1945,11 @@ function Editor(){
 
   return (<div className="ed">
     <div className="edbar">
+      <select value={sub} onChange={e=>{setSub(e.target.value); setTheme(1); setMsg("");}}>
+        <option value="MGT">🧭 Management</option><option value="SDG">🖥️ SDGN</option>
+      </select>
       <select value={theme} onChange={e=>setTheme(+e.target.value)}>
-        <option value={1}>Thème 1 — Organisations</option><option value={2}>Thème 2 — Diagnostic</option><option value={3}>Thème 3 — Stratégie</option>
+        {TH.map(t=><option key={t.n} value={t.n}>Thème {t.n} — {t.short}</option>)}
       </select>
       <select value={bank} onChange={e=>setBank(e.target.value)}>
         <option value="trieur">🗂️ Le Trieur</option><option value="memory">🃏 Memory</option>
@@ -1099,27 +1957,30 @@ function Editor(){
         <option value="intrus">🔎 L'Intrus — base</option><option value="intrusExtra">🔎 L'Intrus — supplémentaires</option>
         <option value="cas">📂 Cas — base</option><option value="casExtra">📂 Cas — supplémentaires</option>
         <option value="mission">👑 Mission — base</option><option value="missionExtra">👑 Mission — supplémentaires</option>
+        <option value="docs">📄 Étude de docs</option>
+        <option value="ressources">🧰 Ressources (liens)</option>
       </select>
       <button className="rf alt nb-l" onClick={save}>💾 Enregistrer (aperçu)</button>
       <button className="rf nb-l" onClick={()=>publishHTML(data)}>⬇ Publier : télécharger index.html</button>
       <button className="rf danger nb-l" onClick={reset}>↩ Revenir aux questions publiées</button>
     </div>
-    <p className="edhint">1️⃣ Modifie les questions ci-dessous · 2️⃣ « Enregistrer » pour tester sur CET appareil (recharge la page) · 3️⃣ « Publier » télécharge un <b>index.html</b> à déposer sur GitHub (Add file → Upload → Commit) pour que les élèves voient tes changements.{hasOv&&<b> ⚠️ Des modifications locales non publiées sont actives sur cet appareil.</b>}</p>
+    <p className="edhint">1️⃣ Choisis la matière, le thème et le jeu · 2️⃣ « Enregistrer » pour tester sur CET appareil (recharge la page) · 3️⃣ « Publier » télécharge un <b>index.html</b> à déposer sur GitHub (Add file → Upload → Commit) pour que les élèves voient tes changements.{hasOv&&<b> ⚠️ Des modifications locales non publiées sont actives sur cet appareil.</b>}</p>
     {msg&&<div className="edmsg">{msg}</div>}
     {fam&&<div className="edcount">Limite : {totalFam()}/10 (base + supplémentaires confondues, thème {theme})</div>}
+    {bank==="ressources"&&<div className="edcount">Les ressources sont communes à toute la matière : le choix du thème n'a pas d'effet ici. Catégories disponibles : Synthèses, Méthodologie, Exercices, Vidéos, Cours en audio.</div>}
     {bank==="trieur"&&(<div className="edcard">
       <label className="edlab">Consigne</label>
-      <textarea value={data.trieur[theme].consigne} onChange={e=>upd(n=>{n.trieur[theme].consigne=e.target.value;})}/>
+      <textarea value={D0.trieur[theme].consigne} onChange={e=>upd(n=>{n[sub].trieur[theme].consigne=e.target.value;})}/>
       <label className="edlab">Catégories (bacs)</label>
-      {data.trieur[theme].bacs.map((b,bi)=>(<div className="edopt" key={bi}>
-        <input value={b} onChange={e=>upd(n=>{n.trieur[theme].bacs[bi]=e.target.value;})}/>
+      {D0.trieur[theme].bacs.map((b,bi)=>(<div className="edopt" key={bi}>
+        <input value={b} onChange={e=>upd(n=>{n[sub].trieur[theme].bacs[bi]=e.target.value;})}/>
       </div>))}
     </div>)}
     {bank==="mission"&&(<div className="edcard">
       <label className="edlab">Titre de la mission</label>
-      <input value={data.mission[theme].titre} onChange={e=>upd(n=>{n.mission[theme].titre=e.target.value;})}/>
+      <input value={D0.mission[theme].titre} onChange={e=>upd(n=>{n[sub].mission[theme].titre=e.target.value;})}/>
       <label className="edlab">Introduction</label>
-      <textarea value={data.mission[theme].intro} onChange={e=>upd(n=>{n.mission[theme].intro=e.target.value;})}/>
+      <textarea value={D0.mission[theme].intro} onChange={e=>upd(n=>{n[sub].mission[theme].intro=e.target.value;})}/>
     </div>)}
     {list.map((it,i)=>renderItem(it,i))}
     <button className="edadd" disabled={!canAdd} onClick={add}>{canAdd?"➕ Ajouter un élément":"Limite de 10 atteinte (base + supplémentaires)"}</button>
@@ -1129,6 +1990,7 @@ function Editor(){
 /* ====== TABLEAU DE BORD PROF ====== */
 function Teacher({onLogout}){
   const [scores,setScores]=useState(null);
+  const [mat,setMat]=useState("MGT");
   const [fc,setFc]=useState("Toutes"); const [view,setView]=useState("eleves");
   const [sel,setSel]=useState({}); // id -> true
   const [pwOpen,setPwOpen]=useState(false);
@@ -1136,8 +1998,11 @@ function Teacher({onLogout}){
   const refresh=()=>{ setScores(loadScores()); setSel({}); };
   useEffect(()=>{refresh();},[]);
   if(scores===null) return <div className="loading">Chargement des résultats…</div>;
-  const classes=["Toutes",...Array.from(new Set(scores.map(s=>s.classe)))];
-  const fl= fc==="Toutes"?scores:scores.filter(s=>s.classe===fc);
+  const GAMES=gamesFor(mat); const THEMES=SUBJ[mat].themes;
+  const TN=THEMES.map(t=>t.n); const TOT=GAMES.length*THEMES.length;
+  const ms=scores.filter(s=>(s.matiere||"MGT")===mat);
+  const classes=["Toutes",...Array.from(new Set(ms.map(s=>s.classe)))];
+  const fl= fc==="Toutes"?ms:ms.filter(s=>s.classe===fc);
 
   const selIds=Object.keys(sel).filter(id=>sel[id]);
   const toggle=(id)=>setSel(s=>({...s,[id]:!s[id]}));
@@ -1154,17 +2019,17 @@ function Teacher({onLogout}){
   const students=Object.values(byS).map(st=>{
     const valid=Object.values(st.cells).filter(v=>v>=PASS).length;
     const vals=Object.values(st.cells); const moy=vals.length?Math.round(vals.reduce((a,b)=>a+b,0)/vals.length):0;
-    const themeProg=[1,2,3].map(t=>GAMES.filter(g=>(st.cells[t+"-"+g.id]||0)>=PASS).length);
+    const themeProg=TN.map(t=>GAMES.filter(g=>(st.cells[t+"-"+g.id]||0)>=PASS).length);
     return {...st,valid,moy,themeProg};
   }).sort((a,b)=>b.valid-a.valid||b.moy-a.moy);
 
   // par classe
   const byC={};
-  scores.forEach(s=>{ if(!byC[s.classe]) byC[s.classe]={classe:s.classe,pcts:[],el:new Set()}; byC[s.classe].pcts.push(s.pct); byC[s.classe].el.add(s.pseudo); });
+  ms.forEach(s=>{ if(!byC[s.classe]) byC[s.classe]={classe:s.classe,pcts:[],el:new Set()}; byC[s.classe].pcts.push(s.pct); byC[s.classe].el.add(s.pseudo); });
   const cstats=Object.values(byC).map(c=>({classe:c.classe,moy:Math.round(c.pcts.reduce((a,b)=>a+b,0)/c.pcts.length),nb:c.el.size,parties:c.pcts.length})).sort((a,b)=>b.moy-a.moy);
 
   // détail des parties (entrées individuelles, filtrées)
-  const gameName=(id)=>{ const g=GAMES.find(x=>x.id===id); return g?g.nom:id; };
+  const gameName=(id)=>{ const g=[...GAMES_BASE,DOCS_GAME].find(x=>x.id===id); return g?g.nom:id; };
   const fmtDate=(d)=>{ try{ return new Date(d).toLocaleString("fr-FR",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"}); }catch(e){ return ""; } };
   const detail=[...fl].sort((a,b)=> (b.date||"").localeCompare(a.date||""));
 
@@ -1176,6 +2041,7 @@ function Teacher({onLogout}){
         <button className={view==="classes"?"on":""} onClick={()=>setView("classes")}>🏫 Classes</button>
         <button className={view==="detail"?"on":""} onClick={()=>setView("detail")}>📝 Détail</button>
         <button className={view==="editor"?"on":""} onClick={()=>setView("editor")}>✏️ Éditeur</button></div>
+      <select value={mat} onChange={e=>setMat(e.target.value)}><option value="MGT">🧭 Management</option><option value="SDG">🖥️ SDGN</option></select>
       <select value={fc} onChange={e=>setFc(e.target.value)}>{classes.map(c=><option key={c}>{c}</option>)}</select>
       <button className="rf" onClick={refresh}>↻ Actualiser</button>
       <button className="rf alt" onClick={exportScoresCSV}>⬇ Export Excel (CSV)</button>
@@ -1192,30 +2058,30 @@ function Teacher({onLogout}){
       </div>
       {pwMsg&&<div className="pwmsg">{pwMsg}</div>}
     </div>)}
-    {view!=="editor"&&scores.length===0&&<div className="empty">Aucun résultat pour l'instant. Les scores apparaîtront dès que les élèves auront joué.</div>}
+    {view!=="editor"&&ms.length===0&&<div className="empty">Aucun résultat pour l'instant. Les scores apparaîtront dès que les élèves auront joué.</div>}
 
-    {view==="eleves"&&scores.length>0&&(<div className="twrap"><table className="pt">
+    {view==="eleves"&&ms.length>0&&(<div className="twrap"><table className="pt">
       <thead><tr><th>#</th><th>Élève</th><th>Classe</th><th>Jeux validés</th><th>Moyenne</th><th>Progression (T1·T2·T3)</th></tr></thead>
       <tbody>{students.map((st,i)=>(<tr key={i}>
         <td className="rk">{i+1}</td><td className="nm">{(st.prenom||st.nom)?(st.prenom+" "+st.nom).trim():st.pseudo}{(st.prenom||st.nom)?<span className="ps">{st.pseudo}</span>:null}</td><td>{st.classe}</td>
-        <td><b>{st.valid}</b>/21</td>
+        <td><b>{st.valid}</b>/{TOT}</td>
         <td><b className="moy" style={{color:st.moy>=PASS?"#16a34a":"#dc2626"}}>{st.moy}%</b></td>
-        <td><div className="tp">{st.themeProg.map((v,ti)=><span key={ti} className="tpb"><i style={{width:(v/7*100)+"%",background:THEMES[ti].color}}/></span>)} <span className="tpn">{st.themeProg.join(" · ")}/7</span></div></td>
+        <td><div className="tp">{st.themeProg.map((v,ti)=><span key={ti} className="tpb"><i style={{width:(v/GAMES.length*100)+"%",background:THEMES[ti].color}}/></span>)} <span className="tpn">{st.themeProg.join(" · ")}/{GAMES.length}</span></div></td>
       </tr>))}</tbody></table></div>)}
 
-    {view==="themes"&&scores.length>0&&(<div className="twrap"><table className="pt">
-      <thead><tr><th>Élève</th>{[1,2,3].map(t=>GAMES.map(g=><th key={t+g.id} className="th-mini" title={"T"+t+" "+g.nom}>{g.icon}<small>T{t}</small></th>))}</tr></thead>
+    {view==="themes"&&ms.length>0&&(<div className="twrap"><table className="pt">
+      <thead><tr><th>Élève</th>{TN.map(t=>GAMES.map(g=><th key={t+g.id} className="th-mini" title={"T"+t+" "+g.nom}>{g.icon}<small>T{t}</small></th>))}</tr></thead>
       <tbody>{students.map((st,i)=>(<tr key={i}><td className="nm">{(st.prenom||st.nom)?(st.prenom+" "+st.nom).trim():st.pseudo}</td>
-        {[1,2,3].map(t=>GAMES.map(g=>{ const v=st.cells[t+"-"+g.id]; return <td key={t+g.id}><Cell v={v}/></td>; }))}</tr>))}</tbody>
+        {TN.map(t=>GAMES.map(g=>{ const v=st.cells[t+"-"+g.id]; return <td key={t+g.id}><Cell v={v}/></td>; }))}</tr>))}</tbody>
     </table><div className="legend">Chaque colonne = un jeu pour un thème. Vert ≥ {PASS}%.</div></div>)}
 
-    {view==="classes"&&scores.length>0&&(<div className="twrap"><table className="pt">
+    {view==="classes"&&ms.length>0&&(<div className="twrap"><table className="pt">
       <thead><tr><th>#</th><th>Classe</th><th>Élèves actifs</th><th>Parties</th><th>Moyenne classe</th></tr></thead>
       <tbody>{cstats.map((c,i)=>(<tr key={i}><td className="rk">{i+1}</td><td className="nm">{c.classe}</td><td>{c.nb}</td><td>{c.parties}</td>
         <td><div className="cbar"><div className="cfill" style={{width:c.moy+"%",background:c.moy>=PASS?"#16a34a":"#f59e0b"}}/></div><span className="cval">{c.moy}%</span></td></tr>))}</tbody>
     </table></div>)}
 
-    {view==="detail"&&scores.length>0&&(<>
+    {view==="detail"&&ms.length>0&&(<>
       <div className="selbar">
         <span>{selIds.length} entrée(s) sélectionnée(s)</span>
         <button className="rf danger nb-l" disabled={!selIds.length} onClick={delSel}>🗑 Supprimer la sélection</button>
@@ -1235,7 +2101,7 @@ function Teacher({onLogout}){
     </>)}
 
     {view==="editor"&&<Editor/>}
-    <div className="pn">Un jeu est « validé » à {PASS}%. 21 jeux au total (7 × 3 thèmes). Les résultats sont enregistrés sur CET appareil (navigateur). Utilise l'export CSV pour les conserver ou les ouvrir dans Excel.</div>
+    <div className="pn">Un jeu est « validé » à {PASS}%. {TOT} jeux au total pour la matière affichée ({GAMES.length} jeux × {THEMES.length} thèmes). Les résultats sont enregistrés sur CET appareil (navigateur). Utilise l'export CSV pour les conserver ou les ouvrir dans Excel.</div>
   </div>);
 }
 function Cell({v}){ if(v===undefined) return <span className="nc">·</span>;
@@ -1245,8 +2111,10 @@ function Cell({v}){ if(v===undefined) return <span className="nc">·</span>;
 /* ====== ROOT ====== */
 function App(){
   const [screen,setScreen]=useState("login"); const [student,setStudent]=useState(null);
-  return (<>{screen==="login"&&<Login onStudent={s=>{setStudent(s);setScreen("student")}} onTeacher={()=>setScreen("teacher")}/>}
-    {screen==="student"&&<Hub student={student} onLogout={()=>setScreen("login")}/>}
+  const [subject,setSubject]=useState(null);
+  return (<>{screen==="login"&&<Login onStudent={s=>{setStudent(s);setScreen("matiere")}} onTeacher={()=>setScreen("teacher")}/>}
+    {screen==="matiere"&&<Matiere student={student} onPick={m=>{setSubject(m);setScreen("student")}} onLogout={()=>setScreen("login")}/>}
+    {screen==="student"&&<Hub key={subject} student={student} subject={subject} onSwitch={()=>setScreen("matiere")} onLogout={()=>setScreen("login")}/>}
     {screen==="teacher"&&<Teacher onLogout={()=>setScreen("login")}/>}</>);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
@@ -1526,6 +2394,56 @@ input,select{font-family:inherit}
 .legend,.pn{margin-top:14px;font-size:12.5px;color:#9a94aa;text-align:center}
 
 @media(max-width:600px){.hero h1{font-size:44px}.r2{flex-direction:column}.intrus-grid{grid-template-columns:1fr}.gauge span{width:90px}}
+/* MENU MATIÈRE */
+.mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:640px;margin:0 auto}
+.mat-card{background:#fff;border:2px solid #f0eafa;border-top:6px solid var(--c);border-radius:20px;padding:24px 18px;text-align:left;box-shadow:0 18px 40px -18px rgba(80,40,120,.25);transition:.15s;cursor:pointer}
+.mat-card:hover{transform:translateY(-3px);border-color:var(--c)}
+.mat-icon{font-size:40px}
+.mat-card h3{font-size:18px;margin:10px 0 6px;line-height:1.25}
+.mat-card p{font-size:13.5px;color:#6a6480;line-height:1.45}
+.mat-go{display:inline-block;margin-top:12px;font-weight:800;color:var(--c)}
+.lo.center{display:block;margin:22px auto 0;background:#f5f1fb;color:#5a5470;padding:9px 16px;border-radius:10px;font-weight:700}
+@media(max-width:640px){.mat-grid{grid-template-columns:1fr}}
+/* RESSOURCES */
+.res-desc{font-size:13.5px;color:#6a6480;margin:4px 0 12px}
+.res-empty{background:#faf7ef;border:1.5px dashed #d8cfae;border-radius:14px;padding:22px;text-align:center;font-weight:700;color:#8a7d4f}
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.res-card{display:block;background:#fff;border:2px solid #f0eafa;border-left:6px solid #7c3aed;border-radius:16px;padding:16px 18px;text-decoration:none;color:inherit;box-shadow:0 14px 30px -18px rgba(80,40,120,.3);transition:.15s}
+.res-card:hover{transform:translateY(-3px);border-color:#7c3aed}
+.res-card h4{font-size:15px;margin:0 0 6px;line-height:1.3}
+.res-card p{font-size:13px;color:#6a6480;line-height:1.45;margin:0}
+.res-go{display:inline-block;margin-top:10px;font-weight:800;color:#7c3aed;font-size:13px}
+/* ÉDITEUR VISUEL */
+.riched{border:1.5px solid #ded5f2;border-radius:12px;overflow:hidden;background:#fff;margin:6px 0 10px}
+.rtools{display:flex;flex-wrap:wrap;gap:4px;align-items:center;padding:8px;background:#f7f4fd;border-bottom:1.5px solid #ded5f2}
+.rb{background:#fff;border:1px solid #ded5f2;border-radius:8px;padding:5px 10px;font-size:13px;font-weight:700;cursor:pointer;color:#3d3654}
+.rb:hover{border-color:#7c3aed;color:#7c3aed}
+.rsep{width:1px;height:20px;background:#ded5f2;margin:0 4px}
+.rcolor{display:inline-flex;align-items:center;gap:3px;font-size:14px;cursor:pointer}
+.rcolor input{width:26px;height:24px;border:none;background:none;padding:0;cursor:pointer}
+.rarea{min-height:220px;max-height:55vh;overflow:auto;padding:14px 16px;font-size:14.5px;line-height:1.6;outline:none;text-align:left}
+.rarea:focus{background:#fffdf8}
+.rarea h2{font-size:19px;margin:14px 0 6px}
+.rarea h3{font-size:16px;margin:12px 0 4px}
+.rarea blockquote{border-left:4px solid #7c3aed;background:#f7f4fd;margin:8px 0;padding:8px 12px;border-radius:0 8px 8px 0}
+.rarea ul,.rarea ol{padding-left:22px}
+/* PAGE DE CONTENU (lecture) */
+.res .back{background:#f5f1fb;border:none;border-radius:10px;padding:9px 14px;font-weight:800;color:#5a5470;cursor:pointer;margin-bottom:12px}
+.page-doc{background:#fff;border:2px solid #f0eafa;border-radius:18px;padding:26px 28px;text-align:left;box-shadow:0 18px 40px -20px rgba(80,40,120,.3)}
+.page-doc h1{font-size:24px;margin:0 0 14px}
+.page-doc h2{font-size:19px;margin:18px 0 8px;color:#4c1d95}
+.page-doc h3{font-size:16px;margin:14px 0 6px}
+.page-doc p{font-size:14.5px;line-height:1.65;margin:6px 0}
+.page-doc ul,.page-doc ol{padding-left:24px;font-size:14.5px;line-height:1.65}
+.page-doc blockquote{border-left:4px solid #7c3aed;background:#f7f4fd;margin:10px 0;padding:10px 14px;border-radius:0 10px 10px 0}
+.page-doc a{color:#7c3aed;font-weight:700}
+.res-card.page{cursor:pointer;text-align:left;width:100%;font-family:inherit}
+@media(max-width:640px){.page-doc{padding:18px 16px}}
+/* ÉTUDE DE DOCS */
+.docbox{background:#fffdf5;border:1.5px solid #eadfb8;border-radius:14px;padding:16px 18px;margin:10px 0 14px;text-align:left;box-shadow:0 10px 24px -16px rgba(120,90,20,.35)}
+.dochead{font-weight:800;font-size:14px;margin-bottom:8px;color:#8a6d1f}
+.doctxt p{font-size:14.5px;line-height:1.55;margin:4px 0}
+.docsrc{margin-top:8px;font-size:12px;color:#9a8d5f;font-style:italic;text-align:right}
 </style>
 </body>
 </html>
