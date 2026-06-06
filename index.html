@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mission STMG — Management &amp; SDGN — 1ère STMG</title>
+<title>Mission STMG — 1ère &amp; Terminale — Management, SDGN, MSDGN</title>
 <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
 <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -21,10 +21,22 @@
 ============================================================ */
 
 window.GAME_DATA = {
+config: { syncUrl: "" },
+
 MGT: {
 
 /* -------------------- RESSOURCES (liens) -------------------- */
 ressources: [
+{ cat:"methodo", type:"page", titre:"Méthode — Aborder un sujet de devoir, pas à pas", desc:"Le rituel des 15 premières minutes : contexte, questions, titres des documents, surlignage, verbes directeurs.", url:"",
+  html:"<h2>Le principe : on n'écrit RIEN avant d'avoir tout compris</h2><p>Les points perdus en devoir viennent rarement d'un manque de connaissances : ils viennent d'une lecture trop rapide. Voici le rituel à appliquer à CHAQUE sujet, dans cet ordre.</p><h2>Étape 1 — Lire le contexte (2 min)</h2><ul><li>Qui est l'organisation ? (type, taille, activité, lieu — réflexe « caractériser »)</li><li>Quel est son problème ou son projet ? C'est le fil rouge du sujet : toutes les questions tournent autour.</li><li>Note au brouillon une phrase : <i>« [Organisation] cherche à [problème/projet] ».</i></li></ul><h2>Étape 2 — Lire TOUTES les questions AVANT les documents (3 min)</h2><ul><li>Lire les questions d'abord te dit <b>quoi chercher</b> dans les documents : tu liras ensuite avec un objectif.</li><li><b>Lis chaque question JUSQU'AU BOUT.</b> Beaucoup de questions ont <b>plusieurs parties</b> : <i>« Identifiez le style de direction <u>et</u> montrez ses conséquences sur la motivation »</i> = 2 tâches = 2 paquets de points. Numérote-les au brouillon (1a, 1b…).</li><li>Repère les mots qui doublent la tâche : <b>et</b>, <b>puis</b>, <b>ainsi que</b>, <b>en justifiant</b>, <b>à l'aide de…</b></li><li>Entoure le <b>verbe directeur</b> de chaque question (voir tableau plus bas) : il définit ce qu'on attend de toi.</li></ul><h2>Étape 3 — Lire les TITRES des documents (1 min)</h2><p>Le titre d'un document est un indice offert : il annonce ce qu'on y trouvera. Associe au brouillon chaque question à son ou ses documents : <i>Q2 → doc 1 (interview du dirigeant) ; Q4 → doc 3 (tableau des effectifs)</i>. Un document fourni sert toujours quelque part.</p><h2>Étape 4 — Première lecture AVEC le surligneur (8-10 min)</h2><ul><li>Lis chaque document en gardant les questions en tête, et surligne <b>uniquement</b> ce qui peut servir à répondre : chiffres clés, citations du dirigeant, mots du programme reconnus (finalité, parties prenantes, stratégie…).</li><li>Astuce des couleurs : une couleur par question (ou par dossier), pour retrouver instantanément tes indices au moment de rédiger.</li><li>Note en marge la notion de cours que le passage illustre : <i>« = avantage concurrentiel », « = style participatif »</i>.</li></ul><h2>Étape 5 — Les verbes directeurs : ce qu'on attend VRAIMENT</h2><table><tr><th>Verbe</th><th>Signification</th><th>Ce qui est attendu</th></tr><tr><td><b>Identifier / Repérer</b></td><td>Trouver et nommer</td><td>Donner l'élément avec le mot du cours + une courte justification tirée du document</td></tr><tr><td><b>Citer / Relever</b></td><td>Extraire du document</td><td>Recopier l'élément précis demandé (avec guillemets si citation)</td></tr><tr><td><b>Définir</b></td><td>Donner le sens du mot</td><td>La définition du cours, précise, éventuellement avec un exemple</td></tr><tr><td><b>Caractériser</b></td><td>Décrire selon des critères</td><td>Passer en revue les critères du cours (type, finalité, taille, ressources…) en justifiant</td></tr><tr><td><b>Distinguer</b></td><td>Montrer la différence</td><td>Définir les deux notions ET expliquer ce qui les sépare</td></tr><tr><td><b>Expliquer</b></td><td>Faire comprendre</td><td>Le mécanisme, les causes et conséquences, avec le vocabulaire du cours</td></tr><tr><td><b>Analyser / Commenter</b></td><td>Décomposer et interpréter</td><td>Constater (avec le document) + expliquer + conclure sur ce que cela signifie pour l'organisation</td></tr><tr><td><b>Montrer que / Démontrer</b></td><td>Prouver une affirmation</td><td>Arguments AEI appuyés sur les documents : la conclusion est imposée, c'est le chemin qui est noté</td></tr><tr><td><b>Justifier</b></td><td>Donner les raisons</td><td>Apporter les preuves (document + cours) qui fondent une affirmation ou un choix</td></tr><tr><td><b>Comparer</b></td><td>Points communs et différences</td><td>Mettre en regard, critère par critère — jamais deux descriptions séparées</td></tr><tr><td><b>Apprécier / Évaluer</b></td><td>Porter un jugement</td><td>Un avis NUANCÉ et argumenté : points forts ET limites</td></tr><tr><td><b>Proposer / Conseiller</b></td><td>Suggérer des solutions</td><td>Des solutions réalistes, adaptées au contexte, et justifiées</td></tr><tr><td><b>Dans quelle mesure…</b></td><td>Discuter</td><td>Réponse en deux temps : « oui, dans une certaine mesure… » PUIS « mais avec des limites… »</td></tr></table><blockquote><b>⚠️ Les 3 erreurs fatales</b> : répondre à la question qu'on aurait aimé avoir (et pas celle posée) · traiter la moitié d'une question double · « expliquer » quand on demandait seulement d'« identifier » (perte de temps) ou l'inverse (perte de points).</blockquote><h2>Check-list avant de rendre</h2><ul><li>Chaque question a une réponse, chaque partie de question aussi ?</li><li>Chaque réponse cite un document ET nomme une notion ?</li><li>Le verbe directeur a-t-il été respecté ?</li></ul>" },
+
+{ cat:"methodo", type:"page", titre:"Méthode — Caractériser une organisation", desc:"La compétence n°1 du programme : identifier une organisation en 7 critères, sans rien oublier.", url:"",
+  html:"<h2>Pourquoi cette méthode ?</h2><p>« Caractériser l'organisation » est souvent la <b>première question</b> d'un sujet. Bien traitée, elle rapporte des points faciles et t'oblige à lire attentivement le contexte. La règle d'or : <b>chaque caractéristique doit être justifiée par un élément du texte</b>.</p><h2>Les 7 critères à passer en revue</h2><table><tr><th>Critère</th><th>Questions à se poser</th><th>Exemples de réponses</th></tr><tr><td><b>Type d'organisation</b></td><td>Entreprise privée ? Organisation publique ? Organisation de la société civile ?</td><td>Entreprise privée (Edena) ; commune de Saint-Pierre ; association sportive</td></tr><tr><td><b>Finalité / but</b></td><td>Lucrative ? Non lucrative ? Mission de service public ?</td><td>Réaliser un profit et pérenniser l'activité ; satisfaire l'intérêt général</td></tr><tr><td><b>Statut juridique</b></td><td>SARL, SA, SAS, association loi 1901, collectivité…</td><td>SARL au capital de 50 000 €</td></tr><tr><td><b>Taille</b></td><td>Effectif ? Chiffre d'affaires ? TPE, PME, ETI, grande entreprise ?</td><td>PME de 80 salariés, CA de 12 M€</td></tr><tr><td><b>Nature de l'activité</b></td><td>Production de biens ? De services ? Marchande ou non marchande ?</td><td>Production et vente de boissons (activité marchande)</td></tr><tr><td><b>Champ d'action</b></td><td>Local, régional, national, international ?</td><td>Régional : La Réunion ; export vers l'océan Indien</td></tr><tr><td><b>Ressources</b></td><td>Humaines, financières, matérielles, immatérielles ?</td><td>80 salariés, une usine au Port, une marque réputée</td></tr></table><h2>Comment rédiger ?</h2><p>Deux présentations acceptées : le <b>tableau</b> (critère / réponse justifiée) ou le <b>paragraphe rédigé</b> qui enchaîne les critères. Dans les deux cas, appuie-toi sur le document : <i>« Edena est une entreprise privée (type) dont la finalité est lucrative ; cette PME d'environ 80 salariés (taille) produit et commercialise des eaux et boissons (activité marchande) à La Réunion (champ d'action régional)… »</i></p><blockquote><b>⚠️ Pièges classiques</b> : confondre <i>finalité</i> (la raison d'être) et <i>objectif</i> (un résultat chiffré à atteindre) · oublier de justifier avec le texte · inventer une information absente du document.</blockquote><h2>Auto-vérification</h2><ul><li>Ai-je traité les 7 critères (ou signalé ceux que le document ne permet pas de déterminer) ?</li><li>Chaque caractéristique cite-t-elle un indice du document ?</li><li>Mon vocabulaire est-il celui du programme (finalité, but, ressources…) ?</li></ul>" },
+{ cat:"methodo", type:"page", titre:"Méthode — Analyser un document en management", desc:"Lire vite et bien : identifier, comprendre, relier au cours, exploiter dans la réponse.", url:"",
+  html:"<h2>Étape 1 — Identifier le document (30 secondes)</h2><ul><li><b>Nature</b> : article de presse, interview, site web de l'entreprise, tableau de chiffres, organigramme, témoignage…</li><li><b>Source et date</b> : qui parle ? La source est-elle interne (l'entreprise parle d'elle-même) ou externe (journaliste, étude) ? Récente ?</li><li><b>Thème</b> : de quoi parle-t-il en une phrase ?</li></ul><blockquote>Une source <b>interne</b> valorise toujours l'organisation : garde un œil critique. Un article de presse externe est souvent plus neutre.</blockquote><h2>Étape 2 — Comprendre (lecture active)</h2><ul><li>Surligne les <b>mots du programme</b> que tu reconnais (finalité, parties prenantes, diagnostic, stratégie, avantage concurrentiel…).</li><li>Note en marge la <b>notion de cours</b> que chaque passage illustre : c'est le réflexe qui fait la différence.</li><li>Pour un tableau de chiffres : lis le titre, les unités, puis compare (dans le temps, entre lignes) avant de conclure.</li></ul><h2>Étape 3 — Relier au cours</h2><p>Pose-toi systématiquement : <i>« Quelle question de gestion ce document illustre-t-il ? Quelles notions du programme ? »</i> Un document de sujet ne tombe jamais par hasard : il a été choisi pour te faire mobiliser des notions précises.</p><h2>Étape 4 — Exploiter dans la réponse</h2><p>La formule gagnante combine toujours <b>document + cours</b> :</p><blockquote><i>« D'après le document 2, Air Austral a ouvert deux nouvelles lignes régionales (fait du document) : il s'agit d'une stratégie de développement de marché (notion de cours), qui consiste à proposer l'offre existante sur de nouveaux territoires (définition). »</i></blockquote><ul><li>❌ Recopier des phrases entières du document sans les analyser.</li><li>❌ Réciter le cours sans citer le document.</li><li>✅ Citer un élément précis (« d'après le document… ») PUIS le nommer avec le vocabulaire du cours PUIS expliquer.</li></ul>" },
+{ cat:"methodo", type:"page", titre:"Méthode — Rédiger une réponse argumentée (AEI)", desc:"Affirmation, Explication, Illustration : la structure qui transforme tes idées en points.", url:"",
+  html:"<h2>Le principe AEI</h2><p>Chaque argument se construit en trois temps :</p><table><tr><th>Temps</th><th>Rôle</th><th>Exemple</th></tr><tr><td><b>A — Affirmation</b></td><td>L'idée, en une phrase claire</td><td>« Améliorer les conditions de travail renforce la motivation des salariés. »</td></tr><tr><td><b>E — Explication</b></td><td>Le pourquoi, avec les notions du cours</td><td>« En effet, les conditions de travail influencent les comportements : un salarié qui travaille dans un environnement sain s'implique davantage et l'absentéisme recule. »</td></tr><tr><td><b>I — Illustration</b></td><td>Un exemple du document ou de l'actualité</td><td>« Ainsi, d'après le document 1, l'absentéisme de l'atelier a baissé de 8 % à 5 % après la rénovation des locaux. »</td></tr></table><h2>Construire la réponse complète</h2><ul><li><b>1. Analyse la consigne</b> : repère le verbe (montrer, justifier, expliquer, apprécier…) et souligne les mots-clés. « Montrez que… » = prouver avec arguments ; « Dans quelle mesure… » = nuancer (oui… mais…).</li><li><b>2. Brouillon express (3 min)</b> : liste 2 à 3 arguments AEI, choisis l'ordre.</li><li><b>3. Rédige</b> : une phrase d'introduction qui reformule la question, un paragraphe par argument (saute des lignes !), une phrase de conclusion qui répond directement.</li></ul><h2>Les connecteurs qui structurent</h2><p>Tout d'abord · Ensuite · De plus · En effet · Ainsi · Par exemple · Cependant · C'est pourquoi · En conclusion.</p><blockquote><b>⚠️ À bannir</b> : « je pense que » sans justification · les généralités (« de tout temps les entreprises… ») · le recopiage du document · les réponses en une ligne à une question en 4 points.</blockquote><h2>Grille de relecture</h2><ul><li>Ai-je répondu À LA question posée (et pas à côté) ?</li><li>Chaque paragraphe contient-il une notion du cours nommée explicitement ?</li><li>Ai-je cité au moins un élément précis des documents ?</li><li>Orthographe des mots du programme : <i>stratégie, concurrentiel, pérennité, hiérarchie</i>…</li></ul>" },
+
   { cat:"syntheses", titre:"\ud83d\udcc1 Synthèses du professeur — dossier complet",
     desc:"Toutes les synthèses de ton professeur, chapitre par chapitre (Google Drive).",
     url:"https://drive.google.com/drive/folders/1e3JmxirfutXBHzVpGw0G9MhFfuXwUYV4?usp=drive_link" },
@@ -529,6 +541,18 @@ SDG: {
 
 /* -------------------- RESSOURCES (liens) -------------------- */
 ressources: [
+{ cat:"methodo", type:"page", titre:"Méthode — Aborder un sujet de devoir, pas à pas", desc:"Le rituel des 15 premières minutes en SDGN : contexte, questions, documents chiffrés, surlignage, verbes directeurs.", url:"",
+  html:"<h2>Le principe : on n'écrit RIEN avant d'avoir tout compris</h2><p>En SDGN, les sujets mêlent textes ET documents chiffrés. La méthode de lecture est donc encore plus décisive : un chiffre mal repéré, et toute la réponse déraille.</p><h2>Étape 1 — Lire le contexte (2 min)</h2><ul><li>Qui est l'organisation ? Quelle est sa situation de gestion (lancement, difficulté de trésorerie, conflit, projet numérique…) ?</li><li>Réflexe QQOQCP rapide : qui, quoi, où, quand, comment, pourquoi.</li><li>Demande-toi : <i>« Dans quel(s) thème(s) du programme suis-je ? »</i> — cela t'indique les notions à mobiliser.</li></ul><h2>Étape 2 — Lire TOUTES les questions AVANT les documents (3 min)</h2><ul><li>Tu sauras ainsi <b>quoi chercher</b> : un taux ? une évolution ? une notion à reconnaître ?</li><li><b>Lis chaque question JUSQU'AU BOUT</b> : beaucoup contiennent <b>plusieurs tâches</b>. <i>« Calculez la valeur ajoutée <u>et</u> présentez sa répartition »</i> = un calcul + une analyse. Numérote les sous-tâches au brouillon.</li><li>Repère les indices de double travail : <b>et</b>, <b>puis</b>, <b>en déduire</b> (= un 2ᵉ calcul s'appuie sur le 1ᵉʳ !), <b>en justifiant</b>, <b>commentez vos résultats</b>.</li><li>Entoure le <b>verbe directeur</b> (tableau ci-dessous) : « calculez » et « analysez » ne rapportent pas les mêmes points.</li></ul><h2>Étape 3 — Lire les TITRES des documents (1 min)</h2><p>Le titre dit tout : <i>« Annexe 2 — Budget de trésorerie de janvier à mars »</i> annonce où tu trouveras le mois critique. Associe chaque question à ses documents (<i>Q3 → annexe 2</i>), et repère immédiatement pour chaque document chiffré : la <b>période</b> et l'<b>unité</b> (€, k€, %, heures…). L'erreur d'unité est l'erreur n°1 du devoir de SDGN !</p><h2>Étape 4 — Première lecture AVEC le surligneur (8-10 min)</h2><ul><li>Surligne les <b>données qui répondent aux questions</b> : totaux, soldes négatifs, écarts avec un objectif, pourcentages d'évolution.</li><li>Une couleur par question (ou par document) pour retrouver tes indices en rédigeant.</li><li>Note en marge la notion reconnue : <i>« = donnée → information », « = rétention d'information », « = performance sociale »</i>.</li></ul><h2>Étape 5 — Les verbes directeurs en SDGN</h2><table><tr><th>Verbe</th><th>Signification</th><th>Ce qui est attendu</th></tr><tr><td><b>Identifier / Repérer</b></td><td>Trouver et nommer</td><td>L'élément + le mot du cours + une justification tirée du document</td></tr><tr><td><b>Citer / Relever</b></td><td>Extraire du document</td><td>L'élément précis demandé, sans commentaire inutile</td></tr><tr><td><b>Définir</b></td><td>Donner le sens</td><td>La définition du cours, exacte et complète</td></tr><tr><td><b>Caractériser / Qualifier</b></td><td>Décrire selon les critères du cours</td><td>Ex. : qualifier une donnée / une information / une connaissance, en justifiant</td></tr><tr><td><b>Calculer</b></td><td>Trouver un résultat chiffré</td><td>Les 4 temps : formule + application + résultat AVEC unité + interprétation</td></tr><tr><td><b>En déduire</b></td><td>Utiliser le résultat précédent</td><td>Un nouveau calcul ou une conclusion qui s'appuie EXPLICITEMENT sur ce qui précède</td></tr><tr><td><b>Comparer</b></td><td>Mettre en regard</td><td>Écarts chiffrés (valeur et %), dans le temps ou par rapport à un objectif/secteur</td></tr><tr><td><b>Analyser / Commenter</b></td><td>Faire parler les chiffres</td><td>Constat chiffré + explication (causes) + conséquence pour l'organisation</td></tr><tr><td><b>Montrer que / Justifier</b></td><td>Prouver</td><td>Arguments appuyés sur les données ET les notions (AEI)</td></tr><tr><td><b>Apprécier / Évaluer</b></td><td>Juger avec nuance</td><td>Points forts ET points faibles, appuyés sur les indicateurs</td></tr><tr><td><b>Proposer / Conseiller</b></td><td>Suggérer des solutions</td><td>Des actions concrètes, réalistes, justifiées par le contexte et les chiffres</td></tr><tr><td><b>Schématiser / Représenter</b></td><td>Traduire en schéma</td><td>Ex. : les étapes d'un processus, avec un formalisme clair (étapes, flèches, acteurs)</td></tr></table><blockquote><b>⚠️ Les pièges spécifiques SDGN</b> : commencer un calcul sans avoir vérifié l'unité · oublier la 2ᵉ partie d'une question (« et commentez ») · donner un résultat sans phrase d'interprétation · « en déduire » traité comme une question indépendante.</blockquote><h2>Check-list avant de rendre</h2><ul><li>Toutes les questions ET toutes leurs parties sont traitées ?</li><li>Chaque calcul a sa formule, son unité et son interprétation ?</li><li>Chaque analyse cite le document et nomme une notion ?</li></ul>" },
+
+{ cat:"methodo", type:"page", titre:"Méthode — Réussir les calculs de gestion", desc:"Toutes les formules de 1ère + la façon de rédiger un calcul pour avoir tous les points.", url:"",
+  html:"<h2>Le formulaire de 1ʳᵉ SDGN</h2><table><tr><th>Indicateur</th><th>Formule</th><th>Ce que ça mesure</th></tr><tr><td><b>Valeur ajoutée</b></td><td>Production − consommations intermédiaires</td><td>La richesse créée par l'organisation</td></tr><tr><td><b>Productivité</b></td><td>Production ÷ moyens utilisés (ex. heures travaillées)</td><td>L'efficacité du travail</td></tr><tr><td><b>Coût du travail</b></td><td>Salaires bruts + cotisations patronales</td><td>Ce que le travail coûte vraiment à l'employeur</td></tr><tr><td><b>Marge</b></td><td>Prix de vente − coût de revient</td><td>Le gain par produit vendu</td></tr><tr><td><b>Résultat</b></td><td>Produits − charges</td><td>Bénéfice (＋) ou perte (−) de l'exercice</td></tr><tr><td><b>Taux de marge sur coûts variables</b></td><td>(CA − charges variables) ÷ CA</td><td>La part du CA qui couvre les charges fixes</td></tr><tr><td><b>Seuil de rentabilité</b></td><td>Charges fixes ÷ taux de marge sur coûts variables</td><td>Le CA minimal pour ne pas perdre d'argent</td></tr><tr><td><b>Solde de trésorerie</b></td><td>Encaissements − décaissements (du mois) ; solde cumulé = cumul mois après mois</td><td>L'argent réellement disponible</td></tr></table><h2>Rédiger un calcul : la règle des 4 temps</h2><p>Un calcul juste mais mal rédigé perd des points. Présente TOUJOURS :</p><ul><li><b>1. La formule</b> : « Seuil de rentabilité = charges fixes ÷ taux de marge sur coûts variables »</li><li><b>2. L'application</b> : « = 30 000 ÷ 0,5 »</li><li><b>3. Le résultat AVEC l'unité</b> : « = 60 000 € »</li><li><b>4. L'interprétation</b> : « Le restaurant doit réaliser au moins 60 000 € de chiffre d'affaires pour couvrir toutes ses charges ; au-delà, il dégage un bénéfice. »</li></ul><blockquote><b>⚠️ Pièges fréquents</b> : oublier l'unité (€, %, unités/heure) · confondre taux de marge en % et en décimal (50 % = 0,5) · confondre production et chiffre d'affaires · additionner des données qui n'ont pas la même unité · donner un résultat sans phrase d'interprétation.</blockquote><h2>L'interprétation, c'est la moitié des points</h2><p>Après chaque calcul, demande-toi : <i>« Et alors ? Bonne ou mauvaise nouvelle pour l'organisation ? Comparé à quoi (l'an dernier, le secteur, l'objectif) ? »</i> Un chiffre seul ne dit rien : c'est la comparaison qui crée l'information.</p>" },
+{ cat:"methodo", type:"page", titre:"Méthode — Lire un document de gestion chiffré", desc:"Compte de résultat, tableau de bord, budget : la lecture en 4 temps qui évite les contresens.", url:"",
+  html:"<h2>Temps 1 — Le tour du document (avant les chiffres !)</h2><ul><li><b>Titre</b> : de quoi s'agit-il ? (compte de résultat, budget de trésorerie, tableau de bord…)</li><li><b>Période</b> : un mois ? un trimestre ? un exercice ? Deux années à comparer ?</li><li><b>Unité</b> : €, k€ (milliers), M€ (millions), %, unités physiques ? <i>L'erreur d'unité est l'erreur n°1 !</i></li><li><b>Source</b> : qui a produit ce document, pour quoi faire ?</li></ul><h2>Temps 2 — Repérer la structure</h2><table><tr><th>Document</th><th>Sa logique</th><th>La ligne à repérer d'abord</th></tr><tr><td><b>Compte de résultat</b></td><td>Produits d'un côté, charges de l'autre</td><td>Le résultat (bénéfice ou perte)</td></tr><tr><td><b>Budget de trésorerie</b></td><td>Encaissements / décaissements, mois par mois</td><td>Le solde cumulé (le mois où il devient négatif !)</td></tr><tr><td><b>Tableau de bord</b></td><td>Des indicateurs variés avec parfois des objectifs</td><td>Les écarts entre réalisé et objectif</td></tr><tr><td><b>Tableau de répartition de la VA</b></td><td>Qui reçoit quoi</td><td>La part de chaque acteur (salariés, État, prêteurs, actionnaires, entreprise)</td></tr></table><h2>Temps 3 — Faire parler les chiffres</h2><ul><li><b>Comparer dans le temps</b> : ça monte, ça baisse, de combien (en valeur ET en %) ?</li><li><b>Comparer dans l'espace</b> : par rapport au secteur, à un concurrent, à l'objectif.</li><li><b>Repérer les contradictions</b> : le CA monte mais l'absentéisme explose → performances contradictoires.</li></ul><h2>Temps 4 — Conclure avec le vocabulaire du cours</h2><blockquote><i>« Le taux d'occupation (78 %) dépasse l'objectif (75 %) : l'hôtel est <b>efficace</b> sur le plan commercial. Mais l'absentéisme en hausse révèle une <b>performance sociale</b> dégradée : la <b>performance globale</b> n'est pas atteinte. »</i></blockquote><p>Chaque constat chiffré doit être <b>nommé</b> avec une notion : efficacité, efficience, performance commerciale / financière / sociale / environnementale, risque, seuil…</p>" },
+{ cat:"methodo", type:"page", titre:"Méthode — Analyser une situation de gestion", desc:"Le réflexe QQOQCP + rattacher chaque situation à une question de gestion du programme.", url:"",
+  html:"<h2>Étape 1 — Débroussailler avec QQOQCP</h2><table><tr><th>Question</th><th>À chercher dans le contexte</th></tr><tr><td><b>Qui ?</b></td><td>L'organisation (type, taille) et les acteurs concernés (salariés, clients, dirigeant…)</td></tr><tr><td><b>Quoi ?</b></td><td>Le problème ou la décision en jeu (lancer un produit, conflit, trésorerie…)</td></tr><tr><td><b>Où ?</b></td><td>Le contexte géographique et concurrentiel (un marché insulaire change tout !)</td></tr><tr><td><b>Quand ?</b></td><td>L'horizon (urgence ? long terme ?), la saison, la période</td></tr><tr><td><b>Comment ?</b></td><td>Les moyens, ressources et outils disponibles</td></tr><tr><td><b>Pourquoi ?</b></td><td>Les causes du problème et les objectifs poursuivis</td></tr></table><h2>Étape 2 — Rattacher au programme</h2><p>Demande-toi : <i>« Dans quel thème suis-je ? Quelle question de gestion ? »</i></p><ul><li>On parle d'un salarié, d'un groupe, de compétences, de conflit → <b>Thème 1 : De l'individu à l'acteur</b>.</li><li>On parle de données, de SI, de PGI, de RGPD, d'IA → <b>Thème 2 : Numérique et intelligence collective</b>.</li><li>On parle de valeur, de coûts, de performance, d'indicateurs → <b>Thème 3 : Création de valeur et performance</b>.</li><li>On parle de prévision, de budget, de saison, de risque → <b>Thème 4 : Temps et risque</b>.</li></ul><h2>Étape 3 — Mobiliser les bonnes notions</h2><p>Une fois le thème identifié, liste au brouillon 3 à 5 notions du glossaire qui s'appliquent. Ta réponse devra les <b>nommer explicitement</b> : c'est ce que le correcteur cherche.</p><blockquote><b>Exemple express</b> : « Un commercial garde pour lui le mécontentement d'un gros client. » → Thème 4 → notions : <i>asymétrie d'information, rétention, veille</i> → réponse : nommer la rétention d'information, expliquer ses dangers, proposer un reporting régulier.</blockquote><h2>Étape 4 — Conclure en répondant à la question de gestion</h2><p>Termine toujours en revenant à la décision : que devrait faire l'organisation, et pourquoi ? Une analyse sans recommandation est une analyse inachevée.</p>" },
+{ cat:"methodo", type:"page", titre:"Méthode — Rédiger une réponse argumentée en SDGN", desc:"La structure AEI version SDGN : chaque argument s'appuie sur une donnée chiffrée.", url:"",
+  html:"<h2>La spécificité SDGN : argumenter AVEC les chiffres</h2><p>En sciences de gestion, un argument sans donnée est une opinion. La structure reste <b>AEI</b> (Affirmation – Explication – Illustration), mais l'illustration est presque toujours <b>chiffrée</b> :</p><blockquote><b>A</b> : « La situation financière de l'entreprise se fragilise. »<br/><b>E</b> : « En effet, le budget de trésorerie anticipe les encaissements et décaissements : un solde cumulé négatif annonce une incapacité à payer. »<br/><b>I</b> : « Or, d'après l'annexe 2, le solde cumulé devient négatif en février (−7 k€) : sans financement, l'entreprise ne pourra pas régler ses fournisseurs. »</blockquote><h2>Les verbes de consigne et ce qu'ils exigent</h2><table><tr><th>Consigne</th><th>Ce qu'on attend</th></tr><tr><td><b>Identifier / Repérer</b></td><td>Nommer, avec le vocabulaire du cours, en justifiant brièvement</td></tr><tr><td><b>Caractériser</b></td><td>Décrire selon les critères du cours (type, nature…)</td></tr><tr><td><b>Calculer</b></td><td>Formule + application + résultat avec unité + interprétation</td></tr><tr><td><b>Analyser / Commenter</b></td><td>Constater (chiffres) + expliquer (causes) + conclure (conséquences)</td></tr><tr><td><b>Montrer que / Justifier</b></td><td>Prouver avec arguments AEI appuyés sur les documents</td></tr><tr><td><b>Proposer / Conseiller</b></td><td>Des solutions réalistes ET justifiées par le contexte</td></tr></table><h2>Le plan en 3 mouvements</h2><ul><li><b>Introduction (2 lignes)</b> : reformule la question et annonce ta position.</li><li><b>Développement</b> : 2 ou 3 paragraphes AEI, chacun avec sa notion ET sa donnée. Saute une ligne entre chaque.</li><li><b>Conclusion (2 lignes)</b> : réponds clairement, éventuellement avec une nuance ou une recommandation.</li></ul><blockquote><b>⚠️ Les erreurs qui coûtent cher</b> : paraphraser les annexes · empiler des calculs sans interprétation · répondre « oui » ou « non » sans démonstration · oublier de conclure · négliger l'orthographe du vocabulaire (efficience, trésorerie, rentabilité…).</blockquote>" },
+
   { cat:"syntheses", titre:"Assistance scolaire — SDGN 1ʳᵉ STMG",
     desc:"Fiches de révision et exercices interactifs sur tous les points clés du programme. Gratuit (partenariat MAIF).",
     url:"https://www.assistancescolaire.com/eleve/1STMG/sciences-de-gestion-et-numerique/reviser-le-cours" },
@@ -1151,6 +1175,497 @@ missionExtra: {
         {txt:"Attendre trois ans pour 500 € de plus", eff:{treso:-5,marche:0,image:0,emploi:0}, fb:"500 € pour trois ans d'attente et d'incertitude : un très mauvais arbitrage temps/valeur."} ]} ]
 }
 
+},
+
+TLE: {
+/* ============================================================
+   MSDGN — Management, Sciences de gestion et numérique
+   Terminale STMG — Enseignement commun
+   BO n°8 du 25 juillet 2019 — 3 thèmes / 11 questions
+============================================================ */
+notions: [
+  { id:"tle-demarche-mkg", theme:1, terme:"Démarche et approches marketing",
+    aca:"Avant de produire, l'organisation détecte les besoins des clients ou usagers et y répond par une offre cohérente avec sa stratégie. Quatre approches : anticipatrice, créative, réactive, médiatrice.",
+    simple:"On ne produit pas au hasard : on observe d'abord ce que veulent les gens, puis on construit l'offre.",
+    ex:"Avant de lancer une eau aromatisée, Edena interroge les consommateurs réunionnais et observe les rayons des concurrents." },
+  { id:"tle-etude-marche", theme:1, terme:"Étude de marché et veille",
+    aca:"Recueil et traitement d'informations sur les consommateurs, usagers et concurrents (enquêtes, données massives), complétés par une veille marketing et commerciale permanente.",
+    simple:"Enquêter sur les clients et surveiller les concurrents, en continu, pour décider avec de bonnes informations.",
+    ex:"Une enseigne du Port analyse les tickets de caisse et les avis en ligne pour repérer les tendances de consommation péi." },
+  { id:"tle-creation-valeur", theme:1, terme:"Création de valeur : compte de résultat et bilan",
+    aca:"Un produit n'est lancé que s'il crée de la valeur : rentabilité, couverture des coûts ou équilibre budgétaire selon l'organisation. Les indicateurs s'extraient du compte de résultat (prévisionnel) et du bilan.",
+    simple:"Avant de se lancer, on vérifie avec les chiffres que le produit rapportera plus qu'il ne coûte.",
+    ex:"Le compte de résultat prévisionnel d'un nouveau jus letchi indique s'il dégagera un bénéfice ou non." },
+  { id:"tle-business-model", theme:1, terme:"Modèle économique (business model)",
+    aca:"Manière dont l'organisation crée, délivre et capte de la valeur. Les modèles en rupture (plateformes, low cost, gratuité, freemium) bouleversent les secteurs et font émerger des concurrents inattendus.",
+    simple:"La « recette » de l'entreprise pour gagner de l'argent : quoi vendre, à qui, comment, à quel prix.",
+    ex:"Une appli réunionnaise de livraison gratuite pour l'utilisateur mais payante pour les restaurants suit un modèle de plateforme." },
+  { id:"tle-innovation", theme:1, terme:"Innovation de produits et de procédés",
+    aca:"L'innovation porte sur le bien ou le service (nouveau produit, amélioration, services associés) ou sur les procédés (méthodes de production ou de distribution plus flexibles et performantes).",
+    simple:"Inventer ou améliorer : soit le produit lui-même, soit la façon de le fabriquer ou de le vendre.",
+    ex:"Une confiserie péi innove en produit (bonbon piment-chocolat) et en procédé (nouvelle ligne automatisée)." },
+  { id:"tle-ressources", theme:1, terme:"Ressources tangibles et intangibles",
+    aca:"Produire mobilise des ressources tangibles (bâtiments, machines, stocks) et intangibles (marque, brevets, savoir-faire, réputation), qui fondent souvent l'avantage concurrentiel.",
+    simple:"Tangible = ce qu'on peut toucher. Intangible = ce qui a de la valeur sans se toucher (marque, savoir-faire).",
+    ex:"Pour Isautier, la distillerie est tangible ; la marque et le savoir-faire rhumier transmis depuis 1845 sont intangibles." },
+  { id:"tle-financement", theme:1, terme:"Financement de l'investissement et de l'exploitation",
+    aca:"Les investissements se financent par fonds propres (autofinancement, augmentation de capital) ou financement externe (emprunt, crédit-bail, subventions, financement participatif). Le cycle d'exploitation génère aussi des besoins à couvrir.",
+    simple:"Trouver l'argent pour acheter les machines (long terme) ET pour faire tourner l'activité au quotidien.",
+    ex:"Royal Bourbon finance une nouvelle ligne par un emprunt et de l'autofinancement ; une start-up péi préfère le crowdfunding." },
+  { id:"tle-bilan-fonctionnel", theme:1, terme:"Analyse fonctionnelle du bilan : FRNG, BFR, trésorerie nette",
+    aca:"Le fonds de roulement net global (ressources stables − emplois stables) doit couvrir le besoin en fonds de roulement (décalage entre achats, stocks et encaissements). Trésorerie nette = FRNG − BFR.",
+    simple:"FRNG = la réserve de long terme. BFR = l'argent immobilisé par l'activité. Ce qui reste = la trésorerie.",
+    ex:"FRNG 120 k€ − BFR 150 k€ = trésorerie nette de −30 k€ : l'entreprise réunionnaise doit trouver un financement court terme." },
+  { id:"tle-gpec", theme:1, terme:"GPEC : gestion prévisionnelle des emplois et des compétences",
+    aca:"Démarche qui adapte les ressources humaines aux besoins immédiats et futurs de l'organisation, en quantité et en qualité : anticipation des recrutements et des formations.",
+    simple:"Prévoir dès aujourd'hui les métiers et les compétences dont on aura besoin demain.",
+    ex:"Air Austral anticipe les départs en retraite de ses mécaniciens en formant des jeunes techniciens réunionnais." },
+  { id:"tle-production", theme:1, terme:"Organisation de la production : productivité, flexibilité, qualité",
+    aca:"Les choix portent sur les modes de production (à l'unité, en série, en continu) et leurs méthodes. La qualité, élargie aux services (y compris publics), est un enjeu concurrentiel majeur, soutenu par l'amélioration continue.",
+    simple:"Comment produire : beaucoup et vite, ou sur mesure ? Et toujours avec la qualité comme arme face aux concurrents.",
+    ex:"Une confiturerie péi produit en petites séries flexibles pour les hôtels, avec un contrôle qualité à chaque lot." },
+  { id:"tle-logistique", theme:1, terme:"Logistique et chaîne logistique (supply chain)",
+    aca:"La logistique gère les flux physiques et d'information ; la gestion de la chaîne logistique en assure le pilotage global, source de création de valeur. Flux tendus (à la demande) ou flux poussés (sur prévision).",
+    simple:"Faire arriver la bonne chose, au bon endroit, au bon moment — sans gaspiller de stocks.",
+    ex:"À 10 000 km de ses fournisseurs, une entreprise réunionnaise doit arbitrer entre flux tendus risqués et stocks de sécurité coûteux." },
+  { id:"tle-couts", theme:1, terme:"Contrôle des coûts : coût complet, coût spécifique",
+    aca:"Le coût complet impute aux produits leurs charges directes et une part des charges indirectes. Le coût spécifique impute à chaque produit ses charges variables et ses charges fixes directes propres. Aucune organisation n'échappe au suivi de ses coûts.",
+    simple:"Calculer ce que coûte vraiment chaque produit, pour décider de son prix… ou de son abandon.",
+    ex:"Crête d'Or calcule le coût complet d'un poulet conditionné : matières + main-d'œuvre + part des frais de l'usine." },
+  { id:"tle-numerique-prod", theme:1, terme:"Transformations numériques de la production",
+    aca:"Dématérialisation, automatisation des processus (workflow), PGI, informatique en nuage, objets connectés et intelligence artificielle améliorent en continu la production et l'interfaçage avec la gestion.",
+    simple:"Capteurs, logiciels et IA rendent la production plus automatique, plus suivie et plus intelligente.",
+    ex:"Des capteurs connectés sur la ligne d'embouteillage signalent en temps réel la moindre dérive de remplissage." },
+  { id:"tle-acteurs", theme:2, terme:"Intérêts convergents et divergents des acteurs",
+    aca:"L'organisation rassemble des acteurs internes (salariés, dirigeants, actionnaires) aux intérêts tantôt convergents (pérennité), tantôt divergents (salaires contre dividendes), générateurs de conflits que le management doit gérer.",
+    simple:"Tout le monde veut que l'entreprise marche… mais pas forcément la même part du gâteau.",
+    ex:"Dans une PME du Port, les salariés demandent des primes quand les associés veulent augmenter les dividendes." },
+  { id:"tle-culture", theme:2, terme:"Culture de l'organisation",
+    aca:"Ensemble des valeurs, normes, codes et rituels partagés, qui fédère les acteurs autour d'une identité commune et oriente les comportements.",
+    simple:"La personnalité de l'organisation : ce qui s'y fait, s'y dit et s'y partage.",
+    ex:"Chez un transporteur familial réunionnais, l'entraide entre chauffeurs et le « kabar » de fin d'année font partie de la culture." },
+  { id:"tle-style-direction", theme:2, terme:"Style de direction",
+    aca:"Manière dont le dirigeant exerce le pouvoir et associe (ou non) les salariés aux décisions : du style autoritaire au style participatif, en passant par paternaliste et consultatif.",
+    simple:"Le chef décide-t-il seul, ou avec son équipe ? C'est ça, le style de direction.",
+    ex:"La directrice d'un hôtel de Saint-Gilles consulte son équipe avant de modifier les plannings : style consultatif." },
+  { id:"tle-groupe", theme:2, terme:"Dynamique de groupe : leadership, cohésion, décision",
+    aca:"Le groupe développe une dynamique propre : leadership (capacité d'entraînement), cohésion (force qui soude), modes de décision collectifs. Une forte cohésion favorise l'engagement.",
+    simple:"Un groupe soudé, bien entraîné par un leader, décide mieux et travaille mieux.",
+    ex:"Après un séminaire commun, l'équipe de réception et celle du restaurant de l'hôtel coopèrent enfin sans frictions." },
+  { id:"tle-cooperation", theme:2, terme:"Coopération et modes d'action coopératifs",
+    aca:"Groupes de projet, réunions, techniques de créativité, outils collaboratifs, réseaux sociaux d'entreprise et communautés de pratiques organisent la coopération et font circuler les savoirs.",
+    simple:"Tous les moyens de travailler ensemble efficacement, en présentiel comme en ligne.",
+    ex:"Un groupe de projet inter-services prépare le lancement d'un produit avec un document partagé et un canal d'équipe." },
+  { id:"tle-motivation", theme:2, terme:"Facteurs de motivation et implication",
+    aca:"Facteurs internes (plaisir du travail, accomplissement, sens) et externes (rémunération, promotion, reconnaissance, conditions). Les dispositions favorisant motivation et implication nourrissent la qualité de vie au travail.",
+    simple:"Ce qui donne envie de bien travailler vient de soi (fierté, intérêt) et de l'organisation (prime, reconnaissance).",
+    ex:"Prime liée à la satisfaction client + félicitations en réunion : l'équipe de l'hôtel retrouve l'envie de se dépasser." },
+  { id:"tle-qvt", theme:2, terme:"Qualité de vie au travail",
+    aca:"Conditions matérielles, organisationnelles et relationnelles qui permettent de bien travailler. Elle soutient la motivation, l'implication et, in fine, la performance.",
+    simple:"Travailler dans de bonnes conditions, c'est aussi mieux travailler.",
+    ex:"Salle de pause climatisée, plannings prévisibles et écoute du manager améliorent le quotidien de l'équipe." },
+  { id:"tle-processus-achat", theme:2, terme:"Consommateur, usager et processus d'achat",
+    aca:"Le processus d'achat va de la naissance du besoin à l'évaluation post-achat. Il s'explique par les besoins, motivations, freins et attitudes du consommateur ou de l'usager.",
+    simple:"Acheter, c'est un parcours : besoin → recherche → comparaison → achat → avis. Avec des moteurs et des freins.",
+    ex:"Avant de choisir son scooter, un jeune Réunionnais compare en ligne, lit les avis, puis essaie en concession." },
+  { id:"tle-digital-client", theme:2, terme:"Digitalisation de la relation client",
+    aca:"Les traces numériques (navigation, avis, réseaux sociaux grand public) nourrissent la connaissance client et permettent interactivité et personnalisation. L'administration électronique transforme de même la relation à l'usager.",
+    simple:"Chaque clic laisse une trace : bien utilisées, ces traces permettent de mieux servir chaque client.",
+    ex:"Une enseigne péi analyse avis Google et historiques d'achat pour personnaliser ses offres ; la Région propose ses démarches en ligne." },
+  { id:"tle-communication", theme:2, terme:"Stratégie de communication globale",
+    aca:"La communication, interne (participation, adhésion du personnel) et externe (image), doit être globale et intégrée : cohérente entre toutes les cibles et tous les canaux.",
+    simple:"On ne parle pas pareil à un salarié, un client ou un banquier — mais tous doivent recevoir un message cohérent.",
+    ex:"Le même lancement de produit donne une réunion d'équipe en interne, une campagne sur les réseaux et un dossier pour la banque." },
+  { id:"tle-identite", theme:2, terme:"Identité de l'organisation : marque employeur, e-réputation",
+    aca:"L'identité de l'organisation se construit aussi en ligne : marque employeur (attractivité auprès des candidats), e-réputation et identité numérique. La communication financière (business plan) répond aux besoins d'information des partenaires.",
+    simple:"L'image de l'organisation auprès des futurs salariés, des internautes et des financeurs se travaille.",
+    ex:"Air Austral soigne sa marque employeur pour attirer des techniciens ; une start-up présente son business plan à la banque." },
+  { id:"tle-ethique", theme:3, terme:"Éthique et déontologie",
+    aca:"L'éthique est la réflexion sur ce qu'il est juste de faire, au-delà de la loi ; la déontologie regroupe les règles propres à une profession. Les scandales (corruption, fraude) ont imposé l'éthique dans les affaires.",
+    simple:"L'éthique : se demander ce qui est bien. La déontologie : les règles écrites d'un métier.",
+    ex:"Un expert-comptable réunionnais suit la déontologie de sa profession ; son client refuse un pot-de-vin par éthique." },
+  { id:"tle-transparence", theme:3, terme:"Transparence des pratiques et information financière",
+    aca:"La normalisation comptable et la transparence de l'information financière garantissent la confiance des partenaires et de la société dans les comptes et les pratiques des organisations.",
+    simple:"Des comptes établis selon les mêmes règles pour tous, et lisibles par tous : c'est la base de la confiance.",
+    ex:"Les comptes publiés d'une coopérative réunionnaise permettent aux adhérents et aux banques de juger sa gestion." },
+  { id:"tle-discriminations", theme:3, terme:"Lutte contre les discriminations, égalité femmes-hommes",
+    aca:"Les organisations doivent garantir l'égalité de traitement dans les relations de travail : recrutement, rémunération, promotion. L'égalité professionnelle femmes-hommes est un enjeu majeur, mesuré et publié.",
+    simple:"Mêmes chances et même salaire à compétences égales, qui qu'on soit.",
+    ex:"Une entreprise dionysienne publie son index d'égalité professionnelle et corrige les écarts de salaires constatés." },
+  { id:"tle-organisation-civique", theme:3, terme:"Organisation civique : mécénat, démocratie participative",
+    aca:"Les organisations s'engagent dans la société : mécénat (soutien sans contrepartie commerciale directe) et démarches de démocratie participative associant citoyens et usagers aux décisions.",
+    simple:"Donner sans rien attendre en retour, et faire participer les citoyens : l'organisation joue un rôle dans la cité.",
+    ex:"Une banque réunionnaise finance par mécénat la restauration d'un site naturel ; une commune fait voter les habitants sur un budget participatif." },
+  { id:"tle-rapport-travail", theme:3, terme:"Rapport au travail : temps, lieu, mode d'organisation",
+    aca:"Les évolutions sociétales transforment le rapport au travail : télétravail, horaires flexibles, tiers-lieux, quête de sens. Les organisations doivent adapter leur management à ces attentes.",
+    simple:"On ne travaille plus comme avant : ni au même endroit, ni aux mêmes heures, ni pour les mêmes raisons.",
+    ex:"Une agence de Saint-Denis accorde deux jours de télétravail et des horaires aménagés pour éviter les embouteillages." },
+  { id:"tle-consommation", theme:3, terme:"Modes de consommation",
+    aca:"Consommation responsable, circuits courts, seconde main, économie du partage : les nouveaux modes de consommation s'imposent aux organisations, qui adaptent offres et processus.",
+    simple:"Les clients changent leur façon de consommer ; les organisations doivent suivre, sinon elles décrochent.",
+    ex:"Face à la demande de produits locaux, une grande surface réunionnaise développe un rayon « péi » en circuit court." },
+  { id:"tle-donnees", theme:3, terme:"Protection des données personnelles et stratégiques",
+    aca:"L'exploitation des données oblige les organisations à protéger les données personnelles (RGPD) et leurs données stratégiques, sous peine de sanctions et de perte de confiance.",
+    simple:"Les données des clients et les secrets de l'entreprise doivent être protégés comme un coffre-fort.",
+    ex:"Après une tentative de piratage, une PME du Port chiffre ses données, forme ses équipes et limite les accès." },
+  { id:"tle-algorithmes", theme:3, terme:"Transparence des algorithmes",
+    aca:"Quand des algorithmes décident (tri de candidatures, recommandations, scores), les organisations doivent pouvoir expliquer leurs critères : la transparence devient une responsabilité.",
+    simple:"Si une machine décide, on doit pouvoir expliquer pourquoi elle a décidé ça.",
+    ex:"Une plateforme de recrutement doit pouvoir justifier pourquoi son algorithme a écarté une candidature." },
+  { id:"tle-blockchain", theme:3, terme:"Chaîne de blocs (blockchain)",
+    aca:"Registre numérique distribué, infalsifiable et sans organe central, qui certifie transactions et traçabilité. Elle ouvre de nouvelles responsabilités et opportunités aux organisations.",
+    simple:"Un grand cahier numérique partagé que personne ne peut falsifier.",
+    ex:"Une filière fruits péi trace ses letchis du verger à l'export grâce à une blockchain, gage d'origine pour le client." },
+  { id:"tle-implantation", theme:3, terme:"Stratégie d'implantation",
+    aca:"Le choix du territoire d'implantation dépend des ressources offertes : main-d'œuvre, infrastructures de transport et numériques, services publics, fiscalité, aides, pépinières d'entreprises.",
+    simple:"S'installer là où le territoire apporte le plus : compétences, routes, réseaux, aides.",
+    ex:"Une PME s'installe près du port de la Pointe des Galets pour réduire ses coûts logistiques d'import-export." },
+  { id:"tle-ecosysteme", theme:3, terme:"Écosystème d'affaires, cluster et territoires",
+    aca:"Les organisations s'intègrent dans des écosystèmes d'affaires et d'innovation : grappes d'entreprises (clusters), pépinières, centres de recherche et institutions qui coopèrent sur un territoire.",
+    simple:"Des entreprises, des chercheurs et des institutions qui jouent collectif sur un même territoire.",
+    ex:"La filière canne-sucre-rhum réunit planteurs, sucreries, distilleries et recherche : un véritable cluster réunionnais." }
+],
+programme: [
+  { theme:1, titre:"Thème 1 — Les organisations et l'activité de production de biens et de services",
+    ref:"BO n°8 du 25/07/2019 — MSDGN Terminale, enseignement commun",
+    questions:["1.1 Quels produits ou quels services pour quels besoins ?","1.2 Quelles ressources pour produire ?","1.3 Quels choix d'organisation de la production pour concilier flexibilité, qualité et maîtrise des coûts ?","1.4 Les transformations numériques, une chance pour la production ?"],
+    connaissances:["Démarche marketing ; approches marketing ; étude de marché ; veille marketing et commerciale","Création de valeur : indicateurs extraits du compte de résultat et du bilan","Innovation de produits ; modèle économique (business model)","Ressources tangibles et intangibles","Ressources financières : financement de l'investissement et de l'exploitation ; analyse fonctionnelle du bilan (FRNG, BFR, trésorerie nette)","Ressources humaines : GPEC, besoins de recrutement et de formation","Innovation de procédés ; processus de production : organisation, productivité, flexibilité","Logistique, gestion de la chaîne logistique (supply chain) ; flux tendus / poussés ; flux physiques / d'information","Qualité, contrôle qualité, amélioration continue","Contrôle des coûts : coût complet, coût spécifique ; charges fixes / variables ; gestion du cycle de vie des produits (PLM)","Transformations digitales : dématérialisation, automatisation des processus, flux de travaux (workflow), cloud, objets connectés, intelligence artificielle"],
+    competences:["Présenter les caractéristiques du marché et la détection des tendances et besoins","Analyser le modèle économique d'une organisation et ses indicateurs de création de valeur","Identifier et justifier le mode de production et le type d'organisation du travail choisis","Identifier le rôle des technologies numériques dans la production","Identifier les choix de financement possibles","Repérer les moyens d'une politique de management des compétences","Déterminer la pertinence d'un contrôle des coûts"] },
+  { theme:2, titre:"Thème 2 — Les organisations et les acteurs",
+    ref:"BO n°8 du 25/07/2019 — MSDGN Terminale, enseignement commun",
+    questions:["2.1 Comment fédérer les acteurs de l'organisation ?","2.2 Les transformations numériques, vecteur d'amélioration de la relation avec les clients et les usagers ?","2.3 Communique-t-on de la même manière avec tous les acteurs ?"],
+    connaissances:["Intérêts et attentes divergents et convergents des acteurs internes","Culture de l'organisation ; style de direction","Dynamique de groupe : leadership, cohésion, décision de groupe","Coopération ; modes d'action coopératifs : groupes de projet, réunions, techniques de créativité, outils collaboratifs, réseaux sociaux d'entreprise, communautés de pratiques","Facteurs de motivation internes et externes ; dispositions favorisant la motivation et l'implication ; qualité de vie au travail","Consommateur, usager ; processus d'achat ; facteurs explicatifs des comportements : besoins, motivations, freins, attitudes","Digitalisation de la relation client : connaissance client, interactivité ; traces numériques, réseaux sociaux grand public ; administration électronique","Stratégie de communication ; communication globale et intégrée ; communication interne et externe","Identité de l'organisation : marque employeur, e-réputation, identité numérique ; communication financière : plan d'affaires (business plan)"],
+    competences:["Situer les différents acteurs, leurs intérêts et leurs attentes","Caractériser les styles de direction et la dynamique des groupes","Identifier les modalités de coopération et les facteurs de motivation","Apprécier l'apport des technologies numériques à la relation client / usager","Distinguer les modalités de communication selon les acteurs et les objectifs"] },
+  { theme:3, titre:"Thème 3 — Les organisations et la société",
+    ref:"BO n°8 du 25/07/2019 — MSDGN Terminale, enseignement commun",
+    questions:["3.1 Les organisations peuvent-elles s'affranchir des questions de société ?","3.2 Les changements de modes de vie s'imposent-ils aux organisations ?","3.3 Les transformations numériques, de nouvelles responsabilités pour les organisations ?","3.4 Quelles relations entre les organisations et leur écosystème ?"],
+    connaissances:["Éthique : définition et origine ; déontologie ; éthique dans les affaires et dans les organisations publiques et non gouvernementales","Principes de la normalisation comptable, information financière, transparence des pratiques","Lutte contre les discriminations dans les relations de travail ; égalité femmes-hommes","Organisation civique : mécénat, démocratie participative","Rapport au travail : temps, lieu, mode d'organisation ; modes de consommation","Utilisation et protection des données personnelles et stratégiques","Transparence des algorithmes ; chaîne de blocs (blockchain)","Stratégie d'implantation ; écosystème d'affaires ; grappe d'entreprises (cluster) ; écosystème d'innovation et territoires"],
+    competences:["Identifier les interactions entre l'organisation et la société","Analyser l'impact des évolutions des modes de vie sur les organisations","Repérer les enjeux éthiques de l'activité des organisations","Identifier les responsabilités nouvelles liées aux transformations numériques","Caractériser les relations entre l'organisation, son écosystème et son territoire"] }
+],
+trieur: {
+  1: { consigne:"Tangible, intangible ou financière ? Classe chaque ressource de production.",
+    bacs:["Ressource tangible","Ressource intangible","Ressource financière"],
+    items:[
+      {label:"Bâtiment de l'usine du Port", cat:0},
+      {label:"Ligne d'embouteillage", cat:0},
+      {label:"Stock de matières premières", cat:0},
+      {label:"Flotte de camions de livraison", cat:0},
+      {label:"Marque réputée dans toute l'île", cat:1},
+      {label:"Brevet sur un procédé", cat:1},
+      {label:"Savoir-faire des équipes", cat:1},
+      {label:"Emprunt bancaire", cat:2},
+      {label:"Autofinancement", cat:2},
+      {label:"Financement participatif (crowdfunding)", cat:2}
+    ]},
+  2: { consigne:"Motivation interne, motivation externe ou outil de coopération ? Classe chaque élément.",
+    bacs:["Motivation interne","Motivation externe","Outil de coopération"],
+    items:[
+      {label:"Plaisir du travail bien fait", cat:0},
+      {label:"Sentiment d'accomplissement", cat:0},
+      {label:"Intérêt pour la mission", cat:0},
+      {label:"Prime de résultat", cat:1},
+      {label:"Promotion interne", cat:1},
+      {label:"Reconnaissance du manager", cat:1},
+      {label:"Groupe de projet", cat:2},
+      {label:"Réunion de créativité", cat:2},
+      {label:"Document collaboratif partagé", cat:2},
+      {label:"Réseau social d'entreprise", cat:2}
+    ]},
+  3: { consigne:"Enjeu éthique, évolution des modes de vie ou ressource du territoire ? Classe chaque élément.",
+    bacs:["Enjeu éthique","Évolution des modes de vie","Ressource du territoire"],
+    items:[
+      {label:"Lutte contre la corruption", cat:0},
+      {label:"Égalité femmes-hommes", cat:0},
+      {label:"Transparence des comptes", cat:0},
+      {label:"Télétravail qui se généralise", cat:1},
+      {label:"Consommation responsable et locale", cat:1},
+      {label:"Essor de la seconde main", cat:1},
+      {label:"Pépinière d'entreprises", cat:2},
+      {label:"Port de la Pointe des Galets", cat:2},
+      {label:"Aides de la Région Réunion", cat:2},
+      {label:"Main-d'œuvre qualifiée locale", cat:2}
+    ]}
+},
+memory: {
+  1:[ {a:"Business model", b:"Comment l'organisation crée et capte la valeur"},
+      {a:"BFR", b:"Besoin né du décalage achats / encaissements"},
+      {a:"Coût complet", b:"Charges directes + part des charges indirectes"},
+      {a:"Flux tendus", b:"Produire juste à temps, stocks minimaux"},
+      {a:"GPEC", b:"Prévoir les emplois et compétences de demain"},
+      {a:"Crowdfunding", b:"Financement participatif en ligne"} ],
+  2:[ {a:"Style de direction", b:"Manière d'exercer le pouvoir"},
+      {a:"Cohésion", b:"Force qui soude le groupe"},
+      {a:"Processus d'achat", b:"Du besoin à l'évaluation après achat"},
+      {a:"Frein", b:"Ce qui retient le consommateur d'acheter"},
+      {a:"Marque employeur", b:"Image de l'organisation auprès des candidats"},
+      {a:"Communication interne", b:"Messages destinés aux salariés"} ],
+  3:[ {a:"Éthique", b:"Réflexion sur ce qu'il est juste de faire"},
+      {a:"Déontologie", b:"Règles propres à une profession"},
+      {a:"Mécénat", b:"Soutien sans contrepartie commerciale directe"},
+      {a:"Blockchain", b:"Registre numérique partagé et infalsifiable"},
+      {a:"Cluster", b:"Entreprises et acteurs groupés sur un territoire"},
+      {a:"RGPD", b:"Protection des données personnelles"} ]
+},
+flash: {
+  1:[ {q:"Détecter les besoins avant de produire relève…", o:["de la démarche marketing","du contrôle qualité"], c:0},
+      {q:"Une marque réputée est une ressource…", o:["tangible","intangible"], c:1},
+      {q:"FRNG − BFR =", o:["la trésorerie nette","le résultat de l'exercice"], c:0},
+      {q:"Produire à la commande, sans stocks :", o:["flux poussés","flux tendus"], c:1},
+      {q:"Charges directes + part des charges indirectes =", o:["coût complet","coût spécifique"], c:0},
+      {q:"Prévoir les compétences de demain, c'est…", o:["la GPEC","le PLM"], c:0},
+      {q:"Un enchaînement de tâches automatisé par le SI :", o:["un workflow","un cluster"], c:0} ],
+  2:[ {q:"Salaires contre dividendes : des intérêts…", o:["convergents","divergents"], c:1},
+      {q:"Le « kabar » de fin d'année et le tutoiement révèlent…", o:["la culture de l'organisation","le BFR"], c:0},
+      {q:"Un dirigeant qui décide seul a un style…", o:["autoritaire","participatif"], c:0},
+      {q:"Besoin → recherche → achat → évaluation :", o:["le processus d'achat","la GPEC"], c:0},
+      {q:"Le prix trop élevé qui fait hésiter est…", o:["une motivation","un frein"], c:1},
+      {q:"L'image de l'organisation auprès des candidats :", o:["la marque employeur","le mécénat"], c:0},
+      {q:"La newsletter envoyée aux salariés relève de la communication…", o:["interne","externe"], c:0} ],
+  3:[ {q:"Les règles écrites d'une profession :", o:["l'éthique","la déontologie"], c:1},
+      {q:"Financer un club sportif sans contrepartie directe :", o:["du mécénat","de la publicité"], c:0},
+      {q:"Le RGPD oblige à protéger…", o:["les données personnelles","les machines"], c:0},
+      {q:"Un registre numérique partagé et infalsifiable :", o:["la blockchain","le bilan"], c:0},
+      {q:"Télétravail et horaires flexibles transforment…", o:["le rapport au travail","le coût complet"], c:0},
+      {q:"Des entreprises d'une même filière regroupées sur un territoire :", o:["un cluster","un workflow"], c:0},
+      {q:"Acheter local et de saison illustre…", o:["les nouveaux modes de consommation","la déontologie"], c:0} ]
+},
+cas: {
+  1:[ {cas:"Avant de lancer une eau aromatisée au combava, Edena réalise une enquête auprès des consommateurs et analyse les avis en ligne sur les produits concurrents.", q:"Quelle démarche l'entreprise met-elle en œuvre ?", o:["Une étude de marché (démarche marketing)","Un contrôle des coûts","Une analyse fonctionnelle du bilan"], c:0, why:"Détecter les besoins et connaître ses marchés avant de produire : c'est le point de départ de la démarche marketing."},
+      {cas:"Royal Bourbon finance une nouvelle ligne de production par un emprunt bancaire complété par son autofinancement.", q:"Comment qualifier ces choix ?", o:["Un financement mixte : externe (emprunt) et fonds propres (autofinancement)","Un financement uniquement externe","Une augmentation du BFR"], c:0, why:"L'investissement s'arbitre entre fonds propres (autofinancement, capital) et financement externe (emprunt, crédit-bail…)."},
+      {cas:"Une confiturerie péi produit en petites séries à la commande pour les hôtels de l'Ouest, avec très peu de stocks.", q:"Quel choix d'organisation reconnaît-on ?", o:["Une production flexible en flux tendus","Une production de masse en flux poussés","Une délocalisation"], c:0, why:"Produire à la demande avec des stocks minimaux : flux tendus et flexibilité, au service de la fraîcheur et des coûts."},
+      {cas:"Crête d'Or calcule le coût d'un poulet conditionné : matières, main-d'œuvre directe, et une part des frais généraux de l'usine.", q:"Quelle méthode l'entreprise utilise-t-elle ?", o:["Le coût complet","Le coût spécifique","Le seuil de rentabilité"], c:0, why:"Charges directes + imputation des charges indirectes : c'est la méthode du coût complet."} ],
+  2:[ {cas:"Dans une PME du Port, les salariés réclament des primes pendant que les associés veulent augmenter les dividendes.", q:"Que révèle cette situation ?", o:["Des intérêts divergents entre acteurs internes","Une convergence parfaite des intérêts","Un problème de logistique"], c:0, why:"La répartition de la valeur oppose parfois les acteurs : leurs intérêts sont tantôt convergents, tantôt divergents."},
+      {cas:"La directrice d'un hôtel de Saint-Gilles réunit son équipe et recueille les avis avant de modifier les plannings, puis tranche.", q:"Quel style de direction adopte-t-elle ?", o:["Consultatif","Autoritaire","Paternaliste"], c:0, why:"Elle consulte avant de décider : style consultatif, qui favorise l'adhésion sans diluer la décision."},
+      {cas:"Une enseigne réunionnaise analyse les avis Google, les clics sur son site et les historiques d'achat pour proposer des offres personnalisées.", q:"Qu'illustre cette pratique ?", o:["La digitalisation de la relation client (traces numériques)","La GPEC","Le mécénat"], c:0, why:"Les traces numériques nourrissent la connaissance client et permettent interactivité et personnalisation."},
+      {cas:"Un usager renouvelle sa carte grise et demande une aide régionale entièrement en ligne, sans se déplacer.", q:"Quelle transformation reconnaît-on ?", o:["L'administration électronique","La communication financière","Le coût spécifique"], c:0, why:"Le numérique transforme aussi la relation aux usagers : c'est l'administration électronique."} ],
+  3:[ {cas:"Pour remporter un marché, on propose discrètement une « commission » au dirigeant d'une PME réunionnaise. Il refuse et le signale.", q:"Quelle notion guide sa décision ?", o:["L'éthique dans les affaires","La logistique","Le business model"], c:0, why:"Refuser la corruption au-delà de toute obligation immédiate : c'est l'éthique dans les affaires."},
+      {cas:"Une entreprise dionysienne publie son index d'égalité professionnelle et corrige les écarts de salaires femmes-hommes constatés.", q:"À quel enjeu répond-elle ?", o:["La lutte contre les discriminations au travail","La gestion des flux tendus","La veille commerciale"], c:0, why:"L'égalité femmes-hommes et la non-discrimination sont des obligations et des enjeux de société pour les organisations."},
+      {cas:"Une filière fruits trace ses letchis du verger réunionnais jusqu'à l'export grâce à un registre numérique partagé et infalsifiable.", q:"Quelle technologie utilise-t-elle ?", o:["La chaîne de blocs (blockchain)","Le crédit-bail","Le coût complet"], c:0, why:"La blockchain certifie la traçabilité sans organe central : une garantie d'origine pour le client."},
+      {cas:"Une jeune entreprise s'installe à la Technopole de La Réunion pour profiter de la pépinière, des chercheurs et des aides locales.", q:"Que recherche-t-elle ?", o:["Les ressources de son écosystème territorial","Un financement participatif","Un style de direction"], c:0, why:"Le territoire offre des ressources (compétences, accompagnement, infrastructures) : la stratégie d'implantation en tient compte."} ]
+},
+vraifaux: {
+  1:[ {p:"La valeur créée par une entreprise peut se mesurer à partir du compte de résultat.", v:true, why:"Vrai : le compte de résultat (réel ou prévisionnel) fournit les indicateurs de création de valeur."},
+      {p:"Une organisation publique ne crée jamais de valeur.", v:false, why:"Faux : sa valeur est souvent difficile à mesurer financièrement, mais elle a une dimension sociale réelle."},
+      {p:"Le crédit-bail et le financement participatif sont des financements externes.", v:true, why:"Vrai : comme l'emprunt et les subventions, ils viennent de l'extérieur, contrairement à l'autofinancement."},
+      {p:"La qualité ne concerne que la production de biens.", v:false, why:"Faux : elle s'étend aux services, y compris publics (information, délais, simplicité des démarches)."},
+      {p:"Le coût spécifique impute à chaque produit ses charges variables et ses charges fixes directes propres.", v:true, why:"Vrai : c'est sa définition, adaptée aux environnements instables."} ],
+  2:[ {p:"Les intérêts des acteurs internes d'une organisation sont toujours convergents.", v:false, why:"Faux : ils sont tantôt convergents (pérennité), tantôt divergents (partage de la valeur), sources de conflits."},
+      {p:"La cohésion d'un groupe peut améliorer sa performance.", v:true, why:"Vrai : un groupe soudé coopère mieux, décide mieux et s'implique davantage."},
+      {p:"Le processus d'achat commence au moment du paiement.", v:false, why:"Faux : il naît du besoin, passe par la recherche d'informations et se prolonge après l'achat (évaluation)."},
+      {p:"Les traces numériques laissées par les clients aident à personnaliser la relation.", v:true, why:"Vrai : navigation, avis et historiques nourrissent la connaissance client."},
+      {p:"On communique exactement de la même manière avec un salarié, un client et un banquier.", v:false, why:"Faux : les cibles, objectifs et supports diffèrent — mais les messages doivent rester cohérents (communication globale)."} ],
+  3:[ {p:"L'éthique se limite au strict respect de la loi.", v:false, why:"Faux : l'éthique interroge ce qu'il est juste de faire, au-delà des obligations légales."},
+      {p:"L'égalité professionnelle femmes-hommes est un enjeu de société pour les organisations.", v:true, why:"Vrai : elle est mesurée, publiée, et engage la responsabilité des organisations."},
+      {p:"Une organisation peut exploiter librement les données personnelles de ses clients.", v:false, why:"Faux : le RGPD impose consentement, sécurité et limitation de l'usage des données personnelles."},
+      {p:"La blockchain permet de certifier des transactions sans organe central.", v:true, why:"Vrai : le registre est partagé, distribué et infalsifiable."},
+      {p:"Le territoire fournit des ressources aux organisations : infrastructures, compétences, aides.", v:true, why:"Vrai : c'est tout l'enjeu de la stratégie d'implantation et des écosystèmes territoriaux."} ]
+},
+intrus: {
+  1:[ {liste:["Étude de marché","Veille commerciale","Enquête clients","Coût complet"], intrus:3, why:"Le coût complet relève du contrôle des coûts ; les trois autres servent à connaître le marché."},
+      {liste:["Autofinancement","Emprunt","Crédit-bail","Charges fixes"], intrus:3, why:"Les charges fixes sont des charges, pas un mode de financement."},
+      {liste:["Fabrication à l'unité","En série","En continu","En freemium"], intrus:3, why:"Le freemium est un modèle économique ; les trois autres sont des modes de production."} ],
+  2:[ {liste:["Leadership","Cohésion","Décision de groupe","Coût spécifique"], intrus:3, why:"Le coût spécifique relève du contrôle des coûts ; les trois autres composent la dynamique de groupe."},
+      {liste:["Besoins","Motivations","Freins","Clusters"], intrus:3, why:"Le cluster est une notion territoriale ; les trois autres expliquent le comportement du consommateur."},
+      {liste:["Journal interne","Intranet","Réunion d'équipe","Spot publicitaire"], intrus:3, why:"Le spot publicitaire relève de la communication externe ; les trois autres de la communication interne."} ],
+  3:[ {liste:["Éthique","Déontologie","Transparence","Flux poussés"], intrus:3, why:"Les flux poussés relèvent de la logistique ; les trois autres des questions de société."},
+      {liste:["Mécénat","Démocratie participative","Engagement citoyen","Coût complet"], intrus:3, why:"Le coût complet est une méthode de calcul ; les trois autres relèvent de l'organisation civique."},
+      {liste:["Stratégie d'implantation","Écosystème d'affaires","Cluster","Processus d'achat"], intrus:3, why:"Le processus d'achat concerne le consommateur ; les trois autres la relation organisation-territoire."} ]
+},
+mission: {
+  1:{ titre:"Directeur de production chez « Tropic'Saveurs » (Le Port)",
+    intro:"Tu pilotes la production d'une entreprise réunionnaise de jus de fruits. Marketing, financement, organisation de la production, qualité, numérique : chaque décision engage la compétitivité. Indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟, Emplois 👥.",
+    etapes:[
+      {scene:"Le service commercial veut lancer immédiatement un jus letchi-gingembre « parce que c'est tendance ».", choix:[
+        {txt:"Mener d'abord une étude de marché et bâtir un compte de résultat prévisionnel", eff:{treso:-5,marche:15,image:5,emploi:0}, fb:"Démarche marketing + indicateurs de création de valeur : tu lances en connaissant les besoins ET la rentabilité attendue."},
+        {txt:"Lancer sans étude", eff:{treso:-15,marche:-5,image:-5,emploi:0}, fb:"Sans connaissance du marché ni prévision de valeur, le lancement est un pari : les invendus s'accumulent."} ]},
+      {scene:"Il faut financer une nouvelle ligne d'embouteillage à 400 000 €.", choix:[
+        {txt:"Combiner autofinancement et emprunt à long terme adapté à l'investissement", eff:{treso:-10,marche:10,image:5,emploi:5}, fb:"Un financement mixte préserve la trésorerie d'exploitation : l'investissement long se finance par des ressources longues."},
+        {txt:"Tout payer avec la trésorerie courante", eff:{treso:-25,marche:5,image:0,emploi:0}, fb:"Le BFR n'est plus couvert : la trésorerie nette plonge et les fournisseurs attendent leurs règlements."} ]},
+      {scene:"Tes stocks de bouteilles vides débordent, tes fournisseurs sont désormais fiables et réactifs.", choix:[
+        {txt:"Passer en flux plus tendus avec un stock de sécurité raisonnable", eff:{treso:10,marche:5,image:0,emploi:0}, fb:"Moins de stocks immobilisés = moins de BFR. Le stock de sécurité protège des aléas du fret — île oblige."},
+        {txt:"Garder des stocks massifs « au cas où »", eff:{treso:-10,marche:0,image:0,emploi:0}, fb:"Les stocks dorment et coûtent : argent immobilisé, casse, place perdue. La logistique est aussi source de valeur."} ]},
+      {scene:"Un lot présente des bouteilles mal remplies. Le client n'a encore rien remarqué.", choix:[
+        {txt:"Bloquer le lot, renforcer le contrôle qualité et corriger le processus", eff:{treso:-10,marche:5,image:15,emploi:0}, fb:"La qualité est un enjeu concurrentiel crucial : l'amélioration continue évite que le défaut se reproduise."},
+        {txt:"Livrer quand même pour tenir les délais", eff:{treso:5,marche:-15,image:-15,emploi:0}, fb:"Le défaut finit sur les réseaux sociaux : la confiance, elle, ne se rattrape pas en un lot."} ]},
+      {scene:"Un prestataire propose d'équiper la ligne de capteurs connectés reliés à ton PGI.", choix:[
+        {txt:"Investir : suivi en temps réel et automatisation des alertes (workflow)", eff:{treso:-10,marche:10,image:5,emploi:0}, fb:"Les objets connectés et l'automatisation améliorent en continu la production : moins de pertes, plus de réactivité."},
+        {txt:"Refuser : « on a toujours fait sans »", eff:{treso:5,marche:-10,image:-5,emploi:0}, fb:"Tes concurrents s'équipent : les transformations numériques de la production sont une chance… pour ceux qui les saisissent."} ]} ]},
+  2:{ titre:"Manager à l'hôtel « Les Badamiers » (Saint-Gilles)",
+    intro:"Tu encadres les équipes d'un hôtel réunionnais. Fédérer les acteurs, motiver, soigner la relation client digitale et communiquer juste : voilà tes missions. Indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟, Emplois 👥.",
+    etapes:[
+      {scene:"La saison a été excellente. Les salariés demandent une prime, les propriétaires veulent maximiser leur part.", choix:[
+        {txt:"Organiser la concertation et répartir équitablement les fruits de la saison", eff:{treso:-5,marche:5,image:10,emploi:5}, fb:"Les intérêts divergents se gèrent par le dialogue : un compromis équitable fédère les acteurs autour de la réussite."},
+        {txt:"Tout attribuer aux propriétaires sans discussion", eff:{treso:5,marche:-5,image:-15,emploi:-5}, fb:"Démotivation immédiate : le conflit larvé s'installera et la qualité de service s'en ressentira."} ]},
+      {scene:"Tu dois réorganiser les plannings de la haute saison.", choix:[
+        {txt:"Consulter l'équipe, recueillir les contraintes, puis trancher", eff:{treso:0,marche:5,image:10,emploi:5}, fb:"Style consultatif : l'équipe adhère à une décision qu'elle a contribué à éclairer."},
+        {txt:"Imposer les plannings par affichage", eff:{treso:0,marche:0,image:-10,emploi:-5}, fb:"Style autoritaire mal vécu : absentéisme et tensions en pleine haute saison."} ]},
+      {scene:"L'équipe est compétente mais s'essouffle : routine, aucun signe de reconnaissance.", choix:[
+        {txt:"Reconnaissance publique + prime liée à la satisfaction client + perspectives d'évolution", eff:{treso:-10,marche:10,image:10,emploi:5}, fb:"Tu combines facteurs externes (prime, promotion) et internes (fierté du travail) : motivation et implication repartent."},
+        {txt:"Ne rien changer : « ils sont payés pour ça »", eff:{treso:5,marche:-10,image:-10,emploi:-5}, fb:"Sans dispositions favorisant la motivation, les meilleurs partent chez le concurrent d'en face."} ]},
+      {scene:"La note de l'hôtel glisse à 4,1/5 en ligne et seuls 12 % des avis reçoivent une réponse.", choix:[
+        {txt:"Répondre à chaque avis, analyser les traces numériques et personnaliser l'accueil", eff:{treso:-5,marche:15,image:15,emploi:0}, fb:"La digitalisation de la relation client transforme les avis en levier : e-réputation restaurée, clients fidélisés."},
+        {txt:"Ignorer : « les avis, ça ne compte pas »", eff:{treso:0,marche:-15,image:-15,emploi:0}, fb:"Pour les voyageurs, la note EST la vitrine : la réservation file vers les hôtels mieux notés."} ]},
+      {scene:"L'hôtel lance sa rénovation. Il faut l'annoncer aux salariés, aux clients et au banquier.", choix:[
+        {txt:"Adapter le message à chaque cible, en gardant une communication globale cohérente", eff:{treso:0,marche:10,image:10,emploi:0}, fb:"Réunion d'équipe, campagne clients, dossier financier (business plan) : trois cibles, trois formes, un seul discours cohérent."},
+        {txt:"Envoyer le même e-mail à tout le monde", eff:{treso:0,marche:-5,image:-10,emploi:0}, fb:"Le banquier n'a pas ses chiffres, les salariés apprennent leur sort comme des clients : on ne communique pas de la même manière avec tous les acteurs."} ]} ]},
+  3:{ titre:"PDG de « Péi Cosmétiques » face à la société",
+    intro:"Ton entreprise réunionnaise de cosmétiques naturels grandit. Éthique, égalité, données, modes de vie, territoire : la société t'observe et t'offre aussi des ressources. Indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟, Emplois 👥.",
+    etapes:[
+      {scene:"Un intermédiaire propose de « faciliter » un gros contrat à l'export contre une commission occulte.", choix:[
+        {txt:"Refuser et formaliser une charte éthique interne", eff:{treso:-5,marche:5,image:15,emploi:0}, fb:"L'éthique dans les affaires protège l'organisation : un contrat gagné par corruption se paie toujours plus tard."},
+        {txt:"Accepter discrètement", eff:{treso:10,marche:5,image:-25,emploi:0}, fb:"Le scandale éclate : sanctions, clients perdus, réputation détruite. L'éthique n'était pas une option."} ]},
+      {scene:"L'index égalité femmes-hommes révèle un écart de salaires injustifié de 8 %.", choix:[
+        {txt:"Corriger les écarts et publier un plan d'égalité", eff:{treso:-10,marche:5,image:10,emploi:5}, fb:"Lutter contre les discriminations est une obligation et un atout : fierté interne, attractivité externe."},
+        {txt:"Masquer les chiffres", eff:{treso:5,marche:0,image:-15,emploi:-5}, fb:"La dissimulation se découvre toujours : sanction et perte de confiance des équipes."} ]},
+      {scene:"Ton fichier clients intéresse un courtier en données prêt à payer cher.", choix:[
+        {txt:"Refuser : sécuriser les données et respecter le consentement (RGPD)", eff:{treso:-5,marche:5,image:10,emploi:0}, fb:"La protection des données personnelles et stratégiques est une responsabilité : la confiance des clients vaut plus que la vente du fichier."},
+        {txt:"Vendre le fichier", eff:{treso:15,marche:-10,image:-20,emploi:0}, fb:"Sanction CNIL, clients furieux : l'exploitation des données impose des responsabilités nouvelles."} ]},
+      {scene:"Tes clients réclament du local, du rechargeable et de la transparence sur l'origine des ingrédients.", choix:[
+        {txt:"Lancer une gamme rechargeable tracée par blockchain, en circuit court", eff:{treso:-15,marche:15,image:15,emploi:5}, fb:"Les modes de consommation s'imposent aux organisations : tu en fais un avantage concurrentiel certifié."},
+        {txt:"Ne rien changer à l'offre", eff:{treso:5,marche:-15,image:-10,emploi:0}, fb:"Le marché évolue sans toi : les nouvelles attentes de consommation profitent aux concurrents."} ]},
+      {scene:"La Technopole de La Réunion te propose d'intégrer son écosystème : pépinière, chercheurs, autres entreprises de la filière.", choix:[
+        {txt:"Rejoindre l'écosystème et coopérer avec les acteurs du territoire", eff:{treso:-5,marche:10,image:10,emploi:5}, fb:"Cluster, recherche, accompagnement : le territoire fournit des ressources précieuses à qui joue collectif."},
+        {txt:"Rester isolé pour « protéger ses secrets »", eff:{treso:0,marche:-10,image:-5,emploi:0}, fb:"Seul, tu avances moins vite : les écosystèmes d'innovation font émerger les champions de demain."} ]} ]}
+},
+docs: {
+  1:[ {titre:"Compte de résultat prévisionnel — jus « Letchi Pétillant » (en k€)",
+       source:"Tropic'Saveurs, Le Port — dossier de lancement",
+       texte:"Chiffre d'affaires prévisionnel : 300.\nCharges variables (matières, emballages, énergie) : 180.\nCharges fixes (ligne dédiée, marketing, personnel) : 90.\nRésultat prévisionnel : 30.",
+       questions:[
+         {q:"Quel est le taux de marge sur coûts variables du projet ?", o:["40 % du CA","60 % du CA","10 % du CA"], c:0, why:"Marge sur coûts variables = 300 − 180 = 120 ; 120 ÷ 300 = 40 % du chiffre d'affaires."},
+         {q:"Quel chiffre d'affaires minimal assure l'équilibre (seuil de rentabilité) ?", o:["90 k€","225 k€","300 k€"], c:1, why:"Seuil = charges fixes ÷ taux de marge = 90 ÷ 0,40 = 225 k€."},
+         {q:"À quoi sert ce document avant le lancement ?", o:["À vérifier que le produit créera de la valeur","À mesurer la cohésion du groupe","À choisir le style de direction"], c:0, why:"Le compte de résultat prévisionnel fournit les indicateurs de création de valeur : on ne lance que si le projet en crée."}]},
+      {titre:"Analyse fonctionnelle du bilan — Tropic'Saveurs (en k€)",
+       source:"Service comptable — clôture de l'exercice",
+       texte:"Ressources stables : 520. Emplois stables : 400. Fonds de roulement net global (FRNG) : 120.\nStocks : 95. Créances clients : 130. Dettes fournisseurs : 75. Besoin en fonds de roulement (BFR) : 150.",
+       questions:[
+         {q:"Quelle est la trésorerie nette de l'entreprise ?", o:["+270 k€","−30 k€","+30 k€"], c:1, why:"Trésorerie nette = FRNG − BFR = 120 − 150 = −30 k€ : la trésorerie est négative."},
+         {q:"D'où vient le besoin en fonds de roulement ?", o:["Du décalage entre les dépenses d'exploitation (stocks, clients) et les encaissements","Des dividendes versés","Du style de direction"], c:0, why:"Stocks et créances immobilisent de l'argent avant que les clients ne paient : c'est le BFR."},
+         {q:"Quelle action améliorerait la situation ?", o:["Réduire les stocks et raccourcir les délais de paiement clients","Augmenter les stocks de sécurité","Allonger les délais accordés aux clients"], c:0, why:"Réduire stocks et créances fait baisser le BFR : la trésorerie nette se redresse."}]} ],
+  2:[ {titre:"Enquête interne de climat social — extraits",
+       source:"Hôtel Les Badamiers, Saint-Gilles — 46 répondants sur 52 salariés",
+       texte:"Satisfaction générale au travail : 58 %.\n« Je manque de reconnaissance » : cité par 64 % des répondants.\n« Les réunions actuelles sont inutiles » : 70 %.\n« Je suis attaché(e) à mon équipe » : 82 %.",
+       questions:[
+         {q:"Quel facteur de motivation externe fait le plus défaut ?", o:["La reconnaissance","Le plaisir du travail bien fait","L'attachement à l'équipe"], c:0, why:"64 % citent le manque de reconnaissance : un facteur externe que le management peut activer rapidement."},
+         {q:"Sur quel point d'appui le manager peut-il compter ?", o:["La forte cohésion (82 % d'attachement à l'équipe)","Les réunions actuelles","La satisfaction générale"], c:0, why:"L'attachement à l'équipe traduit une cohésion solide : un levier précieux de la dynamique de groupe."},
+         {q:"Quelle action répond le mieux au diagnostic ?", o:["Repenser les modes d'action coopératifs et instaurer des signes de reconnaissance","Supprimer toutes les réunions sans rien proposer","Augmenter uniquement les cadences"], c:0, why:"Des réunions utiles, des outils collaboratifs et de la reconnaissance : on traite les deux faiblesses révélées par l'enquête."}]},
+      {titre:"Tableau de bord — relation client digitale (trimestre)",
+       source:"Enseigne de distribution réunionnaise — direction marketing",
+       texte:"Note moyenne des avis en ligne : 4,1/5 (en baisse de 0,3).\nTaux de réponse de l'enseigne aux avis : 12 %.\nVentes en ligne : +9 %. Abonnés sur les réseaux sociaux : +15 %.\nPart des clients identifiés via le programme de fidélité : 61 %.",
+       questions:[
+         {q:"Quel signal d'alerte ce tableau de bord révèle-t-il ?", o:["Une e-réputation qui se dégrade avec des avis presque sans réponse","Une chute des ventes en ligne","La disparition du programme de fidélité"], c:0, why:"Note en baisse + 12 % de réponses seulement : l'identité numérique de l'enseigne se dégrade faute d'interactivité."},
+         {q:"Quelle force l'enseigne peut-elle mobiliser ?", o:["Sa connaissance client (61 % de clients identifiés) et sa communauté en croissance","Sa note de 4,1 en baisse","Son absence des réseaux sociaux"], c:0, why:"Les traces numériques des clients identifiés et l'audience croissante permettent une relation personnalisée."},
+         {q:"Quelle décision est la plus cohérente ?", o:["Organiser la réponse systématique aux avis et personnaliser les offres","Fermer les comptes de réseaux sociaux","Arrêter la vente en ligne"], c:0, why:"La digitalisation de la relation client se pilote : répondre, écouter, personnaliser — l'e-réputation se reconstruit."}]} ],
+  3:[ {titre:"Charte éthique — extraits",
+       source:"Groupe réunionnais de distribution — document interne signé par chaque salarié",
+       texte:"Art. 2 — Tout cadeau ou invitation d'une valeur supérieure à 50 € doit être refusé et déclaré.\nArt. 4 — Un dispositif d'alerte interne permet de signaler confidentiellement tout manquement.\nArt. 5 — Le groupe garantit l'égalité de traitement dans le recrutement, la rémunération et la promotion.\nArt. 7 — Les données des clients et des salariés sont protégées conformément au RGPD.",
+       questions:[
+         {q:"Que formalise ce document ?", o:["Les règles d'éthique et de déontologie internes du groupe","Le budget de trésorerie","La stratégie marketing"], c:0, why:"Une charte éthique traduit en règles internes les exigences d'éthique dans les affaires."},
+         {q:"À quoi sert le dispositif d'alerte (art. 4) ?", o:["À signaler les manquements sans crainte de représailles","À surveiller les clients","À calculer le coût complet"], c:0, why:"L'alerte interne protège ceux qui signalent corruption ou fraude : un pilier de la transparence des pratiques."},
+         {q:"L'article 7 relie l'éthique à…", o:["la protection des données personnelles (RGPD)","la logistique en flux tendus","la fabrication en série"], c:0, why:"Le numérique crée de nouvelles responsabilités : la protection des données fait désormais partie de l'éthique des organisations."}]},
+      {titre:"Article de presse — « La canne, un écosystème réunionnais »",
+       source:"Presse économique régionale",
+       texte:"Autour de la canne à sucre gravitent des milliers de planteurs, deux sucreries, des distilleries renommées, des unités de production d'énergie à partir de la bagasse, des organismes de recherche agronomique et des infrastructures portuaires d'exportation.\nLa filière représente plusieurs milliers d'emplois directs et indirects.\nLes acteurs coopèrent au sein d'interprofessions, partagent la recherche variétale et défendent ensemble une image commune des produits péi.",
+       questions:[
+         {q:"Quelle notion ce texte illustre-t-il principalement ?", o:["Une grappe d'entreprises (cluster) et son écosystème d'affaires","Un processus d'achat","Une analyse fonctionnelle du bilan"], c:0, why:"Des acteurs interdépendants, coopérant sur un même territoire autour d'une filière : c'est un cluster."},
+         {q:"Quelles ressources du territoire la filière mobilise-t-elle ?", o:["Recherche, infrastructures portuaires, main-d'œuvre, énergie","Uniquement des capitaux étrangers","Aucune ressource locale"], c:0, why:"Le territoire fournit recherche agronomique, port d'exportation, compétences : des ressources clés de l'écosystème."},
+         {q:"Quel intérêt une distillerie a-t-elle à s'intégrer dans cet écosystème ?", o:["Accéder à des ressources partagées et à une image collective forte","Échapper à toute concurrence","Supprimer son contrôle qualité"], c:0, why:"Coopération, innovation partagée, image commune : l'écosystème renforce chaque acteur qui y contribue."}]} ]
+},
+intrusExtra: {
+  1:[ {liste:["FRNG","BFR","Trésorerie nette","Marque employeur"], intrus:3, why:"La marque employeur relève de l'identité de l'organisation ; les trois autres de l'analyse fonctionnelle du bilan."},
+      {liste:["Brevet","Savoir-faire","Notoriété","Hangar de stockage"], intrus:3, why:"Le hangar est une ressource tangible ; les trois autres sont intangibles."},
+      {liste:["Plateforme","Low cost","Freemium","Flux tendus"], intrus:3, why:"Les flux tendus relèvent de la logistique ; les trois autres sont des modèles économiques."},
+      {liste:["Dématérialisation","Automatisation","Workflow","Mécénat"], intrus:3, why:"Le mécénat relève de l'engagement sociétal ; les trois autres des transformations digitales de la production."},
+      {liste:["Logistique","Supply chain","Flux physiques","Style de direction"], intrus:3, why:"Le style de direction concerne le management des acteurs ; les trois autres la chaîne logistique."},
+      {liste:["Qualité","Contrôle qualité","Amélioration continue","Dividende"], intrus:3, why:"Le dividende rémunère les actionnaires ; les trois autres pilotent la qualité de production."},
+      {liste:["GPEC","Plan de recrutement","Plan de formation","Blockchain"], intrus:3, why:"La blockchain est une technologie de certification ; les trois autres gèrent les ressources humaines."} ],
+  2:[ {liste:["Groupe de projet","Réunion","Outil collaboratif","Bilan fonctionnel"], intrus:3, why:"Le bilan fonctionnel est un outil financier ; les trois autres organisent la coopération."},
+      {liste:["Prime","Promotion","Avantages en nature","Plaisir du travail bien fait"], intrus:3, why:"Le plaisir du travail est un facteur interne ; les trois autres sont des facteurs externes de motivation."},
+      {liste:["Valeurs","Rituels","Codes partagés","Crédit-bail"], intrus:3, why:"Le crédit-bail est un financement ; les trois autres composent la culture de l'organisation."},
+      {liste:["Marque employeur","E-réputation","Identité numérique","Flux tendus"], intrus:3, why:"Les flux tendus relèvent de la logistique ; les trois autres de l'identité de l'organisation."},
+      {liste:["Connaissance client","Interactivité","Traces numériques","Coût complet"], intrus:3, why:"Le coût complet relève du contrôle des coûts ; les trois autres de la digitalisation de la relation client."},
+      {liste:["Business plan","Communication financière","Information des partenaires","Carte de fidélité"], intrus:3, why:"La carte de fidélité relève de la relation client ; les trois autres de la communication financière."},
+      {liste:["Autoritaire","Paternaliste","Participatif","Obsolète"], intrus:3, why:"« Obsolète » qualifie un produit dépassé ; les trois autres sont des styles de direction."} ],
+  3:[ {liste:["Télétravail","Horaires flexibles","Tiers-lieux","Coût spécifique"], intrus:3, why:"Le coût spécifique relève du contrôle des coûts ; les trois autres du nouveau rapport au travail."},
+      {liste:["Consommation responsable","Circuits courts","Seconde main","Charges indirectes"], intrus:3, why:"Les charges indirectes relèvent du calcul des coûts ; les trois autres des nouveaux modes de consommation."},
+      {liste:["Données personnelles","Consentement","RGPD","Supply chain"], intrus:3, why:"La supply chain relève de la logistique ; les trois autres de la protection des données."},
+      {liste:["Transparence des algorithmes","Blockchain","Protection des données","Style paternaliste"], intrus:3, why:"Le style paternaliste relève de la direction ; les trois autres des responsabilités numériques."},
+      {liste:["Égalité femmes-hommes","Non-discrimination","Diversité","Flux d'information"], intrus:3, why:"Les flux d'information relèvent de la logistique ; les trois autres de l'égalité au travail."},
+      {liste:["Pépinière d'entreprises","Infrastructures","Aides régionales","Processus d'achat"], intrus:3, why:"Le processus d'achat concerne le consommateur ; les trois autres sont des ressources du territoire."},
+      {liste:["Corruption","Fraude","Pratiques opaques","Mécénat"], intrus:3, why:"Le mécénat est un engagement vertueux ; les trois autres sont les dérives qui ont fait naître l'éthique des affaires."} ]
+},
+casExtra: {
+  1:[ {cas:"La marque « Isautier », connue de tous les Réunionnais depuis 1845, n'apparaît dans aucun hangar ni aucune machine.", q:"Comment qualifier cette ressource ?", o:["Une ressource intangible","Une ressource tangible","Une ressource financière"], c:0, why:"Marque, réputation, savoir-faire : des ressources intangibles, souvent décisives pour l'avantage concurrentiel."},
+      {cas:"Le bilan d'une PME de Saint-Pierre affiche : FRNG 80 k€, BFR 95 k€.", q:"Quelle est sa trésorerie nette et que faut-il en conclure ?", o:["−15 k€ : un financement de court terme est à prévoir","+15 k€ : tout va bien","175 k€ : trésorerie abondante"], c:0, why:"TN = FRNG − BFR = 80 − 95 = −15 k€ : le FRNG ne couvre pas le BFR."},
+      {cas:"Un hôtel de l'Ouest dématérialise le check-in : l'enregistrement se fait sur tablette et alimente automatiquement la facturation.", q:"Qu'illustre ce cas ?", o:["La dématérialisation et l'automatisation des processus","Le mécénat","Le coût spécifique"], c:0, why:"Le numérique fluidifie le processus de production du service : dématérialisation + workflow."},
+      {cas:"Une start-up réunionnaise propose son appli gratuitement, avec un abonnement « premium » pour les fonctions avancées.", q:"Quel modèle économique reconnaît-on ?", o:["Le freemium","Le coût complet","La GPEC"], c:0, why:"Gratuit pour attirer, payant pour les services avancés : c'est le modèle freemium."},
+      {cas:"Air Austral anticipe le départ en retraite de nombreux mécaniciens dans cinq ans et ouvre des parcours de formation pour des jeunes de l'île.", q:"Quelle démarche l'entreprise applique-t-elle ?", o:["La GPEC","L'analyse fonctionnelle du bilan","La veille commerciale"], c:0, why:"Adapter dès aujourd'hui les compétences aux besoins futurs : c'est la gestion prévisionnelle des emplois et des compétences."},
+      {cas:"Une biscuiterie péi abandonne un produit après calcul : son coût spécifique dépasse durablement son prix de vente.", q:"Que montre cette décision ?", o:["L'utilité du contrôle des coûts pour décider","Que la qualité est inutile","Que le marketing suffit"], c:0, why:"Le calcul des coûts éclaire les décisions : maintenir, repositionner ou abandonner un produit."} ],
+  2:[ {cas:"Pour préparer le lancement d'une nouvelle gamme, une entreprise crée un groupe de projet réunissant production, vente et comptabilité autour d'un espace de travail partagé.", q:"Quel mode d'action reconnaît-on ?", o:["Un mode d'action coopératif","Une communication financière","Un calcul de coût"], c:0, why:"Groupes de projet et outils collaboratifs organisent la coopération entre acteurs et services."},
+      {cas:"Après un séminaire de deux jours, les équipes réception et restaurant d'un hôtel coopèrent enfin sans tensions.", q:"Quelle dimension du groupe a été renforcée ?", o:["La cohésion","Le BFR","Le processus d'achat"], c:0, why:"La cohésion soude le groupe : elle favorise coopération, implication et performance collective."},
+      {cas:"Avant d'acheter un scooter, un jeune Réunionnais compare les modèles en ligne, lit les avis, puis essaie en concession avant de se décider.", q:"Qu'illustre ce parcours ?", o:["Le processus d'achat, devenu multicanal","La déontologie","La stratégie d'implantation"], c:0, why:"Du besoin à la décision, le consommateur combine canaux numériques et physiques : c'est le processus d'achat moderne."},
+      {cas:"Air Austral publie des portrats de ses salariés et ses parcours de carrière pour attirer des candidats techniciens.", q:"Que développe la compagnie ?", o:["Sa marque employeur","Son coût complet","Ses flux tendus"], c:0, why:"La marque employeur construit l'attractivité de l'organisation sur le marché du travail."},
+      {cas:"Pour financer son extension, la gérante d'un restaurant présente à sa banque un plan d'affaires chiffré sur trois ans.", q:"De quelle communication relève ce document ?", o:["De la communication financière (business plan)","De la communication interne","De la publicité"], c:0, why:"Le business plan répond aux besoins d'information financière des partenaires : c'est la communication financière."},
+      {cas:"Une enseigne lance un jeu-concours sur les réseaux sociaux et répond en direct aux questions des internautes réunionnais.", q:"Qu'exploite-t-elle ?", o:["L'interactivité des réseaux sociaux grand public","Le bilan fonctionnel","La GPEC"], c:0, why:"Les réseaux sociaux permettent une relation interactive et continue avec clients et prospects."} ],
+  3:[ {cas:"Une agence de Saint-Denis accorde deux jours de télétravail hebdomadaires : candidatures en hausse, retards liés aux embouteillages en baisse.", q:"À quelle évolution l'organisation s'adapte-t-elle ?", o:["Au nouveau rapport au travail (temps, lieu)","À la normalisation comptable","Au coût complet"], c:0, why:"Temps et lieu de travail évoluent : les organisations qui s'adaptent y gagnent en attractivité."},
+      {cas:"Une grande surface réunionnaise développe un rayon « péi » en circuit court face à la demande de produits locaux.", q:"À quoi répond cette décision ?", o:["Aux nouveaux modes de consommation","À la transparence des algorithmes","Au financement participatif"], c:0, why:"Consommation responsable et locale : les modes de consommation s'imposent aux organisations."},
+      {cas:"Une PME du Port subit une tentative de piratage : elle chiffre ses données, forme ses équipes et limite les accès.", q:"Quelle responsabilité exerce-t-elle ?", o:["La protection des données personnelles et stratégiques","Le mécénat","La gestion des flux poussés"], c:0, why:"Sécuriser les données des clients ET les données stratégiques de l'entreprise est une responsabilité numérique majeure."},
+      {cas:"Une plateforme de recrutement est critiquée : son algorithme écarte des candidatures sans que personne ne sache pourquoi.", q:"Quel principe est en cause ?", o:["La transparence des algorithmes","Le crédit-bail","La saisonnalité"], c:0, why:"Quand un algorithme décide, l'organisation doit pouvoir expliquer ses critères."},
+      {cas:"Une banque réunionnaise finance la restauration d'un sentier du littoral, sans aucune contrepartie commerciale.", q:"Comment qualifier cette action ?", o:["Du mécénat (organisation civique)","Du sponsoring commercial","Une étude de marché"], c:0, why:"Soutien à l'intérêt général sans contrepartie directe : c'est le mécénat."},
+      {cas:"Une commune de l'île soumet une partie de son budget au vote des habitants, qui choisissent les projets prioritaires.", q:"Quelle pratique reconnaît-on ?", o:["La démocratie participative","La veille commerciale","Le freemium"], c:0, why:"Associer les citoyens aux décisions publiques relève de la démocratie participative."} ]
+},
+missionExtra: {
+  1:[ {scene:"Tes ventes en ligne décollent mais ton site plante régulièrement le week-end.", choix:[
+        {txt:"Migrer le site vers le cloud avec montée en charge automatique", eff:{treso:-10,marche:15,image:5,emploi:0}, fb:"L'informatique en nuage adapte la capacité aux pics : plus de ventes perdues le samedi soir."},
+        {txt:"Garder le serveur actuel", eff:{treso:5,marche:-10,image:-5,emploi:0}, fb:"Chaque panne du week-end envoie tes clients chez les concurrents : l'infrastructure n'a pas suivi le business model."} ]},
+      {scene:"Un cabinet propose une démarche PLM : repenser tes emballages pour le recyclage et la fin de vie des produits.", choix:[
+        {txt:"Engager la démarche de gestion du cycle de vie", eff:{treso:-10,marche:5,image:15,emploi:0}, fb:"Penser le produit jusqu'à sa fin de vie réduit déchets et coûts cachés : un atout durable et d'image."},
+        {txt:"Reporter indéfiniment", eff:{treso:5,marche:-5,image:-10,emploi:0}, fb:"Réglementation et attentes évoluent : le retard sur le cycle de vie des produits se paiera."} ]},
+      {scene:"Deux candidats pour piloter la nouvelle ligne : un profil expérimenté coûteux, ou un jeune technicien péi à former.", choix:[
+        {txt:"Former le jeune technicien dans le cadre de ta GPEC", eff:{treso:-5,marche:5,image:10,emploi:10}, fb:"La formation construit les compétences dont l'organisation aura durablement besoin — et ancre l'emploi local."},
+        {txt:"Ne rien anticiper et recruter dans l'urgence le moment venu", eff:{treso:-10,marche:-5,image:-5,emploi:0}, fb:"L'urgence coûte cher et fait courir un risque de compétences : la GPEC existait pour éviter ça."} ]} ],
+  2:[ {scene:"Un conflit éclate entre la gouvernante et le chef de cuisine devant les équipes.", choix:[
+        {txt:"Recevoir les deux, objectiver les faits et rétablir la coopération", eff:{treso:0,marche:0,image:10,emploi:5}, fb:"Gérer le conflit tôt préserve la dynamique de groupe : les tensions non traitées contaminent toute l'équipe."},
+        {txt:"Laisser pourrir la situation", eff:{treso:0,marche:-5,image:-10,emploi:-5}, fb:"Le conflit s'étend, la cohésion s'effondre, les clients le ressentent jusque dans l'assiette."} ]},
+      {scene:"Tu prépares la page « carrières » du site de l'hôtel.", choix:[
+        {txt:"Montrer les parcours réels, les valeurs et la vie d'équipe (marque employeur)", eff:{treso:-5,marche:5,image:10,emploi:5}, fb:"Une marque employeur sincère attire des candidats qui partagent la culture de l'organisation."},
+        {txt:"Publier une annonce minimale", eff:{treso:0,marche:0,image:-5,emploi:-5}, fb:"Sur un marché du travail tendu, l'organisation invisible ne reçoit pas de candidatures."} ]},
+      {scene:"Un client mécontent publie une vidéo virale sur un problème de réservation.", choix:[
+        {txt:"Répondre publiquement, vite et avec une solution concrète", eff:{treso:-5,marche:5,image:15,emploi:0}, fb:"Une réponse rapide, transparente et orientée solution retourne l'opinion : l'e-réputation se gère en continu."},
+        {txt:"Faire supprimer la vidéo par menace juridique", eff:{treso:-5,marche:-10,image:-15,emploi:0}, fb:"Effet Streisand garanti : la censure fait dix fois plus de bruit que le problème initial."} ]} ],
+  3:[ {scene:"Ton prestataire d'emballages est soupçonné de ne pas payer correctement ses ouvriers.", choix:[
+        {txt:"Auditer le fournisseur et conditionner le contrat à des engagements vérifiables", eff:{treso:-5,marche:0,image:10,emploi:0}, fb:"La responsabilité ne s'arrête pas aux portes de l'entreprise : l'éthique s'étend à la chaîne de valeur."},
+        {txt:"Fermer les yeux tant que les prix restent bas", eff:{treso:5,marche:0,image:-15,emploi:0}, fb:"Le scandale du fournisseur rejaillira sur ta marque : l'éthique des affaires couvre toute la chaîne."} ]},
+      {scene:"Une association locale te propose un partenariat de démocratie participative : faire voter les habitants sur ton futur site de production.", choix:[
+        {txt:"Organiser la concertation avec les riverains", eff:{treso:-5,marche:5,image:10,emploi:0}, fb:"Associer le territoire aux décisions prévient les conflits d'implantation et ancre l'organisation dans la société."},
+        {txt:"Passer en force", eff:{treso:5,marche:-5,image:-15,emploi:0}, fb:"Recours, blocages, image dégradée : ignorer la société coûte plus cher que la consulter."} ]},
+      {scene:"Ton comptable te propose de « lisser » certains chiffres avant publication des comptes.", choix:[
+        {txt:"Refuser : appliquer strictement les normes comptables", eff:{treso:0,marche:0,image:10,emploi:0}, fb:"La normalisation comptable et la transparence de l'information financière fondent la confiance des partenaires."},
+        {txt:"Accepter un petit arrangement", eff:{treso:5,marche:0,image:-20,emploi:0}, fb:"Comptes maquillés = confiance détruite et sanctions : la transparence n'est pas négociable."} ]} ]
+},
+ressources: [
+{ cat:"methodo", type:"page", titre:"Méthode — Aborder le sujet (devoir et bac), pas à pas", desc:"Le rituel des 20 premières minutes sur un sujet type bac : contexte, questions, annexes, surlignage, verbes directeurs.", url:"",
+  html:"<h2>Le principe : les 20 premières minutes décident de la copie</h2><p>Sur un sujet de 4 heures avec une dizaine de pages d'annexes, foncer tête baissée est la garantie de l'erreur. Le rituel ci-dessous s'applique à chaque devoir de l'année — pour qu'il soit automatique le jour du bac.</p><h2>Étape 1 — Lire le contexte de l'organisation (3-4 min)</h2><ul><li>Photographie l'organisation au brouillon : type, taille, activité, champ d'action, finalité (réflexe de 1ʳᵉ !).</li><li>Identifie son <b>problème central</b> : c'est le fil rouge — chaque dossier en éclaire une facette.</li><li>Repère son environnement : concurrence, contraintes, opportunités, territoire.</li></ul><h2>Étape 2 — Lire TOUTES les questions de TOUS les dossiers (5 min)</h2><ul><li>Tu sauras quoi chercher dans les annexes, et tu verras la <b>logique du sujet</b> (les dossiers racontent une histoire : diagnostic → décision → mise en œuvre).</li><li><b>Lis chaque question JUSQU'AU BOUT.</b> Au bac, beaucoup de questions sont <b>doubles ou triples</b> : <i>« Calculez le seuil de rentabilité <u>et</u> concluez sur l'opportunité du projet »</i> ; <i>« Identifiez les facteurs de motivation <u>puis</u> proposez des actions adaptées »</i>. Numérote chaque sous-tâche (3a, 3b…) : une sous-tâche oubliée, ce sont des points donnés au voisin.</li><li>Entoure les <b>verbes directeurs</b> et repère la <b>question finale développée</b> pour lui réserver 30-40 minutes.</li></ul><h2>Étape 3 — Lire les TITRES des annexes (2 min)</h2><p>La liste des annexes est une carte au trésor : <i>« Annexe 5 — Extraits du bilan fonctionnel »</i> te dit où se joue la question sur la trésorerie. Construis ton tableau de correspondance au brouillon : <i>Q1-Q2 → annexes 1-2 · Q3 → annexe 4…</i> Les questions précisent souvent elles-mêmes les annexes à mobiliser : surligne ces renvois.</p><h2>Étape 4 — Première lecture des annexes AVEC le surligneur (8-10 min)</h2><ul><li>Lis chaque annexe avec ses questions en tête. Surligne <b>uniquement</b> les éléments qui serviront : chiffres clés, citations, mots du programme.</li><li>Code couleur par dossier : au moment de rédiger, tes indices se retrouvent en un coup d'œil.</li><li>Note en marge la notion illustrée : <i>« = marque employeur », « = BFR trop élevé », « = risque externe »</i>. Ces annotations sont tes plans de réponse.</li><li>Pour les documents chiffrés : vérifie période et <b>unité</b> (k€ ! %) avant tout calcul.</li></ul><h2>Étape 5 — Les verbes directeurs du bac MSDGN</h2><table><tr><th>Verbe</th><th>Signification</th><th>Ce qui est attendu</th></tr><tr><td><b>Identifier / Repérer</b></td><td>Trouver et nommer</td><td>L'élément + le vocabulaire du programme + justification par l'annexe</td></tr><tr><td><b>Citer / Relever</b></td><td>Extraire</td><td>L'élément précis du document, rien de plus</td></tr><tr><td><b>Définir</b></td><td>Donner le sens</td><td>La définition exacte du cours (1ʳᵉ comme terminale !)</td></tr><tr><td><b>Caractériser</b></td><td>Décrire selon des critères</td><td>Les critères du cours passés en revue et justifiés</td></tr><tr><td><b>Distinguer</b></td><td>Différencier</td><td>Définir les deux notions et expliciter la différence (ex. : coût complet / coût spécifique)</td></tr><tr><td><b>Calculer</b></td><td>Résultat chiffré</td><td>Formule + application + résultat avec unité + interprétation</td></tr><tr><td><b>En déduire</b></td><td>Prolonger le résultat</td><td>Conclusion ou calcul qui s'appuie explicitement sur la question précédente</td></tr><tr><td><b>Expliquer</b></td><td>Faire comprendre</td><td>Mécanisme, causes, conséquences — avec les notions nommées</td></tr><tr><td><b>Analyser / Commenter</b></td><td>Décomposer et interpréter</td><td>Constat (annexe) + explication (cours) + portée pour l'organisation</td></tr><tr><td><b>Montrer que / Démontrer</b></td><td>Prouver une affirmation</td><td>Arguments AEI appuyés sur les annexes : le chemin compte autant que la conclusion</td></tr><tr><td><b>Justifier</b></td><td>Fonder par des preuves</td><td>Raisons appuyées sur le contexte, les annexes et le cours</td></tr><tr><td><b>Comparer</b></td><td>Mettre en regard</td><td>Critère par critère, avec écarts chiffrés si possible</td></tr><tr><td><b>Apprécier / Évaluer</b></td><td>Juger avec nuance</td><td>Avantages ET limites, appuyés sur le cas</td></tr><tr><td><b>Proposer / Conseiller / Recommander</b></td><td>Suggérer</td><td>Solutions réalistes, hiérarchisées, justifiées par le contexte</td></tr><tr><td><b>Dans quelle mesure… / Discuter</b></td><td>Débattre</td><td>Plan en deux axes (oui… / mais…), position finale claire — c'est la question développée</td></tr></table><blockquote><b>⚠️ Les erreurs qui coûtent le plus cher au bac</b> : une sous-question non vue (question lue trop vite) · une annexe jamais utilisée · « analysez » traité comme « citez » · la question développée bâclée en 10 minutes faute d'avoir géré son temps.</blockquote><h2>Check-list de fin d'épreuve (10 dernières minutes)</h2><ul><li>Compte tes réponses : autant que de questions ET de sous-questions ?</li><li>Unités des calculs, orthographe du vocabulaire du programme ?</li><li>Chaque réponse mentionne-t-elle « d'après l'annexe… » au moins une fois ?</li></ul>" },
+
+{ cat:"methodo", type:"page", titre:"L'épreuve écrite du bac MSDGN — mode d'emploi", desc:"Format officiel, barème, gestion du temps : tout ce qu'il faut savoir avant le jour J.", url:"",
+  html:"<h2>La carte d'identité de l'épreuve</h2><table><tr><th>Élément</th><th>Détail</th></tr><tr><td><b>Durée</b></td><td>4 heures</td></tr><tr><td><b>Notation</b></td><td>Sur 20 points — <b>coefficient 16</b> (la plus grosse épreuve de ton bac !)</td></tr><tr><td><b>Programmes évalués</b></td><td>Management de 1ʳᵉ + Sciences de gestion et numérique de 1ʳᵉ + enseignement commun de terminale</td></tr><tr><td><b>Forme du sujet</b></td><td>Le cas d'une organisation réelle : plusieurs <b>dossiers</b> (souvent 3) composés de documents (annexes) et de questions (3 à 5 par dossier)</td></tr><tr><td><b>Dernière question</b></td><td>Souvent une question invitant à une <b>réponse développée et argumentée</b></td></tr></table><blockquote><b>Le message essentiel</b> : les programmes de PREMIÈRE comptent autant que celui de terminale. Réviser MSDGN, c'est réviser les trois matières de ce jeu !</blockquote><h2>Gérer ses 4 heures</h2><ul><li><b>0h00 – 0h20</b> : lecture complète du sujet. Identifie l'organisation (type, taille, activité, contexte) et survole TOUTES les annexes avant d'écrire.</li><li><b>0h20 – 3h20</b> : traite les dossiers. Environ <b>1 heure par dossier</b>, en gardant plus de temps pour la question développée.</li><li><b>3h20 – 3h50</b> : la réponse argumentée finale, au propre, structurée.</li><li><b>3h50 – 4h00</b> : relecture (unités des calculs, orthographe du vocabulaire, questions oubliées).</li></ul><h2>Les réflexes qui rapportent</h2><ul><li>Cite tes sources : <i>« d'après l'annexe 3… »</i> à chaque fois que tu utilises un document.</li><li>Nomme les notions du programme explicitement : le correcteur coche des mots-clés.</li><li>Réponds à TOUTES les questions, même brièvement : une question non traitée = 0 garanti.</li><li>Aère ta copie : titres de dossiers, paragraphes, lignes sautées.</li></ul><blockquote><b>⚠️ Important</b> : vérifie chaque année en classe les éventuelles évolutions du format avec ton professeur — cette fiche décrit l'épreuve telle que définie par la note de service en vigueur (session 2021 et suivantes).</blockquote>" },
+{ cat:"methodo", type:"page", titre:"Méthode — Exploiter le contexte et les annexes (dossiers du bac)", desc:"La majorité des points se gagne dans les documents : voici comment les faire parler.", url:"",
+  html:"<h2>Le principe : rien ne sort de nulle part</h2><p>Chaque question d'un dossier se résout en croisant <b>trois ingrédients</b> : le contexte de l'organisation + une ou plusieurs annexes + tes connaissances de cours. Une réponse qui n'utilise que l'un des trois est incomplète.</p><h2>Étape 1 — Photographier l'organisation (au brouillon)</h2><ul><li>Type, taille, activité, champ d'action, finalité (réflexe de 1ʳᵉ !)</li><li>Son problème central : que cherche-t-elle à faire ou à résoudre ?</li><li>Son environnement : concurrence, contraintes, opportunités.</li></ul><h2>Étape 2 — Associer chaque question à ses annexes</h2><p>Les questions indiquent souvent les annexes à utiliser. Sinon, repère-les toi-même et note au brouillon : <i>Q3 → annexes 2 et 4</i>. Puis lis l'annexe AVEC la question en tête : tu cherches une réponse, pas une lecture de loisir.</p><h2>Étape 3 — Le tri des annexes selon leur nature</h2><table><tr><th>Annexe</th><th>Réflexe</th></tr><tr><td><b>Texte (article, témoignage)</b></td><td>Surligner les mots du programme, identifier la source (interne ? externe ?)</td></tr><tr><td><b>Tableau de chiffres</b></td><td>Titre, période, unité, puis évolutions et écarts marquants</td></tr><tr><td><b>Compte de résultat / bilan</b></td><td>Repérer résultat, VA possible, grandes masses ; préparer les calculs demandés</td></tr><tr><td><b>Schéma / organigramme / processus</b></td><td>Lire la légende, suivre les flux, compter les étapes ou niveaux</td></tr></table><h2>Étape 4 — Rédiger en croisant</h2><blockquote><i>« L'annexe 4 montre que la note moyenne des avis en ligne baisse à 4,1/5 alors que seuls 12 % des avis reçoivent une réponse (<b>constat chiffré</b>). Or l'e-réputation est une composante de l'identité numérique de l'organisation (<b>notion de cours</b>) : l'entreprise doit organiser la réponse systématique aux avis pour restaurer la confiance (<b>application au contexte</b>). »</i></blockquote><h2>Les pièges du dossier documentaire</h2><ul><li>❌ Paraphraser l'annexe (recopier sans analyser) : zéro valeur ajoutée.</li><li>❌ Plaquer du cours hors contexte : la réponse doit parler DE cette organisation.</li><li>❌ Ignorer une annexe fournie : si elle existe, elle sert quelque part.</li><li>❌ Traiter les questions dans le désordre sans le signaler clairement sur la copie.</li></ul>" },
+{ cat:"methodo", type:"page", titre:"Méthode — La réponse développée et argumentée du bac", desc:"La question finale qui départage les copies : structure, exigences et modèle commenté.", url:"",
+  html:"<h2>Ce qu'on attend de toi</h2><p>La dernière question d'un sujet invite souvent à une réponse construite du type : <i>« Dans quelle mesure… ? », « L'organisation a-t-elle intérêt à… ? », « Que conseilleriez-vous… ? »</i>. On évalue ta capacité à <b>mobiliser plusieurs thèmes du programme</b> (première ET terminale), à <b>argumenter</b> et à <b>prendre position</b>.</p><h2>La structure attendue</h2><ul><li><b>Introduction (3-4 lignes)</b> : présente l'organisation en une phrase, reformule la question, annonce ton plan en deux axes.</li><li><b>Développement (2 axes, 2-3 arguments AEI chacun)</b> : pour une question « Dans quelle mesure… », le plan <i>« Oui, dans une certaine mesure / Mais avec des limites »</i> fonctionne presque toujours.</li><li><b>Conclusion (3 lignes)</b> : réponds clairement à la question, propose une recommandation ou une ouverture.</li></ul><h2>Le paragraphe AEI niveau bac</h2><blockquote><b>A</b> : « La digitalisation de la relation client constitue d'abord une opportunité commerciale. »<br/><b>E</b> : « Les traces numériques (avis, historiques, navigation) nourrissent la connaissance client et permettent de personnaliser l'offre, renforçant la fidélité — pilier de la performance commerciale. »<br/><b>I</b> : « Ainsi, l'annexe 5 indique que 61 % des clients sont identifiés via le programme de fidélité : un levier direct de personnalisation. »</blockquote><h2>Mobiliser les TROIS programmes</h2><p>Les meilleures copies relient les années : une question sur un investissement appelle le <i>financement</i> (terminale) ET le <i>seuil de rentabilité</i> (première SDGN) ET la <i>décision stratégique</i> (première management). Pendant tes révisions, entraîne-toi à tisser ces liens — c'est exactement ce que permettent les trois matières de ce jeu.</p><h2>Barème mental du correcteur</h2><ul><li>Structure visible (intro / axes / conclusion) ✔</li><li>Notions nommées et définies ✔</li><li>Arguments appuyés sur le cas et les annexes ✔</li><li>Prise de position finale claire et nuancée ✔</li></ul><blockquote><b>⚠️ Gestion du temps</b> : garde 30 à 40 minutes pour cette question. Bâclée en 10 minutes, elle plafonne ta note ; soignée, elle fait décoller la copie.</blockquote>" },
+{ cat:"methodo", type:"page", titre:"Les calculs incontournables du bac MSDGN", desc:"Première + terminale : le formulaire complet avec les réflexes de rédaction.", url:"",
+  html:"<h2>Formulaire — acquis de première</h2><table><tr><th>Indicateur</th><th>Formule</th></tr><tr><td>Valeur ajoutée</td><td>Production − consommations intermédiaires</td></tr><tr><td>Productivité</td><td>Production ÷ moyens utilisés (ex. heures)</td></tr><tr><td>Coût du travail</td><td>Salaires bruts + cotisations patronales</td></tr><tr><td>Résultat</td><td>Produits − charges</td></tr><tr><td>Marge sur coûts variables</td><td>CA − charges variables</td></tr><tr><td>Taux de marge sur coûts variables</td><td>Marge sur coûts variables ÷ CA</td></tr><tr><td>Seuil de rentabilité</td><td>Charges fixes ÷ taux de marge sur coûts variables</td></tr><tr><td>Solde de trésorerie</td><td>Encaissements − décaissements (et solde cumulé)</td></tr></table><h2>Formulaire — apports de terminale</h2><table><tr><th>Indicateur</th><th>Formule</th><th>Interprétation</th></tr><tr><td><b>FRNG</b></td><td>Ressources stables − emplois stables</td><td>La réserve de financement de long terme</td></tr><tr><td><b>BFR</b></td><td>(Stocks + créances clients) − dettes fournisseurs</td><td>L'argent immobilisé par le cycle d'exploitation</td></tr><tr><td><b>Trésorerie nette</b></td><td>FRNG − BFR</td><td>Positive = aisance ; négative = financement à trouver</td></tr><tr><td><b>Coût complet</b></td><td>Charges directes + charges indirectes imputées</td><td>Le coût « tout compris » d'un produit</td></tr><tr><td><b>Coût spécifique</b></td><td>Charges variables + charges fixes directes propres</td><td>Pour décider de maintenir ou d'abandonner un produit</td></tr></table><h2>Les 4 temps de la rédaction d'un calcul</h2><ul><li><b>1.</b> Formule écrite en toutes lettres</li><li><b>2.</b> Application numérique</li><li><b>3.</b> Résultat avec <b>unité</b> (€, k€, %, unités/h)</li><li><b>4.</b> Phrase d'interprétation : bonne ou mauvaise nouvelle ? comparé à quoi ? quelle décision en découle ?</li></ul><blockquote><b>Exemple complet</b> : « Trésorerie nette = FRNG − BFR = 120 − 150 = <b>−30 k€</b>. La trésorerie est négative : le fonds de roulement ne couvre pas le besoin né de l'exploitation. L'entreprise doit réduire son BFR (stocks, délais clients) ou négocier un financement court terme. »</blockquote><blockquote><b>⚠️ Pièges du bac</b> : unités mélangées (k€ et €) · taux en % non converti (40 % = 0,4) · confondre charges fixes et variables · oublier que le solde CUMULÉ de trésorerie se calcule de proche en proche · calculer sans conclure.</blockquote>" },
+{ cat:"methodo", type:"page", titre:"Le Grand oral adossé à MSDGN", desc:"Format officiel, choix des questions, structure de l'exposé et entraînement.", url:"",
+  html:"<h2>Le format officiel</h2><table><tr><th>Élément</th><th>Détail</th></tr><tr><td><b>Préparation</b></td><td>20 minutes (notes et support possibles, non évalués)</td></tr><tr><td><b>Épreuve</b></td><td>20 minutes : <b>10 min d'exposé</b> + <b>10 min d'entretien</b> avec le jury</td></tr><tr><td><b>Coefficient (voie techno)</b></td><td>14 jusqu'à la session 2026 incluse, puis 12 à compter de 2027</td></tr><tr><td><b>Les questions</b></td><td>Tu présentes 2 questions préparées dans l'année, validées par tes professeurs ; le jury en choisit UNE</td></tr><tr><td><b>En STMG</b></td><td>Les questions s'appuient sur la spécialité MSDGN (avec l'étude approfondie menée dans l'enseignement spécifique)</td></tr></table><h2>Choisir ses deux questions</h2><ul><li>Pars d'une <b>organisation réelle</b> que tu peux documenter — une entreprise réunionnaise rend ton oral unique et concret.</li><li>Formule une vraie question débattable : <i>« La digitalisation suffit-elle à fidéliser les clients de X ? »</i> plutôt que <i>« La digitalisation chez X »</i>.</li><li>Vérifie l'ancrage au programme : ta question doit mobiliser des notions identifiables (nomme-les dans l'exposé !).</li><li>Choisis deux questions assez différentes pour montrer l'étendue de tes connaissances.</li></ul><h2>Structurer les 10 minutes d'exposé</h2><ul><li><b>1 min</b> — Pourquoi cette question ? (motivation personnelle, lien avec ton parcours)</li><li><b>1 min</b> — Le contexte : l'organisation, son environnement, l'enjeu.</li><li><b>6-7 min</b> — Ta réponse argumentée en 2 axes, avec notions du programme ET données concrètes.</li><li><b>1 min</b> — Conclusion : réponse claire + ouverture (limite, perspective, lien avec ton projet).</li></ul><h2>Réussir les 10 minutes d'entretien</h2><ul><li>Le jury rebondit sur TON exposé : maîtrise chaque mot que tu prononces (si tu dis « PGI », sache le définir).</li><li>Une question difficile ? Reformule, raisonne à voix haute, relie à ce que tu sais : on évalue ta démarche autant que la réponse.</li><li>Tu as le droit de dire « je ne sais pas, mais je peux faire l'hypothèse que… » — c'est mieux qu'inventer.</li></ul><h2>S'entraîner (vraiment)</h2><ul><li>Chronomètre-toi : 10 minutes, pas 8, pas 12.</li><li>Enregistre-toi (audio ou vidéo) et réécoute : débit, tics de langage, regard.</li><li>Entraîne-toi <b>debout</b>, sans lire tes notes : un coup d'œil de temps en temps suffit.</li><li>Fais-toi poser des questions pièges par un camarade — ou par ta classe, en utilisant ce jeu comme base de révision des notions.</li></ul>" },
+
+  { cat:"syntheses", titre:"Heloo.fr — synthèses Management Terminale STMG",
+    desc:"Synthèses chapitre par chapitre de l'enseignement commun (thèmes 1 à 3), téléchargeables gratuitement.",
+    url:"https://heloo.fr/syntheses-1-4-management-terminale/" },
+  { cat:"syntheses", titre:"Assistance scolaire — MSDGN Terminale STMG",
+    desc:"Fiches de révision et exercices interactifs sur les points clés du programme. Gratuit (partenariat MAIF).",
+    url:"https://www.assistancescolaire.com/eleve/TSTMG/management/reviser-le-cours" }
+],
+
 }
 };
 
@@ -1163,14 +1678,23 @@ const OV_KEY="mm_data_overrides_v2";
 function loadData(){
   try{ const o=localStorage.getItem(OV_KEY);
     if(o){ const d=JSON.parse(o);
-      if(d && d.MGT && d.SDG) return d;
-      if(d && d.trieur) return {MGT:d, SDG:window.GAME_DATA.SDG};
+      if(d && d.MGT && d.SDG){ if(!d.TLE) d.TLE=window.GAME_DATA.TLE; if(!d.config) d.config=window.GAME_DATA.config; return d; }
+      if(d && d.trieur) return {MGT:d, SDG:window.GAME_DATA.SDG, TLE:window.GAME_DATA.TLE, config:window.GAME_DATA.config};
     } }catch(e){}
   try{ const v1=localStorage.getItem("mm_data_overrides_v1");
-    if(v1){ const d=JSON.parse(v1); if(d && d.trieur) return {MGT:d, SDG:window.GAME_DATA.SDG}; } }catch(e){}
+    if(v1){ const d=JSON.parse(v1); if(d && d.trieur) return {MGT:d, SDG:window.GAME_DATA.SDG, TLE:window.GAME_DATA.TLE, config:window.GAME_DATA.config}; } }catch(e){}
   return window.GAME_DATA;
 }
 const ALL = loadData();
+/* ====== Synchronisation serveur (Google Apps Script) — optionnelle ====== */
+const CFG = (ALL && ALL.config) ? ALL.config : { syncUrl:"" };
+function netGet(params){ if(!CFG.syncUrl) return Promise.resolve(null);
+  const u=CFG.syncUrl+(CFG.syncUrl.indexOf("?")>=0?"&":"?")+new URLSearchParams(params).toString();
+  return fetch(u).then(r=>r.json()).catch(()=>null);
+}
+function netPost(payload){ if(!CFG.syncUrl) return Promise.resolve(null);
+  return fetch(CFG.syncUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}).then(r=>r.json()).catch(()=>null);
+}
 
 /* ====== Catalogue des jeux (Bloom croissant) ====== */
 const GAMES_BASE = [
@@ -1196,7 +1720,12 @@ const SUBJ = {
       { n:1, nom:"De l'individu à l'acteur",             short:"L'individu acteur",    color:"#f59e0b" },
       { n:2, nom:"Numérique et intelligence collective", short:"Le numérique",         color:"#0ea5e9" },
       { n:3, nom:"Création de valeur et performance",    short:"Valeur & performance", color:"#16a34a" },
-      { n:4, nom:"Temps et risque",                      short:"Temps & risque",       color:"#db2777" } ] }
+      { n:4, nom:"Temps et risque",                      short:"Temps & risque",       color:"#db2777" } ] },
+  TLE:{ code:"TLE", icon:"\ud83c\udf93", nom:"Management, Sciences de gestion et numérique — Terminale", short:"MSDGN Tle",
+    themes:[
+      { n:1, nom:"Les organisations et l'activité de production de biens et de services", short:"La production", color:"#ea580c" },
+      { n:2, nom:"Les organisations et les acteurs",  short:"Les acteurs",  color:"#7c3aed" },
+      { n:3, nom:"Les organisations et la société",   short:"La société",   color:"#16a34a" } ] }
 };
 function gamesFor(code){
   const d=ALL[code]||{}; const hasDocs=d.docs&&Object.keys(d.docs).some(k=>(d.docs[k]||[]).length>0);
@@ -1224,6 +1753,7 @@ function saveScore(rec){
   try{ const all = loadScores(); rec.id = "e_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
     all.push(rec); localStorage.setItem(LS_KEY, JSON.stringify(all)); }
   catch(e){}
+  netPost({action:"score", rec:rec});
 }
 function clearScores(){ try{ localStorage.removeItem(LS_KEY); }catch(e){} }
 function deleteScores(ids){
@@ -1277,9 +1807,9 @@ function Login({onStudent,onTeacher}){
     else { code.trim()===getTeacherPw() ? onTeacher() : setErr("Code professeur incorrect."); } };
   return (<div className="login">
     <div className="hero">
-      <div className="kick">JEUX SÉRIEUX · 1ʳᵉ STMG · MANAGEMENT &amp; SDGN · 974</div>
+      <div className="kick">JEUX SÉRIEUX · STMG · 1ʳᵉ &amp; TERMINALE · 974</div>
       <h1>MISSION <span className="grad">STMG</span></h1>
-      <p className="sub">Deux matières, jusqu'à 8 jeux par thème, pour réviser tout le programme de 1ʳᵉ : <b>Management</b> et <b>Sciences de gestion et numérique</b>. Deviens acteur, stratège et gestionnaire — et mesure l'impact de tes décisions.</p>
+      <p className="sub">Trois matières, jusqu'à 8 jeux par thème : <b>Management</b> et <b>SDGN</b> en première, <b>MSDGN</b> en terminale pour préparer l'épreuve écrite du bac. Deviens acteur, stratège et gestionnaire — et mesure l'impact de tes décisions.</p>
     </div>
     <div className="card">
       <div className="tabs">
@@ -1295,21 +1825,22 @@ function Login({onStudent,onTeacher}){
       {err&&<div className="err">{err}</div>}
       <button className="cta" onClick={go}>{m==="eleve"?"C'est parti ! 🚀":"Tableau de bord"}</button>
     </div>
-    <div className="fnote">Programmes officiels Management &amp; SDGN — BO spécial n°1 du 22/01/2019 · Info : des entreprises réunionnaises réelles seront citées à titre d'exemple.<br/>Djamil DINDAR, Lycée Ambroise Vollard, Juin 2026</div>
+    <div className="fnote">Programmes officiels — 1ʳᵉ : BO spécial n°1 du 22/01/2019 · Terminale : BO n°8 du 25/07/2019 · Info : des entreprises réunionnaises réelles seront citées à titre d'exemple.<br/>Djamil DINDAR, Lycée Ambroise Vollard, Juin 2026</div>
   </div>);
 }
 
 /* ====== MENU MATIÈRE ====== */
 function Matiere({student,onPick,onLogout}){
   const opts=[
-    {code:"MGT",icon:SUBJ.MGT.icon,titre:"Management",sous:"3 thèmes · 7 jeux — des organisations aux choix stratégiques.",color:"#ff6b6b"},
-    {code:"SDG",icon:SUBJ.SDG.icon,titre:"Sciences de gestion et numérique",sous:"4 thèmes · 8 jeux — de l'individu acteur au temps et au risque.",color:"#2563eb"}
+    {code:"MGT",icon:SUBJ.MGT.icon,titre:"Management",sous:"3 thèmes · 7 jeux — des organisations aux choix stratégiques. (1ʳᵉ)",color:"#ff6b6b"},
+    {code:"SDG",icon:SUBJ.SDG.icon,titre:"Sciences de gestion et numérique",sous:"4 thèmes · 8 jeux — de l'individu acteur au temps et au risque. (1ʳᵉ)",color:"#2563eb"},
+    {code:"TLE",icon:SUBJ.TLE.icon,titre:"MSDGN — Terminale",sous:"3 thèmes · 8 jeux — l'épreuve écrite du bac se prépare ici.",color:"#16a34a"}
   ];
   return (<div className="login">
     <div className="hero">
       <div className="kick">CHOISIS TA MATIÈRE</div>
       <h1>Bonjour <span className="grad">{student.pseudo}</span> !</h1>
-      <p className="sub">Deux enseignements de spécialité, un même contrat de confiance : aucun piège, droit à l'erreur, tout est dans le Cours et le Glossaire.</p>
+      <p className="sub">Première ou terminale, un même contrat de confiance : aucun piège, droit à l'erreur, tout est dans le Cours et le Glossaire.</p>
     </div>
     <div className="mat-grid">{opts.map(o=>(
       <button key={o.code} className="mat-card" style={{"--c":o.color}} onClick={()=>onPick(o.code)}>
@@ -1327,6 +1858,19 @@ function Hub({student,subject,onSwitch,onLogout}){
   const [tab,setTab]=useState("jouer");
   const [theme,setTheme]=useState(1);
   const [progress,setProgress]=useState({}); // {"theme-game": bestPct}
+  const [cloud,setCloud]=useState(false);
+  const PKEY="mm_prog_"+subject+"_"+String(student.classe||"").trim().toLowerCase()+"_"+String(student.pseudo||"").trim().toLowerCase();
+  const mergeMax=(a,b)=>{ const m={...a}; Object.keys(b||{}).forEach(k=>{ m[k]=Math.max(m[k]||0,+b[k]||0); }); return m; };
+  useEffect(()=>{
+    try{ const p=JSON.parse(localStorage.getItem(PKEY)||"{}"); if(p&&typeof p==="object") setProgress(prev=>mergeMax(prev,p)); }catch(e){}
+    netGet({action:"progress",pseudo:String(student.pseudo||"").trim(),classe:String(student.classe||"").trim(),matiere:subject}).then(r=>{
+      if(r&&r.ok&&Array.isArray(r.rows)){
+        const p={}; r.rows.forEach(x=>{ const k=x.theme+"-"+x.game; p[k]=Math.max(p[k]||0,+x.pct||0); });
+        setProgress(prev=>{ const m=mergeMax(prev,p); try{ localStorage.setItem(PKEY,JSON.stringify(m)); }catch(e){} return m; });
+        setCloud(true);
+      }
+    });
+  },[]);
   const [playing,setPlaying]=useState(null);
 
   const key=(t,g)=>t+"-"+g;
@@ -1338,7 +1882,7 @@ function Hub({student,subject,onSwitch,onLogout}){
   const themeUnlocked=(t)=> t===1 ? true : themeValidated(t-1)>=4;
 
   const finish=(t,g,pct)=>{
-    setProgress(p=>({...p,[key(t,g)]:Math.max(p[key(t,g)]||0,pct)}));
+    setProgress(p=>{ const np={...p,[key(t,g)]:Math.max(p[key(t,g)]||0,pct)}; try{ localStorage.setItem(PKEY,JSON.stringify(np)); }catch(e){} return np; });
     saveScore({...student,matiere:subject,theme:t,game:g,pct,date:new Date().toISOString()});
     setPlaying(null);
   };
@@ -1349,7 +1893,7 @@ function Hub({student,subject,onSwitch,onLogout}){
   return (<div className="app">
     <header className="top">
       <div className="brand">{SUBJ[subject].icon} Mission {SUBJ[subject].short}</div>
-      <div className="who">{student.pseudo} · <span className="cl">{student.classe}</span></div>
+      <div className="who">{student.pseudo} · <span className="cl">{student.classe}</span>{cloud&&<span className="cloud" title="Progression synchronisée avec le serveur">☁️</span>}</div>
       <button className="lo" onClick={onSwitch}>⇄ Matière</button>
       <button className="lo" onClick={onLogout}>Quitter</button>
     </header>
@@ -1795,13 +2339,14 @@ function Editor(){
     if(bank==="mission") return d.mission[theme].etapes;
     if(bank==="docs"){ d.docs=d.docs||{}; d.docs[theme]=d.docs[theme]||[]; return d.docs[theme]; }
     if(bank==="ressources"){ d.ressources=d.ressources||[]; return d.ressources; }
+    if(bank==="config") return [];
     if(bank==="missionExtra"){ d.missionExtra=d.missionExtra||{}; d.missionExtra[theme]=d.missionExtra[theme]||[]; return d.missionExtra[theme]; }
     if(bank==="intrusExtra"){ d.intrusExtra=d.intrusExtra||{}; d.intrusExtra[theme]=d.intrusExtra[theme]||[]; return d.intrusExtra[theme]; }
     if(bank==="casExtra"){ d.casExtra=d.casExtra||{}; d.casExtra[theme]=d.casExtra[theme]||[]; return d.casExtra[theme]; }
     return d[bank][theme];
   };
   const list=ensure(JSON.parse(JSON.stringify(data)));
-  const type= bank==="trieur"?"trieur": bank==="memory"?"memory": bank==="flash"?"flash": bank==="vraifaux"?"vraifaux": bank==="docs"?"docs": bank==="ressources"?"ressources": bank.indexOf("intrus")===0?"intrus": bank.indexOf("cas")===0?"cas":"mission";
+  const type= bank==="trieur"?"trieur": bank==="memory"?"memory": bank==="flash"?"flash": bank==="vraifaux"?"vraifaux": bank==="docs"?"docs": bank==="ressources"?"ressources": bank==="config"?"config": bank.indexOf("intrus")===0?"intrus": bank.indexOf("cas")===0?"cas":"mission";
   const fam= type==="intrus"?"intrus": type==="cas"?"cas": type==="mission"?"mission":null;
   const D0=data[sub];
   const totalFam=()=>{ if(!fam) return 0;
@@ -1946,7 +2491,7 @@ function Editor(){
   return (<div className="ed">
     <div className="edbar">
       <select value={sub} onChange={e=>{setSub(e.target.value); setTheme(1); setMsg("");}}>
-        <option value="MGT">🧭 Management</option><option value="SDG">🖥️ SDGN</option>
+        <option value="MGT">🧭 Management 1ʳᵉ</option><option value="SDG">🖥️ SDGN 1ʳᵉ</option><option value="TLE">🎓 MSDGN Tle</option>
       </select>
       <select value={theme} onChange={e=>setTheme(+e.target.value)}>
         {TH.map(t=><option key={t.n} value={t.n}>Thème {t.n} — {t.short}</option>)}
@@ -1959,6 +2504,7 @@ function Editor(){
         <option value="mission">👑 Mission — base</option><option value="missionExtra">👑 Mission — supplémentaires</option>
         <option value="docs">📄 Étude de docs</option>
         <option value="ressources">🧰 Ressources (liens)</option>
+        <option value="config">⚙️ Synchronisation (serveur)</option>
       </select>
       <button className="rf alt nb-l" onClick={save}>💾 Enregistrer (aperçu)</button>
       <button className="rf nb-l" onClick={()=>publishHTML(data)}>⬇ Publier : télécharger index.html</button>
@@ -1983,7 +2529,14 @@ function Editor(){
       <textarea value={D0.mission[theme].intro} onChange={e=>upd(n=>{n[sub].mission[theme].intro=e.target.value;})}/>
     </div>)}
     {list.map((it,i)=>renderItem(it,i))}
-    <button className="edadd" disabled={!canAdd} onClick={add}>{canAdd?"➕ Ajouter un élément":"Limite de 10 atteinte (base + supplémentaires)"}</button>
+    {bank==="config"&&(<div className="edcard">
+      <div className="edhead"><b>⚙️ Synchronisation de la progression et des scores</b></div>
+      <p className="edhint2">Sans configuration, le jeu fonctionne en mode local : progression et scores restent sur chaque appareil. En collant ici l'URL de ton script Google Apps Script (voir le guide fourni avec le jeu) puis en PUBLIANT le fichier, les scores de tous les élèves arrivent dans ton Google Sheets, et chaque élève retrouve sa progression avec son pseudo + sa classe, depuis n'importe quel appareil.</p>
+      <label className="edlab">URL du script Google Apps Script (se termine par /exec)</label>
+      <input value={(data.config&&data.config.syncUrl)||""} onChange={e=>upd(n=>{ n.config=n.config||{}; n.config.syncUrl=e.target.value.trim(); })} placeholder="https://script.google.com/macros/s/XXXX/exec"/>
+      <p className="edhint2">{(data.config&&data.config.syncUrl)?"✅ URL renseignée. Clique « Publier » puis dépose le fichier sur GitHub : la synchronisation sera active pour tous.":"⚪ Aucune URL renseignée : mode local."}</p>
+    </div>)}
+    {bank!=="config"&&<button className="edadd" disabled={!canAdd} onClick={add}>{canAdd?"➕ Ajouter un élément":"Limite de 10 atteinte (base + supplémentaires)"}</button>}
   </div>);
 }
 
@@ -1991,11 +2544,22 @@ function Editor(){
 function Teacher({onLogout}){
   const [scores,setScores]=useState(null);
   const [mat,setMat]=useState("MGT");
+  const [sync,setSync]=useState(null);
   const [fc,setFc]=useState("Toutes"); const [view,setView]=useState("eleves");
   const [sel,setSel]=useState({}); // id -> true
   const [pwOpen,setPwOpen]=useState(false);
   const [pw1,setPw1]=useState(""); const [pw2,setPw2]=useState(""); const [pwMsg,setPwMsg]=useState("");
-  const refresh=()=>{ setScores(loadScores()); setSel({}); };
+  const refresh=()=>{ setSel({});
+    const local=loadScores();
+    if(!CFG.syncUrl){ setScores(local); setSync(null); return; }
+    setScores(null);
+    netGet({action:"scores"}).then(r=>{
+      if(r&&r.ok&&Array.isArray(r.rows)){
+        const seen=new Set(local.map(x=>x.id));
+        setScores(local.concat(r.rows.filter(x=>x&&x.id&&!seen.has(x.id)))); setSync(true);
+      } else { setScores(local); setSync(false); }
+    });
+  };
   useEffect(()=>{refresh();},[]);
   if(scores===null) return <div className="loading">Chargement des résultats…</div>;
   const GAMES=gamesFor(mat); const THEMES=SUBJ[mat].themes;
@@ -2041,7 +2605,8 @@ function Teacher({onLogout}){
         <button className={view==="classes"?"on":""} onClick={()=>setView("classes")}>🏫 Classes</button>
         <button className={view==="detail"?"on":""} onClick={()=>setView("detail")}>📝 Détail</button>
         <button className={view==="editor"?"on":""} onClick={()=>setView("editor")}>✏️ Éditeur</button></div>
-      <select value={mat} onChange={e=>setMat(e.target.value)}><option value="MGT">🧭 Management</option><option value="SDG">🖥️ SDGN</option></select>
+      <span className={"syncpill"+(sync===true?" on":sync===false?" err":"")} title={sync===true?"Scores synchronisés avec le serveur":sync===false?"URL configurée mais serveur injoignable — vérifie le déploiement du script":"Mode local : configure la synchronisation dans l'Éditeur (banque ⚙️)"}>{sync===true?"☁️ Sync":sync===false?"⚠️ Sync":"💾 Local"}</span>
+      <select value={mat} onChange={e=>setMat(e.target.value)}><option value="MGT">🧭 Management 1ʳᵉ</option><option value="SDG">🖥️ SDGN 1ʳᵉ</option><option value="TLE">🎓 MSDGN Tle</option></select>
       <select value={fc} onChange={e=>setFc(e.target.value)}>{classes.map(c=><option key={c}>{c}</option>)}</select>
       <button className="rf" onClick={refresh}>↻ Actualiser</button>
       <button className="rf alt" onClick={exportScoresCSV}>⬇ Export Excel (CSV)</button>
@@ -2395,7 +2960,7 @@ input,select{font-family:inherit}
 
 @media(max-width:600px){.hero h1{font-size:44px}.r2{flex-direction:column}.intrus-grid{grid-template-columns:1fr}.gauge span{width:90px}}
 /* MENU MATIÈRE */
-.mat-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:640px;margin:0 auto}
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:920px;margin:0 auto}
 .mat-card{background:#fff;border:2px solid #f0eafa;border-top:6px solid var(--c);border-radius:20px;padding:24px 18px;text-align:left;box-shadow:0 18px 40px -18px rgba(80,40,120,.25);transition:.15s;cursor:pointer}
 .mat-card:hover{transform:translateY(-3px);border-color:var(--c)}
 .mat-icon{font-size:40px}
@@ -2437,8 +3002,21 @@ input,select{font-family:inherit}
 .page-doc ul,.page-doc ol{padding-left:24px;font-size:14.5px;line-height:1.65}
 .page-doc blockquote{border-left:4px solid #7c3aed;background:#f7f4fd;margin:10px 0;padding:10px 14px;border-radius:0 10px 10px 0}
 .page-doc a{color:#7c3aed;font-weight:700}
+.page-doc table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13.5px}
+.page-doc th,.page-doc td{border:1px solid #e4dcf5;padding:7px 10px;text-align:left;vertical-align:top;line-height:1.45}
+.page-doc th{background:#f7f4fd;color:#4c1d95;font-weight:800}
+.page-doc tr:nth-child(even) td{background:#fbfaff}
+.rarea table{width:100%;border-collapse:collapse;font-size:13px}
+.rarea th,.rarea td{border:1px solid #e4dcf5;padding:5px 8px;text-align:left}
+@media(max-width:640px){.page-doc table{font-size:12px}.page-doc th,.page-doc td{padding:5px 6px}}
 .res-card.page{cursor:pointer;text-align:left;width:100%;font-family:inherit}
 @media(max-width:640px){.page-doc{padding:18px 16px}}
+/* SYNCHRONISATION */
+.syncpill{display:inline-flex;align-items:center;background:#f5f1fb;border:1.5px solid #ded5f2;color:#5a5470;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:800}
+.syncpill.on{background:#ecfdf5;border-color:#a7f3d0;color:#047857}
+.syncpill.err{background:#fef2f2;border-color:#fecaca;color:#b91c1c}
+.cloud{margin-left:6px;font-size:13px}
+.edhint2{font-size:12.5px;color:#6a6480;line-height:1.5;margin:6px 0;font-weight:500}
 /* ÉTUDE DE DOCS */
 .docbox{background:#fffdf5;border:1.5px solid #eadfb8;border-radius:14px;padding:16px 18px;margin:10px 0 14px;text-align:left;box-shadow:0 10px 24px -16px rgba(120,90,20,.35)}
 .dochead{font-weight:800;font-size:14px;margin-bottom:8px;color:#8a6d1f}
