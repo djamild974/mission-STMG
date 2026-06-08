@@ -23,6 +23,536 @@
 window.GAME_DATA = {
 config: { syncUrl: "" },
 
+SEC: {
+/* ============================================================
+   DÉCOUVERTE STMG — Option Management & gestion de seconde
+   BO spécial n°1 du 22/01/2019. Parcours d'initiation (2nde -> 1ère).
+   4 étapes : Entreprendre / Organiser & décider / Évaluer & évoluer /
+   Premiers pas vers la 1ère STMG (droit, éco, management, gestion).
+============================================================ */
+notions: [
+  { id:"sec-organisation", theme:1, terme:"Une organisation",
+    aca:"Groupement d'individus qui mettent en commun des moyens pour atteindre un but commun. Il en existe trois grandes familles : les entreprises, les associations et les organisations publiques.",
+    simple:"Une organisation, c'est un groupe de personnes qui s'unissent pour atteindre un même but.",
+    ex:"Air Austral (entreprise), une association de quartier à Saint-Pierre, ou la mairie (organisation publique) sont des organisations." },
+  { id:"sec-idee", theme:1, terme:"Idée créatrice et innovation",
+    aca:"Une idée créatrice est le point de départ d'un projet. L'invention est la découverte d'une idée nouvelle ; l'innovation est sa mise sur le marché, là où elle rencontre des utilisateurs.",
+    simple:"Tout commence par une idée. Inventer, c'est trouver l'idée ; innover, c'est la transformer en produit que les gens utilisent.",
+    ex:"Avoir l'idée d'un jus de fruits péi, c'est l'invention ; le vendre en magasin, c'est l'innovation." },
+  { id:"sec-entrepreneuriat", theme:1, terme:"L'entrepreneuriat",
+    aca:"Démarche par laquelle une personne (l'entrepreneur) s'engage pour concrétiser une idée et créer une organisation. L'inventeur n'est pas toujours l'entrepreneur.",
+    simple:"Entreprendre, c'est se lancer : transformer une idée en une vraie activité, avec de l'énergie et des risques.",
+    ex:"Un jeune Réunionnais qui ouvre son food-truck de bokits fait preuve d'entrepreneuriat." },
+  { id:"sec-acteurs", theme:1, terme:"Les acteurs d'un projet",
+    aca:"La réussite d'un projet repose sur l'engagement d'acteurs internes (fondateurs, salariés) et l'adhésion d'acteurs externes (clients, partenaires, financeurs).",
+    simple:"On réussit rarement seul : un projet a besoin de gens à l'intérieur (l'équipe) et à l'extérieur (clients, soutiens).",
+    ex:"Pour lancer une appli, il faut une équipe, des premiers utilisateurs et parfois une banque." },
+  { id:"sec-structure", theme:1, terme:"Structure et organigramme",
+    aca:"La structure organise la répartition des rôles. L'organigramme est sa représentation visuelle : il montre qui fait quoi et qui dépend de qui.",
+    simple:"L'organigramme, c'est le « plan » de l'organisation : un schéma qui montre qui s'occupe de quoi.",
+    ex:"Dans un organigramme, on voit le directeur en haut, puis les responsables, puis les équipes." },
+  { id:"sec-ressources", theme:1, terme:"Ressources et compétences",
+    aca:"Pour agir, une organisation mobilise des ressources humaines (les personnes), matérielles (locaux, machines), immatérielles (image, savoir-faire) et financières (l'argent). Les compétences sont ce que les personnes savent faire.",
+    simple:"Les ressources, c'est tout ce dont on a besoin pour agir : des gens, du matériel, de l'argent, un savoir-faire.",
+    ex:"Un restaurant a besoin de cuisiniers (humaines), d'une cuisine (matérielles), d'argent et d'une bonne réputation." },
+  { id:"sec-numerique", theme:1, terme:"Le numérique et la collaboration",
+    aca:"Les technologies numériques changent le rapport au temps et à l'espace, transforment les relations et favorisent les démarches collaboratives, à différentes échelles (jusqu'au marché global).",
+    simple:"Le numérique permet de travailler ensemble même à distance, et de toucher des gens partout dans le monde.",
+    ex:"Grâce à internet, une marque réunionnaise peut vendre en métropole et collaborer avec des partenaires éloignés." },
+  { id:"sec-rse", theme:1, terme:"Responsabilité et performance durable",
+    aca:"Le développement d'une organisation engage sa responsabilité sociale, sociétale et environnementale (RSE). La performance durable concilie réussite économique et respect des personnes et de la planète.",
+    simple:"Réussir, ce n'est pas seulement gagner de l'argent : c'est aussi respecter les gens et l'environnement.",
+    ex:"Une entreprise qui réduit ses déchets et soigne ses salariés vise une performance durable." },
+  { id:"sec-objectifs", theme:2, terme:"Les objectifs",
+    aca:"Pour atteindre son but, une organisation se fixe des objectifs : des résultats précis à atteindre, qui guident l'action et permettent ensuite d'évaluer la réussite.",
+    simple:"Un objectif, c'est un but clair qu'on se fixe pour savoir où on va et si on a réussi.",
+    ex:"« Servir 50 clients par jour » est un objectif concret pour un food-truck." },
+  { id:"sec-decisions", theme:2, terme:"Décisions stratégiques et opérationnelles",
+    aca:"Les décisions stratégiques engagent l'organisation sur le long terme et mobilisent d'importantes ressources. Les décisions opérationnelles sont quotidiennes et répétitives.",
+    simple:"Décision stratégique = un grand choix pour l'avenir ; décision opérationnelle = un petit choix de tous les jours.",
+    ex:"Ouvrir une boutique à Saint-Denis = stratégique ; choisir le menu du jour = opérationnel." },
+  { id:"sec-parties", theme:2, terme:"Les parties prenantes",
+    aca:"Ce sont tous les acteurs concernés par l'organisation (salariés, clients, fournisseurs, État, voisins…). Leurs attentes sont souvent différentes, parfois opposées, et influencent les décisions.",
+    simple:"Les parties prenantes, ce sont tous ceux qui ont un intérêt dans l'organisation et qui peuvent l'influencer.",
+    ex:"Pour une usine, les salariés veulent de bons salaires, les clients des prix bas, les voisins moins de bruit." },
+  { id:"sec-coordination", theme:2, terme:"Division du travail et coordination",
+    aca:"Quand une organisation grandit, on répartit les tâches (division du travail) et on met en place des moyens pour relier le travail de chacun : la coordination.",
+    simple:"On partage le travail entre plusieurs personnes, puis on s'organise pour que tout s'emboîte bien.",
+    ex:"Dans une boulangerie : l'un pétrit, l'autre cuit, un autre vend, et un planning coordonne le tout." },
+  { id:"sec-taylorisme", theme:2, terme:"Taylorisme et toyotisme",
+    aca:"Le taylorisme organise le travail en tâches simples et répétitives pour produire en masse. Le toyotisme cherche plus de polyvalence, de qualité et de flexibilité, en impliquant les salariés.",
+    simple:"Taylorisme = chacun répète une petite tâche, comme à la chaîne. Toyotisme = des équipes plus polyvalentes et plus impliquées.",
+    ex:"La chaîne de montage automobile classique illustre le taylorisme ; le travail en équipe flexible illustre le toyotisme." },
+  { id:"sec-nouvelles", theme:2, terme:"Nouvelles formes d'organisation",
+    aca:"Le numérique fait évoluer le travail : télétravail, organisation en réseau, plateformes en ligne. Les frontières de temps et d'espace s'estompent.",
+    simple:"Aujourd'hui, on peut travailler à distance, en réseau, ou via des plateformes : le travail change de forme.",
+    ex:"Le télétravail et les plateformes de livraison sont des formes d'organisation récentes." },
+  { id:"sec-evaluation", theme:3, terme:"Contrôle et évaluation",
+    aca:"Évaluer, c'est mesurer ce qui a été réalisé pour vérifier si les objectifs sont atteints, rendre des comptes aux parties prenantes et améliorer le fonctionnement.",
+    simple:"Évaluer, c'est faire le point : a-t-on atteint nos objectifs ? Qu'est-ce qu'on peut améliorer ?",
+    ex:"À la fin du mois, un commerçant compare ses ventes à son objectif pour s'ajuster." },
+  { id:"sec-performance", theme:3, terme:"Performance : efficacité et efficience",
+    aca:"L'efficacité, c'est atteindre ses objectifs. L'efficience, c'est les atteindre en utilisant le moins de ressources possible. La performance combine les deux.",
+    simple:"Efficace = j'atteins mon but. Efficient = je l'atteins sans gaspiller. La performance, c'est les deux à la fois.",
+    ex:"Servir tous ses clients (efficace) en limitant le gaspillage de nourriture (efficient)." },
+  { id:"sec-indicateurs", theme:3, terme:"Indicateurs et tableaux de bord",
+    aca:"Pour piloter l'activité, on suit des indicateurs (chiffres clés) regroupés dans des tableaux de bord, complétés par des documents comptables.",
+    simple:"Un indicateur, c'est un chiffre qui renseigne (ventes, clients…). Le tableau de bord les rassemble, comme dans une voiture.",
+    ex:"Un tableau de bord peut suivre le nombre de clients, le chiffre d'affaires et la satisfaction." },
+  { id:"sec-valeur", theme:3, terme:"Valeur et réputation",
+    aca:"La performance ne se mesure pas qu'en argent : on distingue la valeur financière (les bénéfices) de la réputation sociale et environnementale de l'organisation.",
+    simple:"La réussite, c'est l'argent gagné, mais aussi l'image et le respect que l'organisation inspire.",
+    ex:"Une marque appréciée pour son sérieux et son respect de l'environnement a une bonne réputation." },
+  { id:"sec-eco-num", theme:3, terme:"L'économie numérique",
+    aca:"La révolution numérique (données, intelligence artificielle, plateformes…) transforme les organisations : nouveaux produits, nouveaux métiers, mais aussi nouveaux risques (sécurité des données).",
+    simple:"Le numérique crée de nouvelles façons de travailler et de vendre, avec des opportunités… et des risques.",
+    ex:"Les grandes plateformes (les GAFAM) ont changé notre façon d'acheter, de communiquer et de travailler." },
+  { id:"sec-droit", theme:4, terme:"À quoi sert le droit ?",
+    aca:"Le droit est l'ensemble des règles qui organisent la vie en société et tranchent les litiges. Il encadre l'activité des organisations (contrats, travail, responsabilité).",
+    simple:"Le droit, ce sont les règles du jeu de la société : elles disent ce qui est permis et règlent les conflits.",
+    ex:"Quand tu achètes un téléphone, un contrat de vente te protège : c'est du droit." },
+  { id:"sec-eco", theme:4, terme:"À quoi sert l'économie ?",
+    aca:"L'économie étudie comment les humains produisent, échangent et consomment des biens et des services pour satisfaire des besoins avec des ressources limitées.",
+    simple:"L'économie, c'est l'étude de comment on produit, on vend et on achète pour répondre à nos besoins.",
+    ex:"Pourquoi le prix des letchis monte à Noël ? C'est une question d'économie (offre et demande)." },
+  { id:"sec-management", theme:4, terme:"Qu'est-ce que le management ?",
+    aca:"Le management, c'est le gouvernement des organisations : fixer des buts (dimension stratégique) et orienter l'action collective en tenant compte de l'environnement et de l'éthique.",
+    simple:"Manager, c'est diriger une organisation : décider où on va et faire travailler les gens ensemble.",
+    ex:"Le dirigeant d'Edena qui fixe la stratégie et anime ses équipes fait du management." },
+  { id:"sec-gestion", theme:4, terme:"Qu'est-ce que la gestion ?",
+    aca:"Les sciences de gestion étudient le fonctionnement concret des organisations (ressources humaines, finances, production, vente) pour aider à décider.",
+    simple:"La gestion, c'est s'occuper du concret au quotidien : l'argent, les ventes, les stocks, les équipes.",
+    ex:"Suivre les recettes et les dépenses d'une association, c'est de la gestion." },
+  { id:"sec-bizmodel", theme:4, terme:"Le modèle économique (business model)",
+    aca:"Le modèle économique décrit comment une organisation crée de la valeur et gagne de l'argent : que propose-t-elle, à qui, et comment se finance-t-elle ?",
+    simple:"Le modèle économique répond à une question simple : comment l'organisation gagne-t-elle de l'argent ?",
+    ex:"Une appli gratuite financée par la publicité a un modèle économique différent d'une boutique qui vend des produits." },
+  { id:"sec-environnement", theme:4, terme:"L'organisation et son environnement",
+    aca:"Aucune organisation ne vit isolée : elle est entourée d'un environnement (clients, concurrents, lois, technologies, société) qui lui offre des opportunités et lui impose des contraintes.",
+    simple:"Une organisation est entourée d'un monde (clients, concurrents, lois…) qui l'aide ou la freine.",
+    ex:"Une nouvelle loi, un concurrent qui arrive ou une mode peuvent changer la vie d'une entreprise." }
+],
+programme: [
+  { theme:1, titre:"Étape 1 — S'engager et entreprendre : de l'idée à la création",
+    ref:"Option Management & gestion — BO spécial n°1 du 22/01/2019 (seconde)",
+    questions:["Comment passer de l'idée créatrice à sa réalisation ?","En quoi est-il nécessaire de s'organiser ?","Quelle est la contribution du numérique ?","Existe-t-il une forme idéale d'organisation ?"],
+    connaissances:["Invention / innovation ; idée / production ; entrepreneuriat","Organisation ; structure / organigramme ; coordination ; prévision","Ressources ; compétences ; technologies","Marché global ; créativité ; démarche collaborative ; réseau social","Caractéristiques et formes d'organisation ; l'organisation et son environnement","Modèle économique (business model) ; management éthique ; RSE ; performance durable"],
+    competences:["Comprendre comment une idée devient un projet, puis une organisation","Distinguer invention et innovation","Identifier les acteurs internes et externes d'un projet","Repérer la structure d'une organisation et ses ressources","Percevoir la responsabilité sociale et environnementale des organisations"] },
+  { theme:2, titre:"Étape 2 — Organiser et décider : des objectifs à la réalisation",
+    ref:"Option Management & gestion — BO spécial n°1 du 22/01/2019 (seconde)",
+    questions:["Comment prendre des décisions ?","Quelles ressources et compétences mobiliser ?","Comment agir ensemble vers un même objectif ?","S'est-on toujours organisé de la même manière ?"],
+    connaissances:["Objectifs ; décisions stratégiques et opérationnelles ; processus de décision","Consensus / conflits ; parties prenantes ; gouvernance","Types de ressources et de compétences ; lien objectifs / ressources","Division du travail et enrichissement des tâches ; modes de coordination","Taylorisme, toyotisme ; polyvalence, flexibilité ; nouvelles formes d'organisation ; plateforme en ligne"],
+    competences:["Distinguer décisions stratégiques et opérationnelles","Identifier les parties prenantes et leurs attentes","Comprendre la nécessité de répartir et coordonner les tâches","Comparer des formes d'organisation dans le temps"] },
+  { theme:3, titre:"Étape 3 — Évaluer et évoluer : du pilotage au numérique",
+    ref:"Option Management & gestion — BO spécial n°1 du 22/01/2019 (seconde)",
+    questions:["Peut-on se passer d'évaluation ?","L'économie numérique offre-t-elle toujours des opportunités ?"],
+    connaissances:["Contrôle, évaluation, régulation ; performance (efficacité, efficience)","Critères d'évaluation et indicateurs ; tableaux de bord ; documents comptables","Formes de valeur / réputation","Information ; système d'information ; technologies numériques","Acteurs de l'économie numérique ; plateforme d'intermédiation ; risques et sécurité numériques"],
+    competences:["Comprendre pourquoi l'évaluation est nécessaire","Distinguer efficacité et efficience","Lire des indicateurs simples et un tableau de bord","Percevoir les opportunités et les risques du numérique"] },
+  { theme:4, titre:"Étape 4 — Premiers pas vers la 1ʳᵉ STMG",
+    ref:"Initiation — droit, économie, management et sciences de gestion",
+    questions:["À quoi sert le droit ?","À quoi sert l'économie ?","Qu'est-ce que le management ?","Qu'est-ce que la gestion ?"],
+    connaissances:["Le droit : les règles de la vie en société, les contrats, la responsabilité","L'économie : produire, échanger, consommer ; besoins et ressources limitées","Le management : gouverner l'organisation, fixer des buts, animer l'action collective","La gestion : suivre le concret (argent, ventes, stocks, équipes)","Le modèle économique et l'environnement de l'organisation"],
+    competences:["Découvrir les quatre disciplines de la 1ʳᵉ STMG","Distinguer droit, économie, management et gestion","Relier chaque discipline à des situations concrètes","Aborder sereinement le programme de première"] }
+],
+trieur: {
+  1: { consigne:"Range chaque élément dans la bonne colonne pour bien distinguer les notions de départ.",
+    bacs:["Type d'organisation","Étape de la création","Ressource d'une organisation"],
+    items:[
+      {label:"Une entreprise (Air Austral)", cat:0},
+      {label:"Une association de quartier", cat:0},
+      {label:"Une mairie (organisation publique)", cat:0},
+      {label:"Avoir une idée créatrice", cat:1},
+      {label:"Se lancer (entreprendre)", cat:1},
+      {label:"Réunir une équipe", cat:1},
+      {label:"Des salariés (ressource humaine)", cat:2},
+      {label:"Un local et des machines (matérielles)", cat:2},
+      {label:"De l'argent (financière)", cat:2},
+      {label:"Une bonne image (immatérielle)", cat:2}
+    ]},
+  2: { consigne:"Décision stratégique, décision opérationnelle ou partie prenante ? Classe chaque élément.",
+    bacs:["Décision stratégique","Décision opérationnelle","Partie prenante"],
+    items:[
+      {label:"Ouvrir une boutique à Saint-Denis", cat:0},
+      {label:"Lancer un nouveau produit", cat:0},
+      {label:"Choisir le menu du jour", cat:1},
+      {label:"Commander le pain de demain", cat:1},
+      {label:"Répondre à un client", cat:1},
+      {label:"Les salariés", cat:2},
+      {label:"Les clients", cat:2},
+      {label:"Les fournisseurs", cat:2},
+      {label:"Les voisins de l'usine", cat:2},
+      {label:"L'État", cat:2}
+    ]},
+  3: { consigne:"Évaluation, performance ou numérique ? Classe chaque élément.",
+    bacs:["Évaluer / piloter","Performance","Numérique"],
+    items:[
+      {label:"Un tableau de bord", cat:0},
+      {label:"Un indicateur (nombre de clients)", cat:0},
+      {label:"Faire le point chaque mois", cat:0},
+      {label:"Efficacité (atteindre son but)", cat:1},
+      {label:"Efficience (sans gaspiller)", cat:1},
+      {label:"Une bonne réputation", cat:1},
+      {label:"Une plateforme en ligne", cat:2},
+      {label:"L'intelligence artificielle", cat:2},
+      {label:"La sécurité des données", cat:2},
+      {label:"Le télétravail", cat:2}
+    ]},
+  4: { consigne:"À quelle discipline de la 1ʳᵉ STMG appartient chaque élément ?",
+    bacs:["Droit","Économie","Management / Gestion"],
+    items:[
+      {label:"Un contrat de vente", cat:0},
+      {label:"Les règles de la société", cat:0},
+      {label:"Régler un litige", cat:0},
+      {label:"L'offre et la demande", cat:1},
+      {label:"Produire et consommer", cat:1},
+      {label:"Le prix des letchis à Noël", cat:1},
+      {label:"Fixer la stratégie", cat:2},
+      {label:"Animer une équipe", cat:2},
+      {label:"Suivre les ventes et les stocks", cat:2},
+      {label:"Le modèle économique", cat:2}
+    ]}
+},
+memory: {
+  1:[ {a:"Organisation", b:"Un groupe uni vers un même but"},
+      {a:"Invention", b:"Trouver une idée nouvelle"},
+      {a:"Innovation", b:"Mettre l'idée sur le marché"},
+      {a:"Entrepreneuriat", b:"Se lancer pour créer une activité"},
+      {a:"Organigramme", b:"Le schéma « qui fait quoi »"},
+      {a:"RSE", b:"Responsabilité sociale et environnementale"} ],
+  2:[ {a:"Objectif", b:"Un but précis à atteindre"},
+      {a:"Décision stratégique", b:"Un grand choix pour l'avenir"},
+      {a:"Décision opérationnelle", b:"Un petit choix de tous les jours"},
+      {a:"Parties prenantes", b:"Tous ceux qui ont un intérêt"},
+      {a:"Coordination", b:"Relier le travail de chacun"},
+      {a:"Taylorisme", b:"Le travail à la chaîne"} ],
+  3:[ {a:"Évaluer", b:"Faire le point sur les résultats"},
+      {a:"Efficacité", b:"Atteindre son objectif"},
+      {a:"Efficience", b:"Y arriver sans gaspiller"},
+      {a:"Indicateur", b:"Un chiffre clé à suivre"},
+      {a:"Tableau de bord", b:"Le rassemblement des indicateurs"},
+      {a:"GAFAM", b:"Les géants du numérique"} ],
+  4:[ {a:"Droit", b:"Les règles de la vie en société"},
+      {a:"Économie", b:"Produire, échanger, consommer"},
+      {a:"Management", b:"Gouverner l'organisation"},
+      {a:"Gestion", b:"Suivre l'argent, les ventes, les stocks"},
+      {a:"Business model", b:"Comment l'organisation gagne de l'argent"},
+      {a:"Environnement", b:"Le monde autour de l'organisation"} ]
+},
+flash: {
+  1:[ {q:"Un groupe de personnes unies vers un même but est :", o:["une organisation","une foule au hasard"], c:0},
+      {q:"Trouver une idée nouvelle, c'est :", o:["une invention","une innovation"], c:0},
+      {q:"Mettre une idée sur le marché, c'est :", o:["une innovation","une invention"], c:0},
+      {q:"Se lancer pour créer une activité, c'est :", o:["l'entrepreneuriat","la retraite"], c:0},
+      {q:"Le schéma qui montre « qui fait quoi » est :", o:["l'organigramme","le menu"], c:0},
+      {q:"Des salariés sont une ressource :", o:["humaine","financière"], c:0},
+      {q:"Respecter les gens et la planète relève de la :", o:["RSE","publicité"], c:0} ],
+  2:[ {q:"Un but précis à atteindre est un :", o:["objectif","hasard"], c:0},
+      {q:"Ouvrir une nouvelle boutique est une décision :", o:["stratégique","opérationnelle"], c:0},
+      {q:"Choisir le menu du jour est une décision :", o:["opérationnelle","stratégique"], c:0},
+      {q:"Tous ceux qui ont un intérêt dans l'organisation sont les :", o:["parties prenantes","spectateurs"], c:0},
+      {q:"Relier le travail de chacun, c'est la :", o:["coordination","confusion"], c:0},
+      {q:"Le travail à la chaîne illustre le :", o:["taylorisme","télétravail"], c:0},
+      {q:"Travailler depuis chez soi, c'est le :", o:["télétravail","taylorisme"], c:0} ],
+  3:[ {q:"Faire le point sur les résultats, c'est :", o:["évaluer","deviner"], c:0},
+      {q:"Atteindre son objectif, c'est être :", o:["efficace","efficient"], c:0},
+      {q:"Y arriver sans gaspiller, c'est être :", o:["efficient","efficace"], c:0},
+      {q:"Un chiffre clé que l'on suit est un :", o:["indicateur","slogan"], c:0},
+      {q:"Le « tableau de bord » sert à :", o:["piloter l'activité","décorer"], c:0},
+      {q:"L'image et le respect inspirés forment la :", o:["réputation","facture"], c:0},
+      {q:"Les géants du numérique sont souvent appelés les :", o:["GAFAM","PME"], c:0} ],
+  4:[ {q:"Les règles de la vie en société relèvent du :", o:["droit","sport"], c:0},
+      {q:"Produire, échanger et consommer relève de l' :", o:["économie","art"], c:0},
+      {q:"Gouverner l'organisation et fixer les buts, c'est le :", o:["management","ménage"], c:0},
+      {q:"Suivre l'argent, les ventes et les stocks, c'est la :", o:["gestion","géographie"], c:0},
+      {q:"« Comment l'organisation gagne de l'argent ? » décrit le :", o:["modèle économique","règlement"], c:0},
+      {q:"Un contrat de vente relève du :", o:["droit","management"], c:0},
+      {q:"Le monde autour de l'organisation est son :", o:["environnement","organigramme"], c:0} ]
+},
+vraifaux: {
+  1:[ {p:"Une association est une organisation, au même titre qu'une entreprise.", v:true, why:"Vrai : entreprises, associations et organisations publiques sont les trois grandes familles d'organisations."},
+      {p:"L'inventeur d'une idée est toujours celui qui crée l'entreprise.", v:false, why:"Faux : l'inventeur n'est pas forcément l'entrepreneur ; ce sont deux rôles différents."},
+      {p:"Innover, c'est mettre une idée nouvelle sur le marché.", v:true, why:"Vrai : l'invention est l'idée, l'innovation est sa concrétisation auprès des utilisateurs."},
+      {p:"On peut réussir un grand projet tout seul, sans aucun autre acteur.", v:false, why:"Faux : un projet a besoin d'acteurs internes (l'équipe) et externes (clients, partenaires)."},
+      {p:"L'organigramme montre qui fait quoi dans l'organisation.", v:true, why:"Vrai : c'est la représentation visuelle de la structure."} ],
+  2:[ {p:"Une décision stratégique engage l'organisation sur le long terme.", v:true, why:"Vrai : elle mobilise d'importantes ressources et est difficilement réversible."},
+      {p:"Choisir le menu du jour est une décision stratégique.", v:false, why:"Faux : c'est une décision opérationnelle, quotidienne et répétitive."},
+      {p:"Les parties prenantes ont toujours exactement les mêmes attentes.", v:false, why:"Faux : leurs attentes sont souvent différentes, parfois opposées."},
+      {p:"Quand une organisation grandit, il faut répartir et coordonner les tâches.", v:true, why:"Vrai : la division du travail et la coordination deviennent nécessaires."},
+      {p:"Le télétravail est une forme d'organisation rendue possible par le numérique.", v:true, why:"Vrai : le numérique a fait apparaître de nouvelles formes d'organisation."} ],
+  3:[ {p:"Évaluer sert à vérifier si les objectifs sont atteints.", v:true, why:"Vrai : l'évaluation permet aussi de rendre des comptes et de s'améliorer."},
+      {p:"Être efficace et être efficient, c'est exactement la même chose.", v:false, why:"Faux : efficace = atteindre le but ; efficient = l'atteindre sans gaspiller."},
+      {p:"Un indicateur est un chiffre clé qui aide à piloter l'activité.", v:true, why:"Vrai : les indicateurs sont rassemblés dans un tableau de bord."},
+      {p:"La performance se mesure uniquement en argent.", v:false, why:"Faux : la réputation sociale et environnementale compte aussi."},
+      {p:"Le numérique n'apporte que des opportunités, jamais de risques.", v:false, why:"Faux : il crée aussi des risques, comme la sécurité des données."} ],
+  4:[ {p:"Le droit fixe des règles pour la vie en société.", v:true, why:"Vrai : il organise la vie commune et permet de régler les litiges."},
+      {p:"L'économie étudie comment on produit, échange et consomme.", v:true, why:"Vrai : elle étudie la satisfaction des besoins avec des ressources limitées."},
+      {p:"Le management consiste à suivre les stocks au quotidien.", v:false, why:"Faux : cela relève plutôt de la gestion ; le management gouverne et fixe les buts."},
+      {p:"La gestion s'occupe du concret : argent, ventes, équipes.", v:true, why:"Vrai : les sciences de gestion étudient le fonctionnement concret de l'organisation."},
+      {p:"Une organisation vit isolée, sans environnement autour d'elle.", v:false, why:"Faux : elle est entourée d'un environnement (clients, concurrents, lois…)."} ]
+},
+intrus: {
+  1:[ {liste:["Entreprise","Association","Organisation publique","Idée"], intrus:3, why:"L'idée est le point de départ d'un projet ; les trois autres sont des organisations."},
+      {liste:["Invention","Innovation","Entrepreneuriat","Tableau de bord"], intrus:3, why:"Le tableau de bord sert à évaluer ; les trois autres concernent la naissance d'un projet."},
+      {liste:["Ressource humaine","Ressource matérielle","Ressource financière","Organigramme"], intrus:3, why:"L'organigramme est un schéma de structure ; les trois autres sont des types de ressources."} ],
+  2:[ {liste:["Objectif","Décision stratégique","Décision opérationnelle","Innovation"], intrus:3, why:"L'innovation relève de la création ; les trois autres concernent décider et organiser."},
+      {liste:["Salariés","Clients","Fournisseurs","Organigramme"], intrus:3, why:"L'organigramme est un schéma ; les trois autres sont des parties prenantes."},
+      {liste:["Taylorisme","Toyotisme","Télétravail","Efficience"], intrus:3, why:"L'efficience concerne la performance ; les trois autres sont des formes d'organisation du travail."} ],
+  3:[ {liste:["Indicateur","Tableau de bord","Évaluation","Entrepreneuriat"], intrus:3, why:"L'entrepreneuriat, c'est se lancer ; les trois autres servent à évaluer et piloter."},
+      {liste:["Efficacité","Efficience","Réputation","Organigramme"], intrus:3, why:"L'organigramme est un schéma de structure ; les trois autres concernent la performance."},
+      {liste:["Plateforme en ligne","Intelligence artificielle","Données","Letchi"], intrus:3, why:"Le letchi est un fruit ; les trois autres relèvent du numérique."} ],
+  4:[ {liste:["Contrat","Litige","Règle","Stock"], intrus:3, why:"Le stock relève de la gestion ; les trois autres relèvent du droit."},
+      {liste:["Offre","Demande","Consommation","Organigramme"], intrus:3, why:"L'organigramme relève du management ; les trois autres relèvent de l'économie."},
+      {liste:["Stratégie","Équipe","Direction","Contrat de vente"], intrus:3, why:"Le contrat de vente relève du droit ; les trois autres relèvent du management."} ]
+},
+cas: {
+  1:[ {cas:"Maëva a l'idée d'un jus de fruits 100 % péi. Elle veut en faire une vraie activité et le vendre.", q:"Quelle démarche entreprend-elle ?", o:["L'entrepreneuriat (passer de l'idée à la création)","La retraite","Le bénévolat ponctuel"], c:0, why:"Transformer une idée en activité, c'est l'entrepreneuriat."},
+      {cas:"Un inventeur a conçu un objet astucieux, mais ne sait pas le commercialiser. Une autre personne s'en charge.", q:"Que montre cette situation ?", o:["L'inventeur n'est pas forcément l'entrepreneur","Inventer et entreprendre sont identiques","On ne peut pas vendre une invention"], c:0, why:"Inventer (l'idée) et entreprendre (la concrétiser) sont deux rôles distincts."},
+      {cas:"Pour lancer son projet, Maëva réunit une petite équipe et cherche ses premiers clients.", q:"De quoi a besoin un projet pour réussir ?", o:["D'acteurs internes et externes","D'une seule personne isolée","D'aucun client"], c:0, why:"La réussite suppose l'engagement de l'équipe et l'adhésion de clients et partenaires."},
+      {cas:"L'activité grandit : il faut clarifier qui s'occupe de la production, des ventes et des comptes.", q:"Quel outil représente cette répartition ?", o:["L'organigramme","Le menu","La facture"], c:0, why:"L'organigramme montre la structure : qui fait quoi et qui dépend de qui."} ],
+  2:[ {cas:"Le dirigeant d'une PME hésite à ouvrir une nouvelle boutique à Saint-Denis : un choix lourd et engageant.", q:"De quel type de décision s'agit-il ?", o:["Une décision stratégique","Une décision opérationnelle","Aucune décision"], c:0, why:"Un choix engageant sur le long terme est une décision stratégique."},
+      {cas:"Chaque matin, le responsable décide de la quantité de pain à préparer.", q:"De quel type de décision s'agit-il ?", o:["Une décision opérationnelle","Une décision stratégique","Une invention"], c:0, why:"Un choix quotidien et répétitif est une décision opérationnelle."},
+      {cas:"Les salariés veulent de bons salaires, les clients des prix bas, les voisins moins de bruit.", q:"Qui sont ces acteurs aux attentes différentes ?", o:["Les parties prenantes","Les inventeurs","Les robots"], c:0, why:"Les parties prenantes ont des intérêts souvent divergents qui influencent les décisions."},
+      {cas:"L'atelier s'agrandit : une personne ne peut plus tout faire. On répartit les tâches entre plusieurs.", q:"Que devient alors indispensable ?", o:["La coordination des tâches","La suppression des objectifs","Le hasard"], c:0, why:"Quand on divise le travail, il faut coordonner pour que tout s'emboîte."} ],
+  3:[ {cas:"En fin de mois, une commerçante compare ses ventes réelles à son objectif.", q:"Que fait-elle ?", o:["Elle évalue sa performance","Elle invente un produit","Elle signe un contrat"], c:0, why:"Comparer les résultats aux objectifs, c'est évaluer."},
+      {cas:"Un restaurant sert tous ses clients tout en limitant le gaspillage de nourriture.", q:"Comment qualifier cette réussite ?", o:["Efficace ET efficient","Seulement inefficace","Hors-sujet"], c:0, why:"Atteindre son but (efficace) sans gaspiller (efficient) : c'est la performance."},
+      {cas:"Pour suivre son activité, une dirigeante regarde chaque semaine le nombre de clients et le chiffre d'affaires.", q:"Quel outil utilise-t-elle ?", o:["Un tableau de bord d'indicateurs","Un organigramme","Un contrat"], c:0, why:"Les indicateurs clés rassemblés forment un tableau de bord."},
+      {cas:"Une entreprise stocke beaucoup de données clients en ligne.", q:"Quel point de vigilance le numérique impose-t-il ?", o:["La sécurité des données","Rien du tout","Moins de clients"], c:0, why:"Le numérique offre des opportunités mais impose de protéger les données."} ],
+  4:[ {cas:"Léo achète un téléphone en magasin ; un document le protège en cas de problème.", q:"De quelle discipline relève ce document ?", o:["Le droit (le contrat de vente)","L'économie","La gestion"], c:0, why:"Le contrat de vente relève du droit, qui encadre les échanges."},
+      {cas:"À l'approche de Noël, le prix des letchis augmente car tout le monde en veut.", q:"Quelle discipline explique cela ?", o:["L'économie (l'offre et la demande)","Le droit","Le management"], c:0, why:"L'économie étudie comment l'offre et la demande influent sur les prix."},
+      {cas:"La dirigeante d'Edena fixe la stratégie de l'entreprise et anime ses équipes.", q:"De quelle discipline s'agit-il ?", o:["Le management","Le droit","La comptabilité uniquement"], c:0, why:"Gouverner l'organisation et fixer les buts relève du management."},
+      {cas:"Le trésorier d'une association suit les recettes, les dépenses et l'état du compte.", q:"De quelle discipline s'agit-il ?", o:["La gestion","Le droit","L'économie"], c:0, why:"Suivre le concret (argent, comptes) relève des sciences de gestion."} ]
+},
+gaugeLabels: [
+  ["💡 Idée","treso","#f59e0b"],
+  ["🤝 Équipe","marche","#2563eb"],
+  ["😀 Clients","image","#16a34a"],
+  ["🌱 Responsabilité","emploi","#0891b2"]
+],
+verdict: [
+  "Beau projet ! Ton organisation est sur de bons rails 🏆",
+  "Bon début. Quelques choix à peaufiner pour aller plus loin 👍",
+  "À revoir : reprends les notions et retente, tu vas progresser 💪"
+],
+casTag:"🚀 Mise en situation — un projet à La Réunion",
+mission: {
+  1:{ titre:"Lance ton projet",
+    intro:"Tu as une idée de projet à La Réunion. À toi de la faire grandir ! Indicateurs : Idée 💡, Équipe 🤝, Clients 😀, Responsabilité 🌱.",
+    etapes:[
+      {scene:"Tu as une idée de jus de fruits péi. Que fais-tu en premier ?", choix:[
+        {txt:"La préciser et vérifier qu'elle répond à un besoin", eff:{treso:15,marche:5,image:10,emploi:0}, fb:"Une idée créatrice doit répondre à un vrai besoin pour devenir une innovation."},
+        {txt:"Garder l'idée secrète sans jamais la tester", eff:{treso:-10,marche:0,image:-5,emploi:0}, fb:"Une idée qui n'est jamais concrétisée reste sans effet."} ]},
+      {scene:"Le projet grandit. Tu ne peux plus tout faire seul(e).", choix:[
+        {txt:"Réunir une petite équipe et répartir les rôles", eff:{treso:5,marche:15,image:5,emploi:5}, fb:"S'entourer et organiser les rôles fait avancer le projet."},
+        {txt:"Tout faire toi-même, quitte à t'épuiser", eff:{treso:-5,marche:-10,image:-5,emploi:0}, fb:"On réussit rarement seul : une équipe est précieuse."} ]},
+      {scene:"Tes premiers clients hésitent à goûter ton produit.", choix:[
+        {txt:"Leur faire tester gratuitement et écouter leurs avis", eff:{treso:0,marche:5,image:15,emploi:0}, fb:"Écouter les premiers clients aide à améliorer le produit."},
+        {txt:"Ignorer leurs retours", eff:{treso:0,marche:-5,image:-10,emploi:0}, fb:"Les clients sont des acteurs externes essentiels à la réussite."} ]},
+      {scene:"Tu peux utiliser beaucoup d'emballages plastiques pour aller plus vite.", choix:[
+        {txt:"Choisir des emballages plus responsables", eff:{treso:-5,marche:5,image:10,emploi:15}, fb:"Penser à l'environnement, c'est la responsabilité (RSE) d'une organisation."},
+        {txt:"Utiliser le plus de plastique possible", eff:{treso:5,marche:0,image:-10,emploi:-15}, fb:"Négliger l'environnement nuit à l'image et à la performance durable."} ]} ]},
+  2:{ titre:"Organise et décide",
+    intro:"Ton projet devient une vraie organisation. Il faut décider et structurer. Indicateurs : Idée 💡, Équipe 🤝, Clients 😀, Responsabilité 🌱.",
+    etapes:[
+      {scene:"Tu dois choisir : ouvrir une boutique (grand choix) ou ajuster tes horaires (petit choix) ?", choix:[
+        {txt:"Bien distinguer décision stratégique et opérationnelle", eff:{treso:10,marche:10,image:5,emploi:0}, fb:"Distinguer les niveaux de décision aide à bien piloter."},
+        {txt:"Tout décider au hasard", eff:{treso:-10,marche:-5,image:-5,emploi:0}, fb:"Sans méthode, les décisions deviennent risquées."} ]},
+      {scene:"Tes salariés, tes clients et tes voisins ont des attentes différentes.", choix:[
+        {txt:"Écouter ces parties prenantes et chercher un équilibre", eff:{treso:5,marche:10,image:10,emploi:5}, fb:"Tenir compte des parties prenantes renforce le projet."},
+        {txt:"N'écouter personne", eff:{treso:-5,marche:-10,image:-10,emploi:-5}, fb:"Ignorer les parties prenantes crée des conflits."} ]},
+      {scene:"Les tâches se multiplient dans l'atelier.", choix:[
+        {txt:"Répartir les tâches et les coordonner", eff:{treso:5,marche:15,image:5,emploi:5}, fb:"Division du travail et coordination font tourner l'organisation."},
+        {txt:"Laisser chacun faire comme il veut", eff:{treso:-5,marche:-10,image:-5,emploi:0}, fb:"Sans coordination, l'organisation se désorganise."} ]},
+      {scene:"Tu découvres le télétravail et les outils numériques.", choix:[
+        {txt:"Les utiliser pour mieux organiser le travail", eff:{treso:5,marche:10,image:5,emploi:5}, fb:"Le numérique permet de nouvelles formes d'organisation."},
+        {txt:"Refuser tout outil numérique par principe", eff:{treso:-5,marche:-5,image:0,emploi:0}, fb:"Bien utilisé, le numérique est un atout."} ]} ]},
+  3:{ titre:"Évalue et fais évoluer",
+    intro:"Il faut maintenant piloter ton organisation et regarder vers l'avenir. Indicateurs : Idée 💡, Équipe 🤝, Clients 😀, Responsabilité 🌱.",
+    etapes:[
+      {scene:"À la fin du mois, comment savoir si ça marche ?", choix:[
+        {txt:"Comparer les résultats aux objectifs (évaluer)", eff:{treso:10,marche:5,image:10,emploi:0}, fb:"L'évaluation permet de vérifier et de s'améliorer."},
+        {txt:"Ne jamais faire le point", eff:{treso:-10,marche:-5,image:-5,emploi:0}, fb:"Sans évaluation, impossible de progresser."} ]},
+      {scene:"Tu veux suivre ton activité semaine après semaine.", choix:[
+        {txt:"Mettre en place un tableau de bord d'indicateurs", eff:{treso:10,marche:5,image:5,emploi:0}, fb:"Les indicateurs et le tableau de bord aident à piloter."},
+        {txt:"Te fier seulement à ton intuition", eff:{treso:-5,marche:-5,image:0,emploi:0}, fb:"Des chiffres clairs valent mieux qu'une simple impression."} ]},
+      {scene:"Tu peux atteindre tes objectifs en gaspillant beaucoup, ou en économisant.", choix:[
+        {txt:"Viser l'efficience (réussir sans gaspiller)", eff:{treso:10,marche:5,image:5,emploi:10}, fb:"Être efficient, c'est atteindre son but en économisant les ressources."},
+        {txt:"Gaspiller sans compter", eff:{treso:-10,marche:0,image:-5,emploi:-5}, fb:"Le gaspillage abîme la performance et l'environnement."} ]},
+      {scene:"Une plateforme en ligne pourrait faire connaître ton produit.", choix:[
+        {txt:"Saisir l'opportunité tout en protégeant tes données", eff:{treso:5,marche:10,image:10,emploi:5}, fb:"Le numérique offre des opportunités, à condition de gérer les risques."},
+        {txt:"Mettre toutes tes données en ligne sans précaution", eff:{treso:0,marche:0,image:-10,emploi:0}, fb:"La sécurité des données est un point de vigilance important."} ]} ]},
+  4:{ titre:"Cap sur la 1ʳᵉ STMG",
+    intro:"Dernière étape : relie ton projet aux quatre disciplines de la 1ʳᵉ STMG. Indicateurs : Idée 💡, Équipe 🤝, Clients 😀, Responsabilité 🌱.",
+    etapes:[
+      {scene:"Tu signes un contrat avec un fournisseur.", choix:[
+        {txt:"Le lire attentivement (c'est du droit)", eff:{treso:10,marche:5,image:5,emploi:0}, fb:"Le droit encadre les contrats et te protège."},
+        {txt:"Signer sans rien lire", eff:{treso:-10,marche:-5,image:-5,emploi:0}, fb:"Un contrat t'engage : le droit sert à te protéger."} ]},
+      {scene:"Le prix d'une matière première grimpe car elle est très demandée.", choix:[
+        {txt:"Comprendre l'offre et la demande (économie)", eff:{treso:10,marche:5,image:5,emploi:0}, fb:"L'économie explique la formation des prix."},
+        {txt:"Croire que les prix sont fixés au hasard", eff:{treso:-5,marche:0,image:0,emploi:0}, fb:"Les prix dépendent notamment de l'offre et de la demande."} ]},
+      {scene:"Tu dois fixer un cap et motiver ton équipe.", choix:[
+        {txt:"Adopter une posture de management", eff:{treso:5,marche:15,image:5,emploi:5}, fb:"Le management, c'est fixer des buts et animer l'action collective."},
+        {txt:"Ne donner aucune direction", eff:{treso:-5,marche:-10,image:-5,emploi:0}, fb:"Sans cap, l'équipe se disperse."} ]},
+      {scene:"Tu veux savoir si ton activité est rentable.", choix:[
+        {txt:"Suivre tes recettes et dépenses (gestion)", eff:{treso:15,marche:5,image:5,emploi:0}, fb:"La gestion suit le concret : argent, ventes, stocks."},
+        {txt:"Ne jamais regarder tes comptes", eff:{treso:-15,marche:-5,image:0,emploi:0}, fb:"Sans suivi des comptes, on ne sait pas si l'on gagne ou perd de l'argent."} ]} ]}
+},
+docs: {
+  1:[ {titre:"Les trois familles d'organisations", source:"Découverte STMG — fiche d'initiation",
+       texte:"On distingue trois grandes familles d'organisations :\n- les entreprises, qui produisent des biens ou des services pour gagner de l'argent ;\n- les associations, qui poursuivent un but non lucratif (sport, culture, solidarité) ;\n- les organisations publiques (mairie, hôpital, école), au service de l'intérêt général.",
+       questions:[
+         {q:"Une association poursuit avant tout :", o:["un but non lucratif","le profit maximal","aucun but"], c:0, why:"L'association vise un but non lucratif, contrairement à l'entreprise."},
+         {q:"Une mairie est :", o:["une organisation publique","une entreprise privée","une association sportive"], c:0, why:"La mairie est une organisation publique au service de l'intérêt général."},
+         {q:"Le point commun des trois familles est :", o:["réunir des personnes vers un but","vendre des produits","faire des bénéfices"], c:0, why:"Toute organisation réunit des personnes autour d'un but commun."}]},
+      {titre:"De l'idée à l'innovation", source:"Découverte STMG — fiche d'initiation",
+       texte:"Tout commence par une idée créatrice.\nQuand on découvre une idée nouvelle, on parle d'invention.\nQuand cette idée est mise sur le marché et rencontre des utilisateurs, on parle d'innovation.\nL'inventeur (qui a l'idée) n'est pas toujours l'entrepreneur (qui la concrétise).",
+       questions:[
+         {q:"Découvrir une idée nouvelle, c'est :", o:["une invention","une innovation","une évaluation"], c:0, why:"L'invention est la découverte de l'idée."},
+         {q:"Mettre l'idée sur le marché, c'est :", o:["une innovation","une invention","un contrat"], c:0, why:"L'innovation est la concrétisation de l'idée auprès des utilisateurs."},
+         {q:"L'inventeur et l'entrepreneur :", o:["ne sont pas toujours la même personne","sont toujours identiques","n'existent pas"], c:0, why:"Ce sont deux rôles distincts, parfois tenus par des personnes différentes."}]} ],
+  2:[ {titre:"Deux niveaux de décision", source:"Découverte STMG — fiche d'initiation",
+       texte:"Dans une organisation, on prend des décisions à différents niveaux.\nLes décisions stratégiques engagent l'avenir sur le long terme et mobilisent d'importantes ressources (par exemple, ouvrir une nouvelle usine).\nLes décisions opérationnelles sont quotidiennes et répétitives (par exemple, organiser les livraisons du jour).",
+       questions:[
+         {q:"Ouvrir une nouvelle usine est une décision :", o:["stratégique","opérationnelle","sans importance"], c:0, why:"Elle engage l'organisation sur le long terme : c'est stratégique."},
+         {q:"Organiser les livraisons du jour est une décision :", o:["opérationnelle","stratégique","irréversible"], c:0, why:"C'est une décision quotidienne et répétitive : opérationnelle."},
+         {q:"Une décision stratégique mobilise :", o:["d'importantes ressources","aucune ressource","seulement 5 minutes"], c:0, why:"Elle engage des ressources importantes et est difficilement réversible."}]},
+      {titre:"Répartir et coordonner", source:"Découverte STMG — fiche d'initiation",
+       texte:"Quand une organisation grandit, une seule personne ne peut plus tout faire.\nOn répartit alors le travail entre plusieurs personnes : c'est la division du travail.\nMais il faut aussi relier le travail de chacun pour que l'ensemble fonctionne : c'est la coordination.",
+       questions:[
+         {q:"Partager le travail entre plusieurs personnes, c'est :", o:["la division du travail","la coordination","l'évaluation"], c:0, why:"La division du travail répartit les tâches."},
+         {q:"Relier le travail de chacun, c'est :", o:["la coordination","la division du travail","l'invention"], c:0, why:"La coordination assure que tout s'emboîte."},
+         {q:"Pourquoi structurer une organisation qui grandit ?", o:["Pour que tout fonctionne ensemble","Pour ralentir","Sans raison"], c:0, why:"Répartition et coordination sont nécessaires à la bonne marche de l'organisation."}]} ],
+  3:[ {titre:"Efficacité et efficience", source:"Découverte STMG — fiche d'initiation",
+       texte:"Pour mesurer la performance, on utilise deux mots proches mais différents.\nL'efficacité, c'est atteindre son objectif.\nL'efficience, c'est l'atteindre en utilisant le moins de ressources possible (sans gaspiller).\nLa performance combine les deux.",
+       questions:[
+         {q:"Atteindre son objectif, c'est être :", o:["efficace","efficient","en retard"], c:0, why:"L'efficacité, c'est atteindre le but fixé."},
+         {q:"L'atteindre sans gaspiller, c'est être :", o:["efficient","efficace","inactif"], c:0, why:"L'efficience prend en compte les ressources utilisées."},
+         {q:"La performance, c'est :", o:["être efficace ET efficient","seulement gaspiller","ne rien mesurer"], c:0, why:"La performance combine efficacité et efficience."}]},
+      {titre:"Le tableau de bord", source:"Découverte STMG — fiche d'initiation",
+       texte:"Pour piloter son activité, une organisation suit des indicateurs : des chiffres clés comme le nombre de clients ou le chiffre d'affaires.\nCes indicateurs sont rassemblés dans un tableau de bord, un peu comme celui d'une voiture qui affiche la vitesse et le niveau d'essence.",
+       questions:[
+         {q:"Un indicateur est :", o:["un chiffre clé suivi régulièrement","une décoration","un contrat"], c:0, why:"L'indicateur renseigne sur l'activité."},
+         {q:"Le tableau de bord sert à :", o:["piloter l'activité","faire joli","remplacer les clients"], c:0, why:"Il rassemble les indicateurs pour suivre et décider."},
+         {q:"Un exemple d'indicateur est :", o:["le nombre de clients","la couleur du logo","le prénom du dirigeant"], c:0, why:"Le nombre de clients est un chiffre clé utile au pilotage."}]} ],
+  4:[ {titre:"Les quatre disciplines de la 1ʳᵉ STMG", source:"Découverte STMG — fiche d'initiation",
+       texte:"En 1ʳᵉ STMG, tu étudieras quatre disciplines complémentaires :\n- le droit : les règles de la vie en société et les contrats ;\n- l'économie : produire, échanger et consommer ;\n- le management : gouverner l'organisation et fixer les buts ;\n- les sciences de gestion : suivre le concret (argent, ventes, équipes).",
+       questions:[
+         {q:"Les règles et les contrats relèvent :", o:["du droit","de l'économie","de la gestion"], c:0, why:"Le droit encadre les règles de la société et les contrats."},
+         {q:"Produire, échanger et consommer relève :", o:["de l'économie","du management","du droit"], c:0, why:"L'économie étudie la production, l'échange et la consommation."},
+         {q:"Fixer les buts et animer l'organisation relève :", o:["du management","de la gestion","du droit"], c:0, why:"Le management gouverne l'organisation."}]},
+      {titre:"Le modèle économique", source:"Découverte STMG — fiche d'initiation",
+       texte:"Le modèle économique (ou business model) explique comment une organisation crée de la valeur et gagne de l'argent.\nIl répond à des questions simples : que propose-t-elle ? À qui ? Et comment se finance-t-elle ?\nUne appli gratuite financée par la publicité a un modèle différent d'une boutique qui vend des produits.",
+       questions:[
+         {q:"Le modèle économique explique surtout :", o:["comment l'organisation gagne de l'argent","la couleur du logo","la météo"], c:0, why:"Il décrit comment l'organisation crée de la valeur et se finance."},
+         {q:"Une appli gratuite peut se financer par :", o:["la publicité","rien du tout","le hasard"], c:0, why:"La publicité est un modèle de financement possible."},
+         {q:"Deux organisations peuvent avoir :", o:["des modèles économiques différents","toujours le même modèle","aucun modèle"], c:0, why:"Le modèle dépend de l'offre, des clients et du financement."}]} ]
+},
+intrusExtra: {
+  1:[ {liste:["Entreprise","Association","Mairie","Letchi"], intrus:3, why:"Le letchi est un fruit ; les trois autres sont des organisations."},
+      {liste:["Idée","Invention","Innovation","Tableau de bord"], intrus:3, why:"Le tableau de bord sert à évaluer ; les trois autres concernent la naissance d'une idée."},
+      {liste:["Salariés","Machines","Argent","Organigramme"], intrus:3, why:"L'organigramme est un schéma ; les trois autres sont des ressources."},
+      {liste:["Structure","Organigramme","Coordination","Letchi"], intrus:3, why:"Le letchi n'a rien à voir ; les trois autres décrivent l'organisation."},
+      {liste:["Entrepreneur","Équipe","Clients","Météo"], intrus:3, why:"La météo n'est pas un acteur du projet ; les trois autres oui."},
+      {liste:["RSE","Environnement","Performance durable","Gaspillage"], intrus:3, why:"Le gaspillage s'oppose à la démarche responsable ; les trois autres vont ensemble."} ],
+  2:[ {liste:["Objectif","Décision stratégique","Décision opérationnelle","Letchi"], intrus:3, why:"Le letchi n'a rien à voir ; les trois autres concernent décider."},
+      {liste:["Salariés","Clients","Voisins","Organigramme"], intrus:3, why:"L'organigramme est un schéma ; les trois autres sont des parties prenantes."},
+      {liste:["Division du travail","Coordination","Répartition des tâches","Invention"], intrus:3, why:"L'invention concerne l'idée ; les trois autres concernent l'organisation du travail."},
+      {liste:["Taylorisme","Toyotisme","Polyvalence","Contrat"], intrus:3, why:"Le contrat relève du droit ; les trois autres concernent l'organisation du travail."},
+      {liste:["Télétravail","Plateforme en ligne","Réseau","Letchi"], intrus:3, why:"Le letchi n'a rien à voir ; les trois autres sont des formes liées au numérique."},
+      {liste:["Stratégique","Opérationnelle","Quotidienne","Imaginaire"], intrus:3, why:"« Imaginaire » n'est pas un type de décision ; les trois autres décrivent les décisions."} ],
+  3:[ {liste:["Évaluer","Contrôler","Réguler","Inventer"], intrus:3, why:"Inventer concerne l'idée ; les trois autres concernent le pilotage."},
+      {liste:["Efficacité","Efficience","Performance","Hasard"], intrus:3, why:"Le hasard n'a rien à voir ; les trois autres concernent la performance."},
+      {liste:["Indicateur","Tableau de bord","Document comptable","Organigramme"], intrus:3, why:"L'organigramme montre la structure ; les trois autres servent à évaluer."},
+      {liste:["Plateforme","Données","Intelligence artificielle","Letchi"], intrus:3, why:"Le letchi n'a rien à voir ; les trois autres relèvent du numérique."},
+      {liste:["Réputation","Image","Valeur sociale","Gaspillage"], intrus:3, why:"Le gaspillage est négatif ; les trois autres décrivent des formes de valeur."},
+      {liste:["Opportunité","Innovation","Nouveau métier","Risque numérique"], intrus:3, why:"Le risque numérique est une menace ; les trois autres sont des opportunités du numérique."} ],
+  4:[ {liste:["Contrat","Loi","Litige","Stock"], intrus:3, why:"Le stock relève de la gestion ; les trois autres relèvent du droit."},
+      {liste:["Offre","Demande","Prix","Organigramme"], intrus:3, why:"L'organigramme relève du management ; les trois autres relèvent de l'économie."},
+      {liste:["Stratégie","Direction","Animer l'équipe","Facture"], intrus:3, why:"La facture relève de la gestion ; les trois autres relèvent du management."},
+      {liste:["Recettes","Dépenses","Comptes","Contrat de travail"], intrus:3, why:"Le contrat de travail relève du droit ; les trois autres relèvent de la gestion."},
+      {liste:["Droit","Économie","Management","Géographie"], intrus:3, why:"La géographie n'est pas une discipline de la STMG ; les trois autres oui."},
+      {liste:["Business model","Offre","Financement","Litige"], intrus:3, why:"Le litige relève du droit ; les trois autres décrivent le modèle économique."} ]
+},
+casExtra: {
+  1:[ {cas:"Une classe veut organiser un mini-concert solidaire. Plusieurs élèves s'engagent et se répartissent les rôles.", q:"Qu'est-ce que cette classe est en train de créer ?", o:["Une organisation (vers un but commun)","Une entreprise cotée en bourse","Rien du tout"], c:0, why:"Un groupe uni vers un but commun forme une organisation."},
+      {cas:"Théo a inventé un porte-clés malin mais ne sait pas le vendre. Sa cousine s'en occupe et lance l'activité.", q:"Quel rôle joue la cousine ?", o:["Celui d'entrepreneuse","Celui d'inventeuse","Aucun rôle"], c:0, why:"Concrétiser et lancer l'activité, c'est entreprendre."},
+      {cas:"Pour son projet, Lina a besoin de personnes, de matériel et d'un peu d'argent.", q:"Comment appelle-t-on tout cela ?", o:["Des ressources","Des clients","Des lois"], c:0, why:"Humaines, matérielles, financières : ce sont des ressources."},
+      {cas:"Une jeune marque péi met en avant son respect de l'environnement.", q:"De quelle démarche s'agit-il ?", o:["La responsabilité (RSE)","Une décision opérationnelle","Un litige"], c:0, why:"Prendre en compte l'environnement relève de la RSE."},
+      {cas:"Grâce à internet, une créatrice réunionnaise vend ses bijoux en métropole.", q:"Qu'est-ce que le numérique lui permet ?", o:["De toucher un marché plus large","De réduire ses clients","D'oublier ses clients"], c:0, why:"Le numérique affranchit des contraintes d'espace et élargit le marché."},
+      {cas:"Dans une association, on dessine un schéma qui montre le rôle de chaque bénévole.", q:"Comment s'appelle ce schéma ?", o:["Un organigramme","Une facture","Un contrat"], c:0, why:"L'organigramme représente la structure et les rôles."} ],
+  2:[ {cas:"Le bureau d'une association doit choisir d'investir dans une grande salle pour les dix prochaines années.", q:"Quel type de décision est-ce ?", o:["Stratégique","Opérationnelle","Sans importance"], c:0, why:"Un engagement de long terme est une décision stratégique."},
+      {cas:"Chaque jour, un vendeur réorganise sa vitrine.", q:"Quel type de décision est-ce ?", o:["Opérationnelle","Stratégique","Irréversible"], c:0, why:"Une tâche quotidienne et répétitive est opérationnelle."},
+      {cas:"Les bénévoles, les adhérents et la mairie n'attendent pas tous la même chose de l'association.", q:"Qui sont ces acteurs ?", o:["Des parties prenantes","Des inventeurs","Des robots"], c:0, why:"Ce sont des parties prenantes aux attentes différentes."},
+      {cas:"L'atelier double sa production : une seule personne ne suffit plus.", q:"Que faut-il mettre en place ?", o:["Une répartition des tâches et une coordination","Plus de hasard","Moins d'objectifs"], c:0, why:"La division du travail et la coordination deviennent nécessaires."},
+      {cas:"Une entreprise réorganise le travail en équipes polyvalentes plutôt qu'en tâches répétitives.", q:"Vers quel modèle évolue-t-elle ?", o:["Le toyotisme","Le taylorisme strict","Aucune organisation"], c:0, why:"Polyvalence et implication des salariés caractérisent le toyotisme."},
+      {cas:"Plusieurs salariés travaillent désormais depuis chez eux.", q:"De quelle forme d'organisation s'agit-il ?", o:["Le télétravail","La chaîne de montage","Le bénévolat"], c:0, why:"Le télétravail est une forme d'organisation liée au numérique."} ],
+  3:[ {cas:"Une association compare le nombre d'adhérents prévu et le nombre réel en fin d'année.", q:"Que fait-elle ?", o:["Elle évalue","Elle invente","Elle signe un contrat"], c:0, why:"Comparer le réalisé aux objectifs, c'est évaluer."},
+      {cas:"Un atelier atteint son objectif de production tout en réduisant ses déchets.", q:"Comment qualifier cette réussite ?", o:["Efficace et efficient","Inefficace","Hors-sujet"], c:0, why:"Atteindre le but sans gaspiller : efficacité et efficience."},
+      {cas:"Pour suivre sa cantine, un lycée regarde chaque semaine le nombre de repas servis.", q:"Comment appelle-t-on ce chiffre suivi ?", o:["Un indicateur","Un contrat","Une loi"], c:0, why:"Un chiffre clé suivi régulièrement est un indicateur."},
+      {cas:"Une entreprise est très rentable mais pollue beaucoup et soigne mal ses salariés.", q:"Que peut-on dire de sa performance ?", o:["Sa réputation sociale et environnementale est mauvaise","Elle est parfaite","Tout va bien"], c:0, why:"La performance ne se mesure pas qu'en argent : la réputation compte aussi."},
+      {cas:"Une boutique se lance sur une grande plateforme de vente en ligne.", q:"Quel intérêt principal ?", o:["Saisir une opportunité de développement","Perdre ses clients","Fermer"], c:0, why:"Le numérique ouvre de nouvelles opportunités de développement."},
+      {cas:"Une organisation stocke des données personnelles de ses clients.", q:"Quel point de vigilance ?", o:["La sécurité des données","La couleur du site","Le prénom du chef"], c:0, why:"Le numérique impose de protéger les données : sécurité numérique."} ],
+  4:[ {cas:"Avant de travailler pour un employeur, on signe un document qui fixe les règles de la relation de travail.", q:"De quoi s'agit-il ?", o:["Un contrat (droit)","Un tableau de bord","Une publicité"], c:0, why:"Le contrat de travail relève du droit."},
+      {cas:"Quand il pleut peu, les légumes se font rares et leur prix monte.", q:"Quelle discipline l'explique ?", o:["L'économie","Le droit","Le management"], c:0, why:"L'économie explique les prix par l'offre et la demande."},
+      {cas:"La cheffe d'une entreprise réunit son équipe pour fixer les objectifs de l'année.", q:"Que fait-elle ?", o:["Du management","Du droit","De la comptabilité"], c:0, why:"Fixer des buts et animer l'équipe relève du management."},
+      {cas:"Le trésorier note chaque dépense et chaque recette dans un tableau.", q:"De quelle discipline s'agit-il ?", o:["La gestion","L'économie","Le droit"], c:0, why:"Suivre l'argent au quotidien relève de la gestion."},
+      {cas:"Une organisation se demande ce qu'elle propose, à qui, et comment elle se finance.", q:"De quoi parle-t-elle ?", o:["De son modèle économique","De son organigramme","D'un litige"], c:0, why:"Ces questions décrivent le modèle économique (business model)."},
+      {cas:"Un nouveau concurrent s'installe et une nouvelle loi entre en vigueur.", q:"Qu'est-ce qui change pour l'entreprise ?", o:["Son environnement","Sa couleur préférée","Rien"], c:0, why:"Concurrents et lois font partie de l'environnement de l'organisation."} ]
+},
+missionExtra: {
+  1:[ {scene:"On te propose de copier une idée qui existe déjà à l'identique.", choix:[
+        {txt:"Chercher plutôt ta touche personnelle (innovation)", eff:{treso:10,marche:0,image:10,emploi:0}, fb:"Apporter quelque chose de nouveau, c'est innover."},
+        {txt:"Copier sans rien apporter", eff:{treso:-5,marche:0,image:-5,emploi:0}, fb:"Sans nouveauté, difficile de se démarquer."} ]},
+      {scene:"Un ami veut rejoindre ton projet avec ses compétences.", choix:[
+        {txt:"L'accueillir et lui confier un rôle clair", eff:{treso:0,marche:15,image:5,emploi:0}, fb:"De nouvelles compétences renforcent l'équipe."},
+        {txt:"Refuser toute aide", eff:{treso:0,marche:-10,image:0,emploi:0}, fb:"S'entourer de compétences utiles fait grandir le projet."} ]},
+      {scene:"Tu peux présenter ton projet à un petit salon local.", choix:[
+        {txt:"Y aller pour te faire connaître", eff:{treso:5,marche:5,image:15,emploi:0}, fb:"Se faire connaître aide à trouver des clients et des soutiens."},
+        {txt:"Rester caché", eff:{treso:0,marche:-5,image:-10,emploi:0}, fb:"Un projet a besoin d'être connu pour se développer."} ]} ],
+  2:[ {scene:"Deux membres de l'équipe ne sont pas d'accord sur une décision.", choix:[
+        {txt:"Chercher un consensus en écoutant chacun", eff:{treso:5,marche:15,image:5,emploi:0}, fb:"Gérer les conflits par le dialogue renforce l'équipe."},
+        {txt:"Imposer sans écouter", eff:{treso:0,marche:-10,image:-5,emploi:0}, fb:"Ignorer les désaccords crée des tensions durables."} ]},
+      {scene:"Tu dois définir clairement qui fait quoi.", choix:[
+        {txt:"Établir un organigramme simple", eff:{treso:5,marche:10,image:5,emploi:0}, fb:"Un organigramme clarifie les rôles et la coordination."},
+        {txt:"Laisser le flou s'installer", eff:{treso:-5,marche:-5,image:0,emploi:0}, fb:"Sans clarté des rôles, l'organisation patine."} ]},
+      {scene:"Une tâche répétitive prend beaucoup de temps.", choix:[
+        {txt:"Voir si un outil numérique peut aider", eff:{treso:10,marche:5,image:5,emploi:0}, fb:"Le numérique peut automatiser certaines tâches répétitives."},
+        {txt:"Tout continuer à la main, sans réfléchir", eff:{treso:-5,marche:-5,image:0,emploi:0}, fb:"Repenser l'organisation fait gagner du temps."} ]} ],
+  3:[ {scene:"Tu ne sais pas si ton mois a été bon ou mauvais.", choix:[
+        {txt:"Mettre en place quelques indicateurs simples", eff:{treso:10,marche:5,image:5,emploi:0}, fb:"Des indicateurs clairs permettent d'évaluer."},
+        {txt:"Ne rien mesurer", eff:{treso:-10,marche:-5,image:0,emploi:0}, fb:"Sans mesure, impossible de savoir si l'on progresse."} ]},
+      {scene:"Tu pourrais gagner du temps en gaspillant des matières.", choix:[
+        {txt:"Chercher à rester efficient (sans gaspiller)", eff:{treso:10,marche:0,image:5,emploi:10}, fb:"L'efficience protège tes ressources et l'environnement."},
+        {txt:"Gaspiller pour aller plus vite", eff:{treso:-10,marche:0,image:-5,emploi:-10}, fb:"Le gaspillage nuit à la performance durable."} ]},
+      {scene:"Un client laisse un avis négatif en ligne.", choix:[
+        {txt:"Lui répondre et améliorer ton service", eff:{treso:0,marche:5,image:15,emploi:0}, fb:"Soigner sa réputation fait partie de la performance."},
+        {txt:"Ignorer complètement l'avis", eff:{treso:0,marche:-5,image:-10,emploi:0}, fb:"La réputation compte autant que les chiffres."} ]} ],
+  4:[ {scene:"Tu hésites à embaucher ton premier salarié.", choix:[
+        {txt:"Te renseigner sur les règles (droit du travail)", eff:{treso:5,marche:5,image:5,emploi:10}, fb:"Le droit encadre l'embauche et protège les deux parties."},
+        {txt:"Embaucher sans connaître aucune règle", eff:{treso:-10,marche:0,image:-5,emploi:-5}, fb:"Méconnaître le droit du travail expose à des problèmes."} ]},
+      {scene:"Tu veux comprendre pourquoi tes coûts augmentent.", choix:[
+        {txt:"Analyser le marché (économie)", eff:{treso:10,marche:5,image:0,emploi:0}, fb:"L'économie aide à comprendre l'évolution des prix et des coûts."},
+        {txt:"Ne pas chercher à comprendre", eff:{treso:-5,marche:0,image:0,emploi:0}, fb:"Comprendre son environnement économique aide à décider."} ]},
+      {scene:"Ton équipe a besoin d'un cap clair pour l'année.", choix:[
+        {txt:"Fixer des objectifs et donner du sens (management)", eff:{treso:5,marche:15,image:5,emploi:5}, fb:"Le management donne une direction et motive l'équipe."},
+        {txt:"Laisser chacun improviser sans but", eff:{treso:-5,marche:-10,image:-5,emploi:0}, fb:"Sans cap, l'action collective se disperse."} ]} ]
+},
+ressources: [
+{ cat:"methodo", type:"page", titre:"Bienvenue en Découverte STMG !", desc:"À quoi sert ce parcours et comment il te prépare à la 1ʳᵉ STMG.", url:"",
+  html:"<h2>Bienvenue !</h2><p>Ce parcours est une <b>introduction</b> à la filière STMG (Sciences et Technologies du Management et de la Gestion). Il s'appuie sur le programme de l'option <b>Management et gestion</b> de seconde.</p><h2>Pourquoi ce parcours ?</h2><ul><li>Découvrir, en douceur, les notions que tu approfondiras en 1ʳᵉ.</li><li>Te constituer un <b>socle commun</b> de connaissances utiles.</li><li>Aborder l'année de première avec confiance.</li></ul><h2>Comment ça marche ?</h2><p>Tu avances par <b>étapes</b> : entreprendre, organiser et décider, évaluer et évoluer, puis un premier pas vers les quatre disciplines de la 1ʳᵉ STMG. Pour chaque étape, des petits jeux te font manipuler les notions avec des exemples concrets, souvent réunionnais.</p><h2>Un conseil</h2><p>Prends ton temps, lis les explications après chaque réponse, et n'aie pas peur de te tromper : c'est comme ça qu'on apprend !</p>" },
+{ cat:"methodo", type:"page", titre:"Les mots-clés à connaître pour la 1ʳᵉ", desc:"Un mini-lexique des notions de base, expliquées simplement.", url:"",
+  html:"<h2>Mini-lexique de départ</h2><table><tr><th>Mot</th><th>En une phrase simple</th></tr><tr><td>Organisation</td><td>Un groupe de personnes unies vers un même but.</td></tr><tr><td>Entrepreneuriat</td><td>Se lancer pour transformer une idée en activité.</td></tr><tr><td>Innovation</td><td>Mettre une idée nouvelle sur le marché.</td></tr><tr><td>Partie prenante</td><td>Toute personne qui a un intérêt dans l'organisation.</td></tr><tr><td>Décision stratégique</td><td>Un grand choix qui engage l'avenir.</td></tr><tr><td>Performance</td><td>Atteindre ses buts (efficace) sans gaspiller (efficient).</td></tr><tr><td>Droit</td><td>Les règles de la vie en société.</td></tr><tr><td>Économie</td><td>Produire, échanger et consommer.</td></tr><tr><td>Management</td><td>Gouverner l'organisation et fixer les buts.</td></tr><tr><td>Gestion</td><td>Suivre le concret : argent, ventes, stocks.</td></tr></table><p>Pas besoin de tout retenir d'un coup : tu reverras chacun de ces mots en 1ʳᵉ STMG.</p>" },
+{ cat:"methodo", type:"page", titre:"Les 4 disciplines de la 1ʳᵉ STMG", desc:"Droit, économie, management, gestion : à quoi ça sert ?", url:"",
+  html:"<h2>Quatre disciplines complémentaires</h2><p>En 1ʳᵉ STMG, tu étudieras quatre matières qui s'éclairent les unes les autres.</p><h2>⚖️ Le droit</h2><p>Les règles de la vie en société : les contrats, le travail, la responsabilité. Il te protège et règle les conflits.</p><h2>📈 L'économie</h2><p>Comment on produit, échange et consomme. Elle explique, par exemple, pourquoi les prix montent ou baissent.</p><h2>🧭 Le management</h2><p>Le « gouvernement » des organisations : fixer des buts et animer l'action collective.</p><h2>📊 Les sciences de gestion</h2><p>Le concret du quotidien : suivre l'argent, les ventes, les stocks et les équipes pour aider à décider.</p><p>Ensemble, ces disciplines t'aident à comprendre comment fonctionnent les organisations qui nous entourent.</p>" },
+{ cat:"videos", titre:"1jour1actu — c'est quoi une entreprise ?",
+  desc:"Des explications courtes et claires pour comprendre les bases, à hauteur d'élève.",
+  url:"https://www.1jour1actu.com" },
+{ cat:"syntheses", titre:"Assistance scolaire — entrée en 1ʳᵉ STMG",
+  desc:"Fiches et ressources gratuites (partenariat MAIF) pour préparer la première STMG.",
+  url:"https://www.assistancescolaire.com/eleve/1STMG" }
+],
+
+},
+
 MGT: {
 
 /* -------------------- RESSOURCES (liens) -------------------- */
@@ -4507,11 +5037,11 @@ const OV_KEY="mm_data_overrides_v2";
 function loadData(){
   try{ const o=localStorage.getItem(OV_KEY);
     if(o){ const d=JSON.parse(o);
-      if(d && d.MGT && d.SDG){ if(!d.TLE) d.TLE=window.GAME_DATA.TLE; if(!d.DR1) d.DR1=window.GAME_DATA.DR1; if(!d.ECO1) d.ECO1=window.GAME_DATA.ECO1; if(!d.DRT) d.DRT=window.GAME_DATA.DRT; if(!d.ECOT) d.ECOT=window.GAME_DATA.ECOT; if(!d.GO) d.GO=window.GAME_DATA.GO; if(!d.config) d.config=window.GAME_DATA.config; return d; }
-      if(d && d.trieur) return {MGT:d, SDG:window.GAME_DATA.SDG, TLE:window.GAME_DATA.TLE, DR1:window.GAME_DATA.DR1, ECO1:window.GAME_DATA.ECO1, DRT:window.GAME_DATA.DRT, ECOT:window.GAME_DATA.ECOT, GO:window.GAME_DATA.GO, config:window.GAME_DATA.config};
+      if(d && d.MGT && d.SDG){ if(!d.SEC) d.SEC=window.GAME_DATA.SEC; if(!d.TLE) d.TLE=window.GAME_DATA.TLE; if(!d.DR1) d.DR1=window.GAME_DATA.DR1; if(!d.ECO1) d.ECO1=window.GAME_DATA.ECO1; if(!d.DRT) d.DRT=window.GAME_DATA.DRT; if(!d.ECOT) d.ECOT=window.GAME_DATA.ECOT; if(!d.GO) d.GO=window.GAME_DATA.GO; if(!d.config) d.config=window.GAME_DATA.config; return d; }
+      if(d && d.trieur) return {SEC:window.GAME_DATA.SEC, MGT:d, SDG:window.GAME_DATA.SDG, TLE:window.GAME_DATA.TLE, DR1:window.GAME_DATA.DR1, ECO1:window.GAME_DATA.ECO1, DRT:window.GAME_DATA.DRT, ECOT:window.GAME_DATA.ECOT, GO:window.GAME_DATA.GO, config:window.GAME_DATA.config};
     } }catch(e){}
   try{ const v1=localStorage.getItem("mm_data_overrides_v1");
-    if(v1){ const d=JSON.parse(v1); if(d && d.trieur) return {MGT:d, SDG:window.GAME_DATA.SDG, TLE:window.GAME_DATA.TLE, DR1:window.GAME_DATA.DR1, ECO1:window.GAME_DATA.ECO1, DRT:window.GAME_DATA.DRT, ECOT:window.GAME_DATA.ECOT, GO:window.GAME_DATA.GO, config:window.GAME_DATA.config}; } }catch(e){}
+    if(v1){ const d=JSON.parse(v1); if(d && d.trieur) return {SEC:window.GAME_DATA.SEC, MGT:d, SDG:window.GAME_DATA.SDG, TLE:window.GAME_DATA.TLE, DR1:window.GAME_DATA.DR1, ECO1:window.GAME_DATA.ECO1, DRT:window.GAME_DATA.DRT, ECOT:window.GAME_DATA.ECOT, GO:window.GAME_DATA.GO, config:window.GAME_DATA.config}; } }catch(e){}
   return window.GAME_DATA;
 }
 const ALL = loadData();
@@ -4554,6 +5084,12 @@ const ORDRE_GAME    = { id:"ordre", nom:"L'exposé dans l'ordre", icon:"🔢", b
 const DIFF_COLOR = { "Facile":"#16a34a", "Moyen":"#f59e0b", "Difficile":"#dc2626" };
 /* ====== Matières ====== */
 const SUBJ = {
+  SEC:{ code:"SEC", icon:"\ud83d\ude80", nom:"Découverte STMG", short:"Découverte",
+    themes:[
+      { n:1, nom:"S'engager et entreprendre",         short:"Entreprendre", color:"#f59e0b" },
+      { n:2, nom:"Organiser et décider",              short:"Organiser",    color:"#2563eb" },
+      { n:3, nom:"Évaluer et évoluer",                short:"Évaluer",      color:"#16a34a" },
+      { n:4, nom:"Premiers pas vers la 1ʳᵉ STMG",      short:"Cap 1ʳᵉ",       color:"#7c3aed" } ] },
   MGT:{ code:"MGT", icon:"\ud83e\udded", nom:"Management", short:"Management",
     themes:[
       { n:1, nom:"À la rencontre des organisations", short:"Les organisations", color:"#0ea5e9" },
@@ -4709,6 +5245,7 @@ function Login({onStudent,onTeacher}){
 /* ====== MENU MATIÈRE ====== */
 function Matiere({student,onPick,onLogout}){
   const opts=[
+    {code:"SEC",icon:SUBJ.SEC.icon,titre:"Découverte STMG",sous:"4 étapes · parcours d'initiation — entreprendre, organiser, évaluer, puis découvrir droit, économie, management et gestion. (2ᵈᵉ)",color:"#f59e0b"},
     {code:"MGT",icon:SUBJ.MGT.icon,titre:"Management",sous:"3 thèmes · 7 jeux — des organisations aux choix stratégiques. (1ʳᵉ)",color:"#ff6b6b"},
     {code:"SDG",icon:SUBJ.SDG.icon,titre:"Sciences de gestion et numérique",sous:"4 thèmes · 8 jeux — de l'individu acteur au temps et au risque. (1ʳᵉ)",color:"#2563eb"},
     {code:"TLE",icon:SUBJ.TLE.icon,titre:"MSDGN — Terminale",sous:"3 thèmes · 8 jeux — l'épreuve écrite du bac se prépare ici.",color:"#16a34a"},
@@ -5532,7 +6069,7 @@ function Editor(){
   return (<div className="ed">
     <div className="edbar">
       <select value={sub} onChange={e=>{setSub(e.target.value); setTheme(1); setMsg("");}}>
-        <option value="MGT">🧭 Management 1ʳᵉ</option><option value="SDG">🖥️ SDGN 1ʳᵉ</option><option value="TLE">🎓 MSDGN Tle</option><option value="DR1">⚖️ Droit 1ʳᵉ</option><option value="ECO1">📈 Économie 1ʳᵉ</option><option value="DRT">⚖️ Droit Tle</option><option value="ECOT">📈 Économie Tle</option><option value="GO">🎤 Grand oral</option>
+        <option value="SEC">🚀 Découverte STMG (2ᵈᵉ)</option><option value="MGT">🧭 Management 1ʳᵉ</option><option value="SDG">🖥️ SDGN 1ʳᵉ</option><option value="TLE">🎓 MSDGN Tle</option><option value="DR1">⚖️ Droit 1ʳᵉ</option><option value="ECO1">📈 Économie 1ʳᵉ</option><option value="DRT">⚖️ Droit Tle</option><option value="ECOT">📈 Économie Tle</option><option value="GO">🎤 Grand oral</option>
       </select>
       <select value={theme} onChange={e=>setTheme(+e.target.value)}>
         {TH.map(t=><option key={t.n} value={t.n}>Thème {t.n} — {t.short}</option>)}
@@ -5648,7 +6185,7 @@ function Teacher({onLogout}){
         <button className={view==="detail"?"on":""} onClick={()=>setView("detail")}>📝 Détail</button>
         <button className={view==="editor"?"on":""} onClick={()=>setView("editor")}>✏️ Éditeur</button></div>
       <span className={"syncpill"+(sync===true?" on":sync===false?" err":"")} title={sync===true?"Scores synchronisés avec le serveur":sync===false?"URL configurée mais serveur injoignable — vérifie le déploiement du script":"Mode local : configure la synchronisation dans l'Éditeur (banque ⚙️)"}>{sync===true?"☁️ Sync":sync===false?"⚠️ Sync":"💾 Local"}</span>
-      <select value={mat} onChange={e=>setMat(e.target.value)}><option value="MGT">🧭 Management 1ʳᵉ</option><option value="SDG">🖥️ SDGN 1ʳᵉ</option><option value="TLE">🎓 MSDGN Tle</option><option value="DR1">⚖️ Droit 1ʳᵉ</option><option value="ECO1">📈 Économie 1ʳᵉ</option><option value="DRT">⚖️ Droit Tle</option><option value="ECOT">📈 Économie Tle</option><option value="GO">🎤 Grand oral</option></select>
+      <select value={mat} onChange={e=>setMat(e.target.value)}><option value="SEC">🚀 Découverte STMG (2ᵈᵉ)</option><option value="MGT">🧭 Management 1ʳᵉ</option><option value="SDG">🖥️ SDGN 1ʳᵉ</option><option value="TLE">🎓 MSDGN Tle</option><option value="DR1">⚖️ Droit 1ʳᵉ</option><option value="ECO1">📈 Économie 1ʳᵉ</option><option value="DRT">⚖️ Droit Tle</option><option value="ECOT">📈 Économie Tle</option><option value="GO">🎤 Grand oral</option></select>
       <select value={fc} onChange={e=>setFc(e.target.value)}>{classes.map(c=><option key={c}>{c}</option>)}</select>
       <button className="rf" onClick={refresh}>↻ Actualiser</button>
       <button className="rf alt" onClick={exportScoresCSV}>⬇ Export Excel (CSV)</button>
