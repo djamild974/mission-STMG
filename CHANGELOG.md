@@ -51,6 +51,28 @@ des études de documents et des ressources.
 - Liens institutionnels fiables : Légifrance, Vie-publique.fr (Droit) ; INSEE, Citéco
   (Économie) ; éduscol (Grand oral). Toutes les fiches sont éditables par le professeur.
 
+### ✏️ Éditeur professeur
+
+- Les deux exercices du Grand oral (**Construis ta problématique**, **L'exposé dans
+  l'ordre**) sont désormais **entièrement éditables** depuis l'interface professeur :
+  modification des questions de gestion, des trois étapes guidées, de la problématique
+  finale, et réorganisation des étapes de l'exposé (boutons ▲▼). Options visibles
+  uniquement pour la matière Grand oral.
+
+### 🎤 Plus de mises en situation (Grand oral)
+
+- Simulation « jour J » portée à **10 situations par étape** (le maximum).
+- Une **question de gestion** supplémentaire par étape pour « Construis ta problématique »
+  (3 par étape) et un **exposé** supplémentaire pour « L'exposé dans l'ordre » (3 par étape).
+
+### 📊 Affichage des jauges (Mission Dirigeant & simulation « jour J »)
+
+- Pendant la partie, chaque indicateur affiche désormais en continu, à **chaque étape** :
+  l'emoji, son **titre court**, sa **barre de progression** et son **pourcentage** coloré.
+- L'élève visualise immédiatement l'impact de chaque décision, sans attendre le bilan final.
+- Valable pour les 8 matières (Trésorerie · Part de marché · Image · Emplois pour les
+  matières « entreprise » ; Clarté · Conviction · Connaissances · Aisance pour le Grand oral).
+
 ### 🧱 Technique
 
 - 8 matières au total : Management, SDGN, MSDGN Tle, Droit 1ʳᵉ, Économie 1ʳᵉ,
