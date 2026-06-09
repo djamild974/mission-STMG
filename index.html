@@ -6966,6 +6966,38 @@ function Trieur({theme,head,onDone,D}){
     setPlaced(p=>({...p,[sel]:bac})); good?setScore(s=>s+1):setErr(e=>e+1); setSel(null);
     if(items.filter(x=>placed[x._i]===undefined && x._i!==sel).length===0) setTimeout(()=>setDone(true),250);
   };
+
+  // ----- Correction explicative -----
+  const explainItem=(it)=>{
+    if(it.expl) return it.expl; // explication sur-mesure si fournie dans les données
+    const goodBac=cfg.bacs[it.cat];
+    const info=(cfg.bacsInfo&&cfg.bacsInfo[it.cat])?cfg.bacsInfo[it.cat]:"";
+    // Phrase complète : rappelle la catégorie correcte ET sa définition (le « pourquoi »).
+    return "« "+it.label+" » appartient à « "+goodBac+" »"+(info?" : "+info.charAt(0).toLowerCase()+info.slice(1):".");
+  };
+  const buildRecap=()=>{
+    const detail=items.map(it=>{
+      const chosen=placed[it._i];
+      const ok=chosen===it.cat;
+      return {label:it.label, ok, chosenBac:cfg.bacs[chosen], goodBac:cfg.bacs[it.cat], expl:explainItem(it)};
+    });
+    const nbErr=detail.filter(d=>!d.ok).length;
+    const concl = (nbErr===0)
+      ? "Sans-faute ! Tu as classé correctement tous les éléments : tu maîtrises les distinctions entre les catégories. C'est exactement ce qui est attendu."
+      : (nbErr<=Math.floor(items.length/2))
+      ? ("Bon travail : "+(items.length-nbErr)+" éléments sur "+items.length+" bien classés. Concentre-toi sur les "+nbErr+" erreur"+(nbErr>1?"s":"")+" ci-dessous : relis bien la définition de chaque catégorie pour ne plus les confondre.")
+      : ("À retravailler : "+nbErr+" éléments sur "+items.length+" étaient mal classés. Reprends le cours et les descriptions de chaque catégorie (rappelées ci-dessus), puis observe pour chaque élément où il fallait le placer et pourquoi.");
+    return (<div className={"fb "+(nbErr===0?"good":"no")} style={{textAlign:"left"}}>
+      <strong>📋 Correction détaillée</strong>
+      {detail.map((d,k)=>(<p key={k} style={{margin:"8px 0"}}>
+        {d.ok?"✅ ":"❌ "}<b>{d.label}</b>{d.ok
+          ? (" — bien classé dans « "+d.goodBac+" ».")
+          : (" — tu l'as mis dans « "+(d.chosenBac||"—")+" », mais il fallait le classer dans « "+d.goodBac+" ».")}
+        <br/><span style={{opacity:.85}}>👉 {d.expl}</span></p>))}
+      <p style={{marginTop:10}}><b>En résumé : </b>{concl}</p>
+    </div>);
+  };
+
   return (<div className="game">{head}
     <p className="help">{cfg.consigne} <span className="muted">Clique un élément, puis sa catégorie.</span></p>
     <div className="tray">{remaining.map(it=>(
@@ -6977,7 +7009,7 @@ function Trieur({theme,head,onDone,D}){
         <div className="bac-body">{items.filter(it=>placed[it._i]===bi).map(it=>(
           <span key={it._i} className={"chip2 "+(it.cat===bi?"ok":"no")}>{it.cat===bi?"✓":"✗"} {it.label}</span>))}</div>
       </div>))}</div>
-    {done&&<Result score={score} total={items.length} onDone={onDone}/>}
+    {done&&<Result score={score} total={items.length} onDone={onDone} recap={buildRecap()}/>}
   </div>);
 }
 
