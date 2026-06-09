@@ -6414,6 +6414,391 @@ ressources:[
 
 /*__DATA_END__*/
 </script>
+<script>
+/* ============================================================
+   MON ORIENTATION APRÈS LE BAC — Données (indicatif)
+   Test de profil (qualités, compétences, soft skills, savoir-être)
+   + Annuaire d'une quarantaine de métiers après la STMG.
+   Outil PUREMENT INDICATIF — ne remplace pas l'avis d'un
+   psychologue de l'Éducation nationale (PsyEN) ni l'ONISEP.
+============================================================ */
+window.ORI_DATA = {
+
+/* --- Dimensions de profil --- */
+dims: {
+  GES:  { nom:"Gestion & chiffres",        emo:"📊", desc:"Aimer les nombres, la comptabilité, le budget, la précision." },
+  COM:  { nom:"Commerce & relation client", emo:"🤝", desc:"Aimer convaincre, vendre, conseiller, être au contact des gens." },
+  RH:   { nom:"Humain & management",        emo:"👥", desc:"Aimer accompagner, animer une équipe, écouter, motiver." },
+  NUM:  { nom:"Numérique & data",           emo:"💻", desc:"Aimer l'informatique, les outils digitaux, les données, le web." },
+  JUR:  { nom:"Droit & règles",             emo:"⚖️", desc:"Aimer comprendre les règles, argumenter, défendre, rédiger." },
+  COMM: { nom:"Communication & créativité", emo:"🎨", desc:"Aimer créer, s'exprimer, imaginer, mettre en valeur." },
+  ENT:  { nom:"Initiative & projet",        emo:"🚀", desc:"Aimer entreprendre, prendre des décisions, lancer des idées." },
+  ORG:  { nom:"Organisation & rigueur",     emo:"🗂️", desc:"Aimer planifier, organiser, suivre, coordonner, être fiable." }
+},
+
+/* --- Banque de questions ---
+   batch 1 = 20 questions (obligatoires)
+   batch 2 = 10 questions (sur demande)
+   batch 3 = 10 questions (sur demande supplémentaire)
+   Chaque option ajoute des points (w) à une ou plusieurs dimensions. --- */
+batch1: [
+ {q:"Dans un travail de groupe, tu te sens le plus utile quand…", o:[
+   {t:"tu organises le planning et répartis les tâches", w:{ORG:2,RH:1}},
+   {t:"tu présentes le projet et convaincs les autres", w:{COM:2,COMM:1}},
+   {t:"tu gères le budget et vérifies les chiffres", w:{GES:2,ORG:1}},
+   {t:"tu crées le visuel, l'affiche ou le diaporama", w:{COMM:2,NUM:1}} ]},
+ {q:"Quelle activité te donnerait le moins l'impression de « travailler » ?", o:[
+   {t:"Tenir un stand et discuter avec des clients", w:{COM:2,RH:1}},
+   {t:"Construire un tableur, calculer, faire des stats", w:{GES:2,NUM:1}},
+   {t:"Aider un camarade à régler un conflit", w:{RH:2,JUR:1}},
+   {t:"Monter une vidéo ou un site internet", w:{NUM:2,COMM:1}} ]},
+ {q:"Un ami te décrirait plutôt comme quelqu'un de…", o:[
+   {t:"rigoureux et méthodique", w:{ORG:2,GES:1}},
+   {t:"persuasif et à l'aise à l'oral", w:{COM:2,COMM:1}},
+   {t:"à l'écoute et bienveillant", w:{RH:2}},
+   {t:"curieux de tout ce qui est technique", w:{NUM:2}} ]},
+ {q:"Face à une règle que tu trouves injuste, ton premier réflexe :", o:[
+   {t:"comprendre d'où elle vient et l'argumenter", w:{JUR:2}},
+   {t:"proposer une autre organisation plus juste", w:{ORG:1,ENT:1,RH:1}},
+   {t:"en parler et fédérer les autres", w:{RH:1,COM:1,COMM:1}},
+   {t:"chercher si une loi ou un texte la conteste", w:{JUR:2,NUM:1}} ]},
+ {q:"On te confie 200 € pour un mini-projet de classe. Tu…", o:[
+   {t:"fais un budget précis et suis chaque dépense", w:{GES:2,ORG:1}},
+   {t:"lances une vente pour en gagner plus", w:{COM:2,ENT:1}},
+   {t:"investis dans une idée nouvelle et originale", w:{ENT:2,COMM:1}},
+   {t:"achètes du matériel pour communiquer dessus", w:{COMM:2,NUM:1}} ]},
+ {q:"Ce qui te motive le plus dans un futur métier :", o:[
+   {t:"être autonome et décider", w:{ENT:2}},
+   {t:"être entouré et travailler en équipe", w:{RH:2}},
+   {t:"voir des résultats chiffrés et concrets", w:{GES:2}},
+   {t:"créer et inventer des choses", w:{COMM:2,ENT:1}} ]},
+ {q:"Quelle matière (ou activité) préfères-tu, instinctivement ?", o:[
+   {t:"La gestion, la compta, l'économie chiffrée", w:{GES:2}},
+   {t:"Le droit, l'argumentation", w:{JUR:2}},
+   {t:"Le marketing, la pub, les marques", w:{COM:1,COMM:2}},
+   {t:"L'informatique, les outils numériques", w:{NUM:2}} ]},
+ {q:"Devant un problème compliqué, tu préfères…", o:[
+   {t:"le décomposer étape par étape, méthodiquement", w:{ORG:2,GES:1}},
+   {t:"en discuter avec d'autres pour trouver l'idée", w:{RH:1,COM:1,ENT:1}},
+   {t:"chercher une solution technique ou un outil", w:{NUM:2}},
+   {t:"imaginer une solution originale", w:{COMM:1,ENT:1}} ]},
+ {q:"Le compliment qui te ferait le plus plaisir :", o:[
+   {t:"« On peut toujours compter sur toi, tu es fiable »", w:{ORG:2}},
+   {t:"« Tu sais vraiment convaincre les gens »", w:{COM:2}},
+   {t:"« Tu mets tout le monde à l'aise »", w:{RH:2}},
+   {t:"« Tu as des idées géniales »", w:{ENT:1,COMM:1}} ]},
+ {q:"Dans une entreprise, le poste qui t'attirerait le plus :", o:[
+   {t:"Comptable / gestionnaire", w:{GES:2}},
+   {t:"Commercial / vendeur", w:{COM:2}},
+   {t:"Responsable d'équipe / RH", w:{RH:2}},
+   {t:"Community manager / digital", w:{NUM:1,COMM:2}} ]},
+ {q:"Quand tu utilises ton téléphone, tu passes surtout du temps à…", o:[
+   {t:"suivre des comptes, créer du contenu, des stories", w:{COMM:2,NUM:1}},
+   {t:"comparer des prix, gérer un budget, des appli pratiques", w:{GES:1,ORG:1}},
+   {t:"discuter, organiser des sorties avec le groupe", w:{RH:1,COM:1}},
+   {t:"explorer des apps, des jeux, des trucs techniques", w:{NUM:2}} ]},
+ {q:"Pour une fête de classe, ton rôle naturel serait :", o:[
+   {t:"le trésorier qui gère l'argent", w:{GES:2,ORG:1}},
+   {t:"celui qui démarche les sponsors", w:{COM:2,ENT:1}},
+   {t:"l'animateur qui motive tout le monde", w:{RH:1,COMM:1,COM:1}},
+   {t:"le chef d'orchestre qui coordonne", w:{ORG:2,ENT:1}} ]},
+ {q:"Ce qui t'agace le plus :", o:[
+   {t:"le désordre et l'imprévu", w:{ORG:2}},
+   {t:"l'injustice et le non-respect des règles", w:{JUR:2}},
+   {t:"le manque d'ambiance et de contact", w:{RH:2}},
+   {t:"la routine, faire toujours pareil", w:{ENT:2,COMM:1}} ]},
+ {q:"Tu apprends mieux quand…", o:[
+   {t:"c'est structuré, avec des fiches et des étapes claires", w:{ORG:2}},
+   {t:"on en discute, on échange en groupe", w:{RH:1,COM:1}},
+   {t:"on manipule des outils numériques", w:{NUM:2}},
+   {t:"on relie ça à des exemples concrets de la vie réelle", w:{ENT:1,GES:1}} ]},
+ {q:"Quel pari te ressemble le plus ?", o:[
+   {t:"« Je vais lancer ma propre activité un jour »", w:{ENT:2}},
+   {t:"« Je veux un métier stable et reconnu »", w:{GES:1,JUR:1,ORG:1}},
+   {t:"« Je veux un métier où j'aide les autres »", w:{RH:2}},
+   {t:"« Je veux un métier créatif »", w:{COMM:2}} ]},
+ {q:"On te demande de présenter un exposé. Tu…", o:[
+   {t:"prépares un diaporama clair et bien rangé", w:{ORG:1,NUM:1}},
+   {t:"te lances à l'oral, tu adores parler en public", w:{COM:2,COMM:1}},
+   {t:"soignes le design et les images", w:{COMM:2}},
+   {t:"vérifies chaque chiffre et chaque source", w:{GES:1,JUR:1}} ]},
+ {q:"Ta qualité dont tu es le plus fier :", o:[
+   {t:"Ma rigueur", w:{ORG:2,GES:1}},
+   {t:"Mon sens du contact", w:{COM:1,RH:1}},
+   {t:"Ma créativité", w:{COMM:2}},
+   {t:"Mon esprit logique", w:{NUM:1,GES:1,JUR:1}} ]},
+ {q:"Le mot qui te parle le plus :", o:[
+   {t:"Performance", w:{GES:1,ENT:1}},
+   {t:"Équipe", w:{RH:2}},
+   {t:"Innovation", w:{ENT:1,NUM:1}},
+   {t:"Justice", w:{JUR:2}} ]},
+ {q:"Tu serais le plus à l'aise pour…", o:[
+   {t:"analyser un tableau de chiffres", w:{GES:2,NUM:1}},
+   {t:"négocier un prix", w:{COM:2}},
+   {t:"rédiger un règlement ou un contrat", w:{JUR:2,ORG:1}},
+   {t:"animer un réseau social", w:{NUM:1,COMM:2}} ]},
+ {q:"Dans 10 ans, l'image qui te plaît le plus :", o:[
+   {t:"diriger ta propre entreprise", w:{ENT:2,RH:1}},
+   {t:"être expert reconnu (compta, droit, data…)", w:{GES:1,JUR:1,NUM:1}},
+   {t:"manager une grande équipe", w:{RH:2,ORG:1}},
+   {t:"travailler dans le marketing / la com d'une marque", w:{COM:1,COMM:2}} ]}
+],
+
+batch2: [
+ {q:"On te confie l'organisation d'un événement. Le plus difficile pour toi serait :", o:[
+   {t:"de tenir le budget", w:{GES:1}},
+   {t:"de gérer les tensions dans l'équipe", w:{RH:2}},
+   {t:"de respecter chaque autorisation et règle", w:{JUR:2}},
+   {t:"de créer une communication originale", w:{COMM:2}} ]},
+ {q:"Quel stage de 3ᵉ aurais-tu adoré (ou as-tu aimé) ?", o:[
+   {t:"dans un cabinet comptable ou une banque", w:{GES:2}},
+   {t:"dans un magasin / une boutique", w:{COM:2}},
+   {t:"dans une agence de com ou un studio", w:{COMM:2}},
+   {t:"dans une entreprise du numérique", w:{NUM:2}} ]},
+ {q:"Une appli de ton lycée bugue. Ta réaction :", o:[
+   {t:"je cherche à comprendre le problème technique", w:{NUM:2}},
+   {t:"je préviens et j'organise une solution de secours", w:{ORG:2}},
+   {t:"je rassure les utilisateurs énervés", w:{RH:1,COM:1}},
+   {t:"je propose une appli plus moderne", w:{ENT:1,NUM:1}} ]},
+ {q:"Tu préfères un travail qui est plutôt :", o:[
+   {t:"derrière un bureau, au calme et concentré", w:{GES:1,NUM:1,JUR:1}},
+   {t:"en mouvement, au contact des gens", w:{COM:2,RH:1}},
+   {t:"varié, avec des projets différents", w:{ENT:2,COMM:1}},
+   {t:"d'encadrement, à piloter une équipe", w:{RH:2,ORG:1}} ]},
+ {q:"Quelle responsabilité te tenterait le plus ?", o:[
+   {t:"être garant des comptes de l'entreprise", w:{GES:2}},
+   {t:"être garant du respect du droit", w:{JUR:2}},
+   {t:"être garant de l'ambiance et des talents", w:{RH:2}},
+   {t:"être garant de l'image de la marque", w:{COMM:2,COM:1}} ]},
+ {q:"Ce que tu aimes le plus dans un projet abouti :", o:[
+   {t:"que tout soit carré, sans erreur", w:{ORG:2,GES:1}},
+   {t:"qu'il ait du succès auprès des gens", w:{COM:1,COMM:1}},
+   {t:"qu'il ait soudé l'équipe", w:{RH:2}},
+   {t:"qu'il soit innovant et original", w:{ENT:1,COMM:1}} ]},
+ {q:"Tu te vois plus comme quelqu'un qui…", o:[
+   {t:"suit et fiabilise (les chiffres, les dossiers)", w:{GES:1,ORG:1}},
+   {t:"vend et développe (les ventes, les clients)", w:{COM:2}},
+   {t:"protège et conseille (sur le droit, les risques)", w:{JUR:2}},
+   {t:"crée et lance (des produits, des idées)", w:{ENT:1,COMM:1}} ]},
+ {q:"Une formation idéale, pour toi, c'est surtout :", o:[
+   {t:"des cas pratiques et beaucoup d'exercices chiffrés", w:{GES:2}},
+   {t:"des stages et du terrain", w:{COM:1,ENT:1}},
+   {t:"des projets de groupe", w:{RH:1,ORG:1}},
+   {t:"des outils numériques et de la création", w:{NUM:1,COMM:1}} ]},
+ {q:"Si tu devais aider une petite entreprise péi, tu commencerais par :", o:[
+   {t:"remettre les comptes au clair", w:{GES:2}},
+   {t:"booster ses ventes et sa clientèle", w:{COM:2}},
+   {t:"refaire sa communication et son logo", w:{COMM:2}},
+   {t:"créer son site et sa présence en ligne", w:{NUM:2}} ]},
+ {q:"Le risque que tu acceptes le plus facilement :", o:[
+   {t:"prendre une décision importante seul", w:{ENT:2}},
+   {t:"parler devant beaucoup de monde", w:{COM:1,COMM:1}},
+   {t:"trancher un désaccord dans une équipe", w:{RH:2}},
+   {t:"défendre une position face à quelqu'un", w:{JUR:2}} ]}
+],
+
+batch3: [
+ {q:"Quand tu réussis quelque chose, tu ressens surtout de la fierté…", o:[
+   {t:"d'avoir été précis et sans erreur", w:{GES:1,ORG:1}},
+   {t:"d'avoir convaincu ou vendu", w:{COM:2}},
+   {t:"d'avoir aidé ou fait grandir quelqu'un", w:{RH:2}},
+   {t:"d'avoir créé quelque chose d'unique", w:{COMM:2}} ]},
+ {q:"Le défaut que tu t'attribues le plus volontiers :", o:[
+   {t:"trop perfectionniste", w:{ORG:1,GES:1}},
+   {t:"trop bavard / fonceur", w:{COM:1,ENT:1}},
+   {t:"trop attentif aux autres, je m'oublie", w:{RH:2}},
+   {t:"trop dans mes idées / la lune", w:{COMM:2}} ]},
+ {q:"Une enquête à mener te plairait si elle portait sur :", o:[
+   {t:"la rentabilité d'un produit", w:{GES:2}},
+   {t:"les attentes des clients", w:{COM:1,COMM:1}},
+   {t:"le bien-être au travail des salariés", w:{RH:2}},
+   {t:"les données et statistiques d'un site web", w:{NUM:2}} ]},
+ {q:"Tu serais plutôt le genre de chef qui…", o:[
+   {t:"fixe des objectifs chiffrés clairs", w:{GES:1,ORG:1}},
+   {t:"motive et fait confiance", w:{RH:2}},
+   {t:"montre l'exemple en allant sur le terrain", w:{COM:1,ENT:1}},
+   {t:"pousse à innover en permanence", w:{ENT:2}} ]},
+ {q:"Ce qui te ferait le plus peur dans un métier :", o:[
+   {t:"devoir improviser sans cadre", w:{ORG:2}},
+   {t:"rester seul sans contact humain", w:{RH:2,COM:1}},
+   {t:"faire toujours la même chose", w:{ENT:1,COMM:1}},
+   {t:"ne pas comprendre la technique", w:{NUM:1,GES:1}} ]},
+ {q:"Un bon outil de travail, pour toi, c'est d'abord :", o:[
+   {t:"un tableur impeccable", w:{GES:2}},
+   {t:"un bon argumentaire de vente", w:{COM:2}},
+   {t:"un logiciel ou un code bien fait", w:{NUM:2}},
+   {t:"un texte de loi ou un contrat clair", w:{JUR:2}} ]},
+ {q:"Pour toi, réussir sa vie professionnelle, c'est surtout :", o:[
+   {t:"gagner correctement et être sécurisé", w:{GES:1,ORG:1}},
+   {t:"être libre et indépendant", w:{ENT:2}},
+   {t:"être utile aux autres", w:{RH:2}},
+   {t:"laisser une trace, créer", w:{COMM:2}} ]},
+ {q:"Dans un journal, tu lis d'abord la rubrique :", o:[
+   {t:"Économie / entreprises", w:{GES:1,ENT:1}},
+   {t:"Société / justice", w:{JUR:2}},
+   {t:"Culture / tendances", w:{COMM:2}},
+   {t:"Tech / numérique", w:{NUM:2}} ]},
+ {q:"On te propose deux jobs d'été. Tu choisis plutôt :", o:[
+   {t:"caissier / vendeur en magasin", w:{COM:1,GES:1}},
+   {t:"animateur en centre de loisirs", w:{RH:2}},
+   {t:"assistant dans un bureau (saisie, classement)", w:{ORG:2,GES:1}},
+   {t:"aide pour un événement / festival", w:{COMM:1,ENT:1}} ]},
+ {q:"Si on te donnait une journée pour aider ton lycée, tu…", o:[
+   {t:"remettrais de l'ordre dans son organisation", w:{ORG:2}},
+   {t:"organiserais un événement pour fédérer", w:{RH:1,COMM:1}},
+   {t:"créerais sa page Instagram", w:{NUM:1,COMM:1}},
+   {t:"monterais un mini-projet entrepreneurial", w:{ENT:2}} ]}
+],
+
+/* --- Profils de sortie : pour chaque combinaison de dimensions dominantes,
+   une branche conseillée + formations + métiers cibles (renvoie vers l'annuaire). --- */
+profils: [
+ { dims:["GES","ORG"], titre:"Profil Gestion & Comptabilité", emo:"📊",
+   branche:"La gestion, la comptabilité et la finance",
+   txt:"Tu aimes les chiffres, la précision et le travail bien rangé. Les métiers de la comptabilité, de la gestion et de la finance sont faits pour des personnes fiables et méthodiques comme toi.",
+   formations:["BTS Comptabilité et Gestion (CG)","BUT Gestion des Entreprises et des Administrations (GEA)","BUT Gestion, Comptabilité et Finance","DCG puis DSCG (expertise comptable)","BTS Gestion de la PME"],
+   metiers:["compta","gestionnaire_paie","controleur_gestion","assistant_pme","banque_conseiller","auditeur"] },
+ { dims:["COM"], titre:"Profil Commerce & Vente", emo:"🤝",
+   branche:"Le commerce, la vente et la relation client",
+   txt:"Tu es à l'aise avec les gens, tu aimes convaincre et tu n'as pas peur de te lancer. Le commerce et la vente récompensent ton énergie et ton sens du contact.",
+   formations:["BTS Management Commercial Opérationnel (MCO)","BTS Négociation et Digitalisation de la Relation Client (NDRC)","BUT Techniques de Commercialisation (TC)","Licence pro Commerce/Vente","Écoles de commerce (via bachelor)"],
+   metiers:["commercial","chef_rayon","responsable_magasin","conseiller_vente","chargé_clientele","negociateur_immo"] },
+ { dims:["COMM","COM"], titre:"Profil Marketing & Communication", emo:"🎨",
+   branche:"Le marketing, la publicité et la communication",
+   txt:"Tu es créatif, tu aimes t'exprimer et mettre les choses en valeur. Le marketing et la communication te permettront d'imaginer des campagnes et de faire vivre des marques.",
+   formations:["BTS Communication","BUT Information-Communication","BUT Techniques de Commercialisation (option marketing)","Licence pro Marketing digital","Écoles de communication"],
+   metiers:["chargé_com","community_manager","chef_produit","assistant_marketing","chargé_evenementiel","graphiste_com"] },
+ { dims:["NUM"], titre:"Profil Numérique & Données", emo:"💻",
+   branche:"Le numérique, les systèmes d'information et la data",
+   txt:"La technologie te passionne et tu aimes résoudre des problèmes logiques. Les métiers du numérique et de la gestion des données offrent énormément de débouchés.",
+   formations:["BTS Services Informatiques aux Organisations (SIO)","BUT Informatique","BUT Métiers du Multimédia et de l'Internet (MMI)","Licence pro Web/Data","Écoles du numérique"],
+   metiers:["technicien_si","webmaster","data_analyst_jr","support_info","developpeur_jr","chargé_digital"] },
+ { dims:["RH"], titre:"Profil Ressources Humaines & Management", emo:"👥",
+   branche:"Les ressources humaines et le management d'équipe",
+   txt:"Tu aimes le contact humain, écouter et faire grandir les autres. Les métiers des ressources humaines et de l'encadrement sont faits pour les personnes à l'écoute comme toi.",
+   formations:["BTS Gestion de la PME (volet RH)","BUT GEA parcours Gestion et Pilotage des RH","Licence Gestion / RH","Licence pro Ressources humaines","Écoles spécialisées RH"],
+   metiers:["assistant_rh","gestionnaire_paie","chargé_recrutement","responsable_equipe","formateur","manager_rayon"] },
+ { dims:["JUR"], titre:"Profil Droit & Conseil", emo:"⚖️",
+   branche:"Le droit, le conseil juridique et l'administration",
+   txt:"Tu aimes comprendre les règles, argumenter et défendre ce qui est juste. Les métiers du droit et de l'administration valorisent ta rigueur et ton sens de l'argumentation.",
+   formations:["Licence de Droit (université)","BUT Carrières Juridiques","BTS Collaborateur juriste notarial","Licence pro Métiers du droit","Concours de la fonction publique"],
+   metiers:["assistant_juridique","clerc_notaire","collaborateur_avocat","agent_administratif","gestionnaire_contentieux","conseiller_assurance"] },
+ { dims:["ENT","COM"], titre:"Profil Entrepreneur & Projet", emo:"🚀",
+   branche:"L'entrepreneuriat, la création et le développement d'activité",
+   txt:"Tu as l'âme d'un entrepreneur : tu aimes l'initiative, l'autonomie et lancer des idées. Plusieurs voies permettent d'apprendre à créer et développer une activité.",
+   formations:["BUT GEA (parcours entrepreneuriat)","BTS MCO puis licence entrepreneuriat","Bachelor en école de commerce","Licence pro Création/reprise d'entreprise","Dispositifs Student-Entrepreneur (statut national)"],
+   metiers:["créateur_entreprise","chef_projet_jr","responsable_magasin","commercial","chargé_developpement","franchisé"] },
+ { dims:["ORG","RH"], titre:"Profil Organisation & Pilotage", emo:"🗂️",
+   branche:"La gestion administrative, l'organisation et la logistique",
+   txt:"Tu es la personne fiable sur qui on peut compter : tu planifies, tu coordonnes, tu fais tourner les choses. Les métiers de l'organisation et de la logistique ont besoin de profils rigoureux.",
+   formations:["BTS Support à l'Action Managériale (SAM)","BTS Gestion des Transports et Logistique Associée (GTLA)","BUT GEA","BUT Gestion Logistique et Transport (GLT)","Licence pro Logistique"],
+   metiers:["assistant_pme","assistant_manager","gestionnaire_logistique","agent_administratif","chef_projet_jr","responsable_equipe"] }
+],
+
+/* --- Annuaire des métiers (≈40), classés par spécialité/branche --- */
+familles: [
+ { nom:"Gestion, comptabilité & finance", emo:"📊", color:"#0d9488",
+   metiers:[
+   {id:"compta", nom:"Comptable", desc:"Le comptable enregistre toutes les opérations d'argent d'une entreprise (achats, ventes, salaires) et produit les documents officiels (bilan, compte de résultat). C'est le gardien des chiffres : sans lui, impossible de savoir si l'entreprise gagne ou perd de l'argent.",
+     taches:["Saisir les factures d'achat et de vente","Pointer les comptes et la banque (rapprochement)","Préparer les déclarations de TVA","Aider à établir le bilan de fin d'année"]},
+   {id:"gestionnaire_paie", nom:"Gestionnaire de paie", desc:"Le gestionnaire de paie calcule et édite les bulletins de salaire de tous les salariés, en appliquant le droit du travail et les cotisations. Un métier précis, très recherché, à la frontière de la comptabilité et des RH.",
+     taches:["Collecter les heures, congés et absences","Établir les bulletins de paie","Déclarer les cotisations sociales (DSN)","Répondre aux questions des salariés sur leur paie"]},
+   {id:"controleur_gestion", nom:"Contrôleur de gestion (junior)", desc:"Le contrôleur de gestion surveille la performance de l'entreprise : il compare les prévisions et la réalité, construit des tableaux de bord et alerte la direction. C'est le « copilote » des dirigeants.",
+     taches:["Construire et suivre des tableaux de bord","Analyser les écarts entre budget prévu et réel","Calculer le coût d'un produit ou d'un service","Proposer des pistes d'économies"]},
+   {id:"auditeur", nom:"Auditeur (junior)", desc:"L'auditeur vérifie que les comptes d'une entreprise sont fiables et sincères. Il enquête, contrôle les preuves et rédige un rapport. Un métier idéal pour les esprits rigoureux et curieux.",
+     taches:["Contrôler des pièces comptables par sondage","Vérifier les stocks et les immobilisations","Rédiger des notes de synthèse","Recommander des améliorations de contrôle interne"]},
+   {id:"banque_conseiller", nom:"Conseiller bancaire", desc:"Le conseiller en banque accompagne les clients : il gère leurs comptes, propose des crédits, des placements et des assurances. Il mêle chiffres et relation client.",
+     taches:["Recevoir les clients et analyser leurs besoins","Proposer des produits (épargne, crédit, carte)","Étudier des dossiers de prêt","Suivre et fidéliser un portefeuille de clients"]},
+   {id:"gestionnaire_logistique", nom:"Gestionnaire logistique", desc:"Il pilote les flux de marchandises : commandes, stocks, livraisons. Son objectif : que le bon produit arrive au bon endroit, au bon moment, au meilleur coût. Crucial sur une île comme La Réunion.",
+     taches:["Suivre les niveaux de stock","Passer et suivre les commandes fournisseurs","Organiser les expéditions et livraisons","Optimiser les coûts de transport"]} ]},
+ { nom:"Commerce, vente & relation client", emo:"🤝", color:"#e11d48",
+   metiers:[
+   {id:"commercial", nom:"Commercial / Attaché commercial", desc:"Le commercial vend les produits ou services de l'entreprise. Il prospecte de nouveaux clients, négocie et conclut des contrats. Un métier d'action, où la rémunération suit souvent les résultats.",
+     taches:["Prospecter de nouveaux clients (téléphone, terrain)","Présenter et démontrer les produits","Négocier les prix et les conditions","Suivre les commandes et fidéliser"]},
+   {id:"chef_rayon", nom:"Chef de rayon", desc:"En grande distribution, le chef de rayon gère un secteur du magasin (ex : épicerie, électroménager). Il commande, met en valeur les produits, suit le chiffre d'affaires et anime une petite équipe.",
+     taches:["Commander et réceptionner la marchandise","Organiser et mettre en rayon (merchandising)","Suivre le chiffre d'affaires du rayon","Animer et planifier l'équipe du rayon"]},
+   {id:"responsable_magasin", nom:"Responsable de magasin", desc:"Il dirige un point de vente : équipe, ventes, stocks, ambiance. Il est responsable des résultats du magasin et du service rendu aux clients. Un poste d'évolution naturel après quelques années.",
+     taches:["Piloter le chiffre d'affaires et les objectifs","Encadrer et motiver l'équipe de vente","Gérer les stocks et les commandes","Garantir la satisfaction des clients"]},
+   {id:"conseiller_vente", nom:"Conseiller / Vendeur", desc:"Au contact direct des clients, le vendeur conseille, oriente et conclut la vente. Souriant et à l'écoute, il représente l'image du magasin. Première marche idéale vers des postes à responsabilités.",
+     taches:["Accueillir et conseiller les clients","Présenter les produits et leurs avantages","Encaisser et gérer la caisse","Réassortir et ranger l'espace de vente"]},
+   {id:"chargé_clientele", nom:"Chargé de clientèle", desc:"Il gère un portefeuille de clients (banque, assurance, télécom…) : il répond à leurs demandes, leur propose des offres adaptées et entretient une relation de confiance dans la durée.",
+     taches:["Répondre aux demandes des clients","Proposer des offres personnalisées","Traiter les réclamations","Suivre la satisfaction et fidéliser"]},
+   {id:"negociateur_immo", nom:"Négociateur immobilier", desc:"Il met en relation vendeurs et acheteurs (ou bailleurs et locataires) de biens immobiliers. Il estime, fait visiter, négocie et accompagne la vente jusqu'à la signature.",
+     taches:["Rechercher des biens à vendre ou louer","Organiser et réaliser les visites","Négocier entre acheteur et vendeur","Constituer les dossiers jusqu'à la signature"]} ]},
+ { nom:"Marketing, communication & création", emo:"🎨", color:"#9d174d",
+   metiers:[
+   {id:"chargé_com", nom:"Chargé de communication", desc:"Il fait connaître et valorise l'entreprise ou la marque : communiqués, événements, réseaux sociaux, site web. Il veille à ce que l'image renvoyée soit positive et cohérente.",
+     taches:["Rédiger des contenus (articles, posts, communiqués)","Gérer les réseaux sociaux de la marque","Organiser des événements de communication","Suivre l'image et les retombées presse"]},
+   {id:"community_manager", nom:"Community manager", desc:"Spécialiste des réseaux sociaux, il anime la communauté d'une marque en ligne : il publie, répond aux abonnés, crée du contenu et analyse les statistiques pour faire grandir l'audience.",
+     taches:["Créer et planifier des publications","Répondre aux commentaires et messages","Imaginer des contenus (photos, vidéos, stories)","Analyser les statistiques d'engagement"]},
+   {id:"chef_produit", nom:"Chef de produit (junior)", desc:"Il s'occupe d'un produit ou d'une gamme du début à la fin : il étudie le marché, fixe le positionnement, le prix, et coordonne sa promotion. Le « patron » du produit.",
+     taches:["Étudier le marché et les concurrents","Définir le positionnement et le prix","Coordonner le lancement et la promotion","Suivre les ventes et ajuster l'offre"]},
+   {id:"assistant_marketing", nom:"Assistant marketing", desc:"Il épaule l'équipe marketing : il prépare des études, suit les campagnes, met à jour des supports et analyse des données clients. Une excellente porte d'entrée dans le marketing.",
+     taches:["Réaliser des études de marché simples","Préparer des supports promotionnels","Suivre les campagnes en cours","Mettre à jour les bases de données clients"]},
+   {id:"chargé_evenementiel", nom:"Chargé d'événementiel", desc:"Il imagine et organise des événements (salons, lancements, soirées, festivals). De la logistique à la communication, il coordonne tout pour que la journée soit réussie.",
+     taches:["Concevoir le concept de l'événement","Gérer le budget et les prestataires","Coordonner la logistique le jour J","Communiquer avant et après l'événement"]},
+   {id:"graphiste_com", nom:"Graphiste / Infographiste", desc:"Il crée les visuels d'une marque : logos, affiches, posts, plaquettes. Il traduit des idées en images attirantes, à l'aide de logiciels de création.",
+     taches:["Créer des logos et chartes graphiques","Concevoir affiches, flyers et visuels web","Décliner les supports sur différents formats","Échanger avec les clients sur leurs besoins"]} ]},
+ { nom:"Numérique, systèmes d'information & data", emo:"💻", color:"#7c3aed",
+   metiers:[
+   {id:"technicien_si", nom:"Technicien systèmes & réseaux", desc:"Il installe, configure et entretient le matériel informatique et les réseaux d'une organisation. Quand un poste ou un serveur tombe en panne, c'est lui qui intervient.",
+     taches:["Installer ordinateurs et logiciels","Gérer le réseau et les connexions","Dépanner les utilisateurs","Sauvegarder et sécuriser les données"]},
+   {id:"webmaster", nom:"Webmaster", desc:"Il crée et fait vivre les sites internet : mise à jour des contenus, design, bon fonctionnement. Il veille à ce que le site soit beau, rapide et à jour.",
+     taches:["Mettre à jour le contenu du site","Améliorer le design et la navigation","Vérifier le bon fonctionnement (liens, vitesse)","Suivre le trafic et le référencement"]},
+   {id:"data_analyst_jr", nom:"Analyste de données (junior)", desc:"Il transforme des montagnes de données en informations utiles. Il construit des tableaux, repère des tendances et aide l'entreprise à décider grâce aux chiffres.",
+     taches:["Collecter et nettoyer des données","Construire des tableaux de bord","Repérer des tendances et des anomalies","Présenter les résultats simplement"]},
+   {id:"support_info", nom:"Technicien support / Hotline", desc:"Premier interlocuteur en cas de souci informatique, il aide les utilisateurs à distance ou sur place : il écoute, diagnostique et résout les problèmes avec patience.",
+     taches:["Recevoir les demandes d'assistance","Diagnostiquer les pannes","Guider l'utilisateur vers la solution","Tracer les incidents dans un outil de suivi"]},
+   {id:"developpeur_jr", nom:"Développeur (junior)", desc:"Il écrit le code des logiciels, applications ou sites web. Il transforme un besoin en programme qui fonctionne. Logique et patience sont ses meilleurs alliés.",
+     taches:["Écrire et tester du code","Corriger les bugs","Participer à la conception des fonctionnalités","Documenter son travail"]},
+   {id:"chargé_digital", nom:"Chargé de projet digital", desc:"Il coordonne les projets numériques d'une entreprise : refonte de site, campagne en ligne, nouvel outil. Il fait le lien entre les besoins, les techniciens et la direction.",
+     taches:["Recueillir les besoins des équipes","Planifier et suivre le projet","Coordonner techniciens et prestataires","Mesurer les résultats en ligne"]} ]},
+ { nom:"Ressources humaines & management", emo:"👥", color:"#db2777",
+   metiers:[
+   {id:"assistant_rh", nom:"Assistant ressources humaines", desc:"Bras droit du service RH, il gère les dossiers du personnel : contrats, absences, formations. Il est au cœur de la vie des salariés dans l'entreprise.",
+     taches:["Préparer les contrats de travail","Suivre les congés et absences","Organiser les formations","Mettre à jour les dossiers du personnel"]},
+   {id:"chargé_recrutement", nom:"Chargé de recrutement", desc:"Il aide l'entreprise à trouver les bonnes personnes : il rédige les annonces, trie les CV, fait passer des entretiens et choisit les candidats les plus adaptés.",
+     taches:["Rédiger et publier des offres d'emploi","Trier les candidatures","Mener des entretiens","Suivre l'intégration des nouveaux"]},
+   {id:"responsable_equipe", nom:"Responsable d'équipe", desc:"Il encadre un groupe de salariés : il organise le travail, fixe les objectifs, accompagne et motive. Un rôle clé qui demande écoute et leadership.",
+     taches:["Répartir et organiser le travail","Fixer et suivre les objectifs","Accompagner et motiver l'équipe","Faire le point lors d'entretiens"]},
+   {id:"formateur", nom:"Formateur", desc:"Il transmet des savoirs et des compétences à des adultes ou des jeunes. Il prépare ses cours, anime les sessions et évalue les progrès. Idéal pour ceux qui aiment expliquer.",
+     taches:["Préparer les supports de formation","Animer les sessions","Adapter le rythme aux apprenants","Évaluer les acquis"]},
+   {id:"assistant_manager", nom:"Assistant manager", desc:"Il seconde un responsable ou un dirigeant : organisation de l'agenda, suivi des dossiers, préparation des réunions. Polyvalent, il fait gagner un temps précieux à son équipe.",
+     taches:["Organiser l'agenda et les rendez-vous","Préparer réunions et comptes rendus","Suivre les dossiers en cours","Faire circuler l'information"]},
+   {id:"manager_rayon", nom:"Manager de rayon / d'unité", desc:"Mélange de commerce et de management : il dirige une équipe tout en pilotant les ventes d'un secteur. On lui confie des responsabilités rapidement après la formation.",
+     taches:["Animer et planifier l'équipe","Suivre les ventes et les marges","Garantir la qualité de l'accueil client","Gérer commandes et stocks"]} ]},
+ { nom:"Droit, juridique & administration", emo:"⚖️", color:"#1d4ed8",
+   metiers:[
+   {id:"assistant_juridique", nom:"Assistant juridique", desc:"Il épaule les juristes et avocats : il prépare des dossiers, rédige des courriers, suit les échéances et fait des recherches dans les textes de loi.",
+     taches:["Constituer et suivre des dossiers","Rédiger des courriers juridiques","Surveiller les délais et échéances","Rechercher des textes de loi"]},
+   {id:"clerc_notaire", nom:"Clerc de notaire", desc:"Il prépare les actes du notaire (ventes immobilières, successions, mariages). Il rassemble les pièces, rédige les documents et accompagne les clients dans leurs démarches.",
+     taches:["Réunir les pièces des dossiers","Rédiger des projets d'actes","Accomplir des formalités administratives","Renseigner et accompagner les clients"]},
+   {id:"collaborateur_avocat", nom:"Collaborateur de cabinet d'avocats", desc:"Il assiste les avocats dans la préparation des affaires : recherches juridiques, rédaction de documents, organisation des dossiers et contact avec les clients.",
+     taches:["Mener des recherches juridiques","Préparer des conclusions et pièces","Organiser les dossiers de procédure","Assurer le lien avec les clients"]},
+   {id:"agent_administratif", nom:"Agent administratif (public ou privé)", desc:"Il assure le bon fonctionnement administratif d'un service : accueil, courrier, dossiers, saisie. Présent partout (mairie, hôpital, entreprise), c'est un rouage essentiel.",
+     taches:["Accueillir et orienter le public","Traiter le courrier et les mails","Saisir et classer des dossiers","Renseigner les usagers"]},
+   {id:"gestionnaire_contentieux", nom:"Gestionnaire de contentieux", desc:"Il gère les litiges (impayés, désaccords) d'une entreprise ou d'un organisme : il analyse les dossiers, relance, négocie et applique les procédures jusqu'à résolution.",
+     taches:["Analyser les dossiers de litige","Relancer les débiteurs","Négocier des solutions amiables","Suivre les procédures jusqu'au règlement"]},
+   {id:"conseiller_assurance", nom:"Conseiller en assurances", desc:"Il propose des contrats d'assurance adaptés (auto, habitation, santé) et accompagne les clients en cas de sinistre. Il mêle droit, conseil et relation client.",
+     taches:["Analyser les besoins et les risques","Proposer des contrats adaptés","Gérer les déclarations de sinistre","Suivre et fidéliser les clients"]} ]},
+ { nom:"Entrepreneuriat, projet & développement", emo:"🚀", color:"#ea580c",
+   metiers:[
+   {id:"créateur_entreprise", nom:"Créateur / Repreneur d'entreprise", desc:"Il monte son propre projet ou reprend une activité existante. Il doit tout penser : l'offre, les clients, les finances, l'équipe. Liberté maximale… et responsabilités aussi !",
+     taches:["Définir l'offre et étudier le marché","Construire un business plan","Trouver des financements","Gérer au quotidien (ventes, comptes, équipe)"]},
+   {id:"chef_projet_jr", nom:"Chef de projet (junior)", desc:"Il pilote un projet du début à la fin : il fixe les objectifs, planifie, coordonne les personnes et veille au respect des délais et du budget.",
+     taches:["Définir les objectifs et étapes","Planifier et répartir les tâches","Coordonner les intervenants","Suivre délais, budget et qualité"]},
+   {id:"chargé_developpement", nom:"Chargé de développement", desc:"Sa mission : faire grandir l'activité. Il cherche de nouveaux marchés, de nouveaux partenaires et de nouvelles opportunités pour développer l'entreprise.",
+     taches:["Identifier de nouveaux marchés","Prospecter partenaires et clients","Monter des partenariats","Suivre la croissance de l'activité"]},
+   {id:"franchisé", nom:"Franchisé / Gérant d'enseigne", desc:"Il ouvre et dirige un commerce sous une marque connue (franchise). Il bénéficie du nom et des méthodes de l'enseigne, mais gère son magasin comme un véritable patron.",
+     taches:["Ouvrir et aménager le point de vente","Recruter et animer l'équipe","Appliquer les méthodes de l'enseigne","Piloter le chiffre d'affaires"]},
+   {id:"assistant_pme", nom:"Assistant de PME polyvalent", desc:"Dans une petite entreprise, il touche à tout : accueil, devis, factures, paie, fournisseurs. Un poste idéal pour apprendre tous les aspects de la gestion d'une entreprise.",
+     taches:["Gérer l'accueil et le courrier","Établir devis et factures","Suivre fournisseurs et clients","Préparer des éléments de paie et de compta"]} ]}
+],
+
+disclaimer:"Ce test est purement indicatif : il met en lumière tes goûts et tes points forts du moment, qui peuvent évoluer. Il ne décide pas de ton avenir à ta place. Pour construire ton orientation, parle de tes résultats avec ton professeur principal, le Psy-ÉN (psychologue de l'Éducation nationale) de ton lycée, et explore les fiches métiers officielles sur l'ONISEP."
+
+};
+</script>
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef } = React;
 /* Données : si l'éditeur prof a enregistré des modifications locales, elles priment (aperçu). */
@@ -6542,12 +6927,23 @@ const SUBJ = {
       { n:1, nom:"La mercatique et les consommateurs", short:"Consommateurs", color:"#e11d48" },
       { n:2, nom:"Étudier le marché",                  short:"Études",        color:"#be185d" },
       { n:3, nom:"Construire l'offre (marchéage)",      short:"Marchéage",     color:"#9d174d" },
-      { n:4, nom:"Communiquer et fidéliser",            short:"Fidéliser",     color:"#db2777" } ] }
+      { n:4, nom:"Communiquer et fidéliser",            short:"Fidéliser",     color:"#db2777" } ] },
+  ORI:{ code:"ORI", icon:"\ud83e\udded", nom:"Mon orientation après le BAC", short:"Orientation",
+    themes:[
+      { n:1, nom:"Mon profil",            short:"Mon profil",  color:"#0891b2" },
+      { n:2, nom:"Découverte des métiers", short:"Les métiers", color:"#ea580c" } ] }
 };
 function gamesFor(code){
   const d=ALL[code]||{}; const hasDocs=d.docs&&Object.keys(d.docs).some(k=>(d.docs[k]||[]).length>0);
   let g = hasDocs?[...GAMES_BASE,DOCS_GAME]:[...GAMES_BASE];
   if(code==="GO"||code==="MKT"||code==="FIN"||code==="SIG"||code==="RHC") g=[...g, PROBLEME_GAME, ORDRE_GAME];
+  if(code==="GO"){
+    g=g.map(x=>{
+      if(x.id==="mission") return {...x, nom:"Mission Grand oral"};
+      if(x.id==="cas")     return {...x, nom:"Questions pour un champion du GO"};
+      return x;
+    });
+  }
   return g;
 }
 const DEFAULT_TEACHER_CODE = "PROF2024";
@@ -6559,7 +6955,7 @@ function getTeacherPw(){ try{ return localStorage.getItem(PW_KEY) || DEFAULT_TEA
 function setTeacherPw(pw){ try{ localStorage.setItem(PW_KEY, pw); }catch(e){} }
 /* ====== Mots de passe de déblocage des matières (verrou pédagogique) ====== */
 const UNLOCK_KEY = "mm_unlock_pw_v1";
-const DEFAULT_UNLOCK = { SEC:"STMG974", MGT:"MANAGER", SDG:"GESTION", TLE:"PILOTAGE", DR1:"JUSTICE", ECO1:"MARCHE", DRT:"CONTRAT", ECOT:"CROISSANCE", GO:"GRANDORAL" };
+const DEFAULT_UNLOCK = { SEC:"STMG974", MGT:"MANAGER", SDG:"GESTION", TLE:"PILOTAGE", DR1:"JUSTICE", ECO1:"MARCHE", DRT:"CONTRAT", ECOT:"CROISSANCE", GO:"GRANDORAL", MKT:"MERCATIQUE", FIN:"FINANCE", RHC:"RESSOURCES", SIG:"INFORMATION", ORI:"ORIENTATION" };
 function getUnlockMap(){ try{ const o=JSON.parse(localStorage.getItem(UNLOCK_KEY)||"null"); return Object.assign({}, DEFAULT_UNLOCK, (o&&typeof o==="object")?o:{}); }catch(e){ return Object.assign({}, DEFAULT_UNLOCK); } }
 function getUnlockPw(code){ const m=getUnlockMap(); return (m[code]||DEFAULT_UNLOCK[code]||""); }
 function setUnlockPw(code,pw){ try{ const m=getUnlockMap(); m[code]=pw; localStorage.setItem(UNLOCK_KEY, JSON.stringify(m)); }catch(e){} }
@@ -6653,7 +7049,35 @@ const ACR={
  "IA":"Intelligence Artificielle",
  "SA":"Société Anonyme",
  "SARL":"Société À Responsabilité Limitée",
- "SAS":"Société par Actions Simplifiée"
+ "SAS":"Société par Actions Simplifiée",
+ "AEI":"Argument, Exemple, Intérêt (méthode pour construire un argument à l'oral)",
+ "PME":"Petite et Moyenne Entreprise",
+ "PMI":"Petite et Moyenne Industrie",
+ "ETI":"Entreprise de Taille Intermédiaire",
+ "TPE":"Très Petite Entreprise",
+ "BO":"Bulletin Officiel (de l'Éducation nationale)",
+ "VA":"Valeur Ajoutée",
+ "CA":"Chiffre d'Affaires",
+ "PIB":"Produit Intérieur Brut",
+ "IDH":"Indice de Développement Humain",
+ "SMIC":"Salaire Minimum Interprofessionnel de Croissance",
+ "CDI":"Contrat à Durée Indéterminée",
+ "CDD":"Contrat à Durée Déterminée",
+ "SCOP":"Société COopérative et Participative",
+ "BCE":"Banque Centrale Européenne",
+ "OMC":"Organisation Mondiale du Commerce",
+ "OSC":"Organisation de la Société Civile",
+ "QPC":"Question Prioritaire de Constitutionnalité",
+ "ONG":"Organisation Non Gouvernementale",
+ "UE":"Union Européenne",
+ "B2B":"Business to Business (entre entreprises)",
+ "B2C":"Business to Consumer (de l'entreprise au client)",
+ "ROI":"Return On Investment (retour sur investissement)",
+ "SAV":"Service Après-Vente",
+ "PDV":"Point De Vente",
+ "USP":"Unique Selling Proposition (argument de vente unique)",
+ "DRH":"Directeur des Ressources Humaines",
+ "PDG":"Président-Directeur Général"
 };
 function Acr(text){
   if(text==null) return text;
@@ -6767,7 +7191,8 @@ function Matiere({student,onPick,onLogout}){
     {code:"MKT",icon:SUBJ.MKT.icon,titre:"Spé Mercatique",sous:"Spécialité Tle · 4 thèmes — connaître les clients, construire l'offre, communiquer et fidéliser.",color:"#e11d48"},
     {code:"FIN",icon:SUBJ.FIN.icon,titre:"Spé Gestion-finance",sous:"Spécialité Tle · 3 thèmes — règles comptables, analyse financière, aide à la décision.",color:"#c026d3"},
     {code:"RHC",icon:SUBJ.RHC.icon,titre:"Spé RH & Communication",sous:"Spécialité Tle · 3 thèmes — individu & groupe, motivation, cohésion sociale.",color:"#db2777"},
-    {code:"SIG",icon:SUBJ.SIG.icon,titre:"Spé Systèmes d'information",sous:"Spécialité Tle · 4 thèmes — numérique, données, sécurité, décision.",color:"#9333ea"}
+    {code:"SIG",icon:SUBJ.SIG.icon,titre:"Spé Systèmes d'information",sous:"Spécialité Tle · 4 thèmes — numérique, données, sécurité, décision.",color:"#9333ea"},
+    {code:"ORI",icon:SUBJ.ORI.icon,titre:"Mon orientation après le BAC",sous:"Test de profil (20 + 10 + 10 questions) + découverte de ~40 métiers. Outil indicatif pour t'aider à te projeter.",color:"#0891b2"}
   ];
   return (<div className="login">
     <div className="hero">
@@ -6969,17 +7394,17 @@ function Probleme({theme,head,onDone,D}){
     else if(step===2) setStep(3);
     else { if(i+1>=items.length) setDone(true); else { setI(i+1); setStep(0); } } };
   return (<div className="game">{head}
-    <div className="case"><div className="ctag">🎯 Question de gestion ({i+1}/{items.length})</div><p className="ctxt">{it.gestion}</p></div>
+    <div className="case"><div className="ctag">🎯 Question de gestion ({i+1}/{items.length})</div><p className="ctxt">{Acr(it.gestion)}</p></div>
     {step<3 ? (<div>
       <p className="cq">{labels[step]}</p>
-      <p className="help">{sub.q}</p>
+      <p className="help">{Acr(sub.q)}</p>
       <div className="opts">{sub.o.map((o,idx)=>{ let c="opt"; if(picked!==null){ if(idx===sub.c)c+=" right"; else if(idx===picked)c+=" bad"; }
-        return <button key={idx} className={c} onClick={()=>choose(idx)}>{o}</button>; })}</div>
-      {picked!==null&&(<div className={"fb "+(picked===sub.c?"good":"no")}><strong>{picked===sub.c?"✅ Exact":"❌ Pas tout à fait"}</strong><p>{sub.why}</p>
+        return <button key={idx} className={c} onClick={()=>choose(idx)}>{Acr(o)}</button>; })}</div>
+      {picked!==null&&(<div className={"fb "+(picked===sub.c?"good":"no")}><strong>{picked===sub.c?"✅ Exact":"❌ Pas tout à fait"}</strong><p>{Acr(sub.why)}</p>
         <button className="next" onClick={next}>{step<2?"Étape suivante →":"Voir ma problématique →"}</button></div>)}
     </div>) : (
       <div className="fb good" style={{textAlign:"left"}}><strong>✅ Ta problématique de Grand oral</strong>
-        <p style={{fontStyle:"italic",fontSize:"1.05em"}}>« {it.result} »</p>
+        <p style={{fontStyle:"italic",fontSize:"1.05em"}}>« {Acr(it.result)} »</p>
         <p>Tu es parti(e) d'une question de gestion, tu as repéré la notion, reformulé en question ouverte, puis vérifié qu'elle se discute et peut tenir 10 minutes.</p>
         <button className="next" onClick={next}>{i+1>=items.length?"Voir mon score":"Question suivante →"}</button></div>
     )}
@@ -7003,16 +7428,16 @@ function Ordre({theme,head,onDone,D}){
   const nextRound=()=>{ if(r+1>=rounds.length) setDone(true); else { setR(r+1); setPlaced([]); setClean(true); setMsg(null); setRoundDone(false); } };
   const remaining=round.shuf.filter(l=>placed.indexOf(l)<0);
   return (<div className="game">{head}
-    <div className="case"><div className="ctag">🔢 {round.titre} ({r+1}/{rounds.length})</div><p className="help">Touche les étapes dans le bon ordre, de la première à la dernière.</p></div>
-    {placed.length>0&&(<div className="opts">{placed.map((l,k)=>(<div key={k} className="opt right">{k+1}. {l}</div>))}</div>)}
+    <div className="case"><div className="ctag">🔢 {Acr(round.titre)} ({r+1}/{rounds.length})</div><p className="help">Touche les étapes dans le bon ordre, de la première à la dernière.</p></div>
+    {placed.length>0&&(<div className="opts">{placed.map((l,k)=>(<div key={k} className="opt right">{k+1}. {Acr(l)}</div>))}</div>)}
     {roundDone ? (
       <div className="fb good"><strong>✅ Exposé dans l'ordre !</strong>
         <p>La trame logique : on capte l'attention (accroche), on pose la question, on annonce le plan, on développe, puis on conclut et on ouvre.</p>
         <button className="next" onClick={nextRound}>{r+1>=rounds.length?"Voir mon score":"Exposé suivant →"}</button></div>
     ) : (<div>
-      {msg&&(<div className="fb no"><p>{msg}</p></div>)}
+      {msg&&(<div className="fb no"><p>{Acr(msg)}</p></div>)}
       <p className="help">Prochaine étape à placer : la n°{placed.length+1}</p>
-      <div className="opts">{remaining.map((l,idx)=>(<button key={idx} className="opt" onClick={()=>click(l)}>{l}</button>))}</div>
+      <div className="opts">{remaining.map((l,idx)=>(<button key={idx} className="opt" onClick={()=>click(l)}>{Acr(l)}</button>))}</div>
     </div>)}
   </div>);
 }
@@ -7085,24 +7510,24 @@ function Trieur({theme,head,onDone,D}){
     return (<div className={"fb "+(nbErr===0?"good":"no")} style={{textAlign:"left"}}>
       <strong>📋 Correction détaillée</strong>
       {detail.map((d,k)=>(<p key={k} style={{margin:"8px 0"}}>
-        {d.ok?"✅ ":"❌ "}<b>{d.label}</b>{d.ok
-          ? (" — bien classé dans « "+d.goodBac+" ».")
-          : (" — tu l'as mis dans « "+(d.chosenBac||"—")+" », mais il fallait le classer dans « "+d.goodBac+" ».")}
-        <br/><span style={{opacity:.85}}>👉 {d.expl}</span></p>))}
+        {d.ok?"✅ ":"❌ "}<b>{Acr(d.label)}</b>{d.ok
+          ? (<> — bien classé dans « {Acr(d.goodBac)} ».</>)
+          : (<> — tu l'as mis dans « {Acr(d.chosenBac||"—")} », mais il fallait le classer dans « {Acr(d.goodBac)} ».</>)}
+        <br/><span style={{opacity:.85}}>👉 {Acr(d.expl)}</span></p>))}
       <p style={{marginTop:10}}><b>En résumé : </b>{concl}</p>
     </div>);
   };
 
   return (<div className="game">{head}
-    <p className="help">{cfg.consigne} <span className="muted">Clique un élément, puis sa catégorie.</span></p>
+    <p className="help">{Acr(cfg.consigne)} <span className="muted">Clique un élément, puis sa catégorie.</span></p>
     <div className="tray">{remaining.map(it=>(
-      <button key={it._i} className={"tkn"+(sel===it._i?" sel":"")} onClick={()=>setSel(it._i)}>{it.label}</button>))}
+      <button key={it._i} className={"tkn"+(sel===it._i?" sel":"")} onClick={()=>setSel(it._i)}>{Acr(it.label)}</button>))}
       {remaining.length===0&&<span className="muted">Tous les éléments sont classés ✅</span>}</div>
     <div className="bacs">{cfg.bacs.map((b,bi)=>(
       <div key={bi} className="bac" onClick={()=>drop(bi)}>
-        <div className="bac-h">{b}{cfg.bacsInfo&&cfg.bacsInfo[bi]?<span className="bac-d">{cfg.bacsInfo[bi]}</span>:null}</div>
+        <div className="bac-h">{Acr(b)}{cfg.bacsInfo&&cfg.bacsInfo[bi]?<span className="bac-d">{Acr(cfg.bacsInfo[bi])}</span>:null}</div>
         <div className="bac-body">{items.filter(it=>placed[it._i]===bi).map(it=>(
-          <span key={it._i} className={"chip2 "+(it.cat===bi?"ok":"no")}>{it.cat===bi?"✓":"✗"} {it.label}</span>))}</div>
+          <span key={it._i} className={"chip2 "+(it.cat===bi?"ok":"no")}>{it.cat===bi?"✓":"✗"} {Acr(it.label)}</span>))}</div>
       </div>))}</div>
     {done&&<Result score={score} total={items.length} onDone={onDone} recap={buildRecap()}/>}
   </div>);
@@ -7128,10 +7553,17 @@ function Memory({theme,head,onDone,D}){
     <p className="help">Retrouve les paires. Essais : <b>{tries}</b> <span className="muted">— pas de note ici, l'important c'est de tout retrouver !</span></p>
     <div className="mem-grid">{cards.map(c=>{ const show=flipped.includes(c.id)||matched.includes(c.pair);
       return <button key={c.id} className={"mcard"+(show?" up":"")+(matched.includes(c.pair)?" done":"")} onClick={()=>click(c)}>
-        <span className="mc-front">?</span><span className="mc-back">{c.txt}</span></button>; })}</div>
+        <span className="mc-front">?</span><span className="mc-back">{Acr(c.txt)}</span></button>; })}</div>
     {done&&(<div className="res"><div className="medal">🎉</div><h2>Bravo !</h2>
       <p>Toutes les paires sont retrouvées. Le jeu suivant est débloqué.</p>
       <p className="muted">Terminé en {tries} essais — ici, peu importe le nombre d'erreurs : l'essentiel est d'avoir tout associé.</p>
+      <div className="fb good" style={{textAlign:"left"}}>
+        <strong>📋 Bilan : ce qu'il faut retenir</strong>
+        <p style={{margin:"6px 0 10px"}}>Chaque carte « mot » allait avec sa carte « explication ». Voici, en mots simples, le lien à mémoriser pour chaque paire :</p>
+        {pairs.map((p,k)=>(<p key={k} style={{margin:"8px 0"}}>
+          🔗 <b>{Acr(p.a)}</b> = {Acr(p.b)}.</p>))}
+        <p style={{marginTop:10}}><b>En résumé : </b>retiens d'abord <i>le mot</i>, puis <i>son explication courte</i> : c'est ce duo « mot ↔ explication » qui te servira en cours et à l'examen. Relis cette liste une dernière fois avant de fermer le jeu.</p>
+      </div>
       <button className="cta sm" onClick={()=>onDone(100)}>Continuer</button></div>)}
   </div>);
 }
@@ -7220,7 +7652,7 @@ function Intrus({theme,head,onDone,D}){
     <Media m={q.media}/>
     <div className="intrus-grid">{q.liste.map((el,idx)=>{ let c="iel";
       if(picked!==null){ if(idx===q.intrus)c+=" right"; else if(idx===picked)c+=" bad"; }
-      return <button key={idx} className={c} onClick={()=>pick(idx)}>{el}</button>; })}</div>
+      return <button key={idx} className={c} onClick={()=>pick(idx)}>{Acr(el)}</button>; })}</div>
     {picked!==null&&(<div className={"fb "+(picked===q.intrus?"good":"no")}><strong>{picked===q.intrus?"✅ Bien vu !":"❌ Ce n'était pas lui."}</strong><p>{Acr(q.why)}</p>
       <button className="next" onClick={next}>{i+1>=qs.length?"Voir mon score":"Suivant →"}</button></div>)}
   </div>);
@@ -7249,7 +7681,7 @@ function Cas({theme,head,onDone,D}){
     const recap=(<div className="fb good" style={{textAlign:"left"}}>
       <strong>📋 Bilan de tes décisions</strong>
       {log.map((e,k)=>(<p key={k} style={{margin:"8px 0"}}>
-        <b>Situation {k+1} — </b>{e.ok?"✅ ":"❌ "}tu as choisi « {e.chosen} ».{e.ok?"":(" La décision la plus pertinente était « "+e.correct+" ».")}<br/>
+        <b>Situation {k+1} — </b>{e.ok?"✅ ":"❌ "}tu as choisi « {Acr(e.chosen)} ».{e.ok?"":(<> La décision la plus pertinente était « {Acr(e.correct)} ».</>)}<br/>
         <span style={{opacity:.85}}>Conséquence : {Acr(e.why)}</span></p>))}
       <p style={{marginTop:10}}><b>En résumé : </b>{concl}</p>
     </div>);
@@ -7257,13 +7689,13 @@ function Cas({theme,head,onDone,D}){
       extra={(!ext&&extras.length>0)&&(<button className="more" onClick={extend}>➕ Cas supplémentaires (jusqu'à 10)</button>)}/></div>;
   }
   return (<div className="game">{head}
-    <div className="case"><div className="ctag">{tag}</div><Media m={q.media}/><p className="ctxt">{q.cas}</p><p className="cq">{Acr(q.q)}</p></div>
+    <div className="case"><div className="ctag">{tag}</div><Media m={q.media}/><p className="ctxt">{Acr(q.cas)}</p><p className="cq">{Acr(q.q)}</p></div>
     <div className="opts">{q.o.map((o,idx)=>{ let c="opt";
       if(picked!==null){ if(idx===q.c)c+=" right"; else if(idx===picked)c+=" bad"; }
-      return <button key={idx} className={c} onClick={()=>choose(idx)}>{o}</button>; })}</div>
+      return <button key={idx} className={c} onClick={()=>choose(idx)}>{Acr(o)}</button>; })}</div>
     {picked!==null&&(<div className={"fb "+(picked===q.c?"good":"no")}><strong>{picked===q.c?"✅ Bonne décision !":"❌ Pas le meilleur choix."}</strong>
-      {picked!==q.c&&<p style={{margin:"4px 0"}}>La décision la plus pertinente : « {q.o[q.c]} ».</p>}
-      <p>Conséquence : {q.why}</p>
+      {picked!==q.c&&<p style={{margin:"4px 0"}}>La décision la plus pertinente : « {Acr(q.o[q.c])} ».</p>}
+      <p>Conséquence : {Acr(q.why)}</p>
       <button className="next" onClick={next}>{i+1>=qs.length?"Voir le bilan":"Cas suivant →"}</button></div>)}
   </div>);
 }
@@ -7333,15 +7765,15 @@ function Docs({theme,head,onDone,D}){
   return (<div className="game">{head}
     <div className="qn r">{i+1}/{flat.length}</div>
     <div className="docbox">
-      <div className="dochead">📄 Document {cur.di+1} — {doc.titre}</div>
+      <div className="dochead">📄 Document {cur.di+1} — {Acr(doc.titre)}</div>
       <Media m={doc.media}/>
-      <div className="doctxt">{String(doc.texte||"").split("\n").map((l,li)=><p key={li}>{l}</p>)}</div>
-      {doc.source&&<div className="docsrc">Source : {doc.source}</div>}
+      <div className="doctxt">{String(doc.texte||"").split("\n").map((l,li)=><p key={li}>{Acr(l)}</p>)}</div>
+      {doc.source&&<div className="docsrc">Source : {Acr(doc.source)}</div>}
     </div>
     <p className="cq">{Acr(q.q)}</p>
     <div className="opts">{q.o.map((o,idx)=>{ let c="opt";
       if(picked!==null){ if(idx===q.c)c+=" right"; else if(idx===picked)c+=" bad"; }
-      return <button key={idx} className={c} onClick={()=>choose(idx)}>{o}</button>; })}</div>
+      return <button key={idx} className={c} onClick={()=>choose(idx)}>{Acr(o)}</button>; })}</div>
     {picked!==null&&(<div className={"fb "+(picked===q.c?"good":"no")}><strong>{picked===q.c?"\u2705 Bonne lecture !":"\u274c Relis le document."}</strong><p>{Acr(q.why)}</p>
       <button className="next" onClick={next}>{i+1>=flat.length?"Voir mon score":"Question suivante →"}</button></div>)}
   </div>);
@@ -7926,12 +8358,192 @@ function Cell({v}){ if(v===undefined) return <span className="nc">·</span>;
   return <span className="sc" style={{background:c+"22",color:c,borderColor:c+"55"}}>{v}</span>; }
 
 /* ====== ROOT ====== */
+/* ====== MATIÈRE : MON ORIENTATION APRÈS LE BAC ====== */
+function Orientation({student,onSwitch,onLogout}){
+  const O=window.ORI_DATA||{};
+  const [tab,setTab]=useState("test");
+  return (<div className="app">
+    <header className="top">
+      <div className="brand">🧭 Mon orientation</div>
+      <div className="who">{student.pseudo} · <span className="cl">{student.classe}</span></div>
+      <button className="lo" onClick={onSwitch}>⇄ Matière</button>
+      <button className="lo" onClick={onLogout}>Quitter</button>
+    </header>
+    <nav className="nav">
+      <button className={tab==="test"?"nb on":"nb"} onClick={()=>setTab("test")}>🧪 Mon profil</button>
+      <button className={tab==="metiers"?"nb on":"nb"} onClick={()=>setTab("metiers")}>💼 Découverte des métiers</button>
+    </nav>
+    <main className="main">
+      {tab==="test"&&<OriTest O={O} onSeeMetiers={()=>setTab("metiers")}/>}
+      {tab==="metiers"&&<OriMetiers O={O}/>}
+    </main>
+  </div>);
+}
+
+/* ----- Le test de profil (20 + 10 + 10) ----- */
+function OriTest({O,onSeeMetiers}){
+  const [stage,setStage]=useState("home");   // home | quiz | result
+  const [batch,setBatch]=useState(1);         // 1, 2, 3
+  const [asked,setAsked]=useState([]);        // questions cumulées affichées
+  const [answers,setAnswers]=useState([]);    // index choisi par question
+  const [i,setI]=useState(0);                 // index courant dans "asked"
+
+  const startBatch=(n)=>{
+    let add=[];
+    if(n===1) add=O.batch1||[];
+    else if(n===2) add=O.batch2||[];
+    else add=O.batch3||[];
+    setAsked(prev=>[...prev,...add]);
+    setBatch(n); setStage("quiz");
+    setI(prev=> n===1?0:asked.length); // reprendre au début du nouveau lot
+  };
+
+  const choose=(qi,oi)=>{ setAnswers(a=>{ const n=[...a]; n[qi]=oi; return n; }); };
+  const cur=asked[i];
+  const totalDone=answers.filter(x=>x!==undefined&&x!==null).length;
+
+  // ---- Calcul du score par dimension ----
+  const scores=(()=>{ const s={}; Object.keys(O.dims||{}).forEach(k=>s[k]=0);
+    asked.forEach((q,qi)=>{ const oi=answers[qi]; if(oi==null) return; const w=(q.o[oi]||{}).w||{};
+      Object.keys(w).forEach(k=>{ s[k]=(s[k]||0)+w[k]; }); });
+    return s; })();
+  const ranked=Object.keys(scores).sort((a,b)=>scores[b]-scores[a]);
+  const maxScore=scores[ranked[0]]||1;
+
+  // ---- Choix du profil le mieux corrélé ----
+  const bestProfil=(()=>{ const profs=O.profils||[]; let best=null,bestSc=-1;
+    profs.forEach(p=>{ let sc=0; p.dims.forEach((d,idx)=>{ const rankPos=ranked.indexOf(d);
+        // bonus si la dimension du profil est haute dans le classement de l'élève
+        if(rankPos>=0) sc += (scores[d]||0)*(idx===0?1.3:1) + Math.max(0,(4-rankPos));
+      });
+      if(sc>bestSc){bestSc=sc;best=p;} });
+    return best; })();
+
+  // ----- ÉCRAN ACCUEIL -----
+  if(stage==="home"){
+    return (<div className="content ori-test">
+      <h2 className="ptitle">🧪 Découvre ton profil d'orientation</h2>
+      <div className="ori-intro">
+        <p>Ce test t'aide à repérer <b>tes goûts, tes qualités et tes points forts</b> (tes « soft skills » et savoir-être), puis te propose une <b>branche ou un métier</b> qui pourrait te correspondre.</p>
+        <ul className="ori-steps">
+          <li>🟦 <b>20 questions</b> pour commencer (obligatoires).</li>
+          <li>🟧 <b>+10 questions</b> si tu veux affiner (sur ta demande).</li>
+          <li>🟩 <b>+10 questions</b> de plus pour un résultat encore plus précis (sur demande).</li>
+        </ul>
+        <p className="ori-warn">⚠️ {O.disclaimer}</p>
+      </div>
+      <button className="cta sm" onClick={()=>startBatch(1)}>Commencer le test (20 questions) →</button>
+    </div>);
+  }
+
+  // ----- ÉCRAN QUIZ -----
+  if(stage==="quiz"){
+    const answeredThis=cur&&answers[i]!=null;
+    const allAnswered=asked.every((_,qi)=>answers[qi]!=null);
+    return (<div className="content ori-test">
+      <div className="ori-prog">
+        <div className="ori-progbar"><div className="ori-progfill" style={{width:Math.round((i+1)/asked.length*100)+"%"}}/></div>
+        <span>Question {i+1} / {asked.length}</span>
+      </div>
+      <div className="ori-qcard">
+        <p className="ori-q">{cur.q}</p>
+        <div className="ori-opts">{cur.o.map((o,oi)=>(
+          <button key={oi} className={"ori-opt"+(answers[i]===oi?" sel":"")} onClick={()=>choose(i,oi)}>{o.t}</button>))}</div>
+      </div>
+      <div className="ori-nav">
+        <button className="cta sm alt" disabled={i===0} style={{opacity:i===0?.4:1}} onClick={()=>setI(i-1)}>◀ Précédent</button>
+        {i+1<asked.length
+          ? <button className="cta sm" disabled={!answeredThis} style={{opacity:answeredThis?1:.4}} onClick={()=>setI(i+1)}>Suivant ▶</button>
+          : <button className="cta sm" disabled={!allAnswered} style={{opacity:allAnswered?1:.4}} onClick={()=>setStage("result")}>Voir mon résultat 🎯</button>}
+      </div>
+      {!allAnswered && i+1===asked.length && <p className="ori-hint">Réponds à toutes les questions pour voir ton résultat.</p>}
+    </div>);
+  }
+
+  // ----- ÉCRAN RÉSULTAT -----
+  const top3=ranked.slice(0,3);
+  const canBatch2 = !((O.batch2||[]).every(q=>asked.indexOf(q)>=0));
+  const canBatch3 = !canBatch2 && !((O.batch3||[]).every(q=>asked.indexOf(q)>=0));
+  const goMore=(n)=>{ startBatch(n); };
+  return (<div className="content ori-test">
+    <h2 className="ptitle">🎯 Ton profil (indicatif)</h2>
+    <p className="ori-sub">Calculé sur <b>{asked.length} questions</b>. Plus tu réponds à de questions, plus le résultat est fin.</p>
+
+    <div className="ori-bars">
+      {ranked.map(k=>{ const d=O.dims[k]; const pct=Math.round((scores[k]/(maxScore||1))*100);
+        return (<div key={k} className="ori-bar">
+          <span className="ori-barlab">{d.emo} {d.nom}</span>
+          <div className="ori-bartrack"><div className="ori-barfill" style={{width:Math.max(6,pct)+"%"}}/></div>
+          <b className="ori-barpct">{scores[k]} pts</b>
+        </div>); })}
+    </div>
+
+    <div className="ori-topbox">
+      <div className="ori-toplab">Tes 3 points forts</div>
+      <div className="ori-topchips">{top3.map(k=>(<span key={k} className="ori-chip">{O.dims[k].emo} {O.dims[k].nom}</span>))}</div>
+    </div>
+
+    {bestProfil&&(<div className="ori-reco">
+      <div className="ori-reco-emo">{bestProfil.emo}</div>
+      <h3>{bestProfil.titre}</h3>
+      <p className="ori-reco-branche">Branche conseillée : <b>{bestProfil.branche}</b></p>
+      <p>{bestProfil.txt}</p>
+      <div className="ori-reco-block">
+        <div className="ori-reco-h">🎓 Des formations possibles après la STMG</div>
+        <ul>{bestProfil.formations.map((f,k)=>(<li key={k}>{f}</li>))}</ul>
+      </div>
+      <div className="ori-reco-block">
+        <div className="ori-reco-h">💼 Des métiers à explorer</div>
+        <div className="ori-reco-mets">{bestProfil.metiers.map(mid=>{ const m=findMetier(O,mid); return m?(<span key={mid} className="ori-met-pill">{m.nom}</span>):null; })}</div>
+        <button className="link-btn" onClick={onSeeMetiers}>→ Voir le détail dans « Découverte des métiers »</button>
+      </div>
+    </div>)}
+
+    <div className="ori-more">
+      {canBatch2&&<button className="cta sm" onClick={()=>goMore(2)}>➕ Affiner avec 10 questions de plus</button>}
+      {canBatch3&&<button className="cta sm" onClick={()=>goMore(3)}>➕ Encore 10 questions pour préciser</button>}
+      {!canBatch2&&!canBatch3&&<p className="ori-hint">✅ Tu as répondu à toutes les questions disponibles (40). Ton profil est au plus précis.</p>}
+    </div>
+
+    <p className="ori-warn" style={{marginTop:18}}>⚠️ {O.disclaimer}</p>
+    <button className="cta sm alt" style={{marginTop:10}} onClick={()=>{setStage("home");setBatch(1);setAsked([]);setAnswers([]);setI(0);}}>↺ Recommencer le test</button>
+  </div>);
+}
+
+function findMetier(O,id){ let found=null; (O.familles||[]).forEach(f=>f.metiers.forEach(m=>{ if(m.id===id) found=m; })); return found; }
+
+/* ----- Découverte des métiers ----- */
+function OriMetiers({O}){
+  const fams=O.familles||[];
+  const [open,setOpen]=useState(null); // "famIdx-metId"
+  const total=fams.reduce((a,f)=>a+f.metiers.length,0);
+  return (<div className="content">
+    <h2 className="ptitle">💼 Découverte des métiers après la STMG</h2>
+    <p className="intro">Voici <b>{total} métiers</b> accessibles après un bac STMG (parfois avec un BTS, un BUT, une licence ou une école). Pour chacun : ce qu'on y fait et quelques tâches du quotidien. Clique pour déplier.</p>
+    {fams.map((f,fi)=>(<div key={fi} className="ori-fam" style={{"--c":f.color}}>
+      <div className="ori-fam-h"><span className="ori-fam-emo">{f.emo}</span>{f.nom}<span className="ori-fam-n">{f.metiers.length} métiers</span></div>
+      <div className="ori-fam-grid">{f.metiers.map(m=>{ const id=fi+"-"+m.id; const isOpen=open===id;
+        return (<div key={m.id} className={"ori-metcard"+(isOpen?" open":"")}>
+          <button className="ori-metcard-h" onClick={()=>setOpen(isOpen?null:id)}>
+            <span>{m.nom}</span><span className="ori-metcard-arr">{isOpen?"▲":"▼"}</span></button>
+          {isOpen&&(<div className="ori-metcard-body">
+            <p>{m.desc}</p>
+            <div className="ori-met-tasks-h">📋 Au quotidien, il / elle peut :</div>
+            <ul className="ori-met-tasks">{m.taches.map((t,k)=>(<li key={k}>{t}</li>))}</ul>
+          </div>)}
+        </div>); })}</div>
+    </div>))}
+    <p className="ori-warn" style={{marginTop:18}}>ℹ️ Cette liste est une sélection indicative et non exhaustive. Pour des fiches complètes (salaires, conditions, accès), consulte l'ONISEP et parle avec le Psy-ÉN de ton lycée.</p>
+  </div>);
+}
+
 function App(){
   const [screen,setScreen]=useState("login"); const [student,setStudent]=useState(null);
   const [subject,setSubject]=useState(null);
   return (<>{screen==="login"&&<Login onStudent={s=>{setStudent(s);setScreen("matiere")}} onTeacher={()=>setScreen("teacher")}/>}
     {screen==="matiere"&&<Matiere student={student} onPick={m=>{setSubject(m);setScreen("student")}} onLogout={()=>setScreen("login")}/>}
-    {screen==="student"&&<Hub key={subject} student={student} subject={subject} onSwitch={()=>setScreen("matiere")} onLogout={()=>setScreen("login")}/>}
+    {screen==="student"&&subject==="ORI"&&<Orientation key="ORI" student={student} onSwitch={()=>setScreen("matiere")} onLogout={()=>setScreen("login")}/>}
+    {screen==="student"&&subject!=="ORI"&&<Hub key={subject} student={student} subject={subject} onSwitch={()=>setScreen("matiere")} onLogout={()=>setScreen("login")}/>}
     {screen==="teacher"&&<Teacher onLogout={()=>setScreen("login")}/>}</>);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
@@ -8328,6 +8940,71 @@ abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;
 .dochead{font-weight:800;font-size:14px;margin-bottom:8px;color:#8a6d1f}
 .doctxt p{font-size:14.5px;line-height:1.55;margin:4px 0}
 .docsrc{margin-top:8px;font-size:12px;color:#9a8d5f;font-style:italic;text-align:right}
+/* ====== MON ORIENTATION ====== */
+.ori-test{max-width:760px;margin:0 auto}
+.ori-intro{background:#fff;border:1px solid #e8effa;border-radius:18px;padding:20px 22px;box-shadow:0 18px 40px -22px rgba(8,145,178,.4);margin-bottom:18px}
+.ori-intro p{margin:8px 0;line-height:1.55}
+.ori-steps{list-style:none;margin:12px 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ori-steps li{background:#f4fbff;border:1px solid #d6eefb;border-radius:12px;padding:10px 14px;font-size:15px}
+.ori-warn{font-size:13.5px;color:#7a5a00;background:#fff8e6;border:1px solid #ffe7a8;border-radius:12px;padding:10px 14px;line-height:1.5}
+.ori-prog{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.ori-progbar{flex:1;height:10px;background:#e8effa;border-radius:20px;overflow:hidden}
+.ori-progfill{height:100%;background:linear-gradient(90deg,#0891b2,#22d3ee);border-radius:20px;transition:width .3s}
+.ori-prog span{font-size:13px;font-weight:700;color:#0e7490;white-space:nowrap}
+.ori-qcard{background:#fff;border:1px solid #e8effa;border-radius:18px;padding:22px;box-shadow:0 18px 40px -24px rgba(8,145,178,.4)}
+.ori-q{font-family:'Fraunces',serif;font-size:21px;font-weight:600;line-height:1.35;margin-bottom:16px}
+.ori-opts{display:flex;flex-direction:column;gap:10px}
+.ori-opt{text-align:left;padding:14px 16px;border-radius:13px;background:#f7fbfe;border:2px solid #e2eef7;font-size:15.5px;font-weight:500;color:#1a1430;transition:.15s;line-height:1.4}
+.ori-opt:hover{border-color:#7dd3e8;background:#eef9ff}
+.ori-opt.sel{border-color:#0891b2;background:#e0f6fd;box-shadow:0 4px 14px -6px rgba(8,145,178,.5);font-weight:700}
+.ori-nav{display:flex;justify-content:space-between;gap:12px;margin-top:18px}
+.ori-nav .cta.sm{margin:0;max-width:none;flex:1}
+.ori-hint{text-align:center;font-size:13.5px;color:#0e7490;margin-top:10px;font-weight:600}
+.ori-sub{text-align:center;color:#5a5470;margin-bottom:18px}
+.ori-bars{display:flex;flex-direction:column;gap:9px;margin-bottom:20px}
+.ori-bar{display:grid;grid-template-columns:190px 1fr 56px;align-items:center;gap:10px}
+.ori-barlab{font-size:14px;font-weight:600}
+.ori-bartrack{height:14px;background:#eef2f7;border-radius:20px;overflow:hidden}
+.ori-barfill{height:100%;background:linear-gradient(90deg,#0891b2,#22d3ee);border-radius:20px}
+.ori-barpct{font-size:13px;font-weight:800;color:#0e7490;text-align:right}
+.ori-topbox{background:#ecfeff;border:1px solid #a5e8f5;border-radius:16px;padding:16px 18px;margin-bottom:18px}
+.ori-toplab{font-size:12px;font-weight:800;letter-spacing:1px;color:#0e7490;text-transform:uppercase;margin-bottom:10px}
+.ori-topchips{display:flex;flex-wrap:wrap;gap:8px}
+.ori-chip{background:#0891b2;color:#fff;padding:7px 14px;border-radius:30px;font-size:14px;font-weight:700}
+.ori-reco{background:#fff;border:2px solid #ffd9b8;border-radius:20px;padding:24px;box-shadow:0 24px 50px -26px rgba(234,88,12,.45);margin-bottom:18px}
+.ori-reco-emo{font-size:48px;text-align:center}
+.ori-reco h3{font-family:'Fraunces',serif;font-size:26px;text-align:center;margin:6px 0 4px}
+.ori-reco-branche{text-align:center;color:#c2410c;font-size:15px;margin-bottom:12px}
+.ori-reco>p{line-height:1.55;margin-bottom:6px}
+.ori-reco-block{margin-top:16px;background:#fff7f0;border:1px solid #ffe0c4;border-radius:14px;padding:14px 16px}
+.ori-reco-h{font-weight:800;color:#ea580c;margin-bottom:8px;font-size:15px}
+.ori-reco-block ul{margin:0;padding-left:20px}
+.ori-reco-block li{margin:5px 0;line-height:1.45}
+.ori-reco-mets{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.ori-met-pill{background:#fff;border:1.5px solid #fdba74;color:#c2410c;padding:6px 12px;border-radius:24px;font-size:13.5px;font-weight:700}
+.link-btn{background:none;border:none;color:#0891b2;font-weight:700;font-size:14px;text-decoration:underline;cursor:pointer;padding:0}
+.ori-more{display:flex;flex-direction:column;gap:10px;align-items:center}
+.ori-more .cta.sm{margin:0}
+/* Découverte des métiers */
+.ori-fam{margin-bottom:22px;border-left:5px solid var(--c);padding-left:14px}
+.ori-fam-h{font-family:'Fraunces',serif;font-size:20px;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.ori-fam-emo{font-size:24px}
+.ori-fam-n{margin-left:auto;font-family:'Outfit',sans-serif;font-size:12px;font-weight:700;color:#fff;background:var(--c);padding:3px 10px;border-radius:20px}
+.ori-fam-grid{display:flex;flex-direction:column;gap:9px}
+.ori-metcard{background:#fff;border:1px solid #ebe6f3;border-radius:13px;overflow:hidden;transition:.15s}
+.ori-metcard.open{border-color:var(--c);box-shadow:0 14px 30px -20px rgba(0,0,0,.3)}
+.ori-metcard-h{width:100%;text-align:left;background:none;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;font-size:16px;font-weight:700;color:#1a1430}
+.ori-metcard-arr{color:var(--c);font-size:12px}
+.ori-metcard-body{padding:0 16px 16px}
+.ori-metcard-body p{line-height:1.55;color:#3d3a4e;margin-bottom:10px}
+.ori-met-tasks-h{font-weight:800;color:var(--c);font-size:14px;margin-bottom:6px}
+.ori-met-tasks{margin:0;padding-left:20px}
+.ori-met-tasks li{margin:4px 0;line-height:1.4;font-size:14.5px}
+@media(max-width:620px){
+ .ori-bar{grid-template-columns:1fr;gap:3px}
+ .ori-barlab{font-size:13px}.ori-barpct{text-align:left}
+ .ori-q{font-size:19px}
+}
 </style>
 </body>
 </html>
