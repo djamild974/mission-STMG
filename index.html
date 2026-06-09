@@ -6799,6 +6799,300 @@ disclaimer:"Ce test est purement indicatif : il met en lumière tes goûts et te
 
 };
 </script>
+<script>
+/* ============================================================
+   CHOISIR MON ENSEIGNEMENT SPÉCIFIQUE DE TERMINALE — Données
+   Aide PUREMENT INDICATIVE au choix parmi les 4 enseignements
+   spécifiques (ex-"spécialités") de Tle STMG :
+     • Mercatique (marketing)
+     • Ressources humaines & communication (RHC)
+     • Gestion et finance (GF)
+     • Systèmes d'information de gestion (SIG)
+   Combine : profil (goûts/soft skills/savoir-être) + moyennes
+   auto-déclarées (Droit, Économie, Management, SDGN) /20.
+   Ne remplace pas l'avis du conseil de classe ni du Psy-ÉN.
+============================================================ */
+window.SPE_DATA = {
+
+/* Les 4 enseignements spécifiques (cibles du test) */
+spes: {
+  MKT: { nom:"Mercatique (marketing)", emo:"🛍️", color:"#e11d48",
+    txt:"La mercatique étudie comment connaître les clients, construire une offre attractive, fixer les prix, communiquer et fidéliser. Faite pour les profils créatifs, à l'aise avec les autres et attirés par les marques, la vente et la communication.",
+    debouches:["BTS MCO (Management Commercial Opérationnel)","BTS NDRC (Négociation et Digitalisation de la Relation Client)","BUT Techniques de Commercialisation","BUT Information-Communication","Écoles de commerce / communication"] },
+  RHC: { nom:"Ressources humaines & communication", emo:"👥", color:"#db2777",
+    txt:"Cet enseignement étudie l'individu et le groupe au travail, la motivation, la communication, la cohésion et les conditions de travail. Idéal pour les profils à l'écoute, qui aiment le contact humain, l'animation d'équipe et le sens du collectif.",
+    debouches:["BTS SAM (Support à l'Action Managériale)","BTS Gestion de la PME (volet RH)","BUT GEA parcours RH","BUT Information-Communication","Licences Gestion / RH / Psycho du travail"] },
+  GF: { nom:"Gestion et finance", emo:"💶", color:"#0d9488",
+    txt:"La gestion et finance étudie la comptabilité, l'analyse financière et l'aide à la décision chiffrée. Faite pour les profils rigoureux, méthodiques et à l'aise avec les nombres, qui aiment quand tout est précis et carré.",
+    debouches:["BTS CG (Comptabilité et Gestion)","BUT GEA parcours Gestion Comptable et Financière","BUT GACO / Gestion","DCG puis DSCG (expertise comptable)","Licences Économie-Gestion / Banque-finance"] },
+  SIG: { nom:"Systèmes d'information de gestion", emo:"🖥️", color:"#7c3aed",
+    txt:"Le SIG étudie le numérique dans les organisations : données, logiciels, sécurité, processus et aide à la décision par l'informatique. Parfait pour les profils logiques, curieux de technologie et qui aiment résoudre des problèmes.",
+    debouches:["BTS SIO (Services Informatiques aux Organisations)","BUT Informatique","BUT MMI (Métiers du Multimédia et de l'Internet)","BUT Statistique et Informatique Décisionnelle","Licences Informatique / MIASHS / data"] }
+},
+
+/* Dimensions internes (chacune pondère vers les spés) */
+dims: {
+  COM:  { nom:"Commerce & persuasion" },
+  CREA: { nom:"Créativité & communication" },
+  HUM:  { nom:"Relation humaine & écoute" },
+  CHIF: { nom:"Chiffres & rigueur" },
+  ORG:  { nom:"Organisation & méthode" },
+  TECH: { nom:"Logique & numérique" }
+},
+
+/* Comment chaque dimension pousse vers chaque spé (poids) */
+dimToSpe: {
+  COM:  { MKT:2, RHC:1 },
+  CREA: { MKT:2, RHC:1, SIG:0.5 },
+  HUM:  { RHC:2, MKT:0.5 },
+  CHIF: { GF:2, SIG:1 },
+  ORG:  { GF:1.5, RHC:0.5, SIG:1 },
+  TECH: { SIG:2, GF:0.5 }
+},
+
+/* Questions de profil : chaque option pondère des dimensions internes */
+batch1: [
+ {q:"Dans un projet de groupe, le rôle où tu te sens le plus à l'aise :", o:[
+   {t:"convaincre, présenter, vendre le projet", w:{COM:2}},
+   {t:"créer le visuel, le slogan, la com", w:{CREA:2}},
+   {t:"gérer le budget et les chiffres", w:{CHIF:2}},
+   {t:"mettre en place l'outil numérique / le site", w:{TECH:2}} ]},
+ {q:"L'activité qui te donnerait le moins l'impression de travailler :", o:[
+   {t:"tenir un stand et discuter avec les clients", w:{COM:2,HUM:1}},
+   {t:"aider à régler un conflit dans l'équipe", w:{HUM:2}},
+   {t:"construire un tableur et calculer", w:{CHIF:2,ORG:1}},
+   {t:"créer une appli ou un mini-jeu", w:{TECH:2}} ]},
+ {q:"On te décrirait plutôt comme quelqu'un de…", o:[
+   {t:"persuasif et à l'aise à l'oral", w:{COM:2}},
+   {t:"à l'écoute et bienveillant", w:{HUM:2}},
+   {t:"rigoureux et précis", w:{CHIF:1,ORG:1}},
+   {t:"logique et curieux de technique", w:{TECH:2}} ]},
+ {q:"Ta plus grande qualité, selon toi :", o:[
+   {t:"mon sens du contact et ma persuasion", w:{COM:2}},
+   {t:"ma créativité et mon imagination", w:{CREA:2}},
+   {t:"ma rigueur et mon sérieux", w:{CHIF:1,ORG:1}},
+   {t:"mon esprit logique", w:{TECH:2}} ]},
+ {q:"On te confie 200 € pour un projet de classe. Tu…", o:[
+   {t:"lances une vente pour en gagner plus", w:{COM:2}},
+   {t:"investis dans une com originale", w:{CREA:2}},
+   {t:"fais un budget précis et suis chaque dépense", w:{CHIF:2,ORG:1}},
+   {t:"crées un site / outil pour le projet", w:{TECH:2}} ]},
+ {q:"Ce qui te motive le plus dans un futur métier :", o:[
+   {t:"être au contact des clients", w:{COM:1,HUM:1}},
+   {t:"créer et communiquer", w:{CREA:2}},
+   {t:"voir des résultats chiffrés", w:{CHIF:2}},
+   {t:"résoudre des problèmes techniques", w:{TECH:2}} ]},
+ {q:"Quelle tâche te plairait le plus, instinctivement ?", o:[
+   {t:"négocier un prix de vente", w:{COM:2}},
+   {t:"animer le compte Instagram d'une marque", w:{CREA:1,TECH:1}},
+   {t:"vérifier des factures et un bilan", w:{CHIF:2}},
+   {t:"organiser une base de données", w:{TECH:1,ORG:1}} ]},
+ {q:"Le compliment qui te ferait le plus plaisir :", o:[
+   {t:"« Tu sais vraiment convaincre »", w:{COM:2}},
+   {t:"« Tu mets tout le monde à l'aise »", w:{HUM:2}},
+   {t:"« On peut toujours compter sur ta rigueur »", w:{CHIF:1,ORG:1}},
+   {t:"« Tu es très doué avec la technologie »", w:{TECH:2}} ]},
+ {q:"Le poste qui t'attirerait le plus dans une entreprise :", o:[
+   {t:"commercial / vendeur", w:{COM:2}},
+   {t:"chargé de communication", w:{CREA:2}},
+   {t:"responsable des ressources humaines", w:{HUM:2}},
+   {t:"comptable / contrôleur de gestion", w:{CHIF:2}} ]},
+ {q:"Ce qui t'agace le plus :", o:[
+   {t:"l'absence de contact, rester seul", w:{HUM:1,COM:1}},
+   {t:"faire toujours la même chose", w:{CREA:1,COM:1}},
+   {t:"le désordre et l'imprécision", w:{ORG:2,CHIF:1}},
+   {t:"quand un outil bugue et personne ne comprend", w:{TECH:2}} ]},
+ {q:"Sur ton téléphone, tu passes surtout du temps à…", o:[
+   {t:"discuter, organiser des sorties", w:{HUM:1,COM:1}},
+   {t:"créer du contenu, des stories, des montages", w:{CREA:2}},
+   {t:"gérer un budget, comparer des prix", w:{CHIF:1,ORG:1}},
+   {t:"explorer des apps, des réglages, des jeux techniques", w:{TECH:2}} ]},
+ {q:"Pour une fête de classe, ton rôle naturel :", o:[
+   {t:"démarcher les sponsors et vendre les billets", w:{COM:2}},
+   {t:"créer l'affiche et la communication", w:{CREA:2}},
+   {t:"tenir la caisse et les comptes", w:{CHIF:2,ORG:1}},
+   {t:"gérer la billetterie en ligne et le son", w:{TECH:2}} ]},
+ {q:"Tu apprends mieux quand…", o:[
+   {t:"on échange, on débat en groupe", w:{HUM:1,COM:1}},
+   {t:"on crée, on illustre, on rend ça vivant", w:{CREA:2}},
+   {t:"c'est structuré, avec des étapes claires", w:{ORG:2}},
+   {t:"on manipule des outils numériques", w:{TECH:2}} ]},
+ {q:"Une enquête à mener te plairait si elle portait sur :", o:[
+   {t:"les attentes des clients d'une marque", w:{COM:1,CREA:1}},
+   {t:"le bien-être des salariés", w:{HUM:2}},
+   {t:"la rentabilité d'un produit", w:{CHIF:2}},
+   {t:"les statistiques d'un site web", w:{TECH:2}} ]},
+ {q:"Le mot qui te parle le plus :", o:[
+   {t:"Vente", w:{COM:2}},
+   {t:"Équipe", w:{HUM:2}},
+   {t:"Performance chiffrée", w:{CHIF:2}},
+   {t:"Données", w:{TECH:2}} ]},
+ {q:"Tu serais le plus à l'aise pour…", o:[
+   {t:"présenter un produit et le vendre", w:{COM:2}},
+   {t:"imaginer une campagne de pub", w:{CREA:2}},
+   {t:"analyser un tableau de chiffres", w:{CHIF:2}},
+   {t:"paramétrer un logiciel de gestion", w:{TECH:2,ORG:1}} ]},
+ {q:"Si tu aidais une entreprise péi, tu commencerais par :", o:[
+   {t:"booster ses ventes et sa clientèle", w:{COM:2}},
+   {t:"refaire sa com et son logo", w:{CREA:2}},
+   {t:"améliorer la gestion du personnel", w:{HUM:2}},
+   {t:"remettre les comptes au clair", w:{CHIF:2}} ]},
+ {q:"Devant un problème compliqué, ton réflexe :", o:[
+   {t:"en parler, fédérer les gens autour", w:{HUM:1,COM:1}},
+   {t:"trouver une idée originale", w:{CREA:2}},
+   {t:"le décomposer méthodiquement", w:{ORG:2,CHIF:1}},
+   {t:"chercher un outil ou une solution technique", w:{TECH:2}} ]},
+ {q:"Dans 10 ans, l'image qui te plaît le plus :", o:[
+   {t:"travailler dans le marketing d'une marque", w:{COM:1,CREA:1}},
+   {t:"manager une équipe, gérer les talents", w:{HUM:2}},
+   {t:"être expert-comptable ou en finance", w:{CHIF:2}},
+   {t:"concevoir des outils numériques pour les entreprises", w:{TECH:2}} ]},
+ {q:"Le type de travail qui te ressemble le plus :", o:[
+   {t:"en mouvement, à convaincre des gens", w:{COM:2}},
+   {t:"créatif, à imaginer et produire du contenu", w:{CREA:2}},
+   {t:"au bureau, concentré sur des dossiers précis", w:{CHIF:1,ORG:1}},
+   {t:"face à un écran, à résoudre des problèmes logiques", w:{TECH:2}} ]}
+],
+
+batch2: [
+ {q:"Quelle responsabilité te tenterait le plus ?", o:[
+   {t:"être garant des ventes et du chiffre d'affaires", w:{COM:2}},
+   {t:"être garant de l'image de la marque", w:{CREA:2}},
+   {t:"être garant de l'ambiance et des talents", w:{HUM:2}},
+   {t:"être garant des comptes de l'entreprise", w:{CHIF:2}} ]},
+ {q:"Quel stage de 3ᵉ aurais-tu adoré (ou as-tu aimé) ?", o:[
+   {t:"dans un magasin / une boutique", w:{COM:2}},
+   {t:"dans une agence de communication", w:{CREA:2}},
+   {t:"au service du personnel / RH", w:{HUM:2}},
+   {t:"dans une entreprise du numérique", w:{TECH:2}} ]},
+ {q:"Une appli du lycée bugue. Ta réaction :", o:[
+   {t:"je rassure les utilisateurs énervés", w:{HUM:1,COM:1}},
+   {t:"je propose une appli plus jolie et moderne", w:{CREA:1,TECH:1}},
+   {t:"j'organise une solution de secours", w:{ORG:2}},
+   {t:"je cherche à comprendre le problème technique", w:{TECH:2}} ]},
+ {q:"Ce que tu aimes le plus dans un projet abouti :", o:[
+   {t:"qu'il ait du succès commercial", w:{COM:2}},
+   {t:"qu'il soit beau et original", w:{CREA:2}},
+   {t:"qu'il ait soudé l'équipe", w:{HUM:2}},
+   {t:"que tout soit carré, sans erreur", w:{CHIF:1,ORG:1}} ]},
+ {q:"Un bon outil de travail, pour toi, c'est d'abord :", o:[
+   {t:"un argumentaire de vente efficace", w:{COM:2}},
+   {t:"un logiciel de création (design, montage)", w:{CREA:2}},
+   {t:"un tableur impeccable", w:{CHIF:2,ORG:1}},
+   {t:"un logiciel ou un code bien fait", w:{TECH:2}} ]},
+ {q:"Tu préfères un travail plutôt :", o:[
+   {t:"au contact des gens, en mouvement", w:{COM:1,HUM:1}},
+   {t:"varié et créatif", w:{CREA:2}},
+   {t:"au calme, concentré sur des dossiers", w:{CHIF:1,ORG:1}},
+   {t:"technique, à résoudre des problèmes", w:{TECH:2}} ]},
+ {q:"Quelle matière de gestion préfères-tu travailler ?", o:[
+   {t:"tout ce qui touche aux clients et à la vente", w:{COM:2}},
+   {t:"tout ce qui touche aux personnes et à la communication", w:{HUM:1,CREA:1}},
+   {t:"tout ce qui touche aux chiffres et à l'argent", w:{CHIF:2}},
+   {t:"tout ce qui touche au numérique et aux données", w:{TECH:2}} ]},
+ {q:"On te demande de présenter un exposé. Tu…", o:[
+   {t:"te lances à l'oral, tu adores convaincre", w:{COM:2}},
+   {t:"soignes le design et les visuels", w:{CREA:2}},
+   {t:"vérifies chaque chiffre et chaque source", w:{CHIF:1,ORG:1}},
+   {t:"prépares une démo ou un support interactif", w:{TECH:2}} ]},
+ {q:"Le risque que tu acceptes le plus facilement :", o:[
+   {t:"parler / vendre devant beaucoup de monde", w:{COM:2}},
+   {t:"proposer une idée créative qui sort du cadre", w:{CREA:2}},
+   {t:"trancher un désaccord dans une équipe", w:{HUM:2}},
+   {t:"te lancer sur une techno que tu ne connais pas", w:{TECH:2}} ]},
+ {q:"Ce qui te ferait le plus peur dans un métier :", o:[
+   {t:"ne plus avoir de contact humain", w:{HUM:2,COM:1}},
+   {t:"ne plus jamais pouvoir créer", w:{CREA:2}},
+   {t:"devoir improviser sans cadre précis", w:{ORG:2,CHIF:1}},
+   {t:"ne pas comprendre la technique utilisée", w:{TECH:2}} ]}
+],
+
+batch3: [
+ {q:"Quand tu réussis, tu es surtout fier…", o:[
+   {t:"d'avoir convaincu ou vendu", w:{COM:2}},
+   {t:"d'avoir créé quelque chose d'unique", w:{CREA:2}},
+   {t:"d'avoir aidé ou fait grandir quelqu'un", w:{HUM:2}},
+   {t:"d'avoir été précis et sans erreur", w:{CHIF:1,ORG:1}} ]},
+ {q:"Le défaut que tu t'attribues le plus volontiers :", o:[
+   {t:"trop bavard / fonceur", w:{COM:2}},
+   {t:"trop dans mes idées / la lune", w:{CREA:2}},
+   {t:"je m'oublie pour les autres", w:{HUM:2}},
+   {t:"trop perfectionniste", w:{CHIF:1,ORG:1}} ]},
+ {q:"Tu serais le genre de chef qui…", o:[
+   {t:"fixe des objectifs de vente clairs", w:{COM:2}},
+   {t:"pousse l'équipe à innover et créer", w:{CREA:2}},
+   {t:"motive et fait confiance", w:{HUM:2}},
+   {t:"suit des indicateurs chiffrés précis", w:{CHIF:2}} ]},
+ {q:"Dans un journal, tu lis d'abord la rubrique :", o:[
+   {t:"Consommation / marques / tendances", w:{COM:1,CREA:1}},
+   {t:"Société / vie au travail", w:{HUM:2}},
+   {t:"Économie / entreprises / finance", w:{CHIF:2}},
+   {t:"Tech / numérique", w:{TECH:2}} ]},
+ {q:"On te propose deux jobs d'été. Tu choisis plutôt :", o:[
+   {t:"vendeur en magasin", w:{COM:2}},
+   {t:"animateur en centre de loisirs", w:{HUM:2}},
+   {t:"assistant de bureau (saisie, classement)", w:{ORG:2,CHIF:1}},
+   {t:"aide informatique / création de contenu", w:{TECH:1,CREA:1}} ]},
+ {q:"Pour toi, un projet réussi se mesure surtout à…", o:[
+   {t:"son chiffre d'affaires", w:{COM:1,CHIF:1}},
+   {t:"l'effet « waouh » qu'il provoque", w:{CREA:2}},
+   {t:"la satisfaction des personnes impliquées", w:{HUM:2}},
+   {t:"sa fiabilité technique", w:{TECH:2}} ]},
+ {q:"Si on te donnait une journée pour aider ton lycée, tu…", o:[
+   {t:"organiserais une vente / une collecte", w:{COM:2}},
+   {t:"créerais sa page Instagram et son visuel", w:{CREA:2}},
+   {t:"organiserais un événement pour fédérer", w:{HUM:1,ORG:1}},
+   {t:"créerais un outil numérique utile", w:{TECH:2}} ]},
+ {q:"Ce que tu préfères analyser :", o:[
+   {t:"le comportement des consommateurs", w:{COM:1,CREA:1}},
+   {t:"les relations dans une équipe", w:{HUM:2}},
+   {t:"un compte de résultat", w:{CHIF:2}},
+   {t:"le fonctionnement d'un système informatique", w:{TECH:2}} ]},
+ {q:"Un logiciel que tu aimerais maîtriser :", o:[
+   {t:"un outil de gestion de la relation client (CRM)", w:{COM:2}},
+   {t:"un logiciel de création graphique / vidéo", w:{CREA:2}},
+   {t:"un logiciel de comptabilité", w:{CHIF:2}},
+   {t:"un langage de programmation / base de données", w:{TECH:2}} ]},
+ {q:"Ta façon de travailler te ressemble le plus quand tu es…", o:[
+   {t:"en interaction, à échanger et convaincre", w:{COM:1,HUM:1}},
+   {t:"en train d'imaginer et de créer", w:{CREA:2}},
+   {t:"méthodique, étape par étape", w:{ORG:2,CHIF:1}},
+   {t:"en train de bidouiller un problème technique", w:{TECH:2}} ]}
+],
+
+/* Questions de moyennes auto-déclarées (/20).
+   choices = tranches; bonus = points ajoutés aux spés concernées,
+   proportionnels à la tranche choisie (plus la note est haute,
+   plus la spé reliée est renforcée). */
+notes: [
+ { id:"droit", q:"Quelle est ta moyenne en Droit ?",
+   aide:"Le droit est très présent en RH-communication (droit du travail) et en gestion-finance (droit des affaires).",
+   spes:["RHC","GF"] },
+ { id:"eco", q:"Quelle est ta moyenne en Économie ?",
+   aide:"L'économie soutient la mercatique (marchés) et la gestion-finance (analyse chiffrée).",
+   spes:["MKT","GF"] },
+ { id:"mgt", q:"Quelle est ta moyenne en Management ?",
+   aide:"Le management nourrit surtout la RH-communication et la mercatique (stratégie, organisation).",
+   spes:["RHC","MKT"] },
+ { id:"sdgn", q:"Quelle est ta moyenne en Sciences de gestion et numérique (SDGN) ?",
+   aide:"La SDGN est la base directe du SIG (numérique, données) et de la gestion-finance (calcul de coûts, performance).",
+   spes:["SIG","GF"] }
+],
+/* tranches proposées pour les moyennes */
+noteRanges: [
+ { lab:"Moins de 8 / 20", v:6 },
+ { lab:"8 à 10 / 20",     v:9 },
+ { lab:"10 à 12 / 20",    v:11 },
+ { lab:"12 à 14 / 20",    v:13 },
+ { lab:"14 à 16 / 20",    v:15 },
+ { lab:"Plus de 16 / 20", v:17 },
+ { lab:"Je ne sais pas",  v:null }
+],
+
+disclaimer:"Ce test est purement indicatif. Il éclaire tes goûts, tes points forts et tes résultats du moment, mais il ne décide pas à ta place. Le choix de ton enseignement spécifique doit se faire en discutant avec tes professeurs, ton professeur principal et le Psy-ÉN de ton lycée, en tenant compte aussi de ton projet d'orientation après le bac."
+
+};
+</script>
 <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef } = React;
 /* Données : si l'éditeur prof a enregistré des modifications locales, elles priment (aperçu). */
@@ -6931,7 +7225,11 @@ const SUBJ = {
   ORI:{ code:"ORI", icon:"\ud83e\udded", nom:"Mon orientation après le BAC", short:"Orientation",
     themes:[
       { n:1, nom:"Mon profil",            short:"Mon profil",  color:"#0891b2" },
-      { n:2, nom:"Découverte des métiers", short:"Les métiers", color:"#ea580c" } ] }
+      { n:2, nom:"Découverte des métiers", short:"Les métiers", color:"#ea580c" } ] },
+  SPE:{ code:"SPE", icon:"\ud83e\udded", nom:"Choisir mon enseignement spécifique de terminale", short:"Mon enseignement spécifique",
+    themes:[
+      { n:1, nom:"Test de profil",           short:"Le test",        color:"#9333ea" },
+      { n:2, nom:"Les 4 enseignements",       short:"Les 4 spés",     color:"#e11d48" } ] }
 };
 function gamesFor(code){
   const d=ALL[code]||{}; const hasDocs=d.docs&&Object.keys(d.docs).some(k=>(d.docs[k]||[]).length>0);
@@ -6955,7 +7253,7 @@ function getTeacherPw(){ try{ return localStorage.getItem(PW_KEY) || DEFAULT_TEA
 function setTeacherPw(pw){ try{ localStorage.setItem(PW_KEY, pw); }catch(e){} }
 /* ====== Mots de passe de déblocage des matières (verrou pédagogique) ====== */
 const UNLOCK_KEY = "mm_unlock_pw_v1";
-const DEFAULT_UNLOCK = { SEC:"STMG974", MGT:"MANAGER", SDG:"GESTION", TLE:"PILOTAGE", DR1:"JUSTICE", ECO1:"MARCHE", DRT:"CONTRAT", ECOT:"CROISSANCE", GO:"GRANDORAL", MKT:"MERCATIQUE", FIN:"FINANCE", RHC:"RESSOURCES", SIG:"INFORMATION", ORI:"ORIENTATION" };
+const DEFAULT_UNLOCK = { SEC:"STMG974", MGT:"MANAGER", SDG:"GESTION", TLE:"PILOTAGE", DR1:"JUSTICE", ECO1:"MARCHE", DRT:"CONTRAT", ECOT:"CROISSANCE", GO:"GRANDORAL", MKT:"MERCATIQUE", FIN:"FINANCE", RHC:"RESSOURCES", SIG:"INFORMATION", ORI:"ORIENTATION", SPE:"SPECIALITE" };
 function getUnlockMap(){ try{ const o=JSON.parse(localStorage.getItem(UNLOCK_KEY)||"null"); return Object.assign({}, DEFAULT_UNLOCK, (o&&typeof o==="object")?o:{}); }catch(e){ return Object.assign({}, DEFAULT_UNLOCK); } }
 function getUnlockPw(code){ const m=getUnlockMap(); return (m[code]||DEFAULT_UNLOCK[code]||""); }
 function setUnlockPw(code,pw){ try{ const m=getUnlockMap(); m[code]=pw; localStorage.setItem(UNLOCK_KEY, JSON.stringify(m)); }catch(e){} }
@@ -7192,7 +7490,8 @@ function Matiere({student,onPick,onLogout}){
     {code:"FIN",icon:SUBJ.FIN.icon,titre:"Spé Gestion-finance",sous:"Spécialité Tle · 3 thèmes — règles comptables, analyse financière, aide à la décision.",color:"#c026d3"},
     {code:"RHC",icon:SUBJ.RHC.icon,titre:"Spé RH & Communication",sous:"Spécialité Tle · 3 thèmes — individu & groupe, motivation, cohésion sociale.",color:"#db2777"},
     {code:"SIG",icon:SUBJ.SIG.icon,titre:"Spé Systèmes d'information",sous:"Spécialité Tle · 4 thèmes — numérique, données, sécurité, décision.",color:"#9333ea"},
-    {code:"ORI",icon:SUBJ.ORI.icon,titre:"Mon orientation après le BAC",sous:"Test de profil (20 + 10 + 10 questions) + découverte de ~40 métiers. Outil indicatif pour t'aider à te projeter.",color:"#0891b2"}
+    {code:"ORI",icon:SUBJ.ORI.icon,titre:"Mon orientation après le BAC",sous:"Test de profil (20 + 10 + 10 questions) + découverte de ~40 métiers. Outil indicatif pour t'aider à te projeter.",color:"#0891b2"},
+    {code:"SPE",icon:SUBJ.SPE.icon,titre:"Choisir mon enseignement spécifique de Tle",sous:"Test indicatif (20 + 10 + 10 questions + tes moyennes) pour t'aider à choisir entre Mercatique, RH & Communication, Gestion-finance et SIG.",color:"#9333ea"}
   ];
   return (<div className="login">
     <div className="hero">
@@ -8358,6 +8657,204 @@ function Cell({v}){ if(v===undefined) return <span className="nc">·</span>;
   return <span className="sc" style={{background:c+"22",color:c,borderColor:c+"55"}}>{v}</span>; }
 
 /* ====== ROOT ====== */
+/* ====== MATIÈRE : CHOISIR MON ENSEIGNEMENT SPÉCIFIQUE DE TERMINALE ====== */
+function SpeChoice({student,onSwitch,onLogout}){
+  const S=window.SPE_DATA||{};
+  const [tab,setTab]=useState("test");
+  return (<div className="app">
+    <header className="top">
+      <div className="brand">🧭 Mon enseignement spécifique</div>
+      <div className="who">{student.pseudo} · <span className="cl">{student.classe}</span></div>
+      <button className="lo" onClick={onSwitch}>⇄ Matière</button>
+      <button className="lo" onClick={onLogout}>Quitter</button>
+    </header>
+    <nav className="nav">
+      <button className={tab==="test"?"nb on":"nb"} onClick={()=>setTab("test")}>🧪 Le test</button>
+      <button className={tab==="spes"?"nb on":"nb"} onClick={()=>setTab("spes")}>📚 Les 4 enseignements</button>
+    </nav>
+    <main className="main">
+      {tab==="test"&&<SpeTest S={S} onSeeSpes={()=>setTab("spes")}/>}
+      {tab==="spes"&&<SpeList S={S}/>}
+    </main>
+  </div>);
+}
+
+function SpeTest({S,onSeeSpes}){
+  const [stage,setStage]=useState("home"); // home | quiz | notes | result
+  const [asked,setAsked]=useState([]);
+  const [answers,setAnswers]=useState([]);
+  const [i,setI]=useState(0);
+  const [notes,setNotes]=useState({}); // id -> value (number|null)
+  const [notesDone,setNotesDone]=useState(false);
+
+  const startBatch=(n)=>{
+    let add=[];
+    if(n===1) add=S.batch1||[]; else if(n===2) add=S.batch2||[]; else add=S.batch3||[];
+    setAsked(prev=>[...prev,...add]);
+    setI(n===1?0:asked.length);
+    setStage("quiz");
+  };
+  const choose=(qi,oi)=>{ setAnswers(a=>{ const n=[...a]; n[qi]=oi; return n; }); };
+
+  // ---- Scores : profil → spés ----
+  const speKeys=Object.keys(S.spes||{});
+  const profScores=(()=>{ const sp={}; speKeys.forEach(k=>sp[k]=0);
+    asked.forEach((q,qi)=>{ const oi=answers[qi]; if(oi==null) return; const w=(q.o[oi]||{}).w||{};
+      Object.keys(w).forEach(dim=>{ const map=(S.dimToSpe||{})[dim]||{};
+        Object.keys(map).forEach(spe=>{ sp[spe]=(sp[spe]||0)+w[dim]*map[spe]; }); }); });
+    return sp; })();
+
+  // ---- Bonus des moyennes ----
+  // Une note agit sur ses spés : écart à 10 → bonus (ou léger malus si < 10).
+  const noteScores=(()=>{ const sp={}; speKeys.forEach(k=>sp[k]=0);
+    (S.notes||[]).forEach(n=>{ const v=notes[n.id]; if(v==null) return; const eff=(v-10)*0.9; // -3.6 à +6.3
+      n.spes.forEach(spe=>{ sp[spe]=(sp[spe]||0)+eff; }); });
+    return sp; })();
+
+  const totalScores=(()=>{ const sp={}; speKeys.forEach(k=>{ sp[k]=(profScores[k]||0)+(noteScores[k]||0); }); return sp; })();
+  const ranked=[...speKeys].sort((a,b)=>totalScores[b]-totalScores[a]);
+  const minS=Math.min(...speKeys.map(k=>totalScores[k]));
+  const maxAdj=Math.max(1,...speKeys.map(k=>totalScores[k]-minS));
+
+  // ----- ACCUEIL -----
+  if(stage==="home"){
+    return (<div className="content ori-test">
+      <h2 className="ptitle">🧪 Quel enseignement spécifique pour ta terminale ?</h2>
+      <div className="ori-intro">
+        <p>En fin de 1ʳᵉ STMG, tu choisis <b>un enseignement spécifique</b> pour ta terminale, parmi quatre :</p>
+        <div className="spe-mini">{Object.keys(S.spes||{}).map(k=>{ const sp=S.spes[k];
+          return <span key={k} className="spe-mini-pill" style={{"--c":sp.color}}>{sp.emo} {sp.nom}</span>; })}</div>
+        <p>Ce test t'aide à y voir clair en croisant <b>tes goûts et tes points forts</b> (soft skills, savoir-être) avec <b>tes résultats</b> dans les matières clés.</p>
+        <ul className="ori-steps">
+          <li>🟦 <b>20 questions</b> de profil pour commencer.</li>
+          <li>📊 Quelques questions sur <b>tes moyennes</b> (Droit, Économie, Management, SDGN).</li>
+          <li>🟧 <b>+10</b> puis 🟩 <b>+10 questions</b> sur ta demande, pour préciser le résultat.</li>
+        </ul>
+        <p className="ori-warn">⚠️ {S.disclaimer}</p>
+      </div>
+      <button className="cta sm" onClick={()=>startBatch(1)}>Commencer le test →</button>
+    </div>);
+  }
+
+  // ----- QUIZ -----
+  if(stage==="quiz"){
+    const cur=asked[i];
+    const answeredThis=cur&&answers[i]!=null;
+    const allAnswered=asked.every((_,qi)=>answers[qi]!=null);
+    const firstTime=!notesDone; // après le 1er lot, on passe par les notes
+    return (<div className="content ori-test">
+      <div className="ori-prog">
+        <div className="ori-progbar"><div className="ori-progfill spe" style={{width:Math.round((i+1)/asked.length*100)+"%"}}/></div>
+        <span>Question {i+1} / {asked.length}</span>
+      </div>
+      <div className="ori-qcard">
+        <p className="ori-q">{cur.q}</p>
+        <div className="ori-opts">{cur.o.map((o,oi)=>(
+          <button key={oi} className={"ori-opt spe"+(answers[i]===oi?" sel":"")} onClick={()=>choose(i,oi)}>{o.t}</button>))}</div>
+      </div>
+      <div className="ori-nav">
+        <button className="cta sm alt" disabled={i===0} style={{opacity:i===0?.4:1}} onClick={()=>setI(i-1)}>◀ Précédent</button>
+        {i+1<asked.length
+          ? <button className="cta sm" disabled={!answeredThis} style={{opacity:answeredThis?1:.4}} onClick={()=>setI(i+1)}>Suivant ▶</button>
+          : <button className="cta sm" disabled={!allAnswered} style={{opacity:allAnswered?1:.4}}
+              onClick={()=> firstTime ? setStage("notes") : setStage("result")}>{firstTime?"Mes moyennes 📊":"Voir mon résultat 🎯"}</button>}
+      </div>
+      {!allAnswered && i+1===asked.length && <p className="ori-hint">Réponds à toutes les questions pour continuer.</p>}
+    </div>);
+  }
+
+  // ----- ÉTAPE MOYENNES -----
+  if(stage==="notes"){
+    const ranges=S.noteRanges||[];
+    const all=(S.notes||[]).every(n=>notes[n.id]!==undefined);
+    return (<div className="content ori-test">
+      <h2 className="ptitle">📊 Tes moyennes (facultatif mais utile)</h2>
+      <p className="ori-sub">Indique tes moyennes approximatives. Elles affinent la recommandation. Choisis « Je ne sais pas » si tu préfères ne pas répondre.</p>
+      {(S.notes||[]).map(n=>(<div key={n.id} className="spe-note">
+        <div className="spe-note-q">{n.q}</div>
+        <div className="spe-note-aide">💡 {n.aide}</div>
+        <div className="spe-note-ranges">{ranges.map((r,ri)=>(
+          <button key={ri} className={"spe-range"+(notes[n.id]===r.v?" sel":"")} onClick={()=>setNotes(o=>({...o,[n.id]:r.v}))}>{r.lab}</button>))}</div>
+      </div>))}
+      <div className="ori-nav">
+        <button className="cta sm alt" onClick={()=>{ setStage("quiz"); setI(asked.length-1); }}>◀ Retour</button>
+        <button className="cta sm" disabled={!all} style={{opacity:all?1:.4}} onClick={()=>{ setNotesDone(true); setStage("result"); }}>Voir mon résultat 🎯</button>
+      </div>
+      {!all&&<p className="ori-hint">Réponds aux 4 questions (ou « Je ne sais pas ») pour continuer.</p>}
+    </div>);
+  }
+
+  // ----- RÉSULTAT -----
+  const top=S.spes[ranked[0]];
+  const usedNotes=(S.notes||[]).filter(n=>notes[n.id]!=null);
+  const canBatch2 = !((S.batch2||[]).every(q=>asked.indexOf(q)>=0));
+  const canBatch3 = !canBatch2 && !((S.batch3||[]).every(q=>asked.indexOf(q)>=0));
+  return (<div className="content ori-test">
+    <h2 className="ptitle">🎯 L'enseignement qui te correspond le mieux</h2>
+    <p className="ori-sub">Croisé sur <b>{asked.length} questions</b>{usedNotes.length?<> et <b>{usedNotes.length} moyenne{usedNotes.length>1?"s":""}</b></>:null}. Résultat <b>indicatif</b>.</p>
+
+    {/* Classement des 4 spés */}
+    <div className="ori-bars">
+      {ranked.map((k,idx)=>{ const sp=S.spes[k]; const adj=totalScores[k]-minS; const pct=Math.round(adj/maxAdj*100);
+        return (<div key={k} className="ori-bar spe4" style={{"--c":sp.color}}>
+          <span className="ori-barlab">{idx===0?"🥇 ":idx===1?"🥈 ":idx===2?"🥉 ":""}{sp.emo} {sp.nom}</span>
+          <div className="ori-bartrack"><div className="ori-barfill spe" style={{width:Math.max(6,pct)+"%",background:sp.color}}/></div>
+          <b className="ori-barpct" style={{color:sp.color}}>{Math.round(totalScores[k])}</b>
+        </div>); })}
+    </div>
+
+    {/* Reco principale */}
+    <div className="ori-reco spe-reco" style={{"--c":top.color}}>
+      <div className="ori-reco-emo">{top.emo}</div>
+      <h3>{top.nom}</h3>
+      <p className="ori-reco-branche">Semble le plus adapté à ton profil</p>
+      <p>{top.txt}</p>
+      <div className="ori-reco-block">
+        <div className="ori-reco-h">🎓 Vers quelles études cela mène-t-il ?</div>
+        <ul>{top.debouches.map((d,k)=>(<li key={k}>{d}</li>))}</ul>
+      </div>
+      <button className="link-btn" onClick={onSeeSpes}>→ Comparer les 4 enseignements en détail</button>
+    </div>
+
+    {/* Comment ce résultat est calculé */}
+    <div className="spe-explain">
+      <div className="spe-explain-h">🔎 Comment lire ce résultat</div>
+      <p>Ce classement combine <b>tes réponses au test</b> (tes goûts, tes qualités) et <b>tes moyennes</b> dans les matières liées à chaque enseignement.</p>
+      {usedNotes.length>0 && <ul className="spe-explain-list">
+        {usedNotes.map(n=>{ const lab=(S.noteRanges.find(r=>r.v===notes[n.id])||{}).lab;
+          return <li key={n.id}><b>{n.q.replace("Quelle est ta moyenne en ","").replace(" ?","")}</b> : {lab} → renforce {n.spes.map(s=>S.spes[s].nom).join(" et ")}.</li>; })}
+      </ul>}
+      {usedNotes.length===0 && <p className="ori-hint" style={{textAlign:"left"}}>Tu n'as renseigné aucune moyenne : le résultat repose uniquement sur ton profil. Tu peux recommencer et les indiquer pour l'affiner.</p>}
+    </div>
+
+    <div className="ori-more">
+      {canBatch2&&<button className="cta sm" onClick={()=>startBatch(2)}>➕ Affiner avec 10 questions de plus</button>}
+      {canBatch3&&<button className="cta sm" onClick={()=>startBatch(3)}>➕ Encore 10 questions pour préciser</button>}
+      {!canBatch2&&!canBatch3&&<p className="ori-hint">✅ Tu as répondu à toutes les questions disponibles (40). Ton résultat est au plus précis.</p>}
+    </div>
+
+    <p className="ori-warn" style={{marginTop:18}}>⚠️ {S.disclaimer}</p>
+    <button className="cta sm alt" style={{marginTop:10}} onClick={()=>{setStage("home");setAsked([]);setAnswers([]);setI(0);setNotes({});setNotesDone(false);}}>↺ Recommencer le test</button>
+  </div>);
+}
+
+function SpeList({S}){
+  const keys=Object.keys(S.spes||{});
+  return (<div className="content">
+    <h2 className="ptitle">📚 Les 4 enseignements spécifiques de terminale</h2>
+    <p className="intro">En terminale STMG, tu suis <b>un</b> de ces quatre enseignements spécifiques. Voici, pour chacun, ce qu'on y étudie et les études qu'il prépare.</p>
+    {keys.map(k=>{ const sp=S.spes[k];
+      return (<div key={k} className="spe-card" style={{"--c":sp.color}}>
+        <div className="spe-card-h"><span className="spe-card-emo">{sp.emo}</span>{sp.nom}</div>
+        <p className="spe-card-txt">{sp.txt}</p>
+        <div className="spe-card-deb-h">🎓 Études possibles après le bac :</div>
+        <ul className="spe-card-deb">{sp.debouches.map((d,j)=>(<li key={j}>{d}</li>))}</ul>
+      </div>);
+    })}
+    <p className="ori-warn" style={{marginTop:18}}>ℹ️ Le bon choix dépend aussi de ton projet après le bac. Parles-en avec tes professeurs, ton professeur principal et le Psy-ÉN de ton lycée.</p>
+  </div>);
+}
+
 /* ====== MATIÈRE : MON ORIENTATION APRÈS LE BAC ====== */
 function Orientation({student,onSwitch,onLogout}){
   const O=window.ORI_DATA||{};
@@ -8543,7 +9040,8 @@ function App(){
   return (<>{screen==="login"&&<Login onStudent={s=>{setStudent(s);setScreen("matiere")}} onTeacher={()=>setScreen("teacher")}/>}
     {screen==="matiere"&&<Matiere student={student} onPick={m=>{setSubject(m);setScreen("student")}} onLogout={()=>setScreen("login")}/>}
     {screen==="student"&&subject==="ORI"&&<Orientation key="ORI" student={student} onSwitch={()=>setScreen("matiere")} onLogout={()=>setScreen("login")}/>}
-    {screen==="student"&&subject!=="ORI"&&<Hub key={subject} student={student} subject={subject} onSwitch={()=>setScreen("matiere")} onLogout={()=>setScreen("login")}/>}
+    {screen==="student"&&subject==="SPE"&&<SpeChoice key="SPE" student={student} onSwitch={()=>setScreen("matiere")} onLogout={()=>setScreen("login")}/>}
+    {screen==="student"&&subject!=="ORI"&&subject!=="SPE"&&<Hub key={subject} student={student} subject={subject} onSwitch={()=>setScreen("matiere")} onLogout={()=>setScreen("login")}/>}
     {screen==="teacher"&&<Teacher onLogout={()=>setScreen("login")}/>}</>);
 }
 ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
@@ -9005,6 +9503,33 @@ abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;
  .ori-barlab{font-size:13px}.ori-barpct{text-align:left}
  .ori-q{font-size:19px}
 }
+/* ====== ENSEIGNEMENT SPÉCIFIQUE ====== */
+.ori-progfill.spe{background:linear-gradient(90deg,#9333ea,#c084fc)}
+.ori-opt.spe:hover{border-color:#c9a3ee;background:#f7effe}
+.ori-opt.spe.sel{border-color:#9333ea;background:#f3e8ff;box-shadow:0 4px 14px -6px rgba(147,51,234,.5)}
+.spe-mini{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}
+.spe-mini-pill{border:1.5px solid var(--c);color:var(--c);background:#fff;padding:6px 12px;border-radius:24px;font-size:13.5px;font-weight:700}
+.spe-note{background:#fff;border:1px solid #ece6f3;border-radius:16px;padding:16px 18px;margin-bottom:14px;box-shadow:0 14px 34px -26px rgba(147,51,234,.5)}
+.spe-note-q{font-family:'Fraunces',serif;font-size:18px;font-weight:600;margin-bottom:4px}
+.spe-note-aide{font-size:13px;color:#7a7390;margin-bottom:12px;line-height:1.45}
+.spe-note-ranges{display:flex;flex-wrap:wrap;gap:8px}
+.spe-range{padding:9px 14px;border-radius:11px;background:#f7f3fd;border:2px solid #ece2f8;font-size:14px;font-weight:600;color:#1a1430;transition:.15s}
+.spe-range:hover{border-color:#c9a3ee}
+.spe-range.sel{border-color:#9333ea;background:#f3e8ff;color:#7e22ce;font-weight:800}
+.ori-bar.spe4 .ori-barlab{font-weight:700}
+.ori-reco.spe-reco{border:2px solid color-mix(in srgb,var(--c) 45%,#fff)}
+.spe-explain{background:#faf7ff;border:1px solid #e9ddfa;border-radius:16px;padding:16px 18px;margin-bottom:16px}
+.spe-explain-h{font-weight:800;color:#7e22ce;margin-bottom:8px;font-size:15px}
+.spe-explain p{line-height:1.55;margin-bottom:6px}
+.spe-explain-list{margin:8px 0 0;padding-left:20px}
+.spe-explain-list li{margin:5px 0;line-height:1.45;font-size:14.5px}
+.spe-card{background:#fff;border:1px solid #ece6f3;border-left:5px solid var(--c);border-radius:14px;padding:18px 20px;margin-bottom:14px;box-shadow:0 16px 38px -28px rgba(0,0,0,.4)}
+.spe-card-h{font-family:'Fraunces',serif;font-size:21px;font-weight:700;display:flex;align-items:center;gap:10px;margin-bottom:8px;color:var(--c)}
+.spe-card-emo{font-size:26px}
+.spe-card-txt{line-height:1.55;color:#3d3a4e;margin-bottom:12px}
+.spe-card-deb-h{font-weight:800;color:var(--c);font-size:14px;margin-bottom:6px}
+.spe-card-deb{margin:0;padding-left:20px}
+.spe-card-deb li{margin:4px 0;line-height:1.4;font-size:14.5px}
 </style>
 </body>
 </html>
