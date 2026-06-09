@@ -7173,12 +7173,22 @@ const ALL = (function(){ const d = loadData();
 })();
 /* ====== Synchronisation serveur (Google Apps Script) — optionnelle ====== */
 const CFG = (ALL && ALL.config) ? ALL.config : { syncUrl:"" };
-function netGet(params){ if(!CFG.syncUrl) return Promise.resolve(null);
+function hasSync(){ return !!(CFG.syncUrl && /^https?:\/\//.test(CFG.syncUrl)); }
+function netGet(params){ if(!hasSync()) return Promise.resolve(null);
   const u=CFG.syncUrl+(CFG.syncUrl.indexOf("?")>=0?"&":"?")+new URLSearchParams(params).toString();
-  return fetch(u).then(r=>r.json()).catch(()=>null);
+  return fetch(u,{method:"GET",redirect:"follow"})
+    .then(r=>r.text())
+    .then(t=>{ try{ return JSON.parse(t); }catch(e){ return null; } })
+    .catch(()=>null);
 }
-function netPost(payload){ if(!CFG.syncUrl) return Promise.resolve(null);
-  return fetch(CFG.syncUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}).then(r=>r.json()).catch(()=>null);
+function netPost(payload){ if(!hasSync()) return Promise.resolve(null);
+  // text/plain évite le pre-vol CORS ; Apps Script lit e.postData.contents
+  return fetch(CFG.syncUrl,{method:"POST",redirect:"follow",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify(payload)})
+    .then(r=>r.text())
+    .then(t=>{ try{ return JSON.parse(t); }catch(e){ return null; } })
+    .catch(()=>null);
 }
 /* ====== Mélange aléatoire de l'ordre des réponses (toutes matières) ====== */
 function _perm(n){ const a=[]; for(let k=0;k<n;k++) a.push(k);
@@ -7325,10 +7335,39 @@ function loadScores(){
   catch(e){ return []; }
 }
 function saveScore(rec){
-  try{ const all = loadScores(); rec.id = "e_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
-    all.push(rec); localStorage.setItem(LS_KEY, JSON.stringify(all)); }
+  rec.id = "e_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
+  rec.synced = false;
+  try{ const all = loadScores(); all.push(rec); localStorage.setItem(LS_KEY, JSON.stringify(all)); }
   catch(e){}
-  netPost({action:"score", rec:rec});
+  // Tentative d'envoi immédiat ; on marque "synced" si le serveur confirme.
+  if(hasSync()){
+    return netPost({action:"score", rec:rec}).then(r=>{
+      const ok = !!(r && r.ok!==false);
+      if(ok) markSynced([rec.id]);
+      return ok;
+    });
+  }
+  return Promise.resolve(false);
+}
+function markSynced(ids){
+  try{ const set=new Set(ids); const all=loadScores();
+    all.forEach(r=>{ if(set.has(r.id)) r.synced=true; });
+    localStorage.setItem(LS_KEY, JSON.stringify(all)); }catch(e){}
+}
+function pendingScores(){ return loadScores().filter(r=>!r.synced); }
+// Renvoie une promesse : {ok, sent, failed, total}
+function flushPending(){
+  const pend = pendingScores();
+  if(!hasSync()) return Promise.resolve({ok:false, reason:"no-sync", sent:0, failed:pend.length, total:pend.length});
+  if(!pend.length) return Promise.resolve({ok:true, sent:0, failed:0, total:0});
+  // Envoi en lot (l'Apps Script accepte action:"scores" avec un tableau "recs")
+  return netPost({action:"scores", recs:pend}).then(r=>{
+    if(r && r.ok){ markSynced(pend.map(x=>x.id)); return {ok:true, sent:pend.length, failed:0, total:pend.length}; }
+    // repli : envoi un par un
+    return pend.reduce((chain,rec)=>chain.then(acc=>
+      netPost({action:"score", rec:rec}).then(rr=>{ const ok=!!(rr&&rr.ok!==false); if(ok){ markSynced([rec.id]); acc.sent++; } else acc.failed++; return acc; })
+    ), Promise.resolve({ok:true,sent:0,failed:0,total:pend.length})).then(acc=>{ acc.ok=acc.failed===0; return acc; });
+  }).catch(()=>({ok:false, reason:"network", sent:0, failed:pend.length, total:pend.length}));
 }
 function clearScores(){ try{ localStorage.removeItem(LS_KEY); }catch(e){} }
 function deleteScores(ids){
@@ -7591,6 +7630,45 @@ function Intro({onStart}){
     </div>
   </div>);
 }
+function SyncWidget({tick}){
+  // États : "idle" (rien à faire / tout synchro), "pending" (en attente), "saving", "ok", "error", "off"
+  const [pending,setPending]=useState(()=>pendingScores().length);
+  const [state,setState]=useState("idle");
+  const refreshPending=()=>{ setPending(pendingScores().length); };
+  useEffect(()=>{ refreshPending(); },[tick]);
+  // Auto-sync : dès qu'il y a des scores en attente et qu'un serveur est configuré, on pousse.
+  useEffect(()=>{
+    if(!hasSync()){ setState("off"); return; }
+    const p=pendingScores().length;
+    if(p>0){ doSync(true); }
+    else setState("ok");
+  },[tick]);
+
+  const doSync=(auto)=>{
+    if(!hasSync()){ setState("off"); return; }
+    setState("saving");
+    flushPending().then(res=>{
+      refreshPending();
+      if(res.ok && res.failed===0){ setState("ok"); }
+      else { setState("error"); }
+    });
+  };
+
+  if(!hasSync()){
+    return (<span className="syncw off" title="Mode local : tes résultats sont enregistrés sur cet appareil. Ton professeur n'a pas (encore) activé la sauvegarde en ligne.">💾 Local</span>);
+  }
+  if(state==="saving"){
+    return (<span className="syncw saving" title="Sauvegarde en cours…">⏳ Sauvegarde…</span>);
+  }
+  if(state==="error"){
+    return (<button className="syncw error" title="La sauvegarde en ligne a échoué. Vérifie ta connexion et clique pour réessayer." onClick={()=>doSync(false)}>⚠️ Réessayer ({pending})</button>);
+  }
+  if(pending>0){
+    return (<button className="syncw pending" title={"Tu as "+pending+" résultat(s) non sauvegardé(s) en ligne. Clique pour sauvegarder."} onClick={()=>doSync(false)}>💾 Sauvegarder ({pending})</button>);
+  }
+  // tout est synchronisé
+  return (<button className="syncw ok" title="Tout est sauvegardé en ligne ✅ Clique pour resynchroniser." onClick={()=>doSync(false)}>☁️ Sauvegardé</button>);
+}
 function Hub({student,subject,onSwitch,onLogout}){
   const SD=ALL[subject]; const GAMES=gamesFor(subject); const THEMES=SUBJ[subject].themes;
   const hasIntro=(SD.intro&&SD.intro.html&&SD.intro.html.trim())||subject==="SEC";
@@ -7598,6 +7676,7 @@ function Hub({student,subject,onSwitch,onLogout}){
   const [theme,setTheme]=useState(1);
   const [progress,setProgress]=useState({}); // {"theme-game": bestPct}
   const [cloud,setCloud]=useState(false);
+  const [syncTick,setSyncTick]=useState(0); // incrémenté à chaque score enregistré → rafraîchit le widget
   const PKEY="mm_prog_"+subject+"_"+String(student.classe||"").trim().toLowerCase()+"_"+String(student.pseudo||"").trim().toLowerCase();
   const mergeMax=(a,b)=>{ const m={...a}; Object.keys(b||{}).forEach(k=>{ m[k]=Math.max(m[k]||0,+b[k]||0); }); return m; };
   useEffect(()=>{
@@ -7626,7 +7705,9 @@ function Hub({student,subject,onSwitch,onLogout}){
 
   const finish=(t,g,pct)=>{
     setProgress(p=>{ const np={...p,[key(t,g)]:Math.max(p[key(t,g)]||0,pct)}; try{ localStorage.setItem(PKEY,JSON.stringify(np)); }catch(e){} return np; });
-    saveScore({...student,matiere:subject,theme:t,game:g,pct,date:new Date().toISOString()});
+    saveScore({...student,matiere:subject,theme:t,game:g,pct,date:new Date().toISOString()})
+      .then(()=>setSyncTick(x=>x+1));
+    setSyncTick(x=>x+1); // déclenche immédiatement le widget (état "en attente"/"sauvegarde")
     setPlaying(null);
   };
 
@@ -7636,7 +7717,8 @@ function Hub({student,subject,onSwitch,onLogout}){
   return (<div className="app">
     <header className="top">
       <div className="brand">{SUBJ[subject].icon} Mission {SUBJ[subject].short}</div>
-      <div className="who">{student.pseudo} · <span className="cl">{student.classe}</span>{cloud&&<span className="cloud" title="Progression synchronisée avec le serveur">☁️</span>}</div>
+      <div className="who">{student.pseudo} · <span className="cl">{student.classe}</span></div>
+      <SyncWidget tick={syncTick}/>
       <button className="lo" onClick={onSwitch}>⇄ Matière</button>
       <button className="lo" onClick={onLogout}>Quitter</button>
     </header>
@@ -8174,6 +8256,39 @@ function Lex({subject}){
 }
 
 /* ====== ÉDITEUR DE QUESTIONS (espace professeur) ====== */
+function SyncTester({url}){
+  const [state,setState]=useState("idle"); // idle | testing | ok | warn | err
+  const [msg,setMsg]=useState("");
+  const valid=/^https:\/\/script\.google\.com\/macros\/s\/.+\/exec$/.test(url||"");
+  const test=()=>{
+    if(!url){ setState("err"); setMsg("Colle d'abord l'URL du script."); return; }
+    setState("testing"); setMsg("");
+    // 1) ping GET ping
+    fetch(url+(url.indexOf("?")>=0?"&":"?")+"action=ping",{method:"GET",redirect:"follow"})
+      .then(r=>r.text())
+      .then(t=>{ let j=null; try{ j=JSON.parse(t); }catch(e){}
+        if(j&&j.ok){
+          // 2) test d'écriture
+          const rec={id:"test_"+Date.now(),matiere:"TEST",nom:"Test",prenom:"Connexion",pseudo:"_test_",classe:"_test_",theme:0,game:"ping",pct:0,date:new Date().toISOString()};
+          fetch(url,{method:"POST",redirect:"follow",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"score",rec:rec})})
+            .then(r=>r.text()).then(tt=>{ let jj=null; try{ jj=JSON.parse(tt); }catch(e){}
+              if(jj&&jj.ok){ setState("ok"); setMsg("Connexion OK : lecture ET écriture fonctionnent. Une ligne de test (_test_) a été ajoutée dans ta feuille — tu peux la supprimer."); }
+              else { setState("warn"); setMsg("Lecture OK mais l'écriture a échoué. Vérifie que le script est bien déployé en « Tout le monde » et que la fonction doPost enregistre les scores."); }
+            }).catch(()=>{ setState("warn"); setMsg("Lecture OK mais l'écriture a échoué (réseau). Réessaie."); });
+        } else {
+          setState("err"); setMsg("Le script répond, mais pas au format attendu. Vérifie que tu as bien collé le code fourni et redéployé une NOUVELLE version.");
+        }
+      })
+      .catch(()=>{ setState("err"); setMsg("Impossible de joindre le script. Vérifie l'URL (elle doit finir par /exec) et que le déploiement est accessible à « Tout le monde »."); });
+  };
+  return (<div className="synctest">
+    {!valid&&url&&<p className="edhint2" style={{color:"#b45309"}}>⚠️ L'URL devrait ressembler à https://script.google.com/macros/s/…/exec</p>}
+    <button className="cta sm" style={{maxWidth:280,margin:"6px 0"}} onClick={test} disabled={state==="testing"}>{state==="testing"?"⏳ Test en cours…":"🔌 Tester la connexion"}</button>
+    {state==="ok"&&<div className="stmsg ok">✅ {msg}</div>}
+    {state==="warn"&&<div className="stmsg warn">⚠️ {msg}</div>}
+    {state==="err"&&<div className="stmsg err">❌ {msg}</div>}
+  </div>);
+}
 async function publishHTML(data){
   let src=null;
   try{ const r=await fetch(window.location.href); src=await r.text(); }catch(e){}
@@ -8543,10 +8658,11 @@ function Editor(){
     </div>)}
     {bank==="config"&&(<div className="edcard">
       <div className="edhead"><b>⚙️ Synchronisation de la progression et des scores</b></div>
-      <p className="edhint2">Sans configuration, le jeu fonctionne en mode local : progression et scores restent sur chaque appareil. En collant ici l'URL de ton script Google Apps Script (voir le guide fourni avec le jeu) puis en PUBLIANT le fichier, les scores de tous les élèves arrivent dans ton Google Sheets, et chaque élève retrouve sa progression avec son pseudo + sa classe, depuis n'importe quel appareil.</p>
+      <p className="edhint2">Sans configuration, le jeu fonctionne en mode local : progression et scores restent sur chaque appareil. En collant ici l'URL de ton script Google Apps Script (voir le guide ci-dessous) puis en PUBLIANT le fichier, les scores de tous les élèves arrivent dans ton Google Sheets, et chaque élève retrouve sa progression avec son pseudo + sa classe, depuis n'importe quel appareil.</p>
       <label className="edlab">URL du script Google Apps Script (se termine par /exec)</label>
       <input value={(data.config&&data.config.syncUrl)||""} onChange={e=>upd(n=>{ n.config=n.config||{}; n.config.syncUrl=e.target.value.trim(); })} placeholder="https://script.google.com/macros/s/XXXX/exec"/>
-      <p className="edhint2">{(data.config&&data.config.syncUrl)?"✅ URL renseignée. Clique « Publier » puis dépose le fichier sur GitHub : la synchronisation sera active pour tous.":"⚪ Aucune URL renseignée : mode local."}</p>
+      <p className="edhint2">{(data.config&&data.config.syncUrl)?"✅ URL renseignée. Teste la connexion ci-dessous, puis clique « Publier » et dépose le fichier sur GitHub : la synchronisation sera active pour tous.":"⚪ Aucune URL renseignée : mode local."}</p>
+      <SyncTester url={(data.config&&data.config.syncUrl)||""}/>
     </div>)}
     {bank!=="config"&&<button className="edadd" disabled={!canAdd} onClick={add}>{canAdd?"➕ Ajouter un élément":"Limite de 10 atteinte (base + supplémentaires)"}</button>}
   </div>);
@@ -9142,6 +9258,15 @@ input,select{font-family:inherit}
 .who{margin-left:auto;font-weight:600;color:#5a5470;font-size:14px}.who .cl{color:var(--blue);font-weight:700}
 .lo{background:#f0eafa;padding:9px 16px;border-radius:10px;font-weight:700;color:#6b6485;font-size:14px}
 .top.prof .lo{margin-left:auto}
+.syncw{font-size:13.5px;font-weight:800;padding:8px 13px;border-radius:11px;border:1.5px solid transparent;white-space:nowrap;transition:.15s;letter-spacing:.2px}
+button.syncw{cursor:pointer}
+button.syncw:hover{transform:translateY(-1px)}
+.syncw.off{background:#f1f5f9;color:#64748b;border-color:#e2e8f0}
+.syncw.ok{background:#e7f9ee;color:#15803d;border-color:#a7e8c0}
+.syncw.pending{background:#fff7e6;color:#b45309;border-color:#fcd9a0}
+.syncw.saving{background:#eef4ff;color:#2563eb;border-color:#c3d8fb}
+.syncw.error{background:#fee2e2;color:#dc2626;border-color:#f7b4b4}
+@media(max-width:600px){ .syncw{font-size:12px;padding:7px 10px} .who{font-size:12.5px} }
 .nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
 .nb{padding:11px 18px;border-radius:12px;background:#fff;font-weight:700;font-size:15px;color:#6b6485;box-shadow:0 4px 14px -6px rgba(80,40,120,.2)}
 .nb.on{background:var(--ink);color:#fff}
@@ -9593,6 +9718,11 @@ abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;
 .spe-card-deb-h{font-weight:800;color:var(--c);font-size:14px;margin-bottom:6px}
 .spe-card-deb{margin:0;padding-left:20px}
 .spe-card-deb li{margin:4px 0;line-height:1.4;font-size:14.5px}
+.synctest{margin-top:6px}
+.stmsg{padding:10px 14px;border-radius:10px;font-size:13.5px;line-height:1.5;margin-top:6px;font-weight:600}
+.stmsg.ok{background:#e7f9ee;color:#15803d;border:1px solid #a7e8c0}
+.stmsg.warn{background:#fff7e6;color:#b45309;border:1px solid #fcd9a0}
+.stmsg.err{background:#fee2e2;color:#dc2626;border:1px solid #f7b4b4}
 </style>
 </body>
 </html>
