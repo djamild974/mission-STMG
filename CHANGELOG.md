@@ -5,6 +5,62 @@ Fichier unique `index.html` — à déposer tel quel sur GitHub Pages.
 
 ---
 
+## Version 3.2 — juin 2026
+
+### 🎮 Améliorations de jeux
+
+**Mission dirigeant**
+- **MSDGN Terminale** : la mission passe de 4 à **6 indicateurs** —
+  💰 Trésorerie, 📈 Part de marché, 🌟 Image, 👥 Emplois, **💡 Innovation**
+  et **🌱 Responsabilité (RSE)**. Le moteur de Mission est désormais générique
+  (nombre d'indicateurs variable selon la matière).
+- **Après chaque décision** : sous les conséquences, une liste **« 📊 Variation
+  des indicateurs »** affiche, pour chaque indicateur, son nom, un emoji
+  ⬆️/⬇️/➡️ (hausse / baisse / stable) et le **pourcentage d'évolution**.
+- **Au bilan final** : une **phrase d'analyse par indicateur** explique la
+  situation atteinte (trésorerie, part de marché, image, emplois, et les
+  éventuels indicateurs supplémentaires).
+
+**Flash quiz**
+- Ajout d'une **📋 Correction détaillée** en fin de partie : pour chaque
+  question, ✅/❌, la réponse donnée et la bonne réponse ; pour les erreurs,
+  une **explication en mots simples** (réutilise l'explication « bouton magique »
+  de la notion liée + un exemple). Paragraphe de **synthèse** adapté au score.
+
+**Vrai / Faux**
+- Après chaque correction, ajout d'un **🟢 Exemple concret** simple
+  (réutilise l'exemple de la notion liée), pour ancrer la règle.
+
+### 🔠 Acronymes expliqués au survol
+- Les sigles (BFR, FRNG, EBE, CAF, TVA, PGI, RSE, QVT, GPEC, RGPD, SIG, CRM,
+  POEM, RH…) s'affichent en **info-bulle** au survol de la souris, dans les
+  définitions (cours, glossaire, bouton magique) et les retours des jeux.
+
+### 🖥️ Affichage
+- **Memory** : cartes réduites (~−50 % de hauteur) pour que toutes les lignes
+  tiennent sur un écran standard (1366×768) sans défilement coupé.
+
+---
+
+## Version 3.1 — juin 2026
+
+### 🎓 Correction explicative du jeu « Le Trieur »
+
+Le jeu **Le Trieur** affiche désormais, à la fin de chaque partie, une
+**correction détaillée** (sur le modèle déjà en place pour le jeu « Cas ») :
+
+- pour **chaque élément** : ✅/❌, la catégorie choisie par l'élève, la **bonne
+  catégorie**, et une **explication du pourquoi** (appuyée sur la définition de
+  la catégorie) ;
+- un **paragraphe de synthèse** final adapté au résultat (sans-faute / bon
+  travail / à retravailler), pour donner un retour formatif à l'élève.
+
+Fonctionne automatiquement pour les **13 matières** et tous les thèmes, sans
+ressaisie de contenu. Un champ optionnel `expl` peut être ajouté à un élément
+pour fournir une explication sur-mesure (prioritaire sur l'explication générée).
+
+---
+
 ## Version 3.0 — juin 2026
 
 ### ✨ Nouveautés majeures — les 4 enseignements spécifiques de Terminale

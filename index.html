@@ -1710,6 +1710,7 @@ missionExtra: {
 },
 
 TLE: {
+gaugeLabels: [["💰 Trésorerie","treso","#16a34a"],["📈 Part de marché","marche","#2563eb"],["🌟 Image","image","#f59e0b"],["👥 Emplois","emploi","#db2777"],["💡 Innovation","innov","#0891b2"],["🌱 Responsabilité","rse","#65a30d"]],
 intro: { html: "<h2>Bienvenue en Management, sciences de gestion et numérique 🚀</h2><p>En terminale, le programme te demande de comprendre comment une organisation <b>mobilise ses ressources et ses compétences</b>, <b>fait coopérer les individus</b> (motivation, cohésion, conflits) et <b>s'adapte aux mutations</b> du travail et du numérique, dans une logique de performance durable.</p><p><b>Exemple — Air Austral (aéroport de Gillot).</b> Pour assurer un vol Réunion–Paris, la compagnie combine des <b>ressources</b> humaines (pilotes, personnel navigant, techniciens), matérielles (avions), financières et immatérielles (réputation, sécurité). Il faut <b>coordonner</b> ces équipes, les <b>motiver</b>, gérer d'éventuels <b>conflits sociaux</b>, et intégrer le <b>numérique</b> (réservation en ligne, maintenance prédictive). On voit ici comment la gestion des ressources et des hommes conditionne la performance : c'est le cœur de la MSDGN.</p><p>Regarde la vidéo de présentation, puis lance-toi :</p><div class='vplaceholder'>🎬 <b>Vidéo d'introduction à venir</b><br/><span>Le professeur ajoutera ici une vidéo d'introduction à la MSDGN.</span></div><h2>Ton parcours en 3 thèmes</h2><ul><li><b>Les ressources et les compétences</b> : avec quoi l'organisation agit-elle (humaines, matérielles, financières…) ?</li><li><b>La cohésion et les tensions</b> : comment motiver, faire coopérer et gérer les conflits ?</li><li><b>Les mutations du travail et la RSE</b> : numérique, nouvelles formes de travail et responsabilité.</li></ul><blockquote>💡 Conseil : pense « concret » — comment ces idées se vivent vraiment dans une entreprise.</blockquote><p>Prêt·e ? Clique sur <b>🎮 Jouer</b> !</p>" },
 /* ============================================================
    MSDGN — Management, Sciences de gestion et numérique
@@ -2009,56 +2010,56 @@ mission: {
     intro:"Tu pilotes la production d'une entreprise réunionnaise de jus de fruits. Marketing, financement, organisation de la production, qualité, numérique : chaque décision engage la compétitivité. Indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟, Emplois 👥.",
     etapes:[
       {scene:"Le service commercial veut lancer immédiatement un jus letchi-gingembre « parce que c'est tendance ».", choix:[
-        {txt:"Mener d'abord une étude de marché et bâtir un compte de résultat prévisionnel", eff:{treso:-5,marche:15,image:5,emploi:0}, fb:"Démarche marketing + indicateurs de création de valeur : tu lances en connaissant les besoins ET la rentabilité attendue."},
-        {txt:"Lancer sans étude", eff:{treso:-15,marche:-5,image:-5,emploi:0}, fb:"Sans connaissance du marché ni prévision de valeur, le lancement est un pari : les invendus s'accumulent."} ]},
+        {txt:"Mener d'abord une étude de marché et bâtir un compte de résultat prévisionnel", eff:{treso:-5,marche:15,image:5,emploi:0,innov:12,rse:0}, fb:"Démarche marketing + indicateurs de création de valeur : tu lances en connaissant les besoins ET la rentabilité attendue."},
+        {txt:"Lancer sans étude", eff:{treso:-15,marche:-5,image:-5,emploi:0,innov:0,rse:0}, fb:"Sans connaissance du marché ni prévision de valeur, le lancement est un pari : les invendus s'accumulent."} ]},
       {scene:"Il faut financer une nouvelle ligne d'embouteillage à 400 000 €.", choix:[
-        {txt:"Combiner autofinancement et emprunt à long terme adapté à l'investissement", eff:{treso:-10,marche:10,image:5,emploi:5}, fb:"Un financement mixte préserve la trésorerie d'exploitation : l'investissement long se finance par des ressources longues."},
-        {txt:"Tout payer avec la trésorerie courante", eff:{treso:-25,marche:5,image:0,emploi:0}, fb:"Le BFR n'est plus couvert : la trésorerie nette plonge et les fournisseurs attendent leurs règlements."} ]},
+        {txt:"Combiner autofinancement et emprunt à long terme adapté à l'investissement", eff:{treso:-10,marche:10,image:5,emploi:5,innov:0,rse:0}, fb:"Un financement mixte préserve la trésorerie d'exploitation : l'investissement long se finance par des ressources longues."},
+        {txt:"Tout payer avec la trésorerie courante", eff:{treso:-25,marche:5,image:0,emploi:0,innov:0,rse:0}, fb:"Le BFR n'est plus couvert : la trésorerie nette plonge et les fournisseurs attendent leurs règlements."} ]},
       {scene:"Tes stocks de bouteilles vides débordent, tes fournisseurs sont désormais fiables et réactifs.", choix:[
-        {txt:"Passer en flux plus tendus avec un stock de sécurité raisonnable", eff:{treso:10,marche:5,image:0,emploi:0}, fb:"Moins de stocks immobilisés = moins de BFR. Le stock de sécurité protège des aléas du fret — île oblige."},
-        {txt:"Garder des stocks massifs « au cas où »", eff:{treso:-10,marche:0,image:0,emploi:0}, fb:"Les stocks dorment et coûtent : argent immobilisé, casse, place perdue. La logistique est aussi source de valeur."} ]},
+        {txt:"Passer en flux plus tendus avec un stock de sécurité raisonnable", eff:{treso:10,marche:5,image:0,emploi:0,innov:0,rse:12}, fb:"Moins de stocks immobilisés = moins de BFR. Le stock de sécurité protège des aléas du fret — île oblige."},
+        {txt:"Garder des stocks massifs « au cas où »", eff:{treso:-10,marche:0,image:0,emploi:0,innov:0,rse:0}, fb:"Les stocks dorment et coûtent : argent immobilisé, casse, place perdue. La logistique est aussi source de valeur."} ]},
       {scene:"Un lot présente des bouteilles mal remplies. Le client n'a encore rien remarqué.", choix:[
-        {txt:"Bloquer le lot, renforcer le contrôle qualité et corriger le processus", eff:{treso:-10,marche:5,image:15,emploi:0}, fb:"La qualité est un enjeu concurrentiel crucial : l'amélioration continue évite que le défaut se reproduise."},
-        {txt:"Livrer quand même pour tenir les délais", eff:{treso:5,marche:-15,image:-15,emploi:0}, fb:"Le défaut finit sur les réseaux sociaux : la confiance, elle, ne se rattrape pas en un lot."} ]},
+        {txt:"Bloquer le lot, renforcer le contrôle qualité et corriger le processus", eff:{treso:-10,marche:5,image:15,emploi:0,innov:12,rse:0}, fb:"La qualité est un enjeu concurrentiel crucial : l'amélioration continue évite que le défaut se reproduise."},
+        {txt:"Livrer quand même pour tenir les délais", eff:{treso:5,marche:-15,image:-15,emploi:0,innov:0,rse:0}, fb:"Le défaut finit sur les réseaux sociaux : la confiance, elle, ne se rattrape pas en un lot."} ]},
       {scene:"Un prestataire propose d'équiper la ligne de capteurs connectés reliés à ton PGI.", choix:[
-        {txt:"Investir : suivi en temps réel et automatisation des alertes (workflow)", eff:{treso:-10,marche:10,image:5,emploi:0}, fb:"Les objets connectés et l'automatisation améliorent en continu la production : moins de pertes, plus de réactivité."},
-        {txt:"Refuser : « on a toujours fait sans »", eff:{treso:5,marche:-10,image:-5,emploi:0}, fb:"Tes concurrents s'équipent : les transformations numériques de la production sont une chance… pour ceux qui les saisissent."} ]} ]},
+        {txt:"Investir : suivi en temps réel et automatisation des alertes (workflow)", eff:{treso:-10,marche:10,image:5,emploi:0,innov:12,rse:0}, fb:"Les objets connectés et l'automatisation améliorent en continu la production : moins de pertes, plus de réactivité."},
+        {txt:"Refuser : « on a toujours fait sans »", eff:{treso:5,marche:-10,image:-5,emploi:0,innov:0,rse:0}, fb:"Tes concurrents s'équipent : les transformations numériques de la production sont une chance… pour ceux qui les saisissent."} ]} ]},
   2:{ titre:"Manager à l'hôtel « Les Badamiers » (Saint-Gilles)",
     intro:"Tu encadres les équipes d'un hôtel réunionnais. Fédérer les acteurs, motiver, soigner la relation client digitale et communiquer juste : voilà tes missions. Indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟, Emplois 👥.",
     etapes:[
       {scene:"La saison a été excellente. Les salariés demandent une prime, les propriétaires veulent maximiser leur part.", choix:[
-        {txt:"Organiser la concertation et répartir équitablement les fruits de la saison", eff:{treso:-5,marche:5,image:10,emploi:5}, fb:"Les intérêts divergents se gèrent par le dialogue : un compromis équitable fédère les acteurs autour de la réussite."},
-        {txt:"Tout attribuer aux propriétaires sans discussion", eff:{treso:5,marche:-5,image:-15,emploi:-5}, fb:"Démotivation immédiate : le conflit larvé s'installera et la qualité de service s'en ressentira."} ]},
+        {txt:"Organiser la concertation et répartir équitablement les fruits de la saison", eff:{treso:-5,marche:5,image:10,emploi:5,innov:0,rse:12}, fb:"Les intérêts divergents se gèrent par le dialogue : un compromis équitable fédère les acteurs autour de la réussite."},
+        {txt:"Tout attribuer aux propriétaires sans discussion", eff:{treso:5,marche:-5,image:-15,emploi:-5,innov:0,rse:0}, fb:"Démotivation immédiate : le conflit larvé s'installera et la qualité de service s'en ressentira."} ]},
       {scene:"Tu dois réorganiser les plannings de la haute saison.", choix:[
-        {txt:"Consulter l'équipe, recueillir les contraintes, puis trancher", eff:{treso:0,marche:5,image:10,emploi:5}, fb:"Style consultatif : l'équipe adhère à une décision qu'elle a contribué à éclairer."},
-        {txt:"Imposer les plannings par affichage", eff:{treso:0,marche:0,image:-10,emploi:-5}, fb:"Style autoritaire mal vécu : absentéisme et tensions en pleine haute saison."} ]},
+        {txt:"Consulter l'équipe, recueillir les contraintes, puis trancher", eff:{treso:0,marche:5,image:10,emploi:5,innov:0,rse:0}, fb:"Style consultatif : l'équipe adhère à une décision qu'elle a contribué à éclairer."},
+        {txt:"Imposer les plannings par affichage", eff:{treso:0,marche:0,image:-10,emploi:-5,innov:0,rse:0}, fb:"Style autoritaire mal vécu : absentéisme et tensions en pleine haute saison."} ]},
       {scene:"L'équipe est compétente mais s'essouffle : routine, aucun signe de reconnaissance.", choix:[
-        {txt:"Reconnaissance publique + prime liée à la satisfaction client + perspectives d'évolution", eff:{treso:-10,marche:10,image:10,emploi:5}, fb:"Tu combines facteurs externes (prime, promotion) et internes (fierté du travail) : motivation et implication repartent."},
-        {txt:"Ne rien changer : « ils sont payés pour ça »", eff:{treso:5,marche:-10,image:-10,emploi:-5}, fb:"Sans dispositions favorisant la motivation, les meilleurs partent chez le concurrent d'en face."} ]},
+        {txt:"Reconnaissance publique + prime liée à la satisfaction client + perspectives d'évolution", eff:{treso:-10,marche:10,image:10,emploi:5,innov:0,rse:0}, fb:"Tu combines facteurs externes (prime, promotion) et internes (fierté du travail) : motivation et implication repartent."},
+        {txt:"Ne rien changer : « ils sont payés pour ça »", eff:{treso:5,marche:-10,image:-10,emploi:-5,innov:0,rse:0}, fb:"Sans dispositions favorisant la motivation, les meilleurs partent chez le concurrent d'en face."} ]},
       {scene:"La note de l'hôtel glisse à 4,1/5 en ligne et seuls 12 % des avis reçoivent une réponse.", choix:[
-        {txt:"Répondre à chaque avis, analyser les traces numériques et personnaliser l'accueil", eff:{treso:-5,marche:15,image:15,emploi:0}, fb:"La digitalisation de la relation client transforme les avis en levier : e-réputation restaurée, clients fidélisés."},
-        {txt:"Ignorer : « les avis, ça ne compte pas »", eff:{treso:0,marche:-15,image:-15,emploi:0}, fb:"Pour les voyageurs, la note EST la vitrine : la réservation file vers les hôtels mieux notés."} ]},
+        {txt:"Répondre à chaque avis, analyser les traces numériques et personnaliser l'accueil", eff:{treso:-5,marche:15,image:15,emploi:0,innov:12,rse:0}, fb:"La digitalisation de la relation client transforme les avis en levier : e-réputation restaurée, clients fidélisés."},
+        {txt:"Ignorer : « les avis, ça ne compte pas »", eff:{treso:0,marche:-15,image:-15,emploi:0,innov:0,rse:0}, fb:"Pour les voyageurs, la note EST la vitrine : la réservation file vers les hôtels mieux notés."} ]},
       {scene:"L'hôtel lance sa rénovation. Il faut l'annoncer aux salariés, aux clients et au banquier.", choix:[
-        {txt:"Adapter le message à chaque cible, en gardant une communication globale cohérente", eff:{treso:0,marche:10,image:10,emploi:0}, fb:"Réunion d'équipe, campagne clients, dossier financier (business plan) : trois cibles, trois formes, un seul discours cohérent."},
-        {txt:"Envoyer le même e-mail à tout le monde", eff:{treso:0,marche:-5,image:-10,emploi:0}, fb:"Le banquier n'a pas ses chiffres, les salariés apprennent leur sort comme des clients : on ne communique pas de la même manière avec tous les acteurs."} ]} ]},
+        {txt:"Adapter le message à chaque cible, en gardant une communication globale cohérente", eff:{treso:0,marche:10,image:10,emploi:0,innov:0,rse:0}, fb:"Réunion d'équipe, campagne clients, dossier financier (business plan) : trois cibles, trois formes, un seul discours cohérent."},
+        {txt:"Envoyer le même e-mail à tout le monde", eff:{treso:0,marche:-5,image:-10,emploi:0,innov:0,rse:0}, fb:"Le banquier n'a pas ses chiffres, les salariés apprennent leur sort comme des clients : on ne communique pas de la même manière avec tous les acteurs."} ]} ]},
   3:{ titre:"PDG de « Péi Cosmétiques » face à la société",
     intro:"Ton entreprise réunionnaise de cosmétiques naturels grandit. Éthique, égalité, données, modes de vie, territoire : la société t'observe et t'offre aussi des ressources. Indicateurs : Trésorerie 💰, Part de marché 📈, Image 🌟, Emplois 👥.",
     etapes:[
       {scene:"Un intermédiaire propose de « faciliter » un gros contrat à l'export contre une commission occulte.", choix:[
-        {txt:"Refuser et formaliser une charte éthique interne", eff:{treso:-5,marche:5,image:15,emploi:0}, fb:"L'éthique dans les affaires protège l'organisation : un contrat gagné par corruption se paie toujours plus tard."},
-        {txt:"Accepter discrètement", eff:{treso:10,marche:5,image:-25,emploi:0}, fb:"Le scandale éclate : sanctions, clients perdus, réputation détruite. L'éthique n'était pas une option."} ]},
+        {txt:"Refuser et formaliser une charte éthique interne", eff:{treso:-5,marche:5,image:15,emploi:0,innov:12,rse:12}, fb:"L'éthique dans les affaires protège l'organisation : un contrat gagné par corruption se paie toujours plus tard."},
+        {txt:"Accepter discrètement", eff:{treso:10,marche:5,image:-25,emploi:0,innov:0,rse:0}, fb:"Le scandale éclate : sanctions, clients perdus, réputation détruite. L'éthique n'était pas une option."} ]},
       {scene:"L'index égalité femmes-hommes révèle un écart de salaires injustifié de 8 %.", choix:[
-        {txt:"Corriger les écarts et publier un plan d'égalité", eff:{treso:-10,marche:5,image:10,emploi:5}, fb:"Lutter contre les discriminations est une obligation et un atout : fierté interne, attractivité externe."},
-        {txt:"Masquer les chiffres", eff:{treso:5,marche:0,image:-15,emploi:-5}, fb:"La dissimulation se découvre toujours : sanction et perte de confiance des équipes."} ]},
+        {txt:"Corriger les écarts et publier un plan d'égalité", eff:{treso:-10,marche:5,image:10,emploi:5,innov:0,rse:12}, fb:"Lutter contre les discriminations est une obligation et un atout : fierté interne, attractivité externe."},
+        {txt:"Masquer les chiffres", eff:{treso:5,marche:0,image:-15,emploi:-5,innov:0,rse:0}, fb:"La dissimulation se découvre toujours : sanction et perte de confiance des équipes."} ]},
       {scene:"Ton fichier clients intéresse un courtier en données prêt à payer cher.", choix:[
-        {txt:"Refuser : sécuriser les données et respecter le consentement (RGPD)", eff:{treso:-5,marche:5,image:10,emploi:0}, fb:"La protection des données personnelles et stratégiques est une responsabilité : la confiance des clients vaut plus que la vente du fichier."},
-        {txt:"Vendre le fichier", eff:{treso:15,marche:-10,image:-20,emploi:0}, fb:"Sanction CNIL, clients furieux : l'exploitation des données impose des responsabilités nouvelles."} ]},
+        {txt:"Refuser : sécuriser les données et respecter le consentement (RGPD)", eff:{treso:-5,marche:5,image:10,emploi:0,innov:0,rse:12}, fb:"La protection des données personnelles et stratégiques est une responsabilité : la confiance des clients vaut plus que la vente du fichier."},
+        {txt:"Vendre le fichier", eff:{treso:15,marche:-10,image:-20,emploi:0,innov:0,rse:0}, fb:"Sanction CNIL, clients furieux : l'exploitation des données impose des responsabilités nouvelles."} ]},
       {scene:"Tes clients réclament du local, du rechargeable et de la transparence sur l'origine des ingrédients.", choix:[
-        {txt:"Lancer une gamme rechargeable tracée par blockchain, en circuit court", eff:{treso:-15,marche:15,image:15,emploi:5}, fb:"Les modes de consommation s'imposent aux organisations : tu en fais un avantage concurrentiel certifié."},
-        {txt:"Ne rien changer à l'offre", eff:{treso:5,marche:-15,image:-10,emploi:0}, fb:"Le marché évolue sans toi : les nouvelles attentes de consommation profitent aux concurrents."} ]},
+        {txt:"Lancer une gamme rechargeable tracée par blockchain, en circuit court", eff:{treso:-15,marche:15,image:15,emploi:5,innov:12,rse:12}, fb:"Les modes de consommation s'imposent aux organisations : tu en fais un avantage concurrentiel certifié."},
+        {txt:"Ne rien changer à l'offre", eff:{treso:5,marche:-15,image:-10,emploi:0,innov:0,rse:0}, fb:"Le marché évolue sans toi : les nouvelles attentes de consommation profitent aux concurrents."} ]},
       {scene:"La Technopole de La Réunion te propose d'intégrer son écosystème : pépinière, chercheurs, autres entreprises de la filière.", choix:[
-        {txt:"Rejoindre l'écosystème et coopérer avec les acteurs du territoire", eff:{treso:-5,marche:10,image:10,emploi:5}, fb:"Cluster, recherche, accompagnement : le territoire fournit des ressources précieuses à qui joue collectif."},
-        {txt:"Rester isolé pour « protéger ses secrets »", eff:{treso:0,marche:-10,image:-5,emploi:0}, fb:"Seul, tu avances moins vite : les écosystèmes d'innovation font émerger les champions de demain."} ]} ]}
+        {txt:"Rejoindre l'écosystème et coopérer avec les acteurs du territoire", eff:{treso:-5,marche:10,image:10,emploi:5,innov:12,rse:0}, fb:"Cluster, recherche, accompagnement : le territoire fournit des ressources précieuses à qui joue collectif."},
+        {txt:"Rester isolé pour « protéger ses secrets »", eff:{treso:0,marche:-10,image:-5,emploi:0,innov:0,rse:-12}, fb:"Seul, tu avances moins vite : les écosystèmes d'innovation font émerger les champions de demain."} ]} ]}
 },
 docs: {
   1:[ {titre:"Compte de résultat prévisionnel — jus « Letchi Pétillant » (en k€)",
@@ -2149,32 +2150,32 @@ casExtra: {
 },
 missionExtra: {
   1:[ {scene:"Tes ventes en ligne décollent mais ton site plante régulièrement le week-end.", choix:[
-        {txt:"Migrer le site vers le cloud avec montée en charge automatique", eff:{treso:-10,marche:15,image:5,emploi:0}, fb:"L'informatique en nuage adapte la capacité aux pics : plus de ventes perdues le samedi soir."},
-        {txt:"Garder le serveur actuel", eff:{treso:5,marche:-10,image:-5,emploi:0}, fb:"Chaque panne du week-end envoie tes clients chez les concurrents : l'infrastructure n'a pas suivi le business model."} ]},
+        {txt:"Migrer le site vers le cloud avec montée en charge automatique", eff:{treso:-10,marche:15,image:5,emploi:0,innov:12,rse:0}, fb:"L'informatique en nuage adapte la capacité aux pics : plus de ventes perdues le samedi soir."},
+        {txt:"Garder le serveur actuel", eff:{treso:5,marche:-10,image:-5,emploi:0,innov:0,rse:0}, fb:"Chaque panne du week-end envoie tes clients chez les concurrents : l'infrastructure n'a pas suivi le business model."} ]},
       {scene:"Un cabinet propose une démarche PLM : repenser tes emballages pour le recyclage et la fin de vie des produits.", choix:[
-        {txt:"Engager la démarche de gestion du cycle de vie", eff:{treso:-10,marche:5,image:15,emploi:0}, fb:"Penser le produit jusqu'à sa fin de vie réduit déchets et coûts cachés : un atout durable et d'image."},
-        {txt:"Reporter indéfiniment", eff:{treso:5,marche:-5,image:-10,emploi:0}, fb:"Réglementation et attentes évoluent : le retard sur le cycle de vie des produits se paiera."} ]},
+        {txt:"Engager la démarche de gestion du cycle de vie", eff:{treso:-10,marche:5,image:15,emploi:0,innov:0,rse:12}, fb:"Penser le produit jusqu'à sa fin de vie réduit déchets et coûts cachés : un atout durable et d'image."},
+        {txt:"Reporter indéfiniment", eff:{treso:5,marche:-5,image:-10,emploi:0,innov:0,rse:0}, fb:"Réglementation et attentes évoluent : le retard sur le cycle de vie des produits se paiera."} ]},
       {scene:"Deux candidats pour piloter la nouvelle ligne : un profil expérimenté coûteux, ou un jeune technicien péi à former.", choix:[
-        {txt:"Former le jeune technicien dans le cadre de ta GPEC", eff:{treso:-5,marche:5,image:10,emploi:10}, fb:"La formation construit les compétences dont l'organisation aura durablement besoin — et ancre l'emploi local."},
-        {txt:"Ne rien anticiper et recruter dans l'urgence le moment venu", eff:{treso:-10,marche:-5,image:-5,emploi:0}, fb:"L'urgence coûte cher et fait courir un risque de compétences : la GPEC existait pour éviter ça."} ]} ],
+        {txt:"Former le jeune technicien dans le cadre de ta GPEC", eff:{treso:-5,marche:5,image:10,emploi:10,innov:0,rse:0}, fb:"La formation construit les compétences dont l'organisation aura durablement besoin — et ancre l'emploi local."},
+        {txt:"Ne rien anticiper et recruter dans l'urgence le moment venu", eff:{treso:-10,marche:-5,image:-5,emploi:0,innov:0,rse:0}, fb:"L'urgence coûte cher et fait courir un risque de compétences : la GPEC existait pour éviter ça."} ]} ],
   2:[ {scene:"Un conflit éclate entre la gouvernante et le chef de cuisine devant les équipes.", choix:[
-        {txt:"Recevoir les deux, objectiver les faits et rétablir la coopération", eff:{treso:0,marche:0,image:10,emploi:5}, fb:"Gérer le conflit tôt préserve la dynamique de groupe : les tensions non traitées contaminent toute l'équipe."},
-        {txt:"Laisser pourrir la situation", eff:{treso:0,marche:-5,image:-10,emploi:-5}, fb:"Le conflit s'étend, la cohésion s'effondre, les clients le ressentent jusque dans l'assiette."} ]},
+        {txt:"Recevoir les deux, objectiver les faits et rétablir la coopération", eff:{treso:0,marche:0,image:10,emploi:5,innov:12,rse:0}, fb:"Gérer le conflit tôt préserve la dynamique de groupe : les tensions non traitées contaminent toute l'équipe."},
+        {txt:"Laisser pourrir la situation", eff:{treso:0,marche:-5,image:-10,emploi:-5,innov:0,rse:0}, fb:"Le conflit s'étend, la cohésion s'effondre, les clients le ressentent jusque dans l'assiette."} ]},
       {scene:"Tu prépares la page « carrières » du site de l'hôtel.", choix:[
-        {txt:"Montrer les parcours réels, les valeurs et la vie d'équipe (marque employeur)", eff:{treso:-5,marche:5,image:10,emploi:5}, fb:"Une marque employeur sincère attire des candidats qui partagent la culture de l'organisation."},
-        {txt:"Publier une annonce minimale", eff:{treso:0,marche:0,image:-5,emploi:-5}, fb:"Sur un marché du travail tendu, l'organisation invisible ne reçoit pas de candidatures."} ]},
+        {txt:"Montrer les parcours réels, les valeurs et la vie d'équipe (marque employeur)", eff:{treso:-5,marche:5,image:10,emploi:5,innov:0,rse:0}, fb:"Une marque employeur sincère attire des candidats qui partagent la culture de l'organisation."},
+        {txt:"Publier une annonce minimale", eff:{treso:0,marche:0,image:-5,emploi:-5,innov:0,rse:0}, fb:"Sur un marché du travail tendu, l'organisation invisible ne reçoit pas de candidatures."} ]},
       {scene:"Un client mécontent publie une vidéo virale sur un problème de réservation.", choix:[
-        {txt:"Répondre publiquement, vite et avec une solution concrète", eff:{treso:-5,marche:5,image:15,emploi:0}, fb:"Une réponse rapide, transparente et orientée solution retourne l'opinion : l'e-réputation se gère en continu."},
-        {txt:"Faire supprimer la vidéo par menace juridique", eff:{treso:-5,marche:-10,image:-15,emploi:0}, fb:"Effet Streisand garanti : la censure fait dix fois plus de bruit que le problème initial."} ]} ],
+        {txt:"Répondre publiquement, vite et avec une solution concrète", eff:{treso:-5,marche:5,image:15,emploi:0,innov:0,rse:0}, fb:"Une réponse rapide, transparente et orientée solution retourne l'opinion : l'e-réputation se gère en continu."},
+        {txt:"Faire supprimer la vidéo par menace juridique", eff:{treso:-5,marche:-10,image:-15,emploi:0,innov:0,rse:0}, fb:"Effet Streisand garanti : la censure fait dix fois plus de bruit que le problème initial."} ]} ],
   3:[ {scene:"Ton prestataire d'emballages est soupçonné de ne pas payer correctement ses ouvriers.", choix:[
-        {txt:"Auditer le fournisseur et conditionner le contrat à des engagements vérifiables", eff:{treso:-5,marche:0,image:10,emploi:0}, fb:"La responsabilité ne s'arrête pas aux portes de l'entreprise : l'éthique s'étend à la chaîne de valeur."},
-        {txt:"Fermer les yeux tant que les prix restent bas", eff:{treso:5,marche:0,image:-15,emploi:0}, fb:"Le scandale du fournisseur rejaillira sur ta marque : l'éthique des affaires couvre toute la chaîne."} ]},
+        {txt:"Auditer le fournisseur et conditionner le contrat à des engagements vérifiables", eff:{treso:-5,marche:0,image:10,emploi:0,innov:0,rse:12}, fb:"La responsabilité ne s'arrête pas aux portes de l'entreprise : l'éthique s'étend à la chaîne de valeur."},
+        {txt:"Fermer les yeux tant que les prix restent bas", eff:{treso:5,marche:0,image:-15,emploi:0,innov:0,rse:0}, fb:"Le scandale du fournisseur rejaillira sur ta marque : l'éthique des affaires couvre toute la chaîne."} ]},
       {scene:"Une association locale te propose un partenariat de démocratie participative : faire voter les habitants sur ton futur site de production.", choix:[
-        {txt:"Organiser la concertation avec les riverains", eff:{treso:-5,marche:5,image:10,emploi:0}, fb:"Associer le territoire aux décisions prévient les conflits d'implantation et ancre l'organisation dans la société."},
-        {txt:"Passer en force", eff:{treso:5,marche:-5,image:-15,emploi:0}, fb:"Recours, blocages, image dégradée : ignorer la société coûte plus cher que la consulter."} ]},
+        {txt:"Organiser la concertation avec les riverains", eff:{treso:-5,marche:5,image:10,emploi:0,innov:0,rse:12}, fb:"Associer le territoire aux décisions prévient les conflits d'implantation et ancre l'organisation dans la société."},
+        {txt:"Passer en force", eff:{treso:5,marche:-5,image:-15,emploi:0,innov:0,rse:0}, fb:"Recours, blocages, image dégradée : ignorer la société coûte plus cher que la consulter."} ]},
       {scene:"Ton comptable te propose de « lisser » certains chiffres avant publication des comptes.", choix:[
-        {txt:"Refuser : appliquer strictement les normes comptables", eff:{treso:0,marche:0,image:10,emploi:0}, fb:"La normalisation comptable et la transparence de l'information financière fondent la confiance des partenaires."},
-        {txt:"Accepter un petit arrangement", eff:{treso:5,marche:0,image:-20,emploi:0}, fb:"Comptes maquillés = confiance détruite et sanctions : la transparence n'est pas négociable."} ]} ]
+        {txt:"Refuser : appliquer strictement les normes comptables", eff:{treso:0,marche:0,image:10,emploi:0,innov:0,rse:12}, fb:"La normalisation comptable et la transparence de l'information financière fondent la confiance des partenaires."},
+        {txt:"Accepter un petit arrangement", eff:{treso:5,marche:0,image:-20,emploi:0,innov:0,rse:0}, fb:"Comptes maquillés = confiance détruite et sanctions : la transparence n'est pas négociable."} ]} ]
 },
 ressources: [
 { cat:"methodo", type:"page", titre:"Méthode — Aborder le sujet (devoir et bac), pas à pas", desc:"Le rituel des 20 premières minutes sur un sujet type bac : contexte, questions, annexes, surlignage, verbes directeurs.", url:"",
@@ -6612,11 +6613,105 @@ function Media({m}){
 }
 
 /* ====== Bouton magique ====== */
+/* ====== HELPERS PÉDAGOGIQUES (acronymes, notions liées, bilans) ====== */
+const ACR={
+ "SWOT":"Strengths, Weaknesses, Opportunities, Threats — forces, faiblesses, opportunités, menaces",
+ "PESTEL":"Politique, Économique, Socioculturel, Technologique, Écologique, Légal (analyse de l'environnement)",
+ "BFR":"Besoin en Fonds de Roulement",
+ "FRNG":"Fonds de Roulement Net Global",
+ "EBE":"Excédent Brut d'Exploitation",
+ "CAF":"Capacité d'AutoFinancement",
+ "RCAI":"Résultat Courant Avant Impôt",
+ "TVA":"Taxe sur la Valeur Ajoutée",
+ "PGI":"Progiciel de Gestion Intégré",
+ "ERP":"Enterprise Resource Planning (progiciel de gestion intégré)",
+ "GRH":"Gestion des Ressources Humaines",
+ "GPEC":"Gestion Prévisionnelle des Emplois et des Compétences",
+ "QVT":"Qualité de Vie au Travail",
+ "RPS":"Risques PsychoSociaux",
+ "RSE":"Responsabilité Sociétale des Entreprises",
+ "CSE":"Comité Social et Économique",
+ "CRM":"Customer Relationship Management (gestion de la relation client)",
+ "GRC":"Gestion de la Relation Client",
+ "KPI":"Key Performance Indicator (indicateur clé de performance)",
+ "POEM":"Paid, Owned, Earned Media (médias payés, détenus, gagnés)",
+ "ROPO":"Research Online, Purchase Offline (se renseigner en ligne, acheter en magasin)",
+ "RGPD":"Règlement Général sur la Protection des Données",
+ "SIC":"Système d'Information Comptable",
+ "PCG":"Plan Comptable Général",
+ "SIRH":"Système d'Information des Ressources Humaines",
+ "PLM":"Product Lifecycle Management (gestion du cycle de vie du produit)",
+ "PIB":"Produit Intérieur Brut",
+ "AMAP":"Association pour le Maintien d'une Agriculture Paysanne",
+ "ETLV":"Enseignement Technologique en Langue Vivante",
+ "MSDGN":"Management, Sciences De Gestion et Numérique",
+ "SDGN":"Sciences De Gestion et Numérique",
+ "STMG":"Sciences et Technologies du Management et de la Gestion",
+ "SIG":"Systèmes d'Information de Gestion",
+ "SI":"Système d'Information",
+ "RH":"Ressources Humaines",
+ "IA":"Intelligence Artificielle",
+ "SA":"Société Anonyme",
+ "SARL":"Société À Responsabilité Limitée",
+ "SAS":"Société par Actions Simplifiée"
+};
+function Acr(text){
+  if(text==null) return text;
+  const str=String(text);
+  const rx=/([A-Z]2[A-Z]|[A-Z]{2,6})/g;
+  let m, last=0, key=0; const out=[];
+  while((m=rx.exec(str))){
+    const ac=m[1];
+    const before=str[m.index-1], after=str[m.index+ac.length];
+    const boundOk=(m.index===0||!/[A-Za-zÀ-ÿ]/.test(before||""))&&(!after||!/[A-Za-zÀ-ÿ]/.test(after));
+    if(ACR[ac]&&boundOk){
+      if(m.index>last) out.push(str.slice(last,m.index));
+      out.push(React.createElement("abbr",{key:"a"+(key++),title:ACR[ac],className:"acr"},ac));
+      last=m.index+ac.length;
+    }
+  }
+  if(last<str.length) out.push(str.slice(last));
+  return out.length>1?out:str;
+}
+function _norm(s){return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9 ]/g," ");}
+const _STOP=new Set("le la les un une des de du dans et ou que qui pour par sur sous en est sont son sa ses ces cet cette il elle on plus moins entre vers avec sans selon aux comme tout tous toute lorsque quand dont leur leurs aussi mais donc afin chaque pas non ils font fait peut etre une".split(" "));
+function _words(s){return _norm(s).split(/\s+/).filter(w=>w.length>=3&&!_STOP.has(w));}
+function relatedNotion(D,theme,text){
+  if(!D||!D.notions) return null;
+  const tw=new Set(_words(text)); if(!tw.size) return null;
+  const ntext=_norm(text);
+  let best=null,bestScore=0;
+  D.notions.forEach(n=>{
+    if(theme&&n.theme!==theme) return;
+    const nterm=_norm(n.terme||"");
+    const nw=_words(n.terme||"");
+    let sc=0; nw.forEach(w=>{ if(tw.has(w)) sc++; });
+    // bonus si le terme de la notion (ou un mot signifiant) apparaît dans le texte
+    nw.forEach(w=>{ if(w.length>=4 && ntext.indexOf(w)>=0) sc+=1; });
+    if(sc>bestScore){bestScore=sc;best=n;}
+  });
+  return bestScore>=1?best:null;
+}
+function gaugeName(label){ return String(label).split(" ").slice(1).join(" ")||String(label); }
+function gaugeSentence(key,name,val){
+  const lvl = val>=70?2 : val>=45?1 : 0;
+  const T={
+   treso:["La trésorerie est dans le rouge : l'entreprise manque de liquidités, sa survie est menacée.","La trésorerie est correcte : l'entreprise tient ses engagements, sans grande marge de sécurité.","La trésorerie est solide : l'entreprise dispose de liquidités pour investir sereinement."],
+   marche:["La part de marché s'est effondrée : l'entreprise perd du terrain face à la concurrence.","La part de marché se maintient : la position commerciale est stable.","La part de marché progresse nettement : l'entreprise gagne des clients et s'impose."],
+   image:["L'image est dégradée : la réputation et la confiance des parties prenantes sont entamées.","L'image est convenable : la réputation est préservée, sans être un atout fort.","L'image est excellente : la marque inspire confiance et attire clients et talents."],
+   emploi:["L'emploi est fragilisé : postes menacés et climat social tendu.","L'emploi est stable : les effectifs et le climat social sont préservés.","L'emploi est dynamique : l'entreprise recrute, fidélise, et le climat social est bon."],
+   innov:["L'innovation est en panne : l'offre vieillit et se banalise face aux concurrents.","L'innovation est modérée : quelques améliorations, mais pas de vraie rupture.","L'innovation est forte : l'entreprise se démarque par des produits et des procédés nouveaux."],
+   rse:["La responsabilité (RSE) est négligée : risques éthiques, sociaux et environnementaux.","La responsabilité (RSE) est prise en compte a minima.","La responsabilité (RSE) est exemplaire : démarche éthique, sociale et environnementale assumée."]
+  };
+  if(T[key]) return T[key][lvl];
+  return lvl===2?(name+" est à un très bon niveau."):lvl===1?(name+" est à un niveau correct."):(name+" est à un niveau préoccupant.");
+}
+
 function Magic({n}){
   const [o,setO]=useState(false);
   return (<div className="magic">
     <button className={"mbtn"+(o?" on":"")} onClick={()=>setO(!o)}><span className="spk">✨</span>{o?"Masquer l'explication simple":"Bouton magique : explique simplement"}</button>
-    {o&&(<div className="mbox"><div className="mlab">💡 En version simple</div><p>{n.simple}</p><div className="mex">🟢 Exemple : {n.ex}</div></div>)}
+    {o&&(<div className="mbox"><div className="mlab">💡 En version simple</div><p>{Acr(n.simple)}</p><div className="mex">🟢 Exemple : {Acr(n.ex)}</div></div>)}
   </div>);
 }
 
@@ -7046,22 +7141,41 @@ function Flash({theme,head,onDone,D}){
   const [qs]=useState(()=>shufQCM(D.flash[theme]));
   const [i,setI]=useState(0); const [score,setScore]=useState(0); const [combo,setCombo]=useState(0);
   const [t,setT]=useState(10); const [picked,setPicked]=useState(null); const [done,setDone]=useState(false);
+  const [log,setLog]=useState([]);
   const q=qs[i];
   useEffect(()=>{ if(done||picked!==null) return; if(t<=0){ choose(-1); return; }
     const id=setTimeout(()=>setT(x=>x-1),1000); return ()=>clearTimeout(id); },[t,picked,done]);
   const choose=(idx)=>{ if(picked!==null) return; setPicked(idx);
     const good=idx===q.c; if(good){ setScore(s=>s+1); setCombo(c=>c+1);} else setCombo(0);
+    setLog(L=>[...L,{q:q.q,chosen:idx>=0?q.o[idx]:"(temps écoulé)",correct:q.o[q.c],ok:good}]);
     setTimeout(()=>{ if(i+1>=qs.length){setDone(true);} else {setI(i+1);setPicked(null);setT(10);} },700); };
-  if(done) return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone}/></div>;
+  if(done){
+    const good=log.filter(e=>e.ok).length;
+    const concl = (good===log.length)
+      ? "Sans-faute ! Tu as su retrouver la bonne réponse à chaque fois : tes notions sont solides. C'est exactement le réflexe attendu à l'examen."
+      : (good>=Math.ceil(log.length/2))
+      ? "Bon travail : la majorité de tes réponses sont justes. Concentre-toi sur les questions manquées ci-dessous et relis l'explication associée."
+      : "À retravailler : plusieurs réponses étaient incorrectes. Reprends le cours et les définitions, puis observe ci-dessous la bonne réponse et son explication.";
+    const recap=(<div className={"fb "+(good===log.length?"good":"no")} style={{textAlign:"left"}}>
+      <strong>📋 Correction détaillée</strong>
+      {log.map((e,k)=>{ if(e.ok) return (<p key={k} style={{margin:"8px 0"}}>✅ <b>{Acr(e.q)}</b> — bonne réponse : « {Acr(e.correct)} ».</p>);
+        const rel=relatedNotion(D,theme,e.correct+" "+e.q);
+        return (<p key={k} style={{margin:"8px 0"}}>❌ <b>{Acr(e.q)}</b> — tu as répondu « {Acr(e.chosen)} », or la bonne réponse est « {Acr(e.correct)} ».<br/>
+          <span style={{opacity:.85}}>👉 {rel?Acr(rel.simple):("La bonne réponse était « "+e.correct+" ».")}</span>
+          {rel&&rel.ex?<span style={{opacity:.85}}><br/>🟢 Exemple : {Acr(rel.ex)}</span>:null}</p>); })}
+      <p style={{marginTop:10}}><b>En résumé : </b>{concl}</p>
+    </div>);
+    return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone} recap={recap}/></div>;
+  }
   return (<div className="game">{head}
     <div className="flash-bar"><div className="combo">🔥 Combo ×{combo}</div>
       <div className="timer"><div className="tfill" style={{width:(t/10*100)+"%",background:t<=3?"#ef4444":"#f59e0b"}}/></div>
       <div className="qn">{i+1}/{qs.length}</div></div>
-    <div className="flash-q">{q.q}</div>
+    <div className="flash-q">{Acr(q.q)}</div>
     <Media m={q.media}/>
     <div className="opts">{q.o.map((o,idx)=>{ let c="opt";
       if(picked!==null){ if(idx===q.c)c+=" right"; else if(idx===picked)c+=" bad"; }
-      return <button key={idx} className={c} onClick={()=>choose(idx)}>{o}</button>; })}</div>
+      return <button key={idx} className={c} onClick={()=>choose(idx)}>{Acr(o)}</button>; })}</div>
   </div>);
 }
 
@@ -7073,15 +7187,17 @@ function VraiFaux({theme,head,onDone,D}){
   const ans=(v)=>{ if(picked!==null) return; setPicked(v); if(v===q.v) setScore(s=>s+1); };
   const next=()=>{ if(i+1>=qs.length) setDone(true); else {setI(i+1);setPicked(null);} };
   if(done) return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone}/></div>;
+  const exemple = q.ex || (function(){ const r=relatedNotion(D,theme,q.p); return r?r.ex:null; })();
   return (<div className="game">{head}
     <div className="qn r">{i+1}/{qs.length}</div>
-    <div className="vf-card">« {q.p} »</div>
+    <div className="vf-card">« {Acr(q.p)} »</div>
     <Media m={q.media}/>
     <div className="vf-btns">
       <button className={"vf v"+(picked!==null&&q.v===true?" right":"")+(picked===true&&q.v!==true?" bad":"")} onClick={()=>ans(true)} disabled={picked!==null}>✓ VRAI</button>
       <button className={"vf f"+(picked!==null&&q.v===false?" right":"")+(picked===false&&q.v!==false?" bad":"")} onClick={()=>ans(false)} disabled={picked!==null}>✗ FAUX</button>
     </div>
-    {picked!==null&&(<div className={"fb "+(picked===q.v?"good":"no")}><strong>{picked===q.v?"✅ Exact !":"❌ Raté."}</strong><p>{q.why}</p>
+    {picked!==null&&(<div className={"fb "+(picked===q.v?"good":"no")}><strong>{picked===q.v?"✅ Exact !":"❌ Raté."}</strong><p>{Acr(q.why)}</p>
+      {exemple&&<div className="mex">🟢 Exemple concret : {Acr(exemple)}</div>}
       <button className="next" onClick={next}>{i+1>=qs.length?"Voir mon score":"Suivant →"}</button></div>)}
   </div>);
 }
@@ -7105,7 +7221,7 @@ function Intrus({theme,head,onDone,D}){
     <div className="intrus-grid">{q.liste.map((el,idx)=>{ let c="iel";
       if(picked!==null){ if(idx===q.intrus)c+=" right"; else if(idx===picked)c+=" bad"; }
       return <button key={idx} className={c} onClick={()=>pick(idx)}>{el}</button>; })}</div>
-    {picked!==null&&(<div className={"fb "+(picked===q.intrus?"good":"no")}><strong>{picked===q.intrus?"✅ Bien vu !":"❌ Ce n'était pas lui."}</strong><p>{q.why}</p>
+    {picked!==null&&(<div className={"fb "+(picked===q.intrus?"good":"no")}><strong>{picked===q.intrus?"✅ Bien vu !":"❌ Ce n'était pas lui."}</strong><p>{Acr(q.why)}</p>
       <button className="next" onClick={next}>{i+1>=qs.length?"Voir mon score":"Suivant →"}</button></div>)}
   </div>);
 }
@@ -7134,14 +7250,14 @@ function Cas({theme,head,onDone,D}){
       <strong>📋 Bilan de tes décisions</strong>
       {log.map((e,k)=>(<p key={k} style={{margin:"8px 0"}}>
         <b>Situation {k+1} — </b>{e.ok?"✅ ":"❌ "}tu as choisi « {e.chosen} ».{e.ok?"":(" La décision la plus pertinente était « "+e.correct+" ».")}<br/>
-        <span style={{opacity:.85}}>Conséquence : {e.why}</span></p>))}
+        <span style={{opacity:.85}}>Conséquence : {Acr(e.why)}</span></p>))}
       <p style={{marginTop:10}}><b>En résumé : </b>{concl}</p>
     </div>);
     return <div className="game">{head}<Result score={score} total={qs.length} onDone={onDone} recap={recap}
       extra={(!ext&&extras.length>0)&&(<button className="more" onClick={extend}>➕ Cas supplémentaires (jusqu'à 10)</button>)}/></div>;
   }
   return (<div className="game">{head}
-    <div className="case"><div className="ctag">{tag}</div><Media m={q.media}/><p className="ctxt">{q.cas}</p><p className="cq">{q.q}</p></div>
+    <div className="case"><div className="ctag">{tag}</div><Media m={q.media}/><p className="ctxt">{q.cas}</p><p className="cq">{Acr(q.q)}</p></div>
     <div className="opts">{q.o.map((o,idx)=>{ let c="opt";
       if(picked!==null){ if(idx===q.c)c+=" right"; else if(idx===picked)c+=" bad"; }
       return <button key={idx} className={c} onClick={()=>choose(idx)}>{o}</button>; })}</div>
@@ -7155,20 +7271,27 @@ function Cas({theme,head,onDone,D}){
 /* ====== JEU 7 : MISSION DIRIGEANT (simulation) ====== */
 function Mission({theme,head,onDone,D}){
   const sim=D.mission[theme];
+  const gauges=(D.gaugeLabels)||[["💰 Trésorerie","treso","#16a34a"],["📈 Part de marché","marche","#2563eb"],["🌟 Image","image","#f59e0b"],["👥 Emplois","emploi","#db2777"]];
+  const keys=gauges.map(g=>g[1]);
+  const init=()=>{ const o={}; keys.forEach(k=>o[k]=50); return o; };
   const [etapes,setEtapes]=useState(()=>[...sim.etapes]);
   const [step,setStep]=useState(0);
-  const [stats,setStats]=useState({treso:50,marche:50,image:50,emploi:50});
-  const [fb,setFb]=useState(null); const [done,setDone]=useState(false);
+  const [stats,setStats]=useState(init);
+  const [fb,setFb]=useState(null); const [delta,setDelta]=useState(null); const [done,setDone]=useState(false);
   const extras=(D.missionExtra&&D.missionExtra[theme])||[];
   const [ext,setExt]=useState(false);
-  const extend=()=>{ const start=etapes.length; setEtapes(es=>[...es,...extras].slice(0,10)); setExt(true); setDone(false); setStep(start); setFb(null); };
+  const extend=()=>{ const start=etapes.length; setEtapes(es=>[...es,...extras].slice(0,10)); setExt(true); setDone(false); setStep(start); setFb(null); setDelta(null); };
   const clamp=v=>Math.max(0,Math.min(100,v));
   const decide=(ch)=>{ if(fb) return;
-    setStats(s=>({treso:clamp(s.treso+ch.eff.treso),marche:clamp(s.marche+ch.eff.marche),image:clamp(s.image+ch.eff.image),emploi:clamp(s.emploi+ch.eff.emploi)}));
-    setFb(ch.fb); };
-  const next=()=>{ setFb(null); if(step+1>=etapes.length) setDone(true); else setStep(step+1); };
-  const total=Math.round((stats.treso+stats.marche+stats.image+stats.emploi)/4);
-  const gauges=(D.gaugeLabels)||[["💰 Trésorerie","treso","#16a34a"],["📈 Part de marché","marche","#2563eb"],["🌟 Image","image","#f59e0b"],["👥 Emplois","emploi","#db2777"]];
+    const eff=ch.eff||{};
+    const variations=gauges.map(([lab,k,c])=>{ const from=stats[k]; const to=clamp(from+(eff[k]||0));
+      const diff=to-from; const pct= from>0?Math.round(diff/from*100) : (to>0?100:0);
+      return {k,c,name:gaugeName(lab),emo:lab.split(" ")[0],from,to,diff,pct}; });
+    const ns={}; variations.forEach(v=>ns[v.k]=v.to); setStats(ns);
+    setDelta(variations); setFb(ch.fb);
+  };
+  const next=()=>{ setFb(null); setDelta(null); if(step+1>=etapes.length) setDone(true); else setStep(step+1); };
+  const total=Math.round(keys.reduce((s,k)=>s+stats[k],0)/keys.length);
   if(done){
     const _vd=(D.verdict)||["Entreprise florissante ! Tes choix stratégiques ont porté leurs fruits 🏆","Entreprise stable. Des décisions correctes, à affiner. 👍","Entreprise fragilisée. Reprends le cours et retente tes choix. 💪"];
     const verdict= total>=70?_vd[0] : total>=50?_vd[1] : _vd[2];
@@ -7176,6 +7299,7 @@ function Mission({theme,head,onDone,D}){
       <div className="res"><div className="medal">{total>=70?"🏆":total>=50?"📊":"💪"}</div>
         <h2>Bilan : {total}/100</h2>
         <div className="gauges">{gauges.map(([lab,k,c])=>(<div key={k} className="gauge"><span>{lab}</span><div className="gbar"><div className="gfill" style={{width:stats[k]+"%",background:c}}/></div><b>{stats[k]}</b></div>))}</div>
+        <div className="mbilan">{gauges.map(([lab,k,c])=>(<div key={k} className="mbi"><span>{lab.split(" ")[0]}</span><span><b style={{color:c}}>{gaugeName(lab)} ({stats[k]}%)</b> — {gaugeSentence(k,gaugeName(lab),stats[k])}</span></div>))}</div>
         <p>{verdict}</p>
         {(!ext&&extras.length>0)&&(<button className="more" onClick={extend}>➕ Décisions supplémentaires (jusqu'à 10)</button>)}
         <button className="cta sm" onClick={()=>onDone(total)}>Continuer</button></div>
@@ -7184,11 +7308,15 @@ function Mission({theme,head,onDone,D}){
   const e=etapes[step];
   return (<div className="game">{head}
     <div className="mission-top"><div className="mtitle">👑 {sim.titre}</div>
-      <div className="mgauges">{gauges.map(([lab,k,c])=>(<div key={k} className="mg"><span className="mgemo">{lab.split(" ")[0]}</span><span className="mgname">{lab.split(" ").slice(1).join(" ")}</span><div className="mbar"><div className="mfill" style={{width:stats[k]+"%",background:c}}/></div><b className="mgpct" style={{color:c}}>{stats[k]}%</b></div>))}</div></div>
-    {step===0&&!fb&&<p className="mintro">{sim.intro}</p>}
-    <div className="scene"><div className="stag">Décision {step+1}/{etapes.length}</div><Media m={e.media}/><p>{e.scene}</p></div>
-    {!fb?(<div className="opts">{e.choix.map((ch,idx)=>(<button key={idx} className="opt big" onClick={()=>decide(ch)}>{ch.txt}</button>))}</div>)
-      :(<div className="fb good"><strong>Conséquences</strong><p>{fb}</p><button className="next" onClick={next}>{step+1>=etapes.length?"Voir le bilan":"Décision suivante →"}</button></div>)}
+      <div className="mgauges">{gauges.map(([lab,k,c])=>(<div key={k} className="mg"><span className="mgemo">{lab.split(" ")[0]}</span><span className="mgname">{gaugeName(lab)}</span><div className="mbar"><div className="mfill" style={{width:stats[k]+"%",background:c}}/></div><b className="mgpct" style={{color:c}}>{stats[k]}%</b></div>))}</div></div>
+    {step===0&&!fb&&<p className="mintro">{Acr(sim.intro)}</p>}
+    <div className="scene"><div className="stag">Décision {step+1}/{etapes.length}</div><Media m={e.media}/><p>{Acr(e.scene)}</p></div>
+    {!fb?(<div className="opts">{e.choix.map((ch,idx)=>(<button key={idx} className="opt big" onClick={()=>decide(ch)}>{Acr(ch.txt)}</button>))}</div>)
+      :(<div className="fb good"><strong>Conséquences</strong><p>{Acr(fb)}</p>
+        {delta&&(<div className="mvar"><div className="mvh">📊 Variation des indicateurs</div>
+          <ul>{delta.map(v=>{ const e2=v.diff>0?"⬆️":v.diff<0?"⬇️":"➡️"; const col=v.diff>0?"#16a34a":v.diff<0?"#dc2626":"#64748b";
+            const sign=v.pct>0?"+":""; return (<li key={v.k}><span>{e2}</span><span className="mvname">{v.name}</span><span className="mvpct" style={{color:col}}>{v.diff===0?"= 0 %":(sign+v.pct+" %")}</span></li>); })}</ul></div>)}
+        <button className="next" onClick={next}>{step+1>=etapes.length?"Voir le bilan":"Décision suivante →"}</button></div>)}
   </div>);
 }
 
@@ -7210,11 +7338,11 @@ function Docs({theme,head,onDone,D}){
       <div className="doctxt">{String(doc.texte||"").split("\n").map((l,li)=><p key={li}>{l}</p>)}</div>
       {doc.source&&<div className="docsrc">Source : {doc.source}</div>}
     </div>
-    <p className="cq">{q.q}</p>
+    <p className="cq">{Acr(q.q)}</p>
     <div className="opts">{q.o.map((o,idx)=>{ let c="opt";
       if(picked!==null){ if(idx===q.c)c+=" right"; else if(idx===picked)c+=" bad"; }
       return <button key={idx} className={c} onClick={()=>choose(idx)}>{o}</button>; })}</div>
-    {picked!==null&&(<div className={"fb "+(picked===q.c?"good":"no")}><strong>{picked===q.c?"\u2705 Bonne lecture !":"\u274c Relis le document."}</strong><p>{q.why}</p>
+    {picked!==null&&(<div className={"fb "+(picked===q.c?"good":"no")}><strong>{picked===q.c?"\u2705 Bonne lecture !":"\u274c Relis le document."}</strong><p>{Acr(q.why)}</p>
       <button className="next" onClick={next}>{i+1>=flat.length?"Voir mon score":"Question suivante →"}</button></div>)}
   </div>);
 }
@@ -7229,7 +7357,7 @@ function Cours({subject}){
     <div className="theme-tabs">{TH.map(t=><button key={t.n} className={theme===t.n?"tt on":"tt"} style={{"--c":t.color}} onClick={()=>setTheme(t.n)}>Thème {t.n}</button>)}</div>
     <p className="intro">Clique le <span className="sp">bouton magique ✨</span> sous chaque notion pour la version simple + un exemple réunionnais.</p>
     <div className="ngrid">{list.map(n=>(<div key={n.id} className="ncard">
-      <h3>{n.terme}</h3><div className="alab">🎓 Définition académique</div><p className="atxt">{n.aca}</p><Magic n={n}/>
+      <h3>{Acr(n.terme)}</h3><div className="alab">🎓 Définition académique</div><p className="atxt">{Acr(n.aca)}</p><Magic n={n}/>
     </div>))}</div>
   </div>);
 }
@@ -7256,7 +7384,7 @@ function Lex({subject}){
     <div className="theme-tabs"><button className={theme===0?"tt on":"tt"} style={{"--c":"#475569"}} onClick={()=>setTheme(0)}>Tous</button>
       {TH.map(t=><button key={t.n} className={theme===t.n?"tt on":"tt"} style={{"--c":t.color}} onClick={()=>setTheme(t.n)}>Thème {t.n}</button>)}</div>
     <input className="search" placeholder="Rechercher un mot…" value={s} onChange={e=>setS(e.target.value)}/>
-    <div className="lex">{list.map(n=>(<div key={n.id} className="litem"><div className="lterm">{n.terme}</div><p className="ldef">{n.aca}</p><Magic n={n}/></div>))}</div>
+    <div className="lex">{list.map(n=>(<div key={n.id} className="litem"><div className="lterm">{Acr(n.terme)}</div><p className="ldef">{Acr(n.aca)}</p><Magic n={n}/></div>))}</div>
   </div>);
 }
 
@@ -7918,14 +8046,23 @@ input,select{font-family:inherit}
 .chip2.ok{background:#e7f7ec;color:var(--green)}.chip2.no{background:#fee2e2;color:#dc2626}
 
 /* MEMORY */
-.mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.mcard{aspect-ratio:1;border-radius:14px;position:relative;background:linear-gradient(135deg,#48dbfb,#1dd1a1);color:#fff;font-weight:700;font-size:clamp(13px,1.5vw,22px);transition:.2s;perspective:600px}
-.mcard .mc-front{font-size:clamp(28px,3vw,48px);display:flex;align-items:center;justify-content:center;height:100%}
-.mcard .mc-back{display:none;padding:clamp(8px,1vw,16px);line-height:1.35}
+.mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.mcard{aspect-ratio:2.3/1;border-radius:10px;position:relative;background:linear-gradient(135deg,#48dbfb,#1dd1a1);color:#fff;font-weight:700;font-size:clamp(10px,1.1vw,14px);transition:.2s;perspective:600px}
+.mcard .mc-front{font-size:clamp(18px,2vw,26px);display:flex;align-items:center;justify-content:center;height:100%}
+.mcard .mc-back{display:none;padding:clamp(3px,.5vw,8px);line-height:1.2}
 .mcard.up{background:#fff;border:2px solid var(--c3);color:var(--ink)}
 .mcard.up .mc-front{display:none}.mcard.up .mc-back{display:flex;align-items:center;justify-content:center;height:100%}
 .mcard.done{background:#e7f7ec;border-color:#bce8c9;color:var(--green)}
-@media(max-width:560px){.mem-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.mem-grid{grid-template-columns:repeat(3,1fr);gap:6px}.mcard{aspect-ratio:2/1}}
+abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;font-weight:600;border:none}
+.mvar{margin:10px 0 4px;background:#f6f8fb;border:1px solid #e3e9f2;border-radius:10px;padding:8px 10px}
+.mvar .mvh{font-weight:700;font-size:.82rem;color:#475569;margin-bottom:4px}
+.mvar ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px}
+.mvar li{font-size:.84rem;display:flex;align-items:center;gap:5px}
+.mvar .mvname{color:#334155}
+.mvar .mvpct{font-weight:700}
+.mbilan{text-align:left;margin:10px 0;display:grid;gap:6px}
+.mbilan .mbi{font-size:.86rem;display:flex;gap:7px;align-items:flex-start;line-height:1.3}
 
 /* FLASH */
 .flash-bar{display:flex;align-items:center;gap:12px;margin-bottom:16px}
