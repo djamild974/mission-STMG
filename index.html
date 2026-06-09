@@ -6657,22 +6657,22 @@ profils: [
    branche:"La gestion, la comptabilité et la finance",
    txt:"Tu aimes les chiffres, la précision et le travail bien rangé. Les métiers de la comptabilité, de la gestion et de la finance sont faits pour des personnes fiables et méthodiques comme toi.",
    formations:["BTS Comptabilité et Gestion (CG)","BUT Gestion des Entreprises et des Administrations (GEA)","BUT Gestion, Comptabilité et Finance","DCG puis DSCG (expertise comptable)","BTS Gestion de la PME"],
-   metiers:["compta","gestionnaire_paie","controleur_gestion","assistant_pme","banque_conseiller","auditeur"] },
+   metiers:["compta","gestionnaire_paie","controleur_gestion","assistant_pme","banque_conseiller","auditeur","tresorier","assistant_fiscaliste"] },
  { dims:["COM"], titre:"Profil Commerce & Vente", emo:"🤝",
    branche:"Le commerce, la vente et la relation client",
    txt:"Tu es à l'aise avec les gens, tu aimes convaincre et tu n'as pas peur de te lancer. Le commerce et la vente récompensent ton énergie et ton sens du contact.",
    formations:["BTS Management Commercial Opérationnel (MCO)","BTS Négociation et Digitalisation de la Relation Client (NDRC)","BUT Techniques de Commercialisation (TC)","Licence pro Commerce/Vente","Écoles de commerce (via bachelor)"],
-   metiers:["commercial","chef_rayon","responsable_magasin","conseiller_vente","chargé_clientele","negociateur_immo"] },
+   metiers:["commercial","chef_rayon","responsable_magasin","conseiller_vente","chargé_clientele","negociateur_immo","conseiller_immo","e_commerce_manager"] },
  { dims:["COMM","COM"], titre:"Profil Marketing & Communication", emo:"🎨",
    branche:"Le marketing, la publicité et la communication",
    txt:"Tu es créatif, tu aimes t'exprimer et mettre les choses en valeur. Le marketing et la communication te permettront d'imaginer des campagnes et de faire vivre des marques.",
    formations:["BTS Communication","BUT Information-Communication","BUT Techniques de Commercialisation (option marketing)","Licence pro Marketing digital","Écoles de communication"],
-   metiers:["chargé_com","community_manager","chef_produit","assistant_marketing","chargé_evenementiel","graphiste_com"] },
+   metiers:["chargé_com","community_manager","chef_produit","assistant_marketing","chargé_evenementiel","graphiste_com","trafic_manager","charge_crm"] },
  { dims:["NUM"], titre:"Profil Numérique & Données", emo:"💻",
    branche:"Le numérique, les systèmes d'information et la data",
    txt:"La technologie te passionne et tu aimes résoudre des problèmes logiques. Les métiers du numérique et de la gestion des données offrent énormément de débouchés.",
    formations:["BTS Services Informatiques aux Organisations (SIO)","BUT Informatique","BUT Métiers du Multimédia et de l'Internet (MMI)","Licence pro Web/Data","Écoles du numérique"],
-   metiers:["technicien_si","webmaster","data_analyst_jr","support_info","developpeur_jr","chargé_digital"] },
+   metiers:["technicien_si","webmaster","data_analyst_jr","support_info","developpeur_jr","chargé_digital","charge_seo","e_commerce_manager"] },
  { dims:["RH"], titre:"Profil Ressources Humaines & Management", emo:"👥",
    branche:"Les ressources humaines et le management d'équipe",
    txt:"Tu aimes le contact humain, écouter et faire grandir les autres. Les métiers des ressources humaines et de l'encadrement sont faits pour les personnes à l'écoute comme toi.",
@@ -6692,7 +6692,7 @@ profils: [
    branche:"La gestion administrative, l'organisation et la logistique",
    txt:"Tu es la personne fiable sur qui on peut compter : tu planifies, tu coordonnes, tu fais tourner les choses. Les métiers de l'organisation et de la logistique ont besoin de profils rigoureux.",
    formations:["BTS Support à l'Action Managériale (SAM)","BTS Gestion des Transports et Logistique Associée (GTLA)","BUT GEA","BUT Gestion Logistique et Transport (GLT)","Licence pro Logistique"],
-   metiers:["assistant_pme","assistant_manager","gestionnaire_logistique","agent_administratif","chef_projet_jr","responsable_equipe"] }
+   metiers:["assistant_pme","assistant_manager","gestionnaire_logistique","agent_administratif","chef_projet_jr","responsable_equipe","resp_logistique","gestionnaire_public"] }
 ],
 
 /* --- Annuaire des métiers (≈40), classés par spécialité/branche --- */
@@ -6710,7 +6710,11 @@ familles: [
    {id:"banque_conseiller", nom:"Conseiller bancaire", desc:"Le conseiller en banque accompagne les clients : il gère leurs comptes, propose des crédits, des placements et des assurances. Il mêle chiffres et relation client.",
      taches:["Recevoir les clients et analyser leurs besoins","Proposer des produits (épargne, crédit, carte)","Étudier des dossiers de prêt","Suivre et fidéliser un portefeuille de clients"]},
    {id:"gestionnaire_logistique", nom:"Gestionnaire logistique", desc:"Il pilote les flux de marchandises : commandes, stocks, livraisons. Son objectif : que le bon produit arrive au bon endroit, au bon moment, au meilleur coût. Crucial sur une île comme La Réunion.",
-     taches:["Suivre les niveaux de stock","Passer et suivre les commandes fournisseurs","Organiser les expéditions et livraisons","Optimiser les coûts de transport"]} ]},
+     taches:["Suivre les niveaux de stock","Passer et suivre les commandes fournisseurs","Organiser les expéditions et livraisons","Optimiser les coûts de transport"]},
+   {id:"assistant_fiscaliste", nom:"Assistant fiscaliste", desc:"Spécialiste des impôts de l'entreprise, il prépare les déclarations fiscales et veille au respect des règles. Un métier précis, à la croisée du droit et de la comptabilité.",
+     taches:["Préparer les déclarations d'impôts","Suivre les évolutions de la réglementation","Calculer les montants dus","Conseiller sur les obligations fiscales"]},
+   {id:"tresorier", nom:"Gestionnaire de trésorerie", desc:"Il surveille l'argent disponible de l'entreprise au jour le jour : il s'assure qu'elle peut payer ses factures et place l'argent quand il y en a trop. Le gardien des liquidités.",
+     taches:["Suivre les entrées et sorties d'argent","Prévoir les besoins de trésorerie","Gérer les relations avec les banques","Placer les excédents de liquidités"]} ]},
  { nom:"Commerce, vente & relation client", emo:"🤝", color:"#e11d48",
    metiers:[
    {id:"commercial", nom:"Commercial / Attaché commercial", desc:"Le commercial vend les produits ou services de l'entreprise. Il prospecte de nouveaux clients, négocie et conclut des contrats. Un métier d'action, où la rémunération suit souvent les résultats.",
@@ -6792,7 +6796,57 @@ familles: [
    {id:"franchisé", nom:"Franchisé / Gérant d'enseigne", desc:"Il ouvre et dirige un commerce sous une marque connue (franchise). Il bénéficie du nom et des méthodes de l'enseigne, mais gère son magasin comme un véritable patron.",
      taches:["Ouvrir et aménager le point de vente","Recruter et animer l'équipe","Appliquer les méthodes de l'enseigne","Piloter le chiffre d'affaires"]},
    {id:"assistant_pme", nom:"Assistant de PME polyvalent", desc:"Dans une petite entreprise, il touche à tout : accueil, devis, factures, paie, fournisseurs. Un poste idéal pour apprendre tous les aspects de la gestion d'une entreprise.",
-     taches:["Gérer l'accueil et le courrier","Établir devis et factures","Suivre fournisseurs et clients","Préparer des éléments de paie et de compta"]} ]}
+     taches:["Gérer l'accueil et le courrier","Établir devis et factures","Suivre fournisseurs et clients","Préparer des éléments de paie et de compta"]} ]},
+{ nom:"Tourisme, hôtellerie & événementiel", emo:"🏝️", color:"#0891b2",
+   metiers:[
+   {id:"agent_voyage", nom:"Conseiller voyage / Agent de tourisme", desc:"Il conçoit et vend des séjours et des circuits adaptés aux envies des clients. À La Réunion, terre de tourisme, il valorise les randonnées, le lagon, les visites et la culture créole.",
+     taches:["Conseiller les clients sur leurs voyages","Construire des devis et réserver (vols, hôtels)","Vendre des séjours et des excursions","Gérer les imprévus pendant les voyages"]},
+   {id:"receptionniste_hotel", nom:"Réceptionniste en hôtellerie", desc:"Première personne que le client rencontre à l'hôtel, il accueille, renseigne, gère les arrivées et départs, et veille à un séjour agréable. Sens du contact et plusieurs langues sont des atouts.",
+     taches:["Accueillir et enregistrer les clients","Gérer les réservations et le planning des chambres","Renseigner sur la région et les services","Encaisser et établir les factures"]},
+   {id:"responsable_hebergement", nom:"Responsable d'hébergement", desc:"Il dirige le service des chambres d'un hôtel ou d'une résidence : équipe, qualité de l'accueil, taux d'occupation et satisfaction client. Un poste d'évolution dans le tourisme.",
+     taches:["Encadrer les équipes d'accueil et d'étage","Suivre le taux d'occupation et le chiffre d'affaires","Garantir la qualité du service","Gérer les réclamations clients"]},
+   {id:"organisateur_evt", nom:"Organisateur de séjours & événements", desc:"Il monte des événements touristiques ou professionnels (séminaires, festivals, mariages). De la logistique à la communication, il coordonne tout pour une expérience réussie.",
+     taches:["Concevoir le programme de l'événement","Gérer le budget et les prestataires","Coordonner la logistique sur place","Communiquer auprès des participants"]} ]},
+ { nom:"Transport & logistique", emo:"🚚", color:"#b45309",
+   metiers:[
+   {id:"resp_logistique", nom:"Responsable logistique", desc:"Il pilote l'ensemble des flux de marchandises d'une entreprise : approvisionnement, stockage, transport, livraison. Sur une île, l'organisation des imports-exports est un enjeu majeur.",
+     taches:["Planifier les approvisionnements","Organiser le stockage et les expéditions","Optimiser les coûts et les délais de transport","Suivre les indicateurs de performance"]},
+   {id:"agent_transit", nom:"Agent de transit / Déclarant en douane", desc:"Il organise l'acheminement des marchandises à l'international et gère les formalités douanières. Indispensable pour une île qui importe et exporte beaucoup.",
+     taches:["Organiser le transport import-export","Établir les documents de douane","Suivre les expéditions","Conseiller les clients sur la réglementation"]},
+   {id:"resp_appro", nom:"Gestionnaire des approvisionnements", desc:"Il veille à ce que l'entreprise ne soit jamais en rupture ni en surstock : il commande au bon moment, négocie avec les fournisseurs et suit les niveaux de stock.",
+     taches:["Suivre les stocks et anticiper les besoins","Passer et suivre les commandes","Négocier avec les fournisseurs","Réduire les coûts de stockage"]},
+   {id:"resp_exploitation_transp", nom:"Responsable d'exploitation transport", desc:"Il organise les tournées des chauffeurs et des véhicules pour livrer dans les meilleurs délais et au meilleur coût, tout en respectant la réglementation.",
+     taches:["Planifier les tournées et les chauffeurs","Optimiser les itinéraires","Suivre les livraisons en temps réel","Respecter la réglementation et la sécurité"]} ]},
+ { nom:"Immobilier & assurance", emo:"🏠", color:"#15803d",
+   metiers:[
+   {id:"gestionnaire_locatif", nom:"Gestionnaire locatif / de copropriété", desc:"Il gère pour le compte de propriétaires des logements ou des immeubles : loyers, travaux, relations avec les locataires et les copropriétaires. Mélange de gestion, de droit et de relation.",
+     taches:["Encaisser et suivre les loyers","Organiser l'entretien et les travaux","Gérer la relation avec locataires et propriétaires","Préparer les assemblées de copropriété"]},
+   {id:"conseiller_immo", nom:"Conseiller en immobilier", desc:"Il accompagne les clients dans l'achat, la vente ou la location de biens. Il estime, fait visiter, conseille et suit la transaction jusqu'à la signature.",
+     taches:["Rechercher et estimer des biens","Organiser les visites","Conseiller acheteurs et vendeurs","Constituer les dossiers de transaction"]},
+   {id:"gestionnaire_sinistres", nom:"Gestionnaire de sinistres (assurance)", desc:"Quand un client subit un dégât (accident, incendie, vol), il instruit le dossier, évalue les responsabilités et organise l'indemnisation. Rigueur et écoute sont essentielles.",
+     taches:["Recevoir et analyser les déclarations","Évaluer les dommages et responsabilités","Calculer les indemnisations","Accompagner les clients dans leurs démarches"]},
+   {id:"souscripteur", nom:"Souscripteur en assurance", desc:"Il étudie les risques avant d'accepter d'assurer un client (entreprise, particulier) et fixe les conditions et le tarif du contrat. Un métier d'analyse mêlant chiffres et droit.",
+     taches:["Analyser les risques d'un dossier","Fixer les conditions et tarifs","Rédiger les contrats","Suivre la rentabilité du portefeuille"]} ]},
+ { nom:"Secteur public, associatif & social", emo:"🏛️", color:"#4338ca",
+   metiers:[
+   {id:"gestionnaire_public", nom:"Gestionnaire administratif (fonction publique)", desc:"Dans une mairie, un hôpital, une administration, il assure le suivi des dossiers, des budgets ou du personnel. La fonction publique recrute par concours, souvent accessibles après un BTS/BUT.",
+     taches:["Instruire et suivre des dossiers administratifs","Gérer des budgets ou des plannings","Renseigner les usagers","Appliquer les procédures réglementaires"]},
+   {id:"secretaire_mairie", nom:"Secrétaire général de petite mairie", desc:"Bras droit du maire dans les petites communes, il gère l'état civil, le budget, l'urbanisme, le personnel. Un poste très polyvalent au cœur de la vie locale.",
+     taches:["Préparer le budget communal","Gérer l'état civil et les actes","Suivre les dossiers d'urbanisme","Coordonner le personnel communal"]},
+   {id:"charge_mission_asso", nom:"Chargé de mission en association", desc:"Il fait vivre les projets d'une association (sociale, culturelle, environnementale) : il monte les dossiers, cherche des financements et coordonne les bénévoles.",
+     taches:["Monter et suivre des projets","Rechercher des subventions et financements","Coordonner bénévoles et partenaires","Rendre compte aux financeurs"]},
+   {id:"animateur_social", nom:"Animateur / Coordinateur socioculturel", desc:"Il organise des activités pour différents publics (jeunes, seniors, familles) dans une structure sociale ou de loisirs. Le sens du contact et de l'organisation sont au cœur du métier.",
+     taches:["Concevoir et animer des activités","Gérer un budget et du matériel","Encadrer une équipe d'animation","Travailler avec les familles et partenaires"]} ]},
+ { nom:"Communication digitale & data", emo:"📱", color:"#9333ea",
+   metiers:[
+   {id:"trafic_manager", nom:"Traffic manager / Chargé de pub en ligne", desc:"Il gère les campagnes de publicité sur internet (réseaux sociaux, Google) : il fixe le budget, cible les bonnes personnes et analyse les résultats pour vendre plus.",
+     taches:["Créer et paramétrer des campagnes en ligne","Cibler les audiences","Suivre le budget publicitaire","Analyser les performances et ajuster"]},
+   {id:"charge_seo", nom:"Chargé de référencement (SEO/SEA)", desc:"Sa mission : faire remonter un site internet dans les premiers résultats de Google. Il analyse les mots-clés, améliore les contenus et suit le trafic.",
+     taches:["Analyser les mots-clés recherchés","Optimiser les contenus du site","Suivre le positionnement sur Google","Mesurer le trafic et proposer des améliorations"]},
+   {id:"e_commerce_manager", nom:"Responsable e-commerce", desc:"Il pilote la boutique en ligne d'une marque : catalogue, prix, promotions, expérience d'achat et ventes. Il fait le lien entre commerce, marketing et numérique.",
+     taches:["Mettre à jour le catalogue en ligne","Organiser promotions et opérations","Améliorer le parcours d'achat","Suivre les ventes et le panier moyen"]},
+   {id:"charge_crm", nom:"Chargé de fidélisation (CRM)", desc:"Il s'occupe de garder les clients : programmes de fidélité, e-mails personnalisés, offres ciblées, en s'appuyant sur les données clients.",
+     taches:["Gérer le programme de fidélité","Concevoir des campagnes e-mailing","Segmenter et cibler les clients","Mesurer la satisfaction et la fidélité"]} ]}
 ],
 
 disclaimer:"Ce test est purement indicatif : il met en lumière tes goûts et tes points forts du moment, qui peuvent évoluer. Il ne décide pas de ton avenir à ta place. Pour construire ton orientation, parle de tes résultats avec ton professeur principal, le Psy-ÉN (psychologue de l'Éducation nationale) de ton lycée, et explore les fiches métiers officielles sur l'ONISEP."
@@ -8882,7 +8936,7 @@ function OriTest({O,onSeeMetiers}){
   const [stage,setStage]=useState("home");   // home | quiz | result
   const [batch,setBatch]=useState(1);         // 1, 2, 3
   const [asked,setAsked]=useState([]);        // questions cumulées affichées
-  const [answers,setAnswers]=useState([]);    // index choisi par question
+  const [answers,setAnswers]=useState([]);    // CHOIX MULTIPLES : answers[qi] = tableau d'index sélectionnés
   const [i,setI]=useState(0);                 // index courant dans "asked"
 
   const startBatch=(n)=>{
@@ -8895,14 +8949,16 @@ function OriTest({O,onSeeMetiers}){
     setI(prev=> n===1?0:asked.length); // reprendre au début du nouveau lot
   };
 
-  const choose=(qi,oi)=>{ setAnswers(a=>{ const n=[...a]; n[qi]=oi; return n; }); };
+  // Choix multiples : on ajoute / retire une option du tableau de la question.
+  const toggle=(qi,oi)=>{ setAnswers(a=>{ const n=[...a]; const cur=Array.isArray(n[qi])?n[qi]:[];
+    n[qi]= cur.includes(oi) ? cur.filter(x=>x!==oi) : [...cur,oi]; return n; }); };
+  const selOf=(qi)=> Array.isArray(answers[qi])?answers[qi]:[];
   const cur=asked[i];
-  const totalDone=answers.filter(x=>x!==undefined&&x!==null).length;
 
-  // ---- Calcul du score par dimension ----
+  // ---- Calcul du score par dimension (somme de TOUTES les options choisies) ----
   const scores=(()=>{ const s={}; Object.keys(O.dims||{}).forEach(k=>s[k]=0);
-    asked.forEach((q,qi)=>{ const oi=answers[qi]; if(oi==null) return; const w=(q.o[oi]||{}).w||{};
-      Object.keys(w).forEach(k=>{ s[k]=(s[k]||0)+w[k]; }); });
+    asked.forEach((q,qi)=>{ selOf(qi).forEach(oi=>{ const w=(q.o[oi]||{}).w||{};
+      Object.keys(w).forEach(k=>{ s[k]=(s[k]||0)+w[k]; }); }); });
     return s; })();
   const ranked=Object.keys(scores).sort((a,b)=>scores[b]-scores[a]);
   const maxScore=scores[ranked[0]]||1;
@@ -8910,7 +8966,6 @@ function OriTest({O,onSeeMetiers}){
   // ---- Choix du profil le mieux corrélé ----
   const bestProfil=(()=>{ const profs=O.profils||[]; let best=null,bestSc=-1;
     profs.forEach(p=>{ let sc=0; p.dims.forEach((d,idx)=>{ const rankPos=ranked.indexOf(d);
-        // bonus si la dimension du profil est haute dans le classement de l'élève
         if(rankPos>=0) sc += (scores[d]||0)*(idx===0?1.3:1) + Math.max(0,(4-rankPos));
       });
       if(sc>bestSc){bestSc=sc;best=p;} });
@@ -8927,6 +8982,7 @@ function OriTest({O,onSeeMetiers}){
           <li>🟧 <b>+10 questions</b> si tu veux affiner (sur ta demande).</li>
           <li>🟩 <b>+10 questions</b> de plus pour un résultat encore plus précis (sur demande).</li>
         </ul>
+        <p className="ori-multi">✅ <b>Tu peux choisir plusieurs réponses par question</b> : coche tout ce qui te ressemble, pas seulement une seule chose.</p>
         <p className="ori-warn">⚠️ {O.disclaimer}</p>
       </div>
       <button className="cta sm" onClick={()=>startBatch(1)}>Commencer le test (20 questions) →</button>
@@ -8935,8 +8991,9 @@ function OriTest({O,onSeeMetiers}){
 
   // ----- ÉCRAN QUIZ -----
   if(stage==="quiz"){
-    const answeredThis=cur&&answers[i]!=null;
-    const allAnswered=asked.every((_,qi)=>answers[qi]!=null);
+    const sel=selOf(i);
+    const answeredThis=sel.length>0;
+    const allAnswered=asked.every((_,qi)=>selOf(qi).length>0);
     return (<div className="content ori-test">
       <div className="ori-prog">
         <div className="ori-progbar"><div className="ori-progfill" style={{width:Math.round((i+1)/asked.length*100)+"%"}}/></div>
@@ -8944,8 +9001,10 @@ function OriTest({O,onSeeMetiers}){
       </div>
       <div className="ori-qcard">
         <p className="ori-q">{cur.q}</p>
-        <div className="ori-opts">{cur.o.map((o,oi)=>(
-          <button key={oi} className={"ori-opt"+(answers[i]===oi?" sel":"")} onClick={()=>choose(i,oi)}>{o.t}</button>))}</div>
+        <p className="ori-multi-hint">Coche <b>une ou plusieurs</b> réponses 👇</p>
+        <div className="ori-opts">{cur.o.map((o,oi)=>{ const on=sel.includes(oi);
+          return (<button key={oi} className={"ori-opt multi"+(on?" sel":"")} onClick={()=>toggle(i,oi)}>
+            <span className="ori-check">{on?"☑":"☐"}</span><span>{o.t}</span></button>); })}</div>
       </div>
       <div className="ori-nav">
         <button className="cta sm alt" disabled={i===0} style={{opacity:i===0?.4:1}} onClick={()=>setI(i-1)}>◀ Précédent</button>
@@ -8953,7 +9012,7 @@ function OriTest({O,onSeeMetiers}){
           ? <button className="cta sm" disabled={!answeredThis} style={{opacity:answeredThis?1:.4}} onClick={()=>setI(i+1)}>Suivant ▶</button>
           : <button className="cta sm" disabled={!allAnswered} style={{opacity:allAnswered?1:.4}} onClick={()=>setStage("result")}>Voir mon résultat 🎯</button>}
       </div>
-      {!allAnswered && i+1===asked.length && <p className="ori-hint">Réponds à toutes les questions pour voir ton résultat.</p>}
+      {!allAnswered && i+1===asked.length && <p className="ori-hint">Choisis au moins une réponse à chaque question pour voir ton résultat.</p>}
     </div>);
   }
 
@@ -9006,7 +9065,6 @@ function OriTest({O,onSeeMetiers}){
     <button className="cta sm alt" style={{marginTop:10}} onClick={()=>{setStage("home");setBatch(1);setAsked([]);setAnswers([]);setI(0);}}>↺ Recommencer le test</button>
   </div>);
 }
-
 function findMetier(O,id){ let found=null; (O.familles||[]).forEach(f=>f.metiers.forEach(m=>{ if(m.id===id) found=m; })); return found; }
 
 /* ----- Découverte des métiers ----- */
@@ -9455,6 +9513,11 @@ abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;
 .ori-opt{text-align:left;padding:14px 16px;border-radius:13px;background:#f7fbfe;border:2px solid #e2eef7;font-size:15.5px;font-weight:500;color:#1a1430;transition:.15s;line-height:1.4}
 .ori-opt:hover{border-color:#7dd3e8;background:#eef9ff}
 .ori-opt.sel{border-color:#0891b2;background:#e0f6fd;box-shadow:0 4px 14px -6px rgba(8,145,178,.5);font-weight:700}
+.ori-opt.multi{display:flex;align-items:flex-start;gap:11px}
+.ori-check{font-size:19px;line-height:1.25;color:#0891b2;flex:0 0 auto}
+.ori-opt.multi.sel .ori-check{color:#0e7490}
+.ori-multi{font-size:14px;background:#ecfdf5;border:1px solid #a7e8cf;border-radius:12px;padding:10px 14px;line-height:1.5;color:#065f46}
+.ori-multi-hint{font-size:13.5px;color:#0e7490;font-weight:600;margin:-6px 0 12px}
 .ori-nav{display:flex;justify-content:space-between;gap:12px;margin-top:18px}
 .ori-nav .cta.sm{margin:0;max-width:none;flex:1}
 .ori-hint{text-align:center;font-size:13.5px;color:#0e7490;margin-top:10px;font-weight:600}
