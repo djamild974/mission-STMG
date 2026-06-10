@@ -8209,9 +8209,13 @@ function EvalEntretien({head,onDone}){
 /* ---------- Le simulateur de bulletin de paie ---------- */
 const PAIE = {
   SMIC_H: 12.31,            // SMIC horaire brut 2026
-  MAJ_HS: 0.25,            // majoration heures supplémentaires +25 %
+  MAJ_HS1: 0.25,           // majoration des 1res heures supplémentaires : +25 %
+  MAJ_HS2: 0.50,           // majoration au-delà du seuil : +50 %
+  SEUIL_HS: 8,             // seuil (en heures) au-delà duquel on passe à +50 %
+  H_JOUR: 7,               // heures décomptées par jour d'absence (35 h / 5 j)
   TX_PAS: 0.05,           // prélèvement à la source (taux d'exemple : 5 %)
   CSG_ASSIETTE: 0.9825,   // CSG/CRDS calculées sur 98,25 % du brut
+  CSG_NON_DED: 2.90,      // CSG non déductible (2,40 %) + CRDS (0,50 %) ≈ 2,90 % (pour le net social)
   // Lignes de cotisations (regroupées en 6 catégories, bulletin simplifié 2026)
   // tS = taux salarial, tP = taux patronal (en % du brut, sauf CSG/CRDS sur 98,25 %)
   lignes:[
@@ -8229,39 +8233,107 @@ function pct(n){ return (Math.round(n*100)/100).toLocaleString("fr-FR",{minimumF
 
 function SimulPaie({head,onDone}){
   const P=PAIE;
+  // Grille indicative des salaires de l'entreprise (taux horaire & profil)
+  const GRILLE=[
+    { emploi:"Apprenti(e) vente",   txH:9.22,  heures:151.67, statut:"Apprenti", coef:"—",   note:"Rémunération en % du SMIC (contrat d'apprentissage)" },
+    { emploi:"Employé(e) polyvalent(e)", txH:12.31, heures:151.67, statut:"Non-cadre", coef:"185", note:"Au SMIC" },
+    { emploi:"Vendeur(se)",         txH:13.00, heures:151.67, statut:"Non-cadre", coef:"190", note:"Légèrement au-dessus du SMIC" },
+    { emploi:"Pâtissier(ère)",      txH:14.50, heures:151.67, statut:"Non-cadre", coef:"215", note:"Qualifié, avec CAP/BEP" },
+    { emploi:"Chef(fe) d'équipe",   txH:17.80, heures:151.67, statut:"Non-cadre", coef:"250", note:"Responsable d'une équipe" },
+    { emploi:"Responsable magasin", txH:24.00, heures:151.67, statut:"Cadre",     coef:"330", note:"Encadrement, statut cadre" }
+  ];
   const [txH,setTxH]=useState(13);
   const [heures,setHeures]=useState(151.67);
   const [hs,setHs]=useState(0);
-  const [prime,setPrime]=useState(0);
+  const [absJours,setAbsJours]=useState(0);   // jours d'absence non rémunérés
+  const [primeAnc,setPrimeAnc]=useState(0);   // prime d'ancienneté (mensuelle, récurrente)
+  const [prime13,setPrime13]=useState(0);      // 13e mois (versé une fois, en fin d'année)
+  const [primePerf,setPrimePerf]=useState(0);  // prime de performance (variable)
+  const [mois,setMois]=useState(6);            // numéro du mois pour le cumul annuel
+  // Identité du salarié (modifiable par l'élève)
+  const [ident,setIdent]=useState({ nom:"Léa PAYET", adresse:"8 chemin des Filaos, 97490 Sainte-Clotilde", emploi:"Vendeuse", statut:"Non-cadre", coef:"190", ss:"2 04 11 974 123 456 78", matricule:"00427" });
+  const setI=(k,v)=>setIdent(o=>({...o,[k]:v}));
+  const choisirProfil=(g)=>{ setTxH(g.txH); setHeures(g.heures);
+    setIdent(o=>({...o, emploi:g.emploi, statut:g.statut, coef:g.coef})); };
   // étapes : regle -> assemble (reconstruire les formules) -> quiz -> result
   const [step,setStep]=useState("regle");
+  // Ergonomie : sections repliables + panneau de réglages flottant
+  const [collapse,setCollapse]=useState({ctrl:false,grille:false,ident:false,hs:false});
+  const tog=(k)=>setCollapse(c=>({...c,[k]:!c[k]}));
+  const [floatPanel,setFloatPanel]=useState(false);
+  const [panelPos,setPanelPos]=useState({x:null,y:null}); // position du panneau flottant
+  const dragRef=React.useRef(null);
+  const onDragStart=(e)=>{
+    if(!floatPanel) return;
+    const ev = e.touches? e.touches[0] : e;
+    const panel = e.currentTarget.closest(".paie-controls");
+    const rect = panel.getBoundingClientRect();
+    const offX = ev.clientX - rect.left, offY = ev.clientY - rect.top;
+    const move=(m)=>{ const p = m.touches? m.touches[0] : m;
+      setPanelPos({x:Math.max(4,p.clientX-offX), y:Math.max(4,p.clientY-offY)}); };
+    const up=()=>{ document.removeEventListener("mousemove",move); document.removeEventListener("mouseup",up);
+      document.removeEventListener("touchmove",move); document.removeEventListener("touchend",up); };
+    document.addEventListener("mousemove",move); document.addEventListener("mouseup",up);
+    document.addEventListener("touchmove",move,{passive:false}); document.addEventListener("touchend",up);
+  };
+  const panelStyle = (floatPanel && panelPos.x!=null) ? {left:panelPos.x+"px", top:panelPos.y+"px", right:"auto"} : undefined;
 
   // ---- Calculs ----
+  // Heures supplémentaires : les SEUIL_HS premières à +25 %, le reste à +50 %
+  const hs25 = Math.min(hs, P.SEUIL_HS);
+  const hs50 = Math.max(0, hs - P.SEUIL_HS);
+  const txHS25 = txH*(1+P.MAJ_HS1);
+  const txHS50 = txH*(1+P.MAJ_HS2);
+  const mhs25 = hs25*txHS25;
+  const mhs50 = hs50*txHS50;
+  const mhs = mhs25 + mhs50;
+  // Absences : décomptées au taux horaire (jours × heures/jour × taux)
+  const hAbs = absJours*P.H_JOUR;
+  const retenueAbs = hAbs*txH;
   const base = txH*heures;
-  const mhs  = hs*txH*(1+P.MAJ_HS);
-  const brut = base + mhs + prime;
+  // Toutes les primes sont soumises à cotisations : elles entrent dans le brut.
+  const primes = primeAnc + prime13 + primePerf;
+  const brut = base + mhs + primes - retenueAbs;
   // détail des cotisations par ligne
   const lignes = P.lignes.map(l=>{ const assiette = l.assietteReduite ? brut*P.CSG_ASSIETTE : brut;
     return {...l, assiette, montS: assiette*l.tS/100, montP: assiette*l.tP/100 }; });
   const cotSal = lignes.reduce((s,l)=>s+l.montS,0);
   const cotPat = lignes.reduce((s,l)=>s+l.montP,0);
+  // CSG/CRDS non déductible (≈ 2,90 % du brut) : sert au calcul du net social
+  const csgND = brut*P.CSG_ASSIETTE*(P.CSG_NON_DED/100);
   const netImposable = brut - cotSal;
   const pas = netImposable*P.TX_PAS;
   const netAPayer = netImposable - pas;
   const coutEmployeur = brut + cotPat;
+  // Net social ≈ brut − cotisations salariales hors CSG/CRDS non déductible (mention obligatoire depuis 2023)
+  const netSocial = brut - (cotSal - csgND);
+  // heures réellement payées (pour les ratios horaires)
+  const hPayees = Math.max(0, heures + hs - hAbs);
+  // Cumul annuel (depuis janvier) : on suppose les mêmes valeurs chaque mois
+  const cumBrut = brut*mois;
+  const cumNetImp = netImposable*mois;
+  const cumNet = netAPayer*mois;
   // indicateurs
   const tauxChargesSal = brut? cotSal/brut*100 :0;
   const tauxChargesPat = brut? cotPat/brut*100 :0;
   const partNetCout = coutEmployeur? netAPayer/coutEmployeur*100 :0;
-  const coutHeure = (heures+hs)? coutEmployeur/(heures+hs) :0;
-  const netHoraire = (heures+hs)? netAPayer/(heures+hs) :0;
+  const coutHeure = hPayees? coutEmployeur/hPayees :0;
+  const netHoraire = hPayees? netAPayer/hPayees :0;
+  const MOIS_NOMS=["janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre"];
 
   return (<div className="game">{head}
     {step==="regle"&&<div className="sim-intro">🧾 <b>Construis un vrai bulletin de paie.</b> Règle les paramètres, observe le bulletin se remplir comme une vraie fiche A4, puis reconstruis toi-même les formules et teste-toi.</div>}
 
     {/* Réglages (toujours visibles sauf au résultat) */}
-    {step!=="result"&&(<div className="paie-controls">
-      <div className="pc-grid">
+    {step!=="result"&&(<div className={"paie-controls"+(floatPanel?" floating":"")} style={panelStyle}>
+      <div className="box-head" onMouseDown={onDragStart} onTouchStart={onDragStart} style={floatPanel?{cursor:"move"}:undefined}>
+        <span className="box-title">🎛️ Réglages de la paie{floatPanel&&<span className="drag-hint"> ⠿ glisse pour déplacer</span>}</span>
+        <div className="box-tools">
+          <button className="box-btn" title={floatPanel?"Ancrer le panneau":"Détacher le panneau (flottant, redimensionnable)"} onClick={()=>setFloatPanel(f=>!f)}>{floatPanel?"📌 Ancrer":"⧉ Détacher"}</button>
+          <button className="box-btn" title={collapse.ctrl?"Déplier":"Replier"} onClick={()=>tog("ctrl")}>{collapse.ctrl?"▸":"▾"}</button>
+        </div>
+      </div>
+      {!collapse.ctrl&&<div className="pc-grid">
         <div className="pc-row">
           <label>💶 Taux horaire brut : <b>{eur(txH)}</b> {txH<P.SMIC_H&&<span className="pc-warn">⚠️ &lt; SMIC ({eur(P.SMIC_H)})</span>}</label>
           <input type="range" min="11" max="40" step="0.5" value={txH} onChange={e=>setTxH(parseFloat(e.target.value))}/>
@@ -8271,25 +8343,103 @@ function SimulPaie({head,onDone}){
           <input type="range" min="0" max="151.67" step="1" value={heures} onChange={e=>setHeures(parseFloat(e.target.value))}/>
         </div>
         <div className="pc-row">
-          <label>➕ Heures sup. : <b>{hs} h</b> <span className="pc-note">(+{Math.round(P.MAJ_HS*100)} %)</span></label>
+          <label>➕ Heures sup. : <b>{hs} h</b> <span className="pc-note">(8 premières à +{Math.round(P.MAJ_HS1*100)} %, au-delà +{Math.round(P.MAJ_HS2*100)} %)</span></label>
           <input type="range" min="0" max="30" step="1" value={hs} onChange={e=>setHs(parseFloat(e.target.value))}/>
         </div>
         <div className="pc-row">
-          <label>🎁 Prime : <b>{eur(prime)}</b></label>
-          <input type="range" min="0" max="800" step="10" value={prime} onChange={e=>setPrime(parseFloat(e.target.value))}/>
+          <label>🤒 Jours d'absence : <b>{absJours} j</b> <span className="pc-note">(non rémunérés, {P.H_JOUR} h/jour décomptées)</span></label>
+          <input type="range" min="0" max="10" step="1" value={absJours} onChange={e=>setAbsJours(parseFloat(e.target.value))}/>
         </div>
+        <div className="pc-row">
+          <label>🏅 Prime d'ancienneté : <b>{eur(primeAnc)}</b> <span className="pc-note">(mensuelle, récurrente)</span></label>
+          <input type="range" min="0" max="300" step="10" value={primeAnc} onChange={e=>setPrimeAnc(parseFloat(e.target.value))}/>
+        </div>
+        <div className="pc-row">
+          <label>📅 Prime de 13ᵉ mois : <b>{eur(prime13)}</b> <span className="pc-note">(versée 1×/an, souvent en décembre)</span></label>
+          <input type="range" min="0" max="1800" step="50" value={prime13} onChange={e=>setPrime13(parseFloat(e.target.value))}/>
+        </div>
+        <div className="pc-row">
+          <label>🚀 Prime de performance : <b>{eur(primePerf)}</b> <span className="pc-note">(variable, selon objectifs)</span></label>
+          <input type="range" min="0" max="800" step="20" value={primePerf} onChange={e=>setPrimePerf(parseFloat(e.target.value))}/>
+        </div>
+        <div className="pc-row">
+          <label>🗓️ Mois de paie : <b>{MOIS_NOMS[mois-1]}</b> <span className="pc-note">(pour le cumul annuel)</span></label>
+          <input type="range" min="1" max="12" step="1" value={mois} onChange={e=>setMois(parseFloat(e.target.value))}/>
+        </div>
+      </div>}
+    </div>)}
+
+    {step!=="result"&&floatPanel&&<div className="float-hint">⧉ Le panneau de réglages est détaché : tu peux le déplacer (glisse sa barre de titre) et le redimensionner (coin bas-droit). Clique « 📌 Ancrer » pour le remettre en place.</div>}
+
+    {/* ===== Grille indicative des salaires de l'entreprise ===== */}
+    {step==="regle"&&(<div className="grille">
+      <div className="box-head">
+        <span className="box-title">🏢 Grille indicative des salaires chez KAZ'DÉLICES</span>
+        <button className="box-btn" title={collapse.grille?"Déplier":"Replier"} onClick={()=>tog("grille")}>{collapse.grille?"▸":"▾"}</button>
       </div>
+      {!collapse.grille&&<>
+      <div className="grille-cap">Clique sur un poste pour simuler sa paie</div>
+      <table className="grille-table">
+        <thead><tr><th className="bp-l">Poste</th><th>Statut</th><th>Coef.</th><th>Taux horaire</th><th className="bp-r">Salaire de base (151,67 h)</th><th></th></tr></thead>
+        <tbody>{GRILLE.map((g,i)=>{ const actif=Math.abs(txH-g.txH)<0.001;
+          return (<tr key={i} className={actif?"grille-on":""}>
+            <td className="bp-l"><b>{g.emploi}</b><span className="grille-note">{g.note}</span></td>
+            <td>{g.statut}</td><td>{g.coef}</td><td>{eur(g.txH)}</td><td className="bp-r">{eur(g.txH*g.heures)}</td>
+            <td><button className="grille-btn" onClick={()=>choisirProfil(g)}>{actif?"✓ Choisi":"Simuler"}</button></td>
+          </tr>); })}</tbody>
+      </table>
+      <div className="grille-note2">💡 Plus la qualification et les responsabilités augmentent, plus le taux horaire est élevé : la rémunération récompense la <b>qualification</b> et la <b>fonction</b>. Choisis un poste, puis observe l'impact sur le bulletin ci-dessous.</div>
+      </>}
+    </div>)}
+
+    {/* ===== Ma carte d'identité sur le bulletin ===== */}
+    {step==="regle"&&(<div className="ident-edit">
+      <div className="box-head">
+        <span className="box-title">✏️ Personnalise TON bulletin</span>
+        <button className="box-btn" title={collapse.ident?"Déplier":"Replier"} onClick={()=>tog("ident")}>{collapse.ident?"▸":"▾"}</button>
+      </div>
+      {!collapse.ident&&<div className="ident-grid">
+        <label>Nom et prénom<input value={ident.nom} maxLength="40" onChange={e=>setI("nom",e.target.value)} placeholder="Ton nom"/></label>
+        <label>Adresse<input value={ident.adresse} maxLength="60" onChange={e=>setI("adresse",e.target.value)} placeholder="Ton adresse"/></label>
+        <label>Emploi<input value={ident.emploi} maxLength="30" onChange={e=>setI("emploi",e.target.value)} placeholder="Ton poste"/></label>
+        <label>N° de sécurité sociale<input value={ident.ss} maxLength="25" onChange={e=>setI("ss",e.target.value)} placeholder="N° SS"/></label>
+      </div>}
+    </div>)}
+
+    {/* ===== Mini-simulateur : comprendre les heures supplémentaires ===== */}
+    {step!=="result"&&hs>0&&(<div className="hs-sim">
+      <div className="box-head">
+        <span className="box-title">🧮 Comment sont calculées les {hs} heures supplémentaires ?</span>
+        <button className="box-btn" title={collapse.hs?"Déplier":"Replier"} onClick={()=>tog("hs")}>{collapse.hs?"▸":"▾"}</button>
+      </div>
+      {!collapse.hs&&<>
+      <table className="hs-table">
+        <thead><tr><th className="bp-l">Tranche</th><th>Nombre</th><th>Taux horaire</th><th>Majoration</th><th className="bp-r">Montant</th></tr></thead>
+        <tbody>
+          <tr><td className="bp-l">Heures normales</td><td>{heures} h</td><td>{eur(txH)}</td><td>—</td><td className="bp-r">{eur(base)}</td></tr>
+          {hs25>0&&<tr className="hs-25"><td className="bp-l">HS au taux de +{Math.round(P.MAJ_HS1*100)} % (les {P.SEUIL_HS} premières)</td><td>{hs25} h</td><td>{eur(txHS25)}</td><td>+{Math.round(P.MAJ_HS1*100)} %</td><td className="bp-r">{eur(mhs25)}</td></tr>}
+          {hs50>0&&<tr className="hs-50"><td className="bp-l">HS au taux de +{Math.round(P.MAJ_HS2*100)} % (au-delà de {P.SEUIL_HS} h)</td><td>{hs50} h</td><td>{eur(txHS50)}</td><td>+{Math.round(P.MAJ_HS2*100)} %</td><td className="bp-r">{eur(mhs50)}</td></tr>}
+        </tbody>
+      </table>
+      <div className="hs-note">💡 Une heure supplémentaire est <b>majorée</b> : elle est payée plus cher qu'une heure normale. Les <b>{P.SEUIL_HS} premières</b> sont majorées de <b>+{Math.round(P.MAJ_HS1*100)} %</b> ({eur(txH)} → {eur(txHS25)}), puis les suivantes de <b>+{Math.round(P.MAJ_HS2*100)} %</b> ({eur(txH)} → {eur(txHS50)}).</div>
+      </>}
     </div>)}
 
     {/* ===== Le bulletin façon A4 ===== */}
-    {step!=="result"&&(<div className="bp-sheet">
+    {step!=="result"&&(<div className="bp-sheet" id="bp-print-area">
       <div className="bp-top">
-        <div className="bp-emp"><div className="bp-co">KAZ'DÉLICES SARL</div><div className="bp-co-sub">12 rue du Lagon · 97400 Saint-Denis · La Réunion</div></div>
-        <div className="bp-meta">BULLETIN DE PAIE<br/><span>Période : mois en cours</span></div>
+        <div className="bp-emp">
+          <div className="bp-co">KAZ'DÉLICES SARL</div>
+          <div className="bp-co-sub">12 rue du Lagon · 97400 Saint-Denis · La Réunion</div>
+          <div className="bp-co-legal">SIRET : 824 156 037 00021 · Code APE : 1071C · URSSAF : 974 000 1234567</div>
+        </div>
+        <div className="bp-meta">BULLETIN DE PAIE<br/><span>Période : 01 au 30 du mois</span><br/><span>Paiement le 02 du mois suivant</span></div>
       </div>
       <div className="bp-id">
-        <div><b>Salarié :</b> Léa PAYET</div><div><b>Emploi :</b> Vendeuse</div>
-        <div><b>Statut :</b> Non-cadre</div><div><b>Convention :</b> Commerce de détail</div>
+        <div><b>Salarié(e) :</b> {ident.nom||"—"}</div><div><b>N° SS :</b> {ident.ss||"—"}</div>
+        <div><b>Adresse :</b> {ident.adresse||"—"}</div><div><b>Matricule :</b> {ident.matricule}</div>
+        <div><b>Emploi :</b> {ident.emploi||"—"}</div><div><b>Statut :</b> {ident.statut} · Coef. {ident.coef}</div>
+        <div><b>Entrée :</b> 03/09/20XX</div><div><b>Convention :</b> Commerce de détail</div>
       </div>
 
       {/* Rémunération brute */}
@@ -8297,8 +8447,12 @@ function SimulPaie({head,onDone}){
         <thead><tr><th className="bp-l">Désignation</th><th>Base</th><th>Taux</th><th className="bp-r">Montant</th></tr></thead>
         <tbody>
           <tr><td className="bp-l">Salaire de base</td><td>{heures} h</td><td>{eur(txH)}</td><td className="bp-r">{eur(base)}</td></tr>
-          {hs>0&&<tr><td className="bp-l">Heures supplémentaires (+{Math.round(P.MAJ_HS*100)} %)</td><td>{hs} h</td><td>{eur(txH*(1+P.MAJ_HS))}</td><td className="bp-r">{eur(mhs)}</td></tr>}
-          {prime>0&&<tr><td className="bp-l">Prime</td><td></td><td></td><td className="bp-r">{eur(prime)}</td></tr>}
+          {hs25>0&&<tr><td className="bp-l">Heures supplémentaires au taux de +{Math.round(P.MAJ_HS1*100)} %</td><td>{hs25} h</td><td>{eur(txHS25)}</td><td className="bp-r">{eur(mhs25)}</td></tr>}
+          {hs50>0&&<tr><td className="bp-l">Heures supplémentaires au taux de +{Math.round(P.MAJ_HS2*100)} %</td><td>{hs50} h</td><td>{eur(txHS50)}</td><td className="bp-r">{eur(mhs50)}</td></tr>}
+          {primeAnc>0&&<tr><td className="bp-l">Prime d'ancienneté</td><td></td><td></td><td className="bp-r">{eur(primeAnc)}</td></tr>}
+          {prime13>0&&<tr><td className="bp-l">Prime de 13ᵉ mois</td><td></td><td></td><td className="bp-r">{eur(prime13)}</td></tr>}
+          {primePerf>0&&<tr><td className="bp-l">Prime de performance</td><td></td><td></td><td className="bp-r">{eur(primePerf)}</td></tr>}
+          {absJours>0&&<tr className="bp-abs"><td className="bp-l">Absence non rémunérée ({absJours} j × {P.H_JOUR} h)</td><td>{hAbs} h</td><td>{eur(txH)}</td><td className="bp-r">− {eur(retenueAbs)}</td></tr>}
           <tr className="bp-brut"><td className="bp-l" colSpan="3">SALAIRE BRUT</td><td className="bp-r">{eur(brut)}</td></tr>
         </tbody>
       </table>
@@ -8327,12 +8481,24 @@ function SimulPaie({head,onDone}){
           <tr><td className="bp-l">Salaire brut</td><td className="bp-r">{eur(brut)}</td></tr>
           <tr className="bp-minus"><td className="bp-l">− Total cotisations salariales</td><td className="bp-r">− {eur(cotSal)}</td></tr>
           <tr className="bp-sub"><td className="bp-l">= Net à payer avant impôt (net imposable)</td><td className="bp-r">{eur(netImposable)}</td></tr>
+          <tr className="bp-social"><td className="bp-l">Montant net social <span className="bp-hint">(base des aides : CAF, France Travail…)</span></td><td className="bp-r">{eur(netSocial)}</td></tr>
           <tr className="bp-minus"><td className="bp-l">− Prélèvement à la source ({Math.round(P.TX_PAS*100)} %)</td><td className="bp-r">− {eur(pas)}</td></tr>
           <tr className="bp-net"><td className="bp-l">= NET À PAYER (versé au salarié)</td><td className="bp-r">{eur(netAPayer)}</td></tr>
           <tr className="bp-gap"><td colSpan="2"></td></tr>
           <tr className="bp-cout"><td className="bp-l">COÛT TOTAL EMPLOYEUR (brut + cotisations patronales)</td><td className="bp-r">{eur(coutEmployeur)}</td></tr>
         </tbody>
       </table>
+
+      {/* Cumul annuel */}
+      <table className="bp-table bp-cumul">
+        <thead><tr><th className="bp-l" colSpan="2">Cumuls depuis janvier (au mois de {MOIS_NOMS[mois-1]} = {mois} mois)</th></tr></thead>
+        <tbody>
+          <tr><td className="bp-l">Brut annuel cumulé</td><td className="bp-r">{eur(cumBrut)}</td></tr>
+          <tr><td className="bp-l">Net imposable annuel cumulé</td><td className="bp-r">{eur(cumNetImp)}</td></tr>
+          <tr><td className="bp-l">Net perçu annuel cumulé</td><td className="bp-r">{eur(cumNet)}</td></tr>
+        </tbody>
+      </table>
+      <div className="bp-foot">Bulletin pédagogique simplifié · à conserver sans limitation de durée · KAZ'DÉLICES SARL</div>
     </div>)}
 
     {/* ===== Indicateurs ===== */}
@@ -8346,13 +8512,16 @@ function SimulPaie({head,onDone}){
     </div>)}
 
     {step==="regle"&&<div className="bp-actions">
-      <div className="ps-legend">💡 Le salarié touche <b>{eur(netAPayer)}</b>, mais coûte <b>{eur(coutEmployeur)}</b> à l'entreprise. Remarque : certaines cotisations sont <b>uniquement salariales</b> (retraite, CSG), d'autres <b>uniquement patronales</b> (santé, famille, chômage). <span className="muted">Taux 2026 simplifiés.</span></div>
-      <button className="cta sm" onClick={()=>setStep("assemble")}>🧩 Reconstruire les formules →</button>
+      <div className="ps-legend">💡 Le salarié touche <b>{eur(netAPayer)}</b>, mais coûte <b>{eur(coutEmployeur)}</b> à l'entreprise. Les <b>heures supplémentaires</b> sont majorées (+{Math.round(P.MAJ_HS1*100)} % puis +{Math.round(P.MAJ_HS2*100)} %) ; une <b>absence non rémunérée</b> est retirée du brut au taux horaire. Certaines cotisations sont <b>uniquement salariales</b> (retraite, CSG), d'autres <b>uniquement patronales</b> (santé, famille, chômage). <span className="muted">Taux 2026 simplifiés.</span></div>
+      <div className="bp-btnrow">
+        <button className="cta sm" onClick={()=>setStep("assemble")}>🧩 Reconstruire les formules →</button>
+        <button className="rf alt" onClick={()=>{ try{ document.body.classList.add("printing-bp"); window.print(); }finally{ setTimeout(()=>document.body.classList.remove("printing-bp"),300); } }}>🖨️ Imprimer / PDF</button>
+      </div>
     </div>}
 
-    {step==="assemble"&&<AssembleFormulas vals={{base,mhs,prime,brut,cotSal,cotPat,netImposable,pas,netAPayer,coutEmployeur}} onDone={()=>setStep("quiz")}/>}
+    {step==="assemble"&&<AssembleFormulas vals={{base,mhs,primes,brut,cotSal,cotPat,netImposable,pas,netAPayer,coutEmployeur}} onDone={()=>setStep("quiz")}/>}
 
-    {step==="quiz"&&<PaieQuiz vals={{brut,cotSal,cotPat,netImposable,netAPayer,coutEmployeur,tauxChargesSal}} P={P} onDone={(sc,tot)=>{setStep("result");window.__paieScore={sc,tot};}}/>}
+    {step==="quiz"&&<PaieQuiz vals={{brut,cotSal,cotPat,netImposable,netAPayer,coutEmployeur,tauxChargesSal,txH,netSocial}} P={P} onDone={(sc,tot)=>{setStep("result");window.__paieScore={sc,tot};}}/>}
 
     {step==="result"&&(()=>{ const r=window.__paieScore||{sc:0,tot:1};
       return (<Result score={r.sc} total={r.tot} onDone={onDone}
@@ -8395,7 +8564,12 @@ function AssembleFormulas({vals,onDone}){
   const [score,setScore]=useState(0);
   const pz=puzzles[pi];
   const need=pz.slots;
-  const ok = filled.length===need.length && filled.every((f,i)=>f===need[i]);
+  // Une formule uniquement composée d'additions est COMMUTATIVE : l'ordre des termes n'importe pas.
+  // Dès qu'il y a une soustraction, l'ordre compte (on ne peut pas inverser brut et cotisations).
+  const commutative = pz.ops.every(op=>op==="+");
+  const ok = filled.length===need.length && (commutative
+      ? need.every(n=>filled.includes(n))            // même ensemble de briques, peu importe l'ordre
+      : filled.every((f,i)=>f===need[i]));           // ordre strict si soustraction
   const place=(b)=>{ if(filled.length>=need.length) return; if(filled.includes(b)) return; setFilled(f=>[...f,b]); };
   const removeAt=(i)=>setFilled(f=>f.filter((_,k)=>k!==i));
   const validate=()=>{ if(ok){ setScore(s=>s+1); } setDone(true); };
@@ -8407,14 +8581,14 @@ function AssembleFormulas({vals,onDone}){
   return (<div className="assemble">
     <div className="ee-prog">Formule {pi+1} / {puzzles.length}</div>
     <h3 className="asm-titre">🧩 Reconstruis : {pz.titre}</h3>
-    <p className="asm-help">Clique les briques dans le bon ordre pour reformer la formule. Résultat attendu sur ton bulletin : <b>{eur2(pz.val)}</b>.</p>
+    <p className="asm-help">Clique les briques pour reformer la formule{commutative?" (l'ordre des termes n'a pas d'importance pour une addition)":" (attention à l'ordre : il y a une soustraction)"}. Résultat attendu sur ton bulletin : <b>{eur2(pz.val)}</b>.</p>
 
     {/* zone formule */}
     <div className="asm-formula">
       <span className="asm-res">{pz.cible}</span><span className="asm-eq">=</span>
       {need.map((_,i)=>(<React.Fragment key={i}>
         {i>0&&<span className="asm-op">{pz.ops[i-1]}</span>}
-        <span className={"asm-slot"+(filled[i]?" full":"")+(done?(filled[i]===need[i]?" ok":" bad"):"")} onClick={()=>filled[i]&&!done&&removeAt(i)}>
+        <span className={"asm-slot"+(filled[i]?" full":"")+(done?((commutative? need.includes(filled[i]) : filled[i]===need[i])?" ok":" bad"):"")} onClick={()=>filled[i]&&!done&&removeAt(i)}>
           {filled[i]||"…"}</span>
       </React.Fragment>))}
     </div>
@@ -8427,7 +8601,7 @@ function AssembleFormulas({vals,onDone}){
 
     {done&&(<div className={"fb "+(ok?"good":"no")}>
       <strong>{ok?"✅ Formule correcte !":"❌ Pas tout à fait."}</strong>
-      {!ok&&<p style={{margin:"4px 0"}}>La bonne formule : <b>{pz.cible} = {need.map((n,i)=>(i>0?" "+pz.ops[i-1]+" ":"")+n).join("")}</b>.</p>}
+      {!ok&&<p style={{margin:"4px 0"}}>Une bonne formule : <b>{pz.cible} = {need.map((n,i)=>(i>0?" "+pz.ops[i-1]+" ":"")+n).join("")}</b>.{commutative&&" (Pour une addition, tout autre ordre des termes est aussi correct.)"}</p>}
       <p style={{marginTop:6}}>{pz.expl}</p>
       <button className="next" onClick={next}>{pi+1>=puzzles.length?"Passer au quiz →":"Formule suivante →"}</button>
     </div>)}
@@ -8441,7 +8615,22 @@ function PaieQuiz({vals,P,onDone}){
      o:[{t:"Le salaire total AVANT de retirer les cotisations salariales.",ok:true},
         {t:"L'argent qui arrive vraiment sur le compte du salarié.",ok:false},
         {t:"Ce que l'entreprise garde pour elle.",ok:false}],
-     why:"Le brut = salaire de base + heures sup + primes, AVANT toute cotisation. C'est la base de calcul des cotisations." },
+     why:"Le brut = salaire de base + heures sup + primes − absences, AVANT toute cotisation. C'est la base de calcul des cotisations." },
+   { q:"Une heure supplémentaire est « majorée ». Qu'est-ce que cela veut dire ?",
+     o:[{t:"Elle est payée plus cher qu'une heure normale (+25 %, puis +50 % au-delà de 8 h).",ok:true},
+        {t:"Elle est payée moins cher car le salarié est fatigué.",ok:false},
+        {t:"Elle n'est pas payée du tout.",ok:false}],
+     why:"Les heures supplémentaires sont majorées : les 8 premières à +25 %, les suivantes à +50 %. Un taux horaire de "+eur(vals.txH||0)+" passe ainsi à un taux plus élevé." },
+   { q:"Prime d'ancienneté, 13ᵉ mois, prime de performance : comment sont-elles traitées sur le bulletin ?",
+     o:[{t:"Elles s'ajoutent au brut et sont donc soumises à cotisations, comme le salaire.",ok:true},
+        {t:"Elles sont versées en plus du net, sans aucune cotisation.",ok:false},
+        {t:"Elles remplacent le salaire de base ce mois-là.",ok:false}],
+     why:"La plupart des primes (ancienneté, 13ᵉ mois, performance) entrent dans le brut : elles sont soumises aux mêmes cotisations que le salaire. Elles diffèrent surtout par leur fréquence : l'ancienneté est mensuelle, le 13ᵉ mois annuel, la performance variable." },
+   { q:"Le « montant net social » affiché sur le bulletin sert surtout à…",
+     o:[{t:"Calculer les droits aux aides sociales (CAF, France Travail…).",ok:true},
+        {t:"Connaître le montant de l'impôt à payer.",ok:false},
+        {t:"Calculer le coût pour l'employeur.",ok:false}],
+     why:"Le net social (obligatoire depuis 2023) est la référence commune utilisée par les organismes pour calculer les aides (RSA, prime d'activité, APL…)." },
    { q:"La cotisation « Santé » a 0 % en part salariale et 7 % en part patronale. Qui la paie ?",
      o:[{t:"Uniquement l'employeur : elle ne réduit pas le salaire net du salarié.",ok:true},
         {t:"Uniquement le salarié, retirée de son brut.",ok:false},
@@ -10526,6 +10715,72 @@ abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;
 .asm-brick.used{opacity:.35;cursor:default}
 .paie-quiz{margin-top:6px}
 @media(max-width:620px){ .pc-grid{grid-template-columns:1fr} .bp-sheet{padding:14px 12px;font-size:12px} .bp-table th,.bp-table td{padding:5px 5px;font-size:11px} .bp-id{grid-template-columns:1fr} }
+.bp-co-legal{color:#8a8398;font-size:10.5px;margin-top:2px}
+.bp-abs td{color:#dc2626;background:#fff6f6}
+.bp-id{grid-template-columns:1fr 1fr}
+.hs-sim{background:#fff;border:1px solid #ece6f3;border-radius:14px;padding:14px 16px;margin-bottom:14px;box-shadow:0 14px 36px -26px rgba(0,0,0,.3)}
+.hs-sim-h{font-weight:800;color:#0d9488;font-size:14.5px;margin-bottom:10px}
+.hs-table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums;font-size:13px}
+.hs-table th{background:#eef0f5;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:6px 8px;text-align:right;border:1px solid #dfe2ea;color:#4b4660}
+.hs-table th.bp-l{text-align:left}
+.hs-table td{padding:6px 8px;text-align:right;border:1px solid #eceef3}
+.hs-table td.bp-l{text-align:left}
+.hs-table tr.hs-25 td{background:#fff8ec}
+.hs-table tr.hs-50 td{background:#fef0e7}
+.hs-note{font-size:12.5px;color:#5a5470;line-height:1.5;margin-top:9px;background:#f0fdfa;border:1px solid #b9e8de;border-radius:10px;padding:9px 12px}
+.bp-synth .bp-social td{background:#eef9ff;color:#0c4a6e;font-weight:700}
+.bp-hint{font-weight:400;color:#6b6485;font-size:11px}
+.bp-cumul{margin-top:6px}
+.bp-cumul th{background:#f3effa;color:#6b21a8;font-size:11px;text-transform:uppercase;letter-spacing:.3px;padding:6px 8px;text-align:left;border:1px solid #e4daf3}
+.bp-cumul td{padding:6px 8px;border:1px solid #eceef3;text-align:right;font-variant-numeric:tabular-nums}
+.bp-cumul td.bp-l{text-align:left}
+.bp-foot{text-align:center;color:#8a8398;font-size:10.5px;margin-top:12px;border-top:1px solid #eceef3;padding-top:8px}
+.bp-btnrow{display:flex;gap:10px;flex-wrap:wrap}
+@media print{
+  body.printing-bp{background:#fff !important}
+  body.printing-bp *{visibility:hidden !important}
+  body.printing-bp #bp-print-area, body.printing-bp #bp-print-area *{visibility:visible !important}
+  body.printing-bp #bp-print-area{position:absolute;left:0;top:0;width:100%;max-width:100%;box-shadow:none !important;border:none !important;margin:0;padding:10mm}
+}
+.grille{background:#fff;border:1px solid #ece6f3;border-radius:14px;padding:14px 16px;margin-bottom:14px;box-shadow:0 14px 36px -26px rgba(0,0,0,.3)}
+.grille-h{font-weight:800;color:#1d4ed8;font-size:14.5px;margin-bottom:10px}
+.grille-sub{font-weight:500;color:#8a8398;font-size:12.5px}
+.grille-table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.grille-table th{background:#eef0f5;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:6px 8px;text-align:right;border:1px solid #dfe2ea;color:#4b4660}
+.grille-table th.bp-l{text-align:left}
+.grille-table td{padding:7px 8px;text-align:right;border:1px solid #eceef3}
+.grille-table td.bp-l{text-align:left}
+.grille-table tr.grille-on td{background:#eef4ff}
+.grille-note{display:block;font-weight:400;color:#8a8398;font-size:11px;margin-top:1px}
+.grille-btn{background:#1d4ed8;color:#fff;border-radius:8px;padding:5px 11px;font-weight:700;font-size:12px;cursor:pointer;white-space:nowrap}
+.grille-table tr.grille-on .grille-btn{background:#16a34a}
+.grille-note2{font-size:12.5px;color:#5a5470;line-height:1.5;margin-top:9px;background:#eff5ff;border:1px solid #c9dcfb;border-radius:10px;padding:9px 12px}
+.ident-edit{background:#fff;border:1px solid #ece6f3;border-radius:14px;padding:14px 16px;margin-bottom:14px;box-shadow:0 14px 36px -26px rgba(0,0,0,.3)}
+.ident-h{font-weight:800;color:#b45309;font-size:14.5px;margin-bottom:10px}
+.ident-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px}
+.ident-grid label{display:flex;flex-direction:column;font-size:12px;font-weight:700;color:#4b4660;gap:4px}
+.ident-grid input{border:1px solid #d8d2e0;border-radius:8px;padding:8px 10px;font-size:13.5px;font-weight:500;color:#1a1430}
+.ident-grid input:focus{outline:none;border-color:#b45309;box-shadow:0 0 0 3px rgba(180,83,9,.12)}
+@media(max-width:620px){ .ident-grid{grid-template-columns:1fr} .grille-table th,.grille-table td{padding:5px;font-size:11px} }
+/* En-têtes de section avec outils (replier / détacher) */
+.box-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.box-title{font-weight:800;font-size:14.5px;color:#4b4660}
+.paie-controls .box-title{color:#b45309}
+.grille .box-title{color:#1d4ed8}
+.ident-edit .box-title{color:#b45309}
+.hs-sim .box-title{color:#0d9488}
+.box-tools{display:flex;gap:6px;flex-shrink:0}
+.box-btn{background:#f0eafa;color:#6b6485;border-radius:8px;padding:5px 10px;font-weight:700;font-size:12.5px;cursor:pointer;white-space:nowrap;border:1px solid #e4daf3;transition:.12s}
+.box-btn:hover{background:#e7ddf7}
+.grille-cap{font-size:12.5px;color:#8a8398;margin:-4px 0 8px}
+.drag-hint{font-weight:500;color:#b08;font-size:11.5px}
+.float-hint{font-size:12.5px;color:#0c4a6e;background:#eef9ff;border:1px solid #b9e3f5;border-radius:10px;padding:9px 12px;margin-bottom:14px;line-height:1.5}
+/* Panneau de réglages flottant, déplaçable et redimensionnable */
+.paie-controls.floating{position:fixed;top:90px;right:24px;z-index:60;width:380px;max-width:94vw;max-height:80vh;overflow:auto;resize:both;box-shadow:0 30px 70px -20px rgba(0,0,0,.5);border:2px solid #b45309}
+.paie-controls.floating .pc-grid{grid-template-columns:1fr}
+@media(max-width:620px){
+  .paie-controls.floating{right:3vw;left:3vw;width:auto;top:70px;max-height:70vh}
+}
 </style>
 </body>
 </html>
