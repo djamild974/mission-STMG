@@ -7413,6 +7413,8 @@ const DOCS_GAME = { id:"docs", nom:"Étude de docs", icon:"📄", bloom:"Analyse
 const PROBLEME_GAME = { id:"probleme", nom:"Construis ta problématique", icon:"🎯", bloom:"Créer", diff:"Difficile", desc:"Transforme une question de gestion en problématique de Grand oral.", color:"#0891b2" };
 const ORDRE_GAME    = { id:"ordre", nom:"L'exposé dans l'ordre", icon:"🔢", bloom:"Organiser", diff:"Moyen", desc:"Remets les étapes de l'exposé dans le bon ordre.", color:"#ea580c" };
 const REFORMULE_GAME = { id:"reformule", nom:"Reformule la problématique", icon:"✍️", bloom:"Évaluer", diff:"Difficile", desc:"Parmi 6 reformulations, trouve la problématique la plus impactante.", color:"#9333ea" };
+const EVAL_GAME    = { id:"eval_entretien", nom:"L'entretien d'évaluation", icon:"🎯", bloom:"Évaluer", diff:"Moyen", desc:"Mène un entretien d'évaluation : objectifs, critères et indicateurs de performance.", color:"#0d9488", themes:[1] };
+const PAIE_GAME    = { id:"simul_paie", nom:"Le simulateur de bulletin de paie", icon:"🧾", bloom:"Comprendre", diff:"Moyen", desc:"Construis un bulletin de paie en direct : du brut au net, primes, cotisations et coût employeur.", color:"#b45309", themes:[1] };
 const DIFF_COLOR = { "Facile":"#16a34a", "Moyen":"#f59e0b", "Difficile":"#dc2626" };
 /* ====== Matières ====== */
 const SUBJ = {
@@ -7496,6 +7498,7 @@ function gamesFor(code){
   let g = hasDocs?[...GAMES_BASE,DOCS_GAME]:[...GAMES_BASE];
   if(code==="GO"||code==="MKT"||code==="FIN"||code==="SIG"||code==="RHC") g=[...g, PROBLEME_GAME, ORDRE_GAME];
   if(code==="GO") g=[...g, REFORMULE_GAME];
+  if(code==="SDG") g=[...g, EVAL_GAME, PAIE_GAME];
   if(code==="GO"){
     g=g.map(x=>{
       if(x.id==="mission") return {...x, nom:"Mission Grand oral"};
@@ -7959,7 +7962,7 @@ function Hub({student,subject,onSwitch,onLogout}){
         <>
         <div className="contract">📜 <b>Contrat de confiance</b> — Aucun piège : tout est dans le Cours et le Glossaire. Droit à l'erreur, chaque réponse s'explique. Tous les jeux du thème sont accessibles librement, dans l'ordre que tu veux. Valide 4 jeux (≥ {PASS}%) pour ouvrir le thème suivant.</div>
         <div className="games">
-          {GAMES.map((g,gi)=>{ const ok = g.id==="docs" ? !!(SD.docs&&SD.docs[theme]&&SD.docs[theme].length) : unlocked(theme,gi); const b=best(theme,g.id);
+          {GAMES.filter(g=>!g.themes||g.themes.indexOf(theme)>=0).map((g,gi)=>{ const ok = g.id==="docs" ? !!(SD.docs&&SD.docs[theme]&&SD.docs[theme].length) : (g.themes?true:unlocked(theme,gi)); const b=best(theme,g.id);
             return (<div key={g.id} className={"gcard"+(ok?"":" lock")} style={{"--c":g.color}}>
               <div className="gicon">{ok?g.icon:"🔒"}</div>
               <div className="gtags">
@@ -7993,7 +7996,9 @@ const CONSIGNES = {
   docs:{but:"Analyser un document, comme à l'examen, et répondre à des questions précises.",comment:"Lis attentivement le document, puis réponds aux questions qui s'appuient dessus. Une explication accompagne chaque réponse.",astuce:"Reviens au document pour justifier chacune de tes réponses."},
   probleme:{but:"Transformer une simple question de gestion en une vraie problématique de Grand oral.",comment:"Pars d'une question de gestion. En trois étapes — repérer la notion, choisir la formulation la plus ouverte, vérifier les critères — tu construis ta problématique. À la fin, elle s'affiche en entier.",astuce:"Une bonne problématique est ouverte, se discute et tient 10 minutes."},
   ordre:{but:"Remettre dans le bon ordre les étapes d'un exposé de Grand oral.",comment:"Les étapes de l'exposé sont mélangées. Touche-les dans l'ordre logique, de l'accroche à l'ouverture. Si une étape n'est pas à sa place, on te le signale.",astuce:"Souviens-toi : on introduit, on développe, puis on conclut et on ouvre."},
-  reformule:{but:"Trouver, parmi 6 reformulations, la problématique la plus impactante pour le Grand oral.",comment:"Pour chaque sujet (issu des 4 enseignements spécifiques : mercatique, RH & communication, gestion-finance, SIG), six reformulations te sont proposées. Choisis celle qui ouvre un vrai débat et donnera envie au jury de te questionner. Une explication te dit ensuite pourquoi c'était la meilleure.",astuce:"La meilleure problématique oppose deux idées (un « ou bien… ou bien »), reste ouverte et ne se répond pas en un seul mot."}
+  reformule:{but:"Trouver, parmi 6 reformulations, la problématique la plus impactante pour le Grand oral.",comment:"Pour chaque sujet (issu des 4 enseignements spécifiques : mercatique, RH & communication, gestion-finance, SIG), six reformulations te sont proposées. Choisis celle qui ouvre un vrai débat et donnera envie au jury de te questionner. Une explication te dit ensuite pourquoi c'était la meilleure.",astuce:"La meilleure problématique oppose deux idées (un « ou bien… ou bien »), reste ouverte et ne se répond pas en un seul mot."},
+  eval_entretien:{but:"Comprendre comment on évalue l'activité d'un salarié lors de l'entretien individuel d'évaluation.",comment:"Tu joues un manager qui mène un entretien d'évaluation. À chaque étape, choisis la meilleure pratique : fixer un objectif clair, choisir le bon indicateur (productivité, taux de réalisation, efficacité…), mesurer la performance et adopter la bonne posture. Chaque réponse s'explique.",astuce:"Un bon objectif est précis et mesurable (méthode SMART) ; un bon indicateur mesure un résultat, pas une simple présence."},
+  simul_paie:{but:"Comprendre comment se compose un bulletin de salaire, du salaire brut au net à payer.",comment:"Règle le taux horaire, les heures, les heures supplémentaires et une prime : le bulletin se construit en direct. Tu vois passer le salaire de base, le brut, les cotisations salariales, le net, le prélèvement à la source, puis le coût employeur. Un court quiz vérifie ensuite ta compréhension.",astuce:"Brut = base + heures sup + primes. Net = brut − cotisations salariales. Coût employeur = brut + cotisations patronales."}
 };
 function Consigne({meta,head,onStart}){
   const c=CONSIGNES[meta.id]||{but:meta.desc,comment:"Suis les instructions à l'écran.",astuce:""};
@@ -8115,6 +8120,370 @@ function Reformule({head,onDone,D}){
       <button className="next" onClick={next}>{i+1>=items.length?"Voir mon score":"Problématique suivante →"}</button></div>)}
   </div>);
 }
+/* ============================================================
+   SDGN 1ʳᵉ — Thème 1 : Évaluation & rétribution de l'activité
+   Deux simulateurs : entretien d'évaluation + bulletin de paie.
+   Outils pédagogiques (BO spécial n°1 du 22/01/2019).
+============================================================ */
+
+/* ---------- Données : l'entretien d'évaluation ---------- */
+const EVAL_DATA = {
+  intro:"Tu es manager dans l'entreprise réunionnaise « Kaz'Délices » (pâtisseries-snacks). C'est l'heure des entretiens annuels d'évaluation. À chaque étape, choisis la meilleure pratique : tu apprendras à fixer des objectifs, choisir des indicateurs et mesurer la performance.",
+  steps:[
+   { phase:"1. Le but de l'entretien",
+     q:"Avant de recevoir Léa, vendeuse, tu te demandes : à quoi sert vraiment un entretien individuel d'évaluation ?",
+     o:[{t:"Faire le bilan de l'activité passée ET fixer des objectifs pour progresser.",ok:true},
+        {t:"Surveiller la salariée et lui faire peur pour qu'elle travaille plus.",ok:false},
+        {t:"Décider tout de suite de la licencier si les chiffres sont mauvais.",ok:false},
+        {t:"Remplir un papier obligatoire sans en parler avec elle.",ok:false}],
+     why:"L'entretien d'évaluation a deux buts : faire le bilan (ce qui a été réalisé) et se projeter (objectifs, besoins de formation, évolution). C'est un échange, pas une sanction ni une surveillance." },
+   { phase:"2. Fixer un objectif",
+     q:"Tu veux fixer un objectif à Léa. Lequel est un BON objectif (clair et mesurable) ?",
+     o:[{t:"« Augmenter le panier moyen de 8 € à 9 € d'ici la fin du trimestre. »",ok:true},
+        {t:"« Faire de ton mieux et être plus motivée. »",ok:false},
+        {t:"« Vendre beaucoup plus de gâteaux. »",ok:false},
+        {t:"« Ne plus jamais faire d'erreur. »",ok:false}],
+     why:"Un bon objectif est précis, mesurable, atteignable et limité dans le temps (méthode SMART). « Panier moyen de 8 à 9 € d'ici fin du trimestre » se mesure ; « être plus motivée » ou « vendre beaucoup plus » ne se mesurent pas." },
+   { phase:"3. Choisir le bon indicateur",
+     q:"Pour mesurer si un vendeur est efficace dans son travail de vente, quel indicateur est le plus pertinent ?",
+     o:[{t:"Le chiffre d'affaires réalisé par le vendeur sur la période.",ok:true},
+        {t:"Le nombre d'heures où il est présent dans la boutique.",ok:false},
+        {t:"Sa tenue vestimentaire et sa coiffure.",ok:false},
+        {t:"Le nombre de pauses qu'il prend dans la journée.",ok:false}],
+     why:"Un indicateur de performance mesure un RÉSULTAT lié à l'activité. Le chiffre d'affaires réalisé mesure ce que le vendeur produit. Être présent (heures) ou prendre des pauses mesure une présence, pas une performance." },
+   { phase:"4. Mesurer la productivité",
+     q:"Karim a fabriqué 240 pâtisseries en 8 heures. Quelle est sa PRODUCTIVITÉ HORAIRE ?",
+     o:[{t:"30 pâtisseries par heure (240 ÷ 8).",ok:true},
+        {t:"240 pâtisseries par heure.",ok:false},
+        {t:"8 pâtisseries par heure.",ok:false},
+        {t:"1 920 pâtisseries par heure (240 × 8).",ok:false}],
+     why:"La productivité horaire = quantité produite ÷ nombre d'heures = 240 ÷ 8 = 30 pâtisseries/heure. Elle mesure la quantité produite pour chaque heure travaillée." },
+   { phase:"5. Le taux de réalisation",
+     q:"Léa avait un objectif de 500 ventes ce mois-ci. Elle en a réalisé 450. Quel est son TAUX DE RÉALISATION de l'objectif ?",
+     o:[{t:"90 % (450 ÷ 500 × 100).",ok:true},
+        {t:"50 % (objectif raté de moitié).",ok:false},
+        {t:"110 % (objectif dépassé).",ok:false},
+        {t:"45 % (450 ÷ 1000).",ok:false}],
+     why:"Le taux de réalisation = résultat obtenu ÷ objectif fixé × 100 = 450 ÷ 500 × 100 = 90 %. Léa a atteint 90 % de son objectif : c'est très correct, on en discute avec elle." },
+   { phase:"6. Efficacité vs efficience",
+     q:"Deux équipes atteignent le même objectif de production. L'équipe A utilise MOINS de ressources (temps, matières) que l'équipe B. Que peut-on dire ?",
+     o:[{t:"L'équipe A est plus efficiente : même résultat avec moins de moyens.",ok:true},
+        {t:"L'équipe B est meilleure car elle a utilisé plus de moyens.",ok:false},
+        {t:"Les deux équipes sont identiques en tout point.",ok:false},
+        {t:"L'équipe A a forcément triché.",ok:false}],
+     why:"Être EFFICACE = atteindre l'objectif. Être EFFICIENT = atteindre l'objectif en utilisant le MOINS de ressources possible. Les deux équipes sont efficaces, mais l'équipe A est plus efficiente (même résultat, moins de moyens)." },
+   { phase:"7. La posture du manager",
+     q:"Léa a atteint 90 % de son objectif mais elle est déçue. Quelle est la meilleure attitude d'évaluateur ?",
+     o:[{t:"Reconnaître ses points forts, analyser ensemble les écarts et fixer un nouvel objectif réaliste.",ok:true},
+        {t:"Ne parler que de ses erreurs pour qu'elle se ressaisisse.",ok:false},
+        {t:"Lui dire que tout va bien sans rien analyser.",ok:false},
+        {t:"Comparer publiquement ses résultats à ceux des collègues.",ok:false}],
+     why:"Une bonne évaluation est constructive : elle valorise les réussites, analyse les écarts SANS juger la personne, et débouche sur des objectifs réalistes. Humilier ou comparer publiquement démotive et n'aide pas à progresser." }
+  ]
+};
+
+function EvalEntretien({head,onDone}){
+  const D=EVAL_DATA;
+  const [steps]=useState(()=>D.steps.map(s=>{ const idx=s.o.map((_,i)=>i); for(let k=idx.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[idx[k],idx[j]]=[idx[j],idx[k]];}
+    return {...s, o:idx.map(i=>s.o[i])}; }));
+  const [i,setI]=useState(0); const [picked,setPicked]=useState(null);
+  const [score,setScore]=useState(0); const [done,setDone]=useState(false);
+  if(done) return (<div className="game">{head}<Result score={score} total={steps.length} onDone={onDone}/></div>);
+  const st=steps[i]; const correct=st.o.findIndex(o=>o.ok);
+  const choose=(idx)=>{ if(picked!==null) return; setPicked(idx); if(st.o[idx].ok) setScore(s=>s+1); };
+  const next=()=>{ setPicked(null); if(i+1>=steps.length) setDone(true); else setI(i+1); };
+  return (<div className="game">{head}
+    {i===0&&<div className="sim-intro">🎭 {Acr(D.intro)}</div>}
+    <div className="ee-prog">Étape {i+1} / {steps.length}</div>
+    <div className="case"><div className="ctag">🎯 {Acr(st.phase)}</div><p className="cq">{Acr(st.q)}</p></div>
+    <div className="opts">{st.o.map((o,idx)=>{ let c="opt"; if(picked!==null){ if(o.ok)c+=" right"; else if(idx===picked)c+=" bad"; }
+      return <button key={idx} className={c} onClick={()=>choose(idx)}>{Acr(o.t)}</button>; })}</div>
+    {picked!==null&&(<div className={"fb "+(st.o[picked].ok?"good":"no")}>
+      <strong>{st.o[picked].ok?"✅ Bon choix !":"❌ Pas le meilleur choix."}</strong>
+      {!st.o[picked].ok&&<p style={{margin:"4px 0"}}>La meilleure réponse : « {Acr(st.o[correct].t)} ».</p>}
+      <p style={{marginTop:6}}><b>À retenir :</b> {Acr(st.why)}</p>
+      <button className="next" onClick={next}>{i+1>=steps.length?"Voir mon score":"Étape suivante →"}</button></div>)}
+  </div>);
+}
+
+/* ---------- Le simulateur de bulletin de paie ---------- */
+const PAIE = {
+  SMIC_H: 12.31,            // SMIC horaire brut 2026
+  MAJ_HS: 0.25,            // majoration heures supplémentaires +25 %
+  TX_PAS: 0.05,           // prélèvement à la source (taux d'exemple : 5 %)
+  CSG_ASSIETTE: 0.9825,   // CSG/CRDS calculées sur 98,25 % du brut
+  // Lignes de cotisations (regroupées en 6 catégories, bulletin simplifié 2026)
+  // tS = taux salarial, tP = taux patronal (en % du brut, sauf CSG/CRDS sur 98,25 %)
+  lignes:[
+    { id:"sante",   lib:"Santé (maladie, maternité)",          tS:0,    tP:7.00,  org:"Sécurité sociale" },
+    { id:"atmp",    lib:"Accidents du travail (AT/MP)",         tS:0,    tP:2.12,  org:"Sécurité sociale" },
+    { id:"retbase", lib:"Retraite Sécurité sociale",            tS:6.90, tP:8.55,  org:"Assurance retraite" },
+    { id:"retcomp", lib:"Retraite complémentaire (AGIRC-ARRCO)",tS:4.01, tP:6.01,  org:"AGIRC-ARRCO" },
+    { id:"famille", lib:"Famille (allocations familiales)",     tS:0,    tP:5.25,  org:"CAF" },
+    { id:"chomage", lib:"Assurance chômage (+ AGS)",            tS:0,    tP:4.25,  org:"France Travail" },
+    { id:"csg",     lib:"CSG / CRDS",                           tS:9.70, tP:0,     org:"Impôts (sur 98,25 % du brut)", assietteReduite:true }
+  ]
+};
+function eur(n){ return (Math.round(n*100)/100).toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2})+" €"; }
+function pct(n){ return (Math.round(n*100)/100).toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2})+" %"; }
+
+function SimulPaie({head,onDone}){
+  const P=PAIE;
+  const [txH,setTxH]=useState(13);
+  const [heures,setHeures]=useState(151.67);
+  const [hs,setHs]=useState(0);
+  const [prime,setPrime]=useState(0);
+  // étapes : regle -> assemble (reconstruire les formules) -> quiz -> result
+  const [step,setStep]=useState("regle");
+
+  // ---- Calculs ----
+  const base = txH*heures;
+  const mhs  = hs*txH*(1+P.MAJ_HS);
+  const brut = base + mhs + prime;
+  // détail des cotisations par ligne
+  const lignes = P.lignes.map(l=>{ const assiette = l.assietteReduite ? brut*P.CSG_ASSIETTE : brut;
+    return {...l, assiette, montS: assiette*l.tS/100, montP: assiette*l.tP/100 }; });
+  const cotSal = lignes.reduce((s,l)=>s+l.montS,0);
+  const cotPat = lignes.reduce((s,l)=>s+l.montP,0);
+  const netImposable = brut - cotSal;
+  const pas = netImposable*P.TX_PAS;
+  const netAPayer = netImposable - pas;
+  const coutEmployeur = brut + cotPat;
+  // indicateurs
+  const tauxChargesSal = brut? cotSal/brut*100 :0;
+  const tauxChargesPat = brut? cotPat/brut*100 :0;
+  const partNetCout = coutEmployeur? netAPayer/coutEmployeur*100 :0;
+  const coutHeure = (heures+hs)? coutEmployeur/(heures+hs) :0;
+  const netHoraire = (heures+hs)? netAPayer/(heures+hs) :0;
+
+  return (<div className="game">{head}
+    {step==="regle"&&<div className="sim-intro">🧾 <b>Construis un vrai bulletin de paie.</b> Règle les paramètres, observe le bulletin se remplir comme une vraie fiche A4, puis reconstruis toi-même les formules et teste-toi.</div>}
+
+    {/* Réglages (toujours visibles sauf au résultat) */}
+    {step!=="result"&&(<div className="paie-controls">
+      <div className="pc-grid">
+        <div className="pc-row">
+          <label>💶 Taux horaire brut : <b>{eur(txH)}</b> {txH<P.SMIC_H&&<span className="pc-warn">⚠️ &lt; SMIC ({eur(P.SMIC_H)})</span>}</label>
+          <input type="range" min="11" max="40" step="0.5" value={txH} onChange={e=>setTxH(parseFloat(e.target.value))}/>
+        </div>
+        <div className="pc-row">
+          <label>⏱️ Heures / mois : <b>{heures} h</b> <span className="pc-note">(35 h/sem = 151,67 h)</span></label>
+          <input type="range" min="0" max="151.67" step="1" value={heures} onChange={e=>setHeures(parseFloat(e.target.value))}/>
+        </div>
+        <div className="pc-row">
+          <label>➕ Heures sup. : <b>{hs} h</b> <span className="pc-note">(+{Math.round(P.MAJ_HS*100)} %)</span></label>
+          <input type="range" min="0" max="30" step="1" value={hs} onChange={e=>setHs(parseFloat(e.target.value))}/>
+        </div>
+        <div className="pc-row">
+          <label>🎁 Prime : <b>{eur(prime)}</b></label>
+          <input type="range" min="0" max="800" step="10" value={prime} onChange={e=>setPrime(parseFloat(e.target.value))}/>
+        </div>
+      </div>
+    </div>)}
+
+    {/* ===== Le bulletin façon A4 ===== */}
+    {step!=="result"&&(<div className="bp-sheet">
+      <div className="bp-top">
+        <div className="bp-emp"><div className="bp-co">KAZ'DÉLICES SARL</div><div className="bp-co-sub">12 rue du Lagon · 97400 Saint-Denis · La Réunion</div></div>
+        <div className="bp-meta">BULLETIN DE PAIE<br/><span>Période : mois en cours</span></div>
+      </div>
+      <div className="bp-id">
+        <div><b>Salarié :</b> Léa PAYET</div><div><b>Emploi :</b> Vendeuse</div>
+        <div><b>Statut :</b> Non-cadre</div><div><b>Convention :</b> Commerce de détail</div>
+      </div>
+
+      {/* Rémunération brute */}
+      <table className="bp-table">
+        <thead><tr><th className="bp-l">Désignation</th><th>Base</th><th>Taux</th><th className="bp-r">Montant</th></tr></thead>
+        <tbody>
+          <tr><td className="bp-l">Salaire de base</td><td>{heures} h</td><td>{eur(txH)}</td><td className="bp-r">{eur(base)}</td></tr>
+          {hs>0&&<tr><td className="bp-l">Heures supplémentaires (+{Math.round(P.MAJ_HS*100)} %)</td><td>{hs} h</td><td>{eur(txH*(1+P.MAJ_HS))}</td><td className="bp-r">{eur(mhs)}</td></tr>}
+          {prime>0&&<tr><td className="bp-l">Prime</td><td></td><td></td><td className="bp-r">{eur(prime)}</td></tr>}
+          <tr className="bp-brut"><td className="bp-l" colSpan="3">SALAIRE BRUT</td><td className="bp-r">{eur(brut)}</td></tr>
+        </tbody>
+      </table>
+
+      {/* Cotisations détaillées */}
+      <table className="bp-table bp-cot">
+        <thead><tr>
+          <th className="bp-l" rowSpan="2">Cotisations & contributions</th><th rowSpan="2">Base</th>
+          <th colSpan="2">Part salariale</th><th colSpan="2">Part employeur</th>
+        </tr><tr><th>Taux</th><th>Montant</th><th>Taux</th><th className="bp-r">Montant</th></tr></thead>
+        <tbody>
+          {lignes.map(l=>(<tr key={l.id}>
+            <td className="bp-l">{l.lib}</td>
+            <td className="bp-base">{eur(l.assiette)}</td>
+            <td>{l.tS?pct(l.tS):"—"}</td><td>{l.montS?eur(l.montS):"—"}</td>
+            <td>{l.tP?pct(l.tP):"—"}</td><td className="bp-r">{l.montP?eur(l.montP):"—"}</td>
+          </tr>))}
+          <tr className="bp-cot-tot"><td className="bp-l" colSpan="2">TOTAL DES COTISATIONS</td>
+            <td></td><td>{eur(cotSal)}</td><td></td><td className="bp-r">{eur(cotPat)}</td></tr>
+        </tbody>
+      </table>
+
+      {/* Synthèse brut -> net -> coût */}
+      <table className="bp-table bp-synth">
+        <tbody>
+          <tr><td className="bp-l">Salaire brut</td><td className="bp-r">{eur(brut)}</td></tr>
+          <tr className="bp-minus"><td className="bp-l">− Total cotisations salariales</td><td className="bp-r">− {eur(cotSal)}</td></tr>
+          <tr className="bp-sub"><td className="bp-l">= Net à payer avant impôt (net imposable)</td><td className="bp-r">{eur(netImposable)}</td></tr>
+          <tr className="bp-minus"><td className="bp-l">− Prélèvement à la source ({Math.round(P.TX_PAS*100)} %)</td><td className="bp-r">− {eur(pas)}</td></tr>
+          <tr className="bp-net"><td className="bp-l">= NET À PAYER (versé au salarié)</td><td className="bp-r">{eur(netAPayer)}</td></tr>
+          <tr className="bp-gap"><td colSpan="2"></td></tr>
+          <tr className="bp-cout"><td className="bp-l">COÛT TOTAL EMPLOYEUR (brut + cotisations patronales)</td><td className="bp-r">{eur(coutEmployeur)}</td></tr>
+        </tbody>
+      </table>
+    </div>)}
+
+    {/* ===== Indicateurs ===== */}
+    {step!=="result"&&(<div className="bp-kpis">
+      <div className="kpi"><div className="kpi-v">{pct(tauxChargesSal)}</div><div className="kpi-l">Taux de charges salariales</div></div>
+      <div className="kpi"><div className="kpi-v">{pct(tauxChargesPat)}</div><div className="kpi-l">Taux de charges patronales</div></div>
+      <div className="kpi"><div className="kpi-v">{pct(partNetCout)}</div><div className="kpi-l">Part du net dans le coût total</div></div>
+      <div className="kpi"><div className="kpi-v">{eur(coutHeure)}</div><div className="kpi-l">Coût d'une heure travaillée</div></div>
+      <div className="kpi"><div className="kpi-v">{eur(netHoraire)}</div><div className="kpi-l">Net perçu par heure</div></div>
+      <div className="kpi"><div className="kpi-v">{eur(brut-netAPayer)}</div><div className="kpi-l">Écart brut → net</div></div>
+    </div>)}
+
+    {step==="regle"&&<div className="bp-actions">
+      <div className="ps-legend">💡 Le salarié touche <b>{eur(netAPayer)}</b>, mais coûte <b>{eur(coutEmployeur)}</b> à l'entreprise. Remarque : certaines cotisations sont <b>uniquement salariales</b> (retraite, CSG), d'autres <b>uniquement patronales</b> (santé, famille, chômage). <span className="muted">Taux 2026 simplifiés.</span></div>
+      <button className="cta sm" onClick={()=>setStep("assemble")}>🧩 Reconstruire les formules →</button>
+    </div>}
+
+    {step==="assemble"&&<AssembleFormulas vals={{base,mhs,prime,brut,cotSal,cotPat,netImposable,pas,netAPayer,coutEmployeur}} onDone={()=>setStep("quiz")}/>}
+
+    {step==="quiz"&&<PaieQuiz vals={{brut,cotSal,cotPat,netImposable,netAPayer,coutEmployeur,tauxChargesSal}} P={P} onDone={(sc,tot)=>{setStep("result");window.__paieScore={sc,tot};}}/>}
+
+    {step==="result"&&(()=>{ const r=window.__paieScore||{sc:0,tot:1};
+      return (<Result score={r.sc} total={r.tot} onDone={onDone}
+        recap={<div className="fb good" style={{textAlign:"left"}}>
+          <strong>🧾 Ce qu'il faut retenir</strong>
+          <p style={{margin:"6px 0"}}>Un bulletin part du <b>salaire de base</b> ; on ajoute heures sup et primes → <b>brut</b>. Chaque cotisation a une <b>base</b>, un <b>taux salarial</b> et un <b>taux patronal</b>. On retire les <b>cotisations salariales</b> → net imposable, puis le <b>prélèvement à la source</b> → <b>net à payer</b>. L'employeur ajoute ses <b>cotisations patronales</b> → <b>coût total employeur</b>.</p>
+          <p style={{margin:"6px 0"}}><b>Formules clés :</b> Brut = Base + HS + Primes · Net = Brut − Cot. salariales · Coût employeur = Brut + Cot. patronales.</p>
+        </div>}/>);
+    })()}
+  </div>);
+}
+
+/* ---- Étape « assembler les formules » (interactif) ---- */
+function AssembleFormulas({vals,onDone}){
+  const eur2=(n)=>(Math.round(n*100)/100).toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2})+" €";
+  // 3 formules à reconstruire. Pour chacune : un résultat cible + des briques à placer dans des trous.
+  const puzzles=[
+    { id:"brut", titre:"Le SALAIRE BRUT", cible:"Salaire brut",
+      slots:["Salaire de base","Heures supplémentaires","Primes"],
+      ops:["+","+"],
+      banque:["Salaire de base","Heures supplémentaires","Primes","Cotisations salariales","Net à payer","Coût employeur"],
+      val:vals.brut,
+      expl:"Le brut additionne tout ce que le salarié gagne AVANT cotisations : son salaire de base, ses heures supplémentaires et ses primes." },
+    { id:"net", titre:"Le NET À PAYER (avant impôt)", cible:"Net à payer avant impôt",
+      slots:["Salaire brut","Cotisations salariales"],
+      ops:["−"],
+      banque:["Salaire brut","Cotisations salariales","Cotisations patronales","Primes","Coût employeur","Heures supplémentaires"],
+      val:vals.netImposable,
+      expl:"Le net imposable s'obtient en RETIRANT du brut les seules cotisations salariales (celles à la charge du salarié)." },
+    { id:"cout", titre:"Le COÛT TOTAL EMPLOYEUR", cible:"Coût employeur",
+      slots:["Salaire brut","Cotisations patronales"],
+      ops:["+"],
+      banque:["Salaire brut","Cotisations patronales","Cotisations salariales","Net à payer","Prélèvement à la source","Primes"],
+      val:vals.coutEmployeur,
+      expl:"L'employeur paie le brut ET ses propres cotisations (patronales) : leur somme est ce que l'entreprise dépense réellement." }
+  ];
+  const [pi,setPi]=useState(0);
+  const [filled,setFilled]=useState([]);   // briques placées (dans l'ordre)
+  const [done,setDone]=useState(false);
+  const [score,setScore]=useState(0);
+  const pz=puzzles[pi];
+  const need=pz.slots;
+  const ok = filled.length===need.length && filled.every((f,i)=>f===need[i]);
+  const place=(b)=>{ if(filled.length>=need.length) return; if(filled.includes(b)) return; setFilled(f=>[...f,b]); };
+  const removeAt=(i)=>setFilled(f=>f.filter((_,k)=>k!==i));
+  const validate=()=>{ if(ok){ setScore(s=>s+1); } setDone(true); };
+  const next=()=>{ setDone(false); setFilled([]); if(pi+1>=puzzles.length){ onDone(); } else setPi(pi+1); };
+
+  // briques mélangées
+  const [shuffled]=useState(()=>puzzles.map(p=>{ const a=[...p.banque]; for(let k=a.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[a[k],a[j]]=[a[j],a[k]];} return a; }));
+
+  return (<div className="assemble">
+    <div className="ee-prog">Formule {pi+1} / {puzzles.length}</div>
+    <h3 className="asm-titre">🧩 Reconstruis : {pz.titre}</h3>
+    <p className="asm-help">Clique les briques dans le bon ordre pour reformer la formule. Résultat attendu sur ton bulletin : <b>{eur2(pz.val)}</b>.</p>
+
+    {/* zone formule */}
+    <div className="asm-formula">
+      <span className="asm-res">{pz.cible}</span><span className="asm-eq">=</span>
+      {need.map((_,i)=>(<React.Fragment key={i}>
+        {i>0&&<span className="asm-op">{pz.ops[i-1]}</span>}
+        <span className={"asm-slot"+(filled[i]?" full":"")+(done?(filled[i]===need[i]?" ok":" bad"):"")} onClick={()=>filled[i]&&!done&&removeAt(i)}>
+          {filled[i]||"…"}</span>
+      </React.Fragment>))}
+    </div>
+
+    {/* banque de briques */}
+    {!done&&<div className="asm-bank">{shuffled[pi].map((b,i)=>{ const used=filled.includes(b);
+      return <button key={i} className={"asm-brick"+(used?" used":"")} disabled={used} onClick={()=>place(b)}>{b}</button>; })}</div>}
+
+    {!done&&<button className="cta sm" disabled={filled.length!==need.length} style={{opacity:filled.length===need.length?1:.4}} onClick={validate}>Vérifier ma formule</button>}
+
+    {done&&(<div className={"fb "+(ok?"good":"no")}>
+      <strong>{ok?"✅ Formule correcte !":"❌ Pas tout à fait."}</strong>
+      {!ok&&<p style={{margin:"4px 0"}}>La bonne formule : <b>{pz.cible} = {need.map((n,i)=>(i>0?" "+pz.ops[i-1]+" ":"")+n).join("")}</b>.</p>}
+      <p style={{marginTop:6}}>{pz.expl}</p>
+      <button className="next" onClick={next}>{pi+1>=puzzles.length?"Passer au quiz →":"Formule suivante →"}</button>
+    </div>)}
+  </div>);
+}
+
+/* ---- Quiz de compréhension ---- */
+function PaieQuiz({vals,P,onDone}){
+  const quiz=[
+   { q:"Sur ce bulletin, qu'est-ce que le salaire BRUT représente ?",
+     o:[{t:"Le salaire total AVANT de retirer les cotisations salariales.",ok:true},
+        {t:"L'argent qui arrive vraiment sur le compte du salarié.",ok:false},
+        {t:"Ce que l'entreprise garde pour elle.",ok:false}],
+     why:"Le brut = salaire de base + heures sup + primes, AVANT toute cotisation. C'est la base de calcul des cotisations." },
+   { q:"La cotisation « Santé » a 0 % en part salariale et 7 % en part patronale. Qui la paie ?",
+     o:[{t:"Uniquement l'employeur : elle ne réduit pas le salaire net du salarié.",ok:true},
+        {t:"Uniquement le salarié, retirée de son brut.",ok:false},
+        {t:"Personne, c'est gratuit.",ok:false}],
+     why:"Certaines cotisations sont 100 % patronales (santé, famille, chômage). Elles s'ajoutent au coût employeur mais ne diminuent pas le net du salarié." },
+   { q:"Pourquoi le NET est-il plus petit que le BRUT ?",
+     o:[{t:"On retire les cotisations salariales (≈"+Math.round(vals.tauxChargesSal)+" % ici) qui financent la protection sociale.",ok:true},
+        {t:"L'employeur garde une partie pour lui.",ok:false},
+        {t:"Le salarié paie un loyer à l'entreprise.",ok:false}],
+     why:"Net = Brut − cotisations salariales = "+eur(vals.brut)+" − "+eur(vals.cotSal)+". Ces cotisations financent retraite, santé, etc." },
+   { q:"La CSG/CRDS se calcule sur 98,25 % du brut (et non 100 %). Pourquoi c'est important ?",
+     o:[{t:"Parce que la « base » d'une cotisation n'est pas toujours le brut entier.",ok:true},
+        {t:"Parce que la CSG est une prime.",ok:false},
+        {t:"Parce que c'est une erreur sur le bulletin.",ok:false}],
+     why:"Chaque ligne a sa propre BASE de calcul. La CSG/CRDS s'applique sur 98,25 % du brut : montant = base × taux." },
+   { q:"Qu'est-ce que le COÛT TOTAL EMPLOYEUR ?",
+     o:[{t:"Le brut + les cotisations patronales : la vraie dépense de l'entreprise.",ok:true},
+        {t:"La même chose que le net à payer.",ok:false},
+        {t:"Le brut moins les primes.",ok:false}],
+     why:"Coût employeur = "+eur(vals.brut)+" + "+eur(vals.cotPat)+" = "+eur(vals.coutEmployeur)+". C'est ce que l'embauche coûte réellement." },
+   { q:"À quoi sert le PRÉLÈVEMENT À LA SOURCE ?",
+     o:[{t:"À payer l'impôt sur le revenu directement chaque mois.",ok:true},
+        {t:"À financer une retraite supplémentaire.",ok:false},
+        {t:"À rembourser un crédit.",ok:false}],
+     why:"Depuis 2019, l'impôt est prélevé directement sur le salaire, APRÈS les cotisations, pour obtenir le net à payer." }
+  ];
+  const [qi,setQi]=useState(0); const [picked,setPicked]=useState(null); const [score,setScore]=useState(0);
+  const cur=quiz[qi];
+  const choose=(idx)=>{ if(picked!==null) return; setPicked(idx); if(cur.o[idx].ok) setScore(s=>s+1); };
+  const next=()=>{ const sc=score; setPicked(null); if(qi+1>=quiz.length){ onDone(sc,quiz.length); } else setQi(qi+1); };
+  return (<div className="paie-quiz">
+    <div className="ee-prog">Question {qi+1} / {quiz.length}</div>
+    <div className="case"><p className="cq">{Acr(cur.q)}</p></div>
+    <div className="opts">{cur.o.map((o,idx)=>{ let c="opt"; if(picked!==null){ if(o.ok)c+=" right"; else if(idx===picked)c+=" bad"; }
+      return <button key={idx} className={c} onClick={()=>choose(idx)}>{Acr(o.t)}</button>; })}</div>
+    {picked!==null&&(<div className={"fb "+(cur.o[picked].ok?"good":"no")}>
+      <strong>{cur.o[picked].ok?"✅ Exact !":"❌ Pas tout à fait."}</strong>
+      <p style={{marginTop:6}}>{Acr(cur.why)}</p>
+      <button className="next" onClick={next}>{qi+1>=quiz.length?"Voir mon score":"Question suivante →"}</button></div>)}
+  </div>);
+}
+
 function Stage({student,subject,theme,game,onDone,onQuit}){
   const SD=ALL[subject];
   const meta=gamesFor(subject).find(g=>g.id===game)||GAMES_BASE[0];
@@ -8132,6 +8501,8 @@ function Stage({student,subject,theme,game,onDone,onQuit}){
   if(game==="probleme")return <Probleme D={SD} theme={theme} head={head} onDone={onDone}/>;
   if(game==="ordre")   return <Ordre D={SD} theme={theme} head={head} onDone={onDone}/>;
   if(game==="reformule")return <Reformule D={SD} theme={theme} head={head} onDone={onDone}/>;
+  if(game==="eval_entretien")return <EvalEntretien head={head} onDone={onDone}/>;
+  if(game==="simul_paie")return <SimulPaie head={head} onDone={onDone}/>;
   return null;
 }
 
@@ -10097,6 +10468,64 @@ abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;
 .stc-bar{height:8px;background:#eef2f7;border-radius:20px;overflow:hidden;margin-bottom:6px}
 .stc-fill{height:100%;border-radius:20px}
 .stc-moy{font-weight:800;font-size:14px;text-align:right}
+/* ===== Simulateurs SDGN (entretien + paie) ===== */
+.sim-intro{background:#eef9ff;border:1px solid #b9e3f5;border-radius:14px;padding:14px 16px;margin-bottom:14px;line-height:1.55;font-size:15px;color:#0c4a6e}
+.ee-prog{font-size:13px;font-weight:700;color:#0d9488;margin-bottom:8px}
+.paie-controls{background:#fff;border:1px solid #ece6f3;border-radius:16px;padding:16px 18px;margin-bottom:14px;box-shadow:0 16px 40px -28px rgba(0,0,0,.3)}
+.pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 22px}
+.pc-row{margin-bottom:0}
+.pc-row label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.pc-row input[type=range]{width:100%;accent-color:#b45309}
+.pc-note{font-weight:500;color:#8a8398;font-size:12px}
+.pc-warn{color:#dc2626;font-weight:700;font-size:12px}
+/* Bulletin façon A4 portrait */
+.bp-sheet{background:#fff;border:1px solid #d8d2e0;border-radius:8px;padding:24px 26px;margin:0 auto 14px;max-width:820px;box-shadow:0 24px 60px -30px rgba(0,0,0,.45);font-size:13px;color:#1a1430}
+.bp-top{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #1a1430;padding-bottom:12px;margin-bottom:12px}
+.bp-co{font-family:'Fraunces',serif;font-weight:800;font-size:17px}
+.bp-co-sub{color:#6b6485;font-size:11.5px;margin-top:2px}
+.bp-meta{text-align:right;font-weight:800;font-size:13px;line-height:1.4}
+.bp-meta span{font-weight:500;color:#6b6485;font-size:11.5px}
+.bp-id{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;background:#f7f5fb;border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12.5px}
+.bp-table{width:100%;border-collapse:collapse;margin-bottom:12px;font-variant-numeric:tabular-nums}
+.bp-table th{background:#eef0f5;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;padding:6px 8px;text-align:right;border:1px solid #dfe2ea;color:#4b4660}
+.bp-table th.bp-l{text-align:left}
+.bp-table td{padding:6px 8px;text-align:right;border:1px solid #eceef3}
+.bp-table td.bp-l{text-align:left}
+.bp-table td.bp-base{color:#8a8398;font-size:12px}
+.bp-brut td{background:#eef4ff;font-weight:800;color:#1d4ed8;border-color:#cfe0fb}
+.bp-cot td{font-size:12.5px}
+.bp-cot-tot td{background:#f7f5fb;font-weight:800}
+.bp-synth td{padding:8px;font-size:13.5px;border:none}
+.bp-synth tr{border-bottom:1px solid #f0eef5}
+.bp-synth .bp-minus .bp-r{color:#dc2626}
+.bp-synth .bp-sub td{background:#fafafa;font-weight:700}
+.bp-synth .bp-net td{background:#e7f9ee;color:#15803d;font-weight:800;font-size:16px}
+.bp-synth .bp-cout td{background:#fff1e6;color:#b45309;font-weight:800;font-size:14.5px}
+.bp-synth .bp-gap td{padding:3px;background:none}
+/* Indicateurs */
+.bp-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.kpi{background:#fff;border:1px solid #ece6f3;border-radius:12px;padding:12px 14px;text-align:center;box-shadow:0 10px 26px -22px rgba(0,0,0,.3)}
+.kpi-v{font-family:'Fraunces',serif;font-weight:800;font-size:22px;color:#b45309}
+.kpi-l{font-size:11.5px;color:#6b6485;margin-top:3px;line-height:1.3}
+.bp-actions{display:flex;flex-direction:column;gap:10px}
+.ps-legend{font-size:13px;line-height:1.55;color:#5a5470;background:#fffbeb;border:1px solid #fde9b8;border-radius:12px;padding:11px 14px}
+/* Assemblage des formules */
+.assemble{max-width:760px;margin:0 auto}
+.asm-titre{font-family:'Fraunces',serif;font-size:20px;margin:4px 0 6px}
+.asm-help{font-size:14px;color:#5a5470;line-height:1.5;margin-bottom:14px}
+.asm-formula{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:#fff;border:1px solid #ece6f3;border-radius:14px;padding:16px;margin-bottom:14px;font-size:15px}
+.asm-res{font-weight:800;color:#1a1430}
+.asm-eq,.asm-op{font-weight:800;color:#b45309;font-size:18px}
+.asm-slot{min-width:120px;min-height:34px;display:inline-flex;align-items:center;justify-content:center;padding:6px 12px;border:2px dashed #cbb89a;border-radius:10px;background:#fffaf3;color:#1a1430;font-weight:600;cursor:pointer;text-align:center}
+.asm-slot.full{border-style:solid;border-color:#b45309;background:#fff1e0}
+.asm-slot.ok{border-color:#16a34a;background:#e7f9ee;color:#15803d}
+.asm-slot.bad{border-color:#dc2626;background:#fee2e2;color:#dc2626}
+.asm-bank{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:14px}
+.asm-brick{padding:10px 15px;border-radius:11px;background:#f3e8ff;border:2px solid #d9c2f0;color:#6b21a8;font-weight:700;font-size:14px;cursor:pointer;transition:.12s}
+.asm-brick:hover:not(.used){background:#ead9fb;transform:translateY(-1px)}
+.asm-brick.used{opacity:.35;cursor:default}
+.paie-quiz{margin-top:6px}
+@media(max-width:620px){ .pc-grid{grid-template-columns:1fr} .bp-sheet{padding:14px 12px;font-size:12px} .bp-table th,.bp-table td{padding:5px 5px;font-size:11px} .bp-id{grid-template-columns:1fr} }
 </style>
 </body>
 </html>
