@@ -7416,6 +7416,12 @@ const REFORMULE_GAME = { id:"reformule", nom:"Reformule la problématique", icon
 const EVAL_GAME    = { id:"eval_entretien", nom:"L'entretien d'évaluation", icon:"🎯", bloom:"Évaluer", diff:"Moyen", desc:"Mène un entretien d'évaluation : objectifs, critères et indicateurs de performance.", color:"#0d9488", themes:[1] };
 const PAIE_INTRO_GAME = { id:"paie_intro", nom:"Introduction au bulletin de salaire", icon:"🪜", bloom:"Découvrir", diff:"Facile", desc:"Niveau 1 (noté /10) : construis un bulletin simple, étage par étage, du haut vers le bas.", color:"#0891b2", themes:[1] };
 const PAIE_GAME    = { id:"simul_paie", nom:"Le simulateur de bulletin de paie", icon:"🧾", bloom:"Comprendre", diff:"Moyen", desc:"Niveau 2 : construis un bulletin de paie détaillé (heures sup, primes, cotisations, coût employeur).", color:"#b45309", themes:[1] };
+
+/* ====== ÉVALUATIONS NOTÉES /20 (catégorie à part, par matière) ====== */
+const EVAL_BULLETIN_DEF = { id:"evalnote_bulletin", nom:"Le bulletin de salaire", icon:"📝", bloom:"Appliquer", diff:"Évaluation", sur:20, theme:1, desc:"4 exercices progressifs (5 pts chacun) : effectue les calculs et remplis les bulletins de 4 salariés.", color:"#7c3aed" };
+const EVALS = { SDG:[EVAL_BULLETIN_DEF] };
+function evalsFor(code){ return EVALS[code]||[]; }
+function isEvalGame(id){ for(var k in EVALS){ if((EVALS[k]||[]).some(function(e){return e.id===id;})) return true; } return false; }
 const DIFF_COLOR = { "Facile":"#16a34a", "Moyen":"#f59e0b", "Difficile":"#dc2626" };
 /* ====== Matières ====== */
 const SUBJ = {
@@ -7926,6 +7932,7 @@ function Hub({student,subject,onSwitch,onLogout}){
     <nav className="nav">
       {hasIntro&&<button className={tab==="intro"?"nb on":"nb"} onClick={()=>setTab("intro")}>🎬 Intro</button>}
       <button className={tab==="jouer"?"nb on":"nb"} onClick={()=>setTab("jouer")}>🎮 Jouer</button>
+      {evalsFor(subject).length>0&&<button className={tab==="evals"?"nb on":"nb"} onClick={()=>setTab("evals")}>📝 Évaluations</button>}
       <button className={tab==="cours"?"nb on":"nb"} onClick={()=>setTab("cours")}>📘 Cours</button>
       <button className={tab==="prog"?"nb on":"nb"} onClick={()=>setTab("prog")}>📋 Programme</button>
       <button className={tab==="lex"?"nb on":"nb"} onClick={()=>setTab("lex")}>📖 Glossaire</button>
@@ -7977,11 +7984,203 @@ function Hub({student,subject,onSwitch,onLogout}){
             </div>); })}
         </div></>}
       </>)}
+      {tab==="evals"&&(<div className="evzone evzone-tab">
+        <p className="evzone-intro">Ces évaluations sont <b>notées sur 20</b> et leurs résultats sont transmis à ton professeur dans une catégorie à part. Prends ton temps, lis bien chaque scénario… et bonne chance ! 🍀</p>
+          <div className="evzone-h">📝 Évaluations notées <span className="evzone-sub">— elles comptent pour une note sur 20, transmise au professeur</span></div>
+          <div className="evgrid">
+            {evalsFor(subject).map(ev=>{ const b=best(ev.theme,ev.id); const note=Math.round(b/100*ev.sur*10)/10;
+              return (<div key={ev.id} className="evcard">
+                <div className="evcard-band"><span className="evic">{ev.icon}</span><span className="evsur">noté /{ev.sur}</span></div>
+                <h3>{ev.nom}</h3>
+                <p>{ev.desc}</p>
+                <div className="evmeta">Thème {ev.theme} · difficulté progressive · correction après chaque exercice</div>
+                {b>0&&<div className="evbest">🎓 Meilleure note : <b>{note}/{ev.sur}</b></div>}
+                <button className="evgo" onClick={()=>setPlaying({theme:ev.theme,game:ev.id})}>{b>0?"Repasser l\u2019évaluation":"Passer l\u2019évaluation"}</button>
+              </div>); })}
+          </div>
+      </div>)}
       {tab==="cours"&&<Cours subject={subject}/>}
       {tab==="prog"&&<Prog subject={subject}/>}
       {tab==="lex"&&<Lex subject={subject}/>}
       {tab==="res"&&<Res subject={subject}/>}
     </main>
+  </div>);
+}
+
+/* ============================================================
+   ÉVALUATION NOTÉE /20 — « Le bulletin de salaire » (SDGN T1)
+   4 exercices progressifs × 5 points. L'élève effectue les
+   calculs et remplit les bulletins (scénarios incarnés).
+============================================================ */
+const EVALB_DATA = {
+  titre:"Évaluation — Le bulletin de salaire", sur:20,
+  exos:[
+    { niveau:"⭐ Exercice 1 · Découverte", titre:"Le premier bulletin de Tom", sur:5,
+      scenario:"Tom vient d'être embauché comme employé polyvalent chez Kaz'Délices. Son contrat prévoit 151,67 h par mois, payées 14,00 € brut de l'heure. Pour son arrivée, il reçoit une prime de bienvenue de 80 €. À toi de remplir son premier bulletin !",
+      donnees:["⏱️ 151,67 h / mois","💶 14,00 € / heure","🎁 prime de bienvenue : 80 €"],
+      lignes:[
+        { label:"Salaire de base", blank:{id:"e1base",exp:2123.38,pts:2,formule:"151,67 × 14,00 = 2 123,38 €"} },
+        { label:"Prime de bienvenue", cls:"plus", blank:{id:"e1prime",exp:80,pts:1,formule:"donnée de l'énoncé : 80,00 €"} },
+        { label:"= SALAIRE BRUT", cls:"brut", blank:{id:"e1brut",exp:2203.38,pts:2,formule:"2 123,38 + 80,00 = 2 203,38 €"} }
+      ] },
+    { niveau:"⭐⭐ Exercice 2 · Heures supplémentaires", titre:"Sofia et le rush du samedi", sur:5,
+      scenario:"Sofia, pâtissière, gagne 15,00 € brut de l'heure pour 151,67 h par mois. Samedi dernier, gros rush à la boutique : elle a effectué 6 heures supplémentaires, majorées de +25 %. Complète son bulletin, ligne par ligne.",
+      donnees:["⏱️ 151,67 h / mois","💶 15,00 € / heure","➕ 6 h supplémentaires (+25 %)"],
+      lignes:[
+        { label:"Salaire de base", blank:{id:"e2base",exp:2275.05,pts:1,formule:"151,67 × 15,00 = 2 275,05 €"} },
+        { label:"Taux horaire majoré des heures supplémentaires", blank:{id:"e2taux",exp:18.75,pts:1,formule:"15,00 × 1,25 = 18,75 €"} },
+        { label:"Montant des heures supplémentaires", cls:"plus", blank:{id:"e2hs",exp:112.50,pts:1,formule:"6 × 18,75 = 112,50 €"} },
+        { label:"= SALAIRE BRUT", cls:"brut", blank:{id:"e2brut",exp:2387.55,pts:2,formule:"2 275,05 + 112,50 = 2 387,55 €"} }
+      ] },
+    { niveau:"⭐⭐⭐ Exercice 3 · Absences et primes", titre:"Le mois compliqué de Rachid", sur:5,
+      scenario:"Rachid, chef d'équipe à 18,00 € de l'heure (151,67 h par mois), a été absent 2 jours sans solde ce mois-ci (1 jour = 7 h de travail). Heureusement, il touche une prime d'ancienneté de 120 € et une prime de performance de 80 €. Calcule chaque ligne… sans te tromper de signe !",
+      donnees:["⏱️ 151,67 h / mois","💶 18,00 € / heure","🤒 2 jours d'absence (7 h/j)","🏅 prime ancienneté : 120 €","🚀 prime performance : 80 €"],
+      lignes:[
+        { label:"Salaire de base", blank:{id:"e3base",exp:2730.06,pts:1,formule:"151,67 × 18,00 = 2 730,06 €"} },
+        { label:"Retenue pour absence (montant retiré du salaire)", cls:"minus", blank:{id:"e3abs",exp:252,pts:2,formule:"2 × 7 × 18,00 = 252,00 €"} },
+        { label:"Total des primes", cls:"plus", blank:{id:"e3pr",exp:200,pts:1,formule:"120 + 80 = 200,00 €"} },
+        { label:"= SALAIRE BRUT", cls:"brut", blank:{id:"e3brut",exp:2678.06,pts:1,formule:"2 730,06 + 200,00 − 252,00 = 2 678,06 €"} }
+      ] },
+    { niveau:"⭐⭐⭐⭐ Exercice 4 · Du brut au coût employeur", titre:"Léna, des deux côtés du bulletin", sur:5,
+      scenario:"Léna, responsable de magasin, a un salaire brut tout rond de 3 000,00 €. Les cotisations salariales représentent ≈ 22 % du brut, les cotisations patronales ≈ 42 % du brut. Complète le BAS de son bulletin… des deux côtés : ce qu'elle touche, et ce qu'elle coûte !",
+      donnees:["🟦 brut : 3 000,00 €","🟥 cotisations salariales : 22 %","🏢 cotisations patronales : 42 %"],
+      lignes:[
+        { label:"Montant total des cotisations salariales imputées au salarié", cls:"minus", blank:{id:"e4cs",exp:660,pts:1,formule:"3 000 × 0,22 = 660,00 €"} },
+        { label:"= SALAIRE NET", cls:"net", blank:{id:"e4net",exp:2340,pts:1,formule:"3 000 − 660 = 2 340,00 €"} },
+        { label:"Montant total des cotisations patronales payées par l'entreprise", cls:"plus", blank:{id:"e4cp",exp:1260,pts:1,formule:"3 000 × 0,42 = 1 260,00 €"} },
+        { label:"= COÛT TOTAL EMPLOYEUR", cls:"cout", blank:{id:"e4ct",exp:4260,pts:2,formule:"3 000 + 1 260 = 4 260,00 €"} }
+      ] }
+  ]
+};
+
+/* ====== Mini-calculatrice flottante et déplaçable (évaluations) ====== */
+function MiniCalc({onClose}){
+  const [expr,setExpr]=useState("");
+  const [pos,setPos]=useState({x:null,y:null});
+  const press=(k)=>{
+    if(k==="C"){ setExpr(""); return; }
+    if(k==="⌫"){ setExpr(e=>e==="Erreur"?"":e.slice(0,-1)); return; }
+    if(k==="="){
+      try{
+        const js=expr.replace(/×/g,"*").replace(/÷/g,"/").replace(/−/g,"-").replace(/,/g,".");
+        if(!js.trim()||/[^0-9+*/(). -]/.test(js)){ return; }
+        const r=Function('"use strict";return ('+js+')')();
+        if(!isFinite(r)){ setExpr("Erreur"); return; }
+        setExpr(String(Math.round(r*100)/100).replace(".",","));
+      }catch(e){ setExpr("Erreur"); }
+      return;
+    }
+    setExpr(e=>(e==="Erreur"?"":e)+k);
+  };
+  const onDrag=(ev)=>{
+    const e0=ev.touches?ev.touches[0]:ev;
+    const panel=ev.currentTarget.closest(".calc");
+    const r=panel.getBoundingClientRect();
+    const ox=e0.clientX-r.left, oy=e0.clientY-r.top;
+    const mv=(m)=>{ const p=m.touches?m.touches[0]:m;
+      setPos({x:Math.max(2,p.clientX-ox), y:Math.max(2,p.clientY-oy)}); };
+    const up=()=>{ document.removeEventListener("mousemove",mv); document.removeEventListener("mouseup",up);
+      document.removeEventListener("touchmove",mv); document.removeEventListener("touchend",up); };
+    document.addEventListener("mousemove",mv); document.addEventListener("mouseup",up);
+    document.addEventListener("touchmove",mv,{passive:false}); document.addEventListener("touchend",up);
+  };
+  const keys=["C","⌫","÷","×","7","8","9","−","4","5","6","+","1","2","3","=","0",","];
+  return (<div className="calc" style={pos.x!=null?{left:pos.x+"px",top:pos.y+"px",right:"auto"}:undefined}>
+    <div className="calc-head" onMouseDown={onDrag} onTouchStart={onDrag}>
+      <span>🧮 Calculatrice <i className="calc-hint">⠿ déplace-moi</i></span>
+      <button className="calc-x" onMouseDown={e=>e.stopPropagation()} onTouchStart={e=>e.stopPropagation()} onClick={onClose}>✕</button>
+    </div>
+    <div className="calc-screen">{expr||"0"}</div>
+    <div className="calc-keys">{keys.map(k=>(
+      <button key={k} className={"calc-k"+(k==="="?" calc-eq":"")+(k==="0"?" calc-zero":"")+("C⌫÷×−+".indexOf(k)>=0?" calc-op":"")} onClick={()=>press(k)}>{k}</button>))}
+    </div>
+  </div>);
+}
+
+function EvalBulletin({head,onDone}){
+  const D=EVALB_DATA;
+  const [exo,setExo]=useState(0);
+  const [answers,setAnswers]=useState({});
+  const [checked,setChecked]=useState(false);
+  const [results,setResults]=useState({});
+  const [pts,setPts]=useState([]);
+  const [fin,setFin]=useState(false);
+  const [calcOpen,setCalcOpen]=useState(false);
+  const num=(s)=>{ if(s==null||s==="") return NaN; return parseFloat(String(s).replace(/\s|€/g,"").replace(",",".")); };
+  const fmt=(n)=>n.toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2})+" €";
+  const E=D.exos[exo];
+  const earned=pts.reduce((a,b)=>a+(b||0),0);
+  const allFilled=E?E.lignes.every(l=>String(answers[l.blank.id]||"").trim()!==""):true;
+
+  const check=()=>{ let p=0; const res={};
+    E.lignes.forEach(l=>{ const b=l.blank; const v=num(answers[b.id]);
+      const ok=isFinite(v)&&Math.abs(v-b.exp)<=0.5; res[b.id]=ok; if(ok)p+=b.pts; });
+    setResults(res); setChecked(true);
+    setPts(ps=>{ const n=[...ps]; n[exo]=p; return n; });
+  };
+  const next=()=>{ setChecked(false); setResults({}); setAnswers({});
+    if(exo+1>=D.exos.length) setFin(true); else setExo(exo+1); };
+  const exoPts=pts[exo]||0;
+
+  if(fin){
+    const note=earned; const pctBar=Math.round(note/D.sur*100);
+    return (<div className="game">{head}
+      <div className="evb-fin">
+        <div className="evb-note pop"><div className="evb-note-v">{note}<small>/20</small></div><div className="evb-note-l">{note>=16?"Excellent ! 🌟":note>=12?"Bien joué ! 👏":note>=10?"C'est acquis, continue ! 💪":"Courage, on revoit et on réessaie ! 📚"}</div></div>
+        <div className="evb-break">
+          {D.exos.map((x,k)=>(<div key={k} className="evb-bk">
+            <div className="evb-bk-t">{x.niveau.split("·")[0]} <span>{x.titre}</span></div>
+            <div className="evb-bar"><div className="evb-fill" style={{width:((pts[k]||0)/x.sur*100)+"%"}}></div></div>
+            <div className="evb-bk-p">{pts[k]||0}/{x.sur}</div>
+          </div>))}
+        </div>
+        <Result score={earned} total={D.sur} onDone={onDone}
+          recap={<div className="fb good" style={{textAlign:"left"}}>
+            <strong>📝 Évaluation terminée — note : {note}/20</strong>
+            <p style={{margin:"6px 0"}}>Tu as travaillé les 4 grands calculs du bulletin : le <b>salaire de base</b> (heures × taux), les <b>heures supplémentaires</b> (taux majoré +25 %), les <b>absences</b> (retirées au taux horaire) et les <b>primes</b>, puis le passage <b>brut → net</b> (− cotisations salariales) et le <b>coût employeur</b> (+ cotisations patronales). Cette note est enregistrée dans la catégorie Évaluations de ton professeur.</p>
+          </div>}/>
+      </div>
+    </div>);
+  }
+
+  return (<div className="game">{head}
+    <div className="evb">
+      <div className="evb-top">
+        <div className="evb-prog">
+          <div className="evb-steps">{D.exos.map((x,k)=>(<span key={k} className={"evb-dot"+(k<exo?" done":k===exo?" cur":"")}>{k<exo?"✓":k+1}</span>))}</div>
+          <div className="evb-progtxt">Exercice {exo+1} / {D.exos.length} · <b>{earned} pt{earned>1?"s":""}</b> sur {D.sur}</div>
+        </div>
+        <button className="calc-toggle" onClick={()=>setCalcOpen(o=>!o)}>{calcOpen?"✕ Fermer la calculatrice":"🧮 Calculatrice"}</button>
+      </div>
+      {calcOpen&&<MiniCalc onClose={()=>setCalcOpen(false)}/>}
+
+      <div className="evb-exo" key={"exo-"+exo}>
+        <div className="evb-niv">{E.niveau} <span className="evb-sur">— {E.sur} points</span></div>
+        <h3 className="evb-titre">{E.titre}</h3>
+        <div className="evb-scn">📖 {Acr(E.scenario)}</div>
+        <div className="evb-chips">{E.donnees.map((d,k)=><span key={k} className="evb-chip" style={{animationDelay:(k*0.07)+"s"}}>{d}</span>)}</div>
+
+        <div className="evb-sheet">
+          <div className="evb-sheet-t">🧾 Bulletin à compléter — saisis tes résultats (arrondis à deux chiffres après la virgule)</div>
+          {E.lignes.map((l,k)=>{ const b=l.blank; const ok=results[b.id];
+            return (<div key={b.id} className={"evb-row "+(l.cls||"")+(checked?(ok?" ok":" bad"):"")} style={{animationDelay:(k*0.09)+"s"}}>
+              <span className="evb-lab">{l.label} <i className="evb-pts">({b.pts} pt{b.pts>1?"s":""})</i></span>
+              {!checked
+                ? <input className="evb-in" inputMode="decimal" placeholder="0,00" value={answers[b.id]||""}
+                    onChange={e=>setAnswers(a=>({...a,[b.id]:e.target.value}))}/>
+                : <span className="evb-res">{ok?"✓ ":"✗ "}{String(answers[b.id]||"—")}{!ok&&<i className="evb-corr">→ {fmt(b.exp)} <small>({b.formule})</small></i>}</span>}
+            </div>); })}
+        </div>
+
+        {!checked
+          ? <button className="cta sm evb-btn" disabled={!allFilled} style={{opacity:allFilled?1:.45}} onClick={check}>✅ Vérifier mes réponses</button>
+          : (<div className={"fb "+(exoPts>=3?"good":"no")}>
+              <strong>{exoPts===E.sur?"🎉 Sans faute ! "+exoPts+"/"+E.sur:exoPts>=3?"👍 Bien : "+exoPts+"/"+E.sur:"📚 "+exoPts+"/"+E.sur+" — regarde les corrections ci-dessus."}</strong>
+              <p style={{marginTop:6}}>Les bonnes réponses (et les formules) sont affichées en face de chaque ligne ratée. Mémorise la méthode avant de continuer.</p>
+              <button className="next" onClick={next}>{exo+1>=D.exos.length?"Voir ma note finale 🎓":"Exercice suivant →"}</button>
+            </div>)}
+      </div>
+    </div>
   </div>);
 }
 
@@ -8000,7 +8199,8 @@ const CONSIGNES = {
   reformule:{but:"Trouver, parmi 6 reformulations, la problématique la plus impactante pour le Grand oral.",comment:"Pour chaque sujet (issu des 4 enseignements spécifiques : mercatique, RH & communication, gestion-finance, SIG), six reformulations te sont proposées. Choisis celle qui ouvre un vrai débat et donnera envie au jury de te questionner. Une explication te dit ensuite pourquoi c'était la meilleure.",astuce:"La meilleure problématique oppose deux idées (un « ou bien… ou bien »), reste ouverte et ne se répond pas en un seul mot."},
   eval_entretien:{but:"Comprendre comment on évalue l'activité d'un salarié lors de l'entretien individuel d'évaluation.",comment:"Tu joues un manager qui mène un entretien d'évaluation. À chaque étape, choisis la meilleure pratique : fixer un objectif clair, choisir le bon indicateur (productivité, taux de réalisation, efficacité…), mesurer la performance et adopter la bonne posture. Chaque réponse s'explique.",astuce:"Un bon objectif est précis et mesurable (méthode SMART) ; un bon indicateur mesure un résultat, pas une simple présence."},
   paie_intro:{but:"Découvrir, étage par étage, comment se lit un bulletin de salaire (niveau 1, noté sur 10).",comment:"On construit le bulletin de Maya ENSEMBLE, du haut vers le bas : 10 étages, 10 points. À chaque étage, une petite histoire et une question ; la ligne correspondante apparaît alors sur le bulletin (en-tête, salaire de base, heures supplémentaires, absence, prime, brut, cotisations salariales, net, cotisations patronales, net à payer).",astuce:"Retiens le sens de lecture : brut = base + heures sup + primes − absences ; on retire les cotisations salariales pour obtenir le net. Les cotisations patronales, elles, sont payées par l'entreprise en plus."},
-  simul_paie:{but:"Construire un vrai bulletin de salaire détaillé, du brut au net à payer (niveau 2).",comment:"Après l'introduction (niveau 1), tu règles ici tous les paramètres : taux horaire, heures, heures supplémentaires (+25 %/+50 %), absences, plusieurs primes. Le bulletin se construit en direct, avec les lignes URSSAF détaillées, le net social, le coût employeur et le cumul annuel. Tu reconstruis les formules puis tu réponds à un quiz.",astuce:"Brut = base + heures sup + primes − absences. Net = brut − cotisations salariales. Coût employeur = brut + cotisations patronales."}
+  simul_paie:{but:"Construire un vrai bulletin de salaire détaillé, du brut au net à payer (niveau 2).",comment:"Après l'introduction (niveau 1), tu règles ici tous les paramètres : taux horaire, heures, heures supplémentaires (+25 %/+50 %), absences, plusieurs primes. Le bulletin se construit en direct, avec les lignes URSSAF détaillées, le net social, le coût employeur et le cumul annuel. Tu reconstruis les formules puis tu réponds à un quiz.",astuce:"Brut = base + heures sup + primes − absences. Net = brut − cotisations salariales. Coût employeur = brut + cotisations patronales."},
+  evalnote_bulletin:{but:"Évaluation NOTÉE SUR 20 : remplir des bulletins de salaire en effectuant toi-même tous les calculs.",comment:"4 exercices de difficulté croissante, 5 points chacun. Pour chaque scénario (Tom, Sofia, Rachid, Léna), calcule les montants demandés — salaire de base, heures supplémentaires majorées, retenue d'absence, primes, cotisations, net, coût employeur — et saisis-les dans le bulletin. Tu valides chaque exercice : la correction et les formules s'affichent, puis tu passes au suivant. Ta note finale sur 20 est transmise à ton professeur dans la catégorie Évaluations.",astuce:"Garde tes formules en tête : base = heures × taux · HS = heures × taux × 1,25 · absence = jours × 7 h × taux (en MOINS) · net = brut − cotisations salariales · coût employeur = brut + cotisations patronales. Arrondis tes résultats à deux chiffres après la virgule. Une calculatrice déplaçable (🧮) est intégrée à l'évaluation."}
 };
 function Consigne({meta,head,onStart}){
   const c=CONSIGNES[meta.id]||{but:meta.desc,comment:"Suis les instructions à l'écran.",astuce:""};
@@ -8847,10 +9047,11 @@ function PaieQuiz({vals,P,onDone}){
 
 function Stage({student,subject,theme,game,onDone,onQuit}){
   const SD=ALL[subject];
-  const meta=gamesFor(subject).find(g=>g.id===game)||GAMES_BASE[0];
+  const meta=gamesFor(subject).find(g=>g.id===game)||evalsFor(subject).find(g=>g.id===game)||GAMES_BASE[0];
   const head=<Ghead title={meta.nom+" — Thème "+theme} sub={meta.bloom} onQuit={onQuit}/>;
   const [started,setStarted]=useState(false);
   if(!started) return <Consigne meta={meta} head={head} onStart={()=>setStarted(true)}/>;
+  if(game==="evalnote_bulletin")return <EvalBulletin head={head} onDone={onDone}/>;
   if(game==="trieur")  return <Trieur D={SD} theme={theme} head={head} onDone={onDone}/>;
   if(game==="memory")  return <Memory D={SD} theme={theme} head={head} onDone={onDone}/>;
   if(game==="flash")   return <Flash D={SD} theme={theme} head={head} onDone={onDone}/>;
@@ -9710,7 +9911,9 @@ function Teacher({onLogout}){
   if(scores===null) return <div className="loading">Chargement des résultats…</div>;
   const GAMES=gamesFor(mat); const THEMES=SUBJ[mat].themes;
   const TN=THEMES.map(t=>t.n); const TOT=GAMES.length*THEMES.length;
-  const ms=scores.filter(s=>(s.matiere||"MGT")===mat);
+  const msAll=scores.filter(s=>(s.matiere||"MGT")===mat);
+  const evalScores=msAll.filter(s=>isEvalGame(s.game));   // évaluations notées /20 (catégorie à part)
+  const ms=msAll.filter(s=>!isEvalGame(s.game));          // jeux d'entraînement
   const classes=["Toutes",...Array.from(new Set(ms.map(s=>s.classe)))];
   const fl= fc==="Toutes"?ms:ms.filter(s=>s.classe===fc);
 
@@ -9790,6 +9993,7 @@ function Teacher({onLogout}){
         <button className={view==="detail"?"on":""} onClick={()=>setView("detail")}>📝 Détail</button>
         <button className={view==="editor"?"on":""} onClick={()=>setView("editor")}>✏️ Éditeur</button>
         <button className={view==="pw"?"on":""} onClick={()=>setView("pw")}>🔑 Mots de passe</button>
+        <button className={view==="evals"?"on":""} onClick={()=>setView("evals")}>📝 Évaluations /20</button>
         <button className={view==="liens"?"on":""} onClick={()=>setView("liens")}>🔗 Liens d'accès direct</button>
         <button className={view==="settings"?"on":""} onClick={()=>setView("settings")}>⚙️ Paramétrage</button></div>
       <span className={"syncpill"+(sync===true?" on":sync===false?" err":"")} title={sync===true?"Scores synchronisés avec le serveur":sync===false?"URL configurée mais serveur injoignable — vérifie le déploiement du script":"Mode local : configure la synchronisation dans l'Éditeur (banque ⚙️)"}>{sync===true?"☁️ Sync":sync===false?"⚠️ Sync":"💾 Local"}</span>
@@ -9810,7 +10014,7 @@ function Teacher({onLogout}){
       </div>
       {pwMsg&&<div className="pwmsg">{pwMsg}</div>}
     </div>)}
-    {view!=="editor"&&view!=="settings"&&view!=="pw"&&view!=="synthese"&&view!=="liens"&&ms.length===0&&<div className="empty">Aucun résultat pour l'instant. Les scores apparaîtront dès que les élèves auront joué.</div>}
+    {view!=="editor"&&view!=="settings"&&view!=="pw"&&view!=="synthese"&&view!=="liens"&&view!=="evals"&&ms.length===0&&<div className="empty">Aucun résultat pour l'instant. Les scores apparaîtront dès que les élèves auront joué.</div>}
 
     {view==="eleves"&&ms.length>0&&(<div className="twrap"><table className="pt">
       <thead><tr><th>#</th><th>Élève</th><th>Classe</th><th>Jeux validés</th><th>Moyenne</th><th>Progression (T1·T2·T3)</th></tr></thead>
@@ -9900,6 +10104,37 @@ function Teacher({onLogout}){
       </table></div>
     </>)}
 
+    {view==="evals"&&(()=>{ const evs=evalsFor(mat);
+      const es=(fc==="Toutes"?evalScores:evalScores.filter(s=>s.classe===fc));
+      const by={}; es.forEach(s=>{ const k=s.classe+"|"+s.pseudo;
+        if(!by[k]) by[k]={pseudo:s.pseudo,classe:s.classe,cells:{},tries:{}};
+        by[k].cells[s.game]=Math.max(by[k].cells[s.game]||0,+s.pct||0);
+        by[k].tries[s.game]=(by[k].tries[s.game]||0)+1; });
+      const rows=Object.values(by).sort((a,b)=>String(a.classe).localeCompare(String(b.classe))||String(a.pseudo).localeCompare(String(b.pseudo)));
+      const note=(p,sur)=>Math.round(p/100*sur*10)/10;
+      const noteColor=(n,sur)=>{ const r=n/sur; return r>=0.7?"#16a34a":r>=0.5?"#f59e0b":"#dc2626"; };
+      return (<div className="evt">
+        <h3>📝 Évaluations notées /20 — {SUBJ[mat].nom}</h3>
+        <p className="help">Catégorie distincte des jeux d\u2019entraînement : seules les évaluations apparaissent ici (meilleure note de chaque élève, nombre d\u2019essais entre parenthèses). De nouvelles évaluations s\u2019ajouteront au fil de la construction de la plateforme.</p>
+        {evs.length===0&&<div className="empty">Aucune évaluation n\u2019est encore disponible pour cette matière.</div>}
+        {evs.length>0&&(<>
+          <div className="evt-cards">{evs.map(e=>{ const all=es.filter(s=>s.game===e.id);
+            const bests={}; all.forEach(s=>{ const k=s.classe+"|"+s.pseudo; bests[k]=Math.max(bests[k]||0,+s.pct||0); });
+            const vals=Object.values(bests); const m=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+            return (<div key={e.id} className="evt-card"><div className="evt-card-t">{e.icon} {e.nom}</div>
+              <div className="evt-card-s">Thème {e.theme} · noté /{e.sur}</div>
+              <div className="evt-card-m">{vals.length?("Moyenne : "+note(m,e.sur)+"/"+e.sur+" · "+vals.length+" élève"+(vals.length>1?"s":"")):"Aucune note pour l\u2019instant"}</div></div>); })}</div>
+          <div className="tblwrap"><table className="tbl">
+            <thead><tr><th>Élève</th><th>Classe</th>{evs.map(e=><th key={e.id}>{e.icon} {e.nom} <small>/{e.sur}</small></th>)}</tr></thead>
+            <tbody>{rows.map((r,i)=>(<tr key={i}><td><b>{r.pseudo}</b></td><td>{r.classe}</td>
+              {evs.map(e=>{ const p=r.cells[e.id];
+                return <td key={e.id}>{p===undefined?<span className="nc">·</span>:
+                  <span><b style={{color:noteColor(note(p,e.sur),e.sur)}}>{note(p,e.sur)}/{e.sur}</b>{r.tries[e.id]>1&&<small className="evtries"> ({r.tries[e.id]} essais)</small>}</span>}</td>; })}
+            </tr>))}</tbody>
+          </table></div>
+          {rows.length===0&&<div className="empty">Aucune note pour l\u2019instant : les résultats apparaîtront dès que les élèves auront passé une évaluation.</div>}
+        </>)}
+      </div>); })()}
     {view==="editor"&&<Editor/>}
     {view==="pw"&&<UnlockManager/>}
     {view==="liens"&&<LiensDirects/>}
@@ -10358,6 +10593,13 @@ function allExercises(){
           token:code+"-"+t.n+"-"+g.id });
       });
     });
+    // Évaluations notées : elles aussi ont un lien d'accès direct
+    evalsFor(code).forEach(ev=>{
+      out.push({ code, subjNom:subj.nom, subjShort:subj.short, subjIcon:subj.icon,
+        theme:ev.theme, themeNom:"Évaluation notée", themeShort:"Évaluation",
+        game:ev.id, gameNom:"📝 ÉVAL — "+ev.nom+" (/"+ev.sur+")", gameIcon:ev.icon,
+        token:code+"-"+ev.theme+"-"+ev.id });
+    });
   });
   return out;
 }
@@ -10383,7 +10625,7 @@ function readDirectParam(){
 function DirectExercise({param}){
   // Vérifie que l'exercice existe vraiment
   const subj = SUBJ[param.code];
-  const meta = subj ? gamesFor(param.code).find(g=>g.id===param.game) : null;
+  const meta = subj ? (gamesFor(param.code).find(g=>g.id===param.game)||evalsFor(param.code).find(g=>g.id===param.game)) : null;
   const themeOk = !!subj && (subj.themes||[]).some(t=>t.n===param.theme)
       && (!meta || !meta.themes || meta.themes.indexOf(param.theme)>=0);
   const valid = !!meta && !!subj && themeOk;
@@ -11178,6 +11420,101 @@ abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;
 @keyframes piglow{0%{box-shadow:0 0 0 0 rgba(8,145,178,.45)}100%{box-shadow:0 0 0 14px rgba(8,145,178,0)}}
 @media(prefers-reduced-motion:reduce){ .pop,.pi-step,.pi-progfill{animation:none;transition:none} }
 @media(max-width:760px){ .pi-wrap{grid-template-columns:1fr} .pi-sheet{position:static;order:-1} }
+/* ===== Évaluations notées /20 ===== */
+.evzone{margin-top:26px;padding-top:18px;border-top:2px dashed #d9c2f0}
+.evzone-h{font-family:'Fraunces',serif;font-weight:800;font-size:18px;color:#7c3aed;margin-bottom:12px}
+.evzone-sub{font-family:inherit;font-weight:500;font-size:12.5px;color:#8a8398}
+.evgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.evcard{background:linear-gradient(160deg,#faf7ff,#fff);border:2px solid #d9c2f0;border-radius:18px;padding:16px 18px;box-shadow:0 18px 44px -26px rgba(124,58,237,.55);transition:transform .18s ease,box-shadow .18s ease;position:relative;overflow:hidden}
+.evcard:hover{transform:translateY(-3px);box-shadow:0 26px 54px -26px rgba(124,58,237,.65)}
+.evcard-band{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.evic{font-size:26px}
+.evsur{background:#7c3aed;color:#fff;border-radius:18px;padding:4px 12px;font-weight:800;font-size:12px;letter-spacing:.4px}
+.evcard h3{font-family:'Fraunces',serif;font-size:17px;margin:2px 0 6px}
+.evcard p{font-size:13.5px;color:#5a5470;line-height:1.5;margin-bottom:8px}
+.evmeta{font-size:11.5px;color:#8a8398;margin-bottom:10px}
+.evbest{font-size:13px;color:#7c3aed;background:#f3e8ff;border-radius:9px;padding:6px 10px;margin-bottom:10px;font-weight:600}
+.evgo{width:100%;background:linear-gradient(120deg,#7c3aed,#9333ea);color:#fff;border-radius:11px;padding:11px;font-weight:800;font-size:14px;cursor:pointer;transition:.15s}
+.evgo:hover{filter:brightness(1.08)}
+/* Interface de l'évaluation */
+.evb{max-width:780px;margin:0 auto}
+.evb-top{margin-bottom:14px}
+.evb-steps{display:flex;gap:8px;margin-bottom:6px}
+.evb-dot{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;background:#efe9f8;color:#9a90b5;transition:all .35s cubic-bezier(.22,1,.36,1)}
+.evb-dot.cur{background:linear-gradient(120deg,#7c3aed,#9333ea);color:#fff;transform:scale(1.18);box-shadow:0 6px 16px -6px rgba(124,58,237,.6)}
+.evb-dot.done{background:#e7f9ee;color:#15803d}
+.evb-progtxt{font-size:13px;color:#6b6485}
+.evb-exo{animation:pistep .45s cubic-bezier(.22,1,.36,1)}
+.evb-niv{font-weight:800;color:#7c3aed;font-size:13.5px}
+.evb-sur{font-weight:600;color:#8a8398}
+.evb-titre{font-family:'Fraunces',serif;font-size:21px;margin:4px 0 8px}
+.evb-scn{background:linear-gradient(135deg,#fff8ec,#fdf1f4);border:1px solid #f6dfc4;border-radius:13px;padding:11px 14px;font-size:14px;line-height:1.6;color:#5a4a3a;margin-bottom:10px;box-shadow:0 8px 22px -16px rgba(180,83,9,.4)}
+.evb-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.evb-chip{background:#f3e8ff;border:1px solid #d9c2f0;color:#6b21a8;border-radius:18px;padding:5px 12px;font-size:12.5px;font-weight:700;animation:pipop .5s cubic-bezier(.34,1.46,.42,1) both}
+.evb-sheet{background:#fff;border:2px solid #d9c2f0;border-radius:16px;overflow:hidden;margin-bottom:14px;box-shadow:0 20px 46px -28px rgba(124,58,237,.5)}
+.evb-sheet-t{background:#faf7ff;color:#7c3aed;font-weight:800;font-size:12.5px;padding:10px 14px;border-bottom:1px solid #ecdff7}
+.evb-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;border-bottom:1px solid #f3eefa;animation:pipop .5s cubic-bezier(.34,1.46,.42,1) both;transition:background .25s}
+.evb-row:last-child{border-bottom:none}
+.evb-lab{font-size:13.5px;color:#4b4660;line-height:1.45}
+.evb-pts{font-style:normal;font-size:11px;color:#9a90b5;font-weight:700}
+.evb-row.plus .evb-lab{color:#0d6e64}
+.evb-row.minus .evb-lab{color:#b91c1c}
+.evb-row.brut{background:#eef4ff}.evb-row.brut .evb-lab{color:#1d4ed8;font-weight:800}
+.evb-row.net{background:#e7f9ee}.evb-row.net .evb-lab{color:#15803d;font-weight:800}
+.evb-row.cout{background:#fff1e6}.evb-row.cout .evb-lab{color:#b45309;font-weight:800}
+.evb-in{width:130px;flex-shrink:0;border:2px solid #d9c2f0;border-radius:9px;padding:8px 10px;font-size:14px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;background:#faf8fe;transition:border-color .15s,box-shadow .15s}
+.evb-in:focus{outline:none;border-color:#7c3aed;box-shadow:0 0 0 3px rgba(124,58,237,.15);background:#fff}
+.evb-res{font-weight:800;font-size:13.5px;white-space:nowrap;text-align:right}
+.evb-row.ok{background:#e7f9ee;animation:evbok .6s ease}
+.evb-row.ok .evb-res{color:#15803d}
+.evb-row.bad{background:#fee9e9;animation:evbshake .45s ease}
+.evb-row.bad .evb-res{color:#dc2626}
+.evb-corr{display:block;font-style:normal;font-size:12px;color:#7c3aed;font-weight:700;margin-top:2px;white-space:normal}
+.evb-corr small{color:#8a8398;font-weight:500}
+@keyframes evbok{0%{box-shadow:inset 0 0 0 2px #16a34a}100%{box-shadow:inset 0 0 0 0 transparent}}
+@keyframes evbshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+.evb-btn{width:100%}
+/* Note finale */
+.evb-fin{max-width:640px;margin:0 auto;text-align:center}
+.evb-note{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#a855f7,#7c3aed 65%);color:#fff;box-shadow:0 26px 60px -18px rgba(124,58,237,.7);margin:6px auto 18px}
+.evb-note-v{font-family:'Fraunces',serif;font-weight:900;font-size:52px;line-height:1}
+.evb-note-v small{font-size:20px;font-weight:700;opacity:.85}
+.evb-note-l{font-size:13px;font-weight:700;margin-top:6px;padding:0 14px}
+.evb-break{display:flex;flex-direction:column;gap:9px;margin-bottom:18px;text-align:left}
+.evb-bk{display:grid;grid-template-columns:1fr 130px 48px;gap:10px;align-items:center;background:#fff;border:1px solid #ece6f3;border-radius:11px;padding:9px 13px}
+.evb-bk-t{font-size:12.5px;font-weight:700;color:#4b4660}
+.evb-bk-t span{display:block;font-weight:500;color:#8a8398;font-size:11.5px}
+.evb-bar{height:9px;background:#efe9f8;border-radius:8px;overflow:hidden}
+.evb-fill{height:100%;background:linear-gradient(90deg,#7c3aed,#c084fc);border-radius:8px;transition:width 1s cubic-bezier(.22,1,.36,1)}
+.evb-bk-p{font-weight:800;font-size:13px;color:#7c3aed;text-align:right}
+/* Vue prof */
+.evt h3{font-family:'Fraunces',serif;font-size:21px;margin-bottom:6px}
+.evt-cards{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0 14px}
+.evt-card{background:linear-gradient(160deg,#faf7ff,#fff);border:1px solid #d9c2f0;border-radius:13px;padding:11px 15px;min-width:240px}
+.evt-card-t{font-weight:800;font-size:14px;color:#7c3aed}
+.evt-card-s{font-size:11.5px;color:#8a8398;margin:2px 0 5px}
+.evt-card-m{font-size:13px;font-weight:600;color:#4b4660}
+.evtries{color:#9a90b5;font-weight:500}
+@media(max-width:620px){ .evb-row{flex-wrap:wrap} .evb-in{width:100%} .evb-bk{grid-template-columns:1fr 80px 44px} }
+/* Onglet Évaluations + calculatrice */
+.evzone-tab{margin-top:0;padding-top:0;border-top:none}
+.evzone-intro{font-size:14px;color:#5a5470;line-height:1.55;background:#faf7ff;border:1px solid #e7dbf6;border-radius:12px;padding:11px 14px;margin-bottom:14px}
+.evb-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.calc-toggle{background:#fff;border:2px solid #d9c2f0;color:#7c3aed;border-radius:11px;padding:9px 14px;font-weight:800;font-size:13px;cursor:pointer;transition:.15s;flex-shrink:0}
+.calc-toggle:hover{background:#faf7ff;transform:translateY(-1px)}
+.calc{position:fixed;top:92px;right:18px;z-index:80;width:232px;background:#fff;border:2px solid #d9c2f0;border-radius:16px;box-shadow:0 26px 60px -18px rgba(124,58,237,.6);overflow:hidden;animation:pipop .4s cubic-bezier(.34,1.46,.42,1)}
+.calc-head{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(120deg,#7c3aed,#9333ea);color:#fff;padding:8px 11px;font-weight:800;font-size:13px;cursor:move;user-select:none;touch-action:none}
+.calc-hint{font-style:normal;font-weight:500;font-size:10.5px;opacity:.85}
+.calc-x{background:rgba(255,255,255,.2);color:#fff;border-radius:7px;width:24px;height:24px;font-weight:800;font-size:12px;cursor:pointer;flex-shrink:0}
+.calc-screen{padding:12px 14px;text-align:right;font-variant-numeric:tabular-nums;font-weight:800;font-size:22px;min-height:30px;background:#faf7ff;color:#1a1430;word-break:break-all;line-height:1.2}
+.calc-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:10px;grid-auto-flow:row dense}
+.calc-k{padding:11px 0;border-radius:10px;background:#f3eefa;font-weight:800;font-size:16px;cursor:pointer;transition:transform .08s,background .12s}
+.calc-k:hover{background:#e9defa}
+.calc-k:active{transform:scale(.92)}
+.calc-op{background:#ede4fb;color:#7c3aed}
+.calc-eq{grid-row:span 2;background:linear-gradient(160deg,#7c3aed,#9333ea);color:#fff}
+.calc-zero{grid-column:span 2}
+@media(max-width:620px){ .calc{right:3vw;top:auto;bottom:14px;width:min(232px,82vw)} }
 </style>
 </body>
 </html>
