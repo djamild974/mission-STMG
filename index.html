@@ -7414,7 +7414,8 @@ const PROBLEME_GAME = { id:"probleme", nom:"Construis ta problématique", icon:"
 const ORDRE_GAME    = { id:"ordre", nom:"L'exposé dans l'ordre", icon:"🔢", bloom:"Organiser", diff:"Moyen", desc:"Remets les étapes de l'exposé dans le bon ordre.", color:"#ea580c" };
 const REFORMULE_GAME = { id:"reformule", nom:"Reformule la problématique", icon:"✍️", bloom:"Évaluer", diff:"Difficile", desc:"Parmi 6 reformulations, trouve la problématique la plus impactante.", color:"#9333ea" };
 const EVAL_GAME    = { id:"eval_entretien", nom:"L'entretien d'évaluation", icon:"🎯", bloom:"Évaluer", diff:"Moyen", desc:"Mène un entretien d'évaluation : objectifs, critères et indicateurs de performance.", color:"#0d9488", themes:[1] };
-const PAIE_GAME    = { id:"simul_paie", nom:"Le simulateur de bulletin de paie", icon:"🧾", bloom:"Comprendre", diff:"Moyen", desc:"Construis un bulletin de paie en direct : du brut au net, primes, cotisations et coût employeur.", color:"#b45309", themes:[1] };
+const PAIE_INTRO_GAME = { id:"paie_intro", nom:"Introduction au bulletin de salaire", icon:"🪜", bloom:"Découvrir", diff:"Facile", desc:"Niveau 1 (noté /10) : construis un bulletin simple, étage par étage, du haut vers le bas.", color:"#0891b2", themes:[1] };
+const PAIE_GAME    = { id:"simul_paie", nom:"Le simulateur de bulletin de paie", icon:"🧾", bloom:"Comprendre", diff:"Moyen", desc:"Niveau 2 : construis un bulletin de paie détaillé (heures sup, primes, cotisations, coût employeur).", color:"#b45309", themes:[1] };
 const DIFF_COLOR = { "Facile":"#16a34a", "Moyen":"#f59e0b", "Difficile":"#dc2626" };
 /* ====== Matières ====== */
 const SUBJ = {
@@ -7498,7 +7499,7 @@ function gamesFor(code){
   let g = hasDocs?[...GAMES_BASE,DOCS_GAME]:[...GAMES_BASE];
   if(code==="GO"||code==="MKT"||code==="FIN"||code==="SIG"||code==="RHC") g=[...g, PROBLEME_GAME, ORDRE_GAME];
   if(code==="GO") g=[...g, REFORMULE_GAME];
-  if(code==="SDG") g=[...g, EVAL_GAME, PAIE_GAME];
+  if(code==="SDG") g=[...g, EVAL_GAME, PAIE_INTRO_GAME, PAIE_GAME];
   if(code==="GO"){
     g=g.map(x=>{
       if(x.id==="mission") return {...x, nom:"Mission Grand oral"};
@@ -7998,7 +7999,8 @@ const CONSIGNES = {
   ordre:{but:"Remettre dans le bon ordre les étapes d'un exposé de Grand oral.",comment:"Les étapes de l'exposé sont mélangées. Touche-les dans l'ordre logique, de l'accroche à l'ouverture. Si une étape n'est pas à sa place, on te le signale.",astuce:"Souviens-toi : on introduit, on développe, puis on conclut et on ouvre."},
   reformule:{but:"Trouver, parmi 6 reformulations, la problématique la plus impactante pour le Grand oral.",comment:"Pour chaque sujet (issu des 4 enseignements spécifiques : mercatique, RH & communication, gestion-finance, SIG), six reformulations te sont proposées. Choisis celle qui ouvre un vrai débat et donnera envie au jury de te questionner. Une explication te dit ensuite pourquoi c'était la meilleure.",astuce:"La meilleure problématique oppose deux idées (un « ou bien… ou bien »), reste ouverte et ne se répond pas en un seul mot."},
   eval_entretien:{but:"Comprendre comment on évalue l'activité d'un salarié lors de l'entretien individuel d'évaluation.",comment:"Tu joues un manager qui mène un entretien d'évaluation. À chaque étape, choisis la meilleure pratique : fixer un objectif clair, choisir le bon indicateur (productivité, taux de réalisation, efficacité…), mesurer la performance et adopter la bonne posture. Chaque réponse s'explique.",astuce:"Un bon objectif est précis et mesurable (méthode SMART) ; un bon indicateur mesure un résultat, pas une simple présence."},
-  simul_paie:{but:"Comprendre comment se compose un bulletin de salaire, du salaire brut au net à payer.",comment:"Règle le taux horaire, les heures, les heures supplémentaires et une prime : le bulletin se construit en direct. Tu vois passer le salaire de base, le brut, les cotisations salariales, le net, le prélèvement à la source, puis le coût employeur. Un court quiz vérifie ensuite ta compréhension.",astuce:"Brut = base + heures sup + primes. Net = brut − cotisations salariales. Coût employeur = brut + cotisations patronales."}
+  paie_intro:{but:"Découvrir, étage par étage, comment se lit un bulletin de salaire (niveau 1, noté sur 10).",comment:"On construit le bulletin de Maya ENSEMBLE, du haut vers le bas : 10 étages, 10 points. À chaque étage, une petite histoire et une question ; la ligne correspondante apparaît alors sur le bulletin (en-tête, salaire de base, heures supplémentaires, absence, prime, brut, cotisations salariales, net, cotisations patronales, net à payer).",astuce:"Retiens le sens de lecture : brut = base + heures sup + primes − absences ; on retire les cotisations salariales pour obtenir le net. Les cotisations patronales, elles, sont payées par l'entreprise en plus."},
+  simul_paie:{but:"Construire un vrai bulletin de salaire détaillé, du brut au net à payer (niveau 2).",comment:"Après l'introduction (niveau 1), tu règles ici tous les paramètres : taux horaire, heures, heures supplémentaires (+25 %/+50 %), absences, plusieurs primes. Le bulletin se construit en direct, avec les lignes URSSAF détaillées, le net social, le coût employeur et le cumul annuel. Tu reconstruis les formules puis tu réponds à un quiz.",astuce:"Brut = base + heures sup + primes − absences. Net = brut − cotisations salariales. Coût employeur = brut + cotisations patronales."}
 };
 function Consigne({meta,head,onStart}){
   const c=CONSIGNES[meta.id]||{but:meta.desc,comment:"Suis les instructions à l'écran.",astuce:""};
@@ -8207,6 +8209,176 @@ function EvalEntretien({head,onDone}){
 }
 
 /* ---------- Le simulateur de bulletin de paie ---------- */
+/* ============================================================
+   SDGN 1ʳᵉ — Thème 1 · NIVEAU 1
+   « Introduction au bulletin de salaire »
+   Construction progressive, du haut vers le bas, étape par étape.
+   Exercice d'introduction (avant le simulateur complet = niveau 2).
+============================================================ */
+const PAIE_INTRO = {
+  // Exemple simple à chiffres ronds : Maya, vendeuse chez Kaz'Délices.
+  prenom:"Maya", emploi:"Vendeuse", entreprise:"KAZ'DÉLICES",
+  steps:[
+    { id:"entete", bloc:"📋 Étage 1 · L'en-tête : qui est qui ?",
+      histoire:"C'est la fin du mois chez Kaz'Délices ! Maya, vendeuse souriante de la boutique, reçoit son bulletin de paie. Tout en haut du document, deux noms apparaissent…",
+      consigne:"Qui VERSE le salaire ?",
+      o:[{t:"L'employeur (l'entreprise KAZ'DÉLICES).",ok:true},
+         {t:"La salariée (Maya).",ok:false},
+         {t:"L'État.",ok:false}],
+      why:"En haut du bulletin, on trouve toujours l'employeur (celui qui paie) et le salarié (celui qui est payé). Ici, KAZ'DÉLICES verse un salaire à Maya.",
+      reveal:"entete" },
+    { id:"base", bloc:"💼 Étage 2 · Le salaire de base",
+      histoire:"Ce mois-ci, Maya a fait ses heures normales : 151,67 heures (c'est un mois de 35 h par semaine). Son contrat dit : 13 € de l'heure.",
+      consigne:"Quel est son SALAIRE DE BASE ?",
+      o:[{t:"1 971,71 € (151,67 h × 13 €).",ok:true},
+         {t:"164,67 € (151,67 + 13).",ok:false},
+         {t:"13 € (le taux horaire).",ok:false}],
+      why:"Le salaire de base = nombre d'heures × taux horaire = 151,67 × 13 = 1 971,71 €. C'est la toute première ligne de la rémunération.",
+      reveal:"base" },
+    { id:"hs", bloc:"⏰ Étage 3 · Les heures supplémentaires",
+      histoire:"Samedi dernier, gros rush à la boutique : Maya est restée 4 heures de plus pour aider ! Bonne nouvelle : une heure supplémentaire est payée PLUS CHER (+25 %), soit 13 € × 1,25 = 16,25 € l'heure.",
+      consigne:"Combien rapportent ses 4 heures supplémentaires ?",
+      o:[{t:"65,00 € (4 h × 16,25 €).",ok:true},
+         {t:"52,00 € (4 h × 13 €, comme des heures normales).",ok:false},
+         {t:"16,25 € (une seule heure).",ok:false}],
+      why:"Les heures supplémentaires sont MAJORÉES de +25 % : 13 € devient 16,25 €. Donc 4 h × 16,25 € = 65,00 €. Travailler plus rapporte plus par heure !",
+      reveal:"hs" },
+    { id:"abs", bloc:"🤒 Étage 4 · L'absence non rémunérée",
+      histoire:"Aïe… le 12 du mois, Maya a manqué une journée (non payée). Une journée = 7 heures de travail (35 h ÷ 5 jours). Ces heures non travaillées sont RETIRÉES du salaire, au taux horaire normal.",
+      consigne:"Combien retire-t-on pour cette journée d'absence ?",
+      o:[{t:"91,00 € (7 h × 13 €), en MOINS sur le bulletin.",ok:true},
+         {t:"13,00 € (une heure seulement).",ok:false},
+         {t:"Rien, une absence ne change pas le salaire.",ok:false}],
+      why:"Une absence non rémunérée se décompte au taux horaire : 1 jour = 7 h × 13 € = 91,00 € retirés. Sur le bulletin, la ligne apparaît en négatif (−).",
+      reveal:"abs" },
+    { id:"prime", bloc:"🎁 Étage 5 · La prime",
+      histoire:"Surprise ! La responsable est très contente du travail de Maya ce mois-ci : elle lui accorde une prime de 100 €. Une prime, c'est un PLUS qui s'ajoute au salaire.",
+      consigne:"Que fait-on de cette prime de 100 € sur le bulletin ?",
+      o:[{t:"On l'AJOUTE à la rémunération.",ok:true},
+         {t:"On la retire, comme une cotisation.",ok:false},
+         {t:"Elle remplace le salaire de base.",ok:false}],
+      why:"Une prime s'ajoute à la rémunération (ligne en +). Il existe plusieurs types de primes : ancienneté, 13ᵉ mois, performance… Tu les découvriras au niveau 2 !",
+      reveal:"prime" },
+    { id:"brut", bloc:"🟦 Étage 6 · Le salaire BRUT",
+      histoire:"On additionne maintenant tout ce que Maya a gagné : base (1 971,71 €) + heures sup (65 €) + prime (100 €) − absence (91 €). Ce total s'appelle le salaire BRUT.",
+      consigne:"Quel est le salaire BRUT de Maya ?",
+      o:[{t:"2 045,71 € (1 971,71 + 65 + 100 − 91).",ok:true},
+         {t:"2 227,71 € (on additionne tout, même l'absence).",ok:false},
+         {t:"1 971,71 € (le brut, c'est juste le salaire de base).",ok:false}],
+      why:"Brut = base + heures sup + primes − absences = 1 971,71 + 65 + 100 − 91 = 2 045,71 €. Attention : ce n'est PAS encore ce que Maya va toucher !",
+      reveal:"brut" },
+    { id:"cotsal", bloc:"🟥 Étage 7 · Les cotisations SALARIALES",
+      histoire:"Sur le brut, on retire les cotisations salariales (≈ 22 %) : elles financent la santé, la retraite, le chômage… de tout le monde ! Exemple : la cotisation RETRAITE (6,90 % du brut) prépare la future pension de Maya.",
+      consigne:"Combien retire-t-on au total (≈ 22 % de 2 045,71 €) ?",
+      o:[{t:"≈ 450,06 €, retirés du brut.",ok:true},
+         {t:"≈ 45,00 €, c'est symbolique.",ok:false},
+         {t:"0 €, les cotisations sont payées par l'État.",ok:false}],
+      why:"Cotisations salariales ≈ 22 % × 2 045,71 € ≈ 450,06 €. Exemple de ligne : « Retraite : 6,90 % ». C'est de la solidarité : chacun cotise, chacun est protégé.",
+      reveal:"cotsal" },
+    { id:"net", bloc:"🟩 Étage 8 · Le salaire NET",
+      histoire:"Le moment que Maya attend : brut moins cotisations salariales… Voici le salaire NET, celui qui se rapproche de ce qu'elle va vraiment recevoir.",
+      consigne:"Quel est le salaire NET de Maya ?",
+      o:[{t:"1 595,65 € (2 045,71 − 450,06).",ok:true},
+         {t:"2 495,77 € (2 045,71 + 450,06).",ok:false},
+         {t:"2 045,71 € (net = brut).",ok:false}],
+      why:"Net = Brut − cotisations salariales = 2 045,71 − 450,06 = 1 595,65 €. Le net est TOUJOURS plus petit que le brut, à cause des cotisations.",
+      reveal:"net" },
+    { id:"cotpat", bloc:"🏢 Étage 9 · Les cotisations PATRONALES",
+      histoire:"Côté entreprise maintenant ! Kaz'Délices paie AUSSI des cotisations, dites patronales (≈ 42 % du brut) : elles ne sont PAS retirées du salaire de Maya. Exemple : la cotisation SANTÉ (7 % du brut) est payée uniquement par l'employeur.",
+      consigne:"Que coûte vraiment Maya à l'entreprise (brut + cotisations patronales ≈ 859,20 €) ?",
+      o:[{t:"≈ 2 904,91 € : c'est le COÛT EMPLOYEUR.",ok:true},
+         {t:"1 595,65 € : la même chose que le net.",ok:false},
+         {t:"859,20 € : seulement les cotisations.",ok:false}],
+      why:"Coût employeur = brut + cotisations patronales = 2 045,71 + 859,20 ≈ 2 904,91 €. Exemple de ligne : « Santé : 7 % », payée par l'entreprise seule. Maya touche 1 595,65 €… mais elle « coûte » 2 904,91 € !",
+      reveal:"cotpat" },
+    { id:"final", bloc:"🏁 Étage 10 · Le NET À PAYER",
+      histoire:"Dernière ligne, tout en bas du bulletin, souvent en gras et en gros : le NET À PAYER. C'est LA ligne que tout le monde regarde en premier !",
+      consigne:"Que représente le NET À PAYER ?",
+      o:[{t:"La somme réellement versée sur le compte en banque de Maya.",ok:true},
+         {t:"La somme que paie l'État.",ok:false},
+         {t:"Le total des cotisations.",ok:false}],
+      why:"Le NET À PAYER est la somme qui arrive vraiment sur le compte de Maya : 1 595,65 €. (Au niveau 2, tu verras qu'on retire aussi un peu d'impôt « à la source » avant le versement.)",
+      reveal:"final" }
+  ]
+};
+
+function PaieIntro({head,onDone}){
+  const D=PAIE_INTRO;
+  const V={ base:1971.71, hs:65.00, abs:91.00, prime:100, brut:2045.71, cotsal:450.06, net:1595.65, cotpat:859.20, cout:2904.91 };
+  const money=(n)=>n.toLocaleString("fr-FR",{minimumFractionDigits:2,maximumFractionDigits:2})+" €";
+  // mélange les options de chaque étape une seule fois
+  const [steps]=useState(()=>D.steps.map(s=>{ const idx=s.o.map((_,i)=>i);
+    for(let k=idx.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[idx[k],idx[j]]=[idx[j],idx[k]];}
+    return {...s, o:idx.map(i=>s.o[i])}; }));
+  const [i,setI]=useState(0);
+  const [picked,setPicked]=useState(null);
+  const [revealed,setRevealed]=useState([]); // blocs déjà construits
+  const [score,setScore]=useState(0);
+  const [done,setDone]=useState(false);
+
+  if(done){
+    return (<div className="game">{head}
+      <Result score={score} total={steps.length} onDone={onDone}
+        recap={<div className="fb good" style={{textAlign:"left"}}>
+          <strong>🪜 Bravo, tu as gravi les 10 étages du bulletin ! Note : {score}/10</strong>
+          <p style={{margin:"6px 0"}}>Tu sais maintenant lire un bulletin <b>du haut vers le bas</b> : l'en-tête, le <b>salaire de base</b> (heures × taux), les <b>heures supplémentaires</b> (majorées +25 %), l'<b>absence</b> (retirée au taux horaire), la <b>prime</b>, le <b>brut</b>, les <b>cotisations salariales</b> (≈ 22 %, ex. retraite 6,90 %), le <b>net</b>, les <b>cotisations patronales</b> (≈ 42 %, ex. santé 7 %, payées par l'entreprise) et le <b>net à payer</b>.</p>
+          <p style={{margin:"6px 0"}}><b>À retenir :</b> Brut = base + heures sup + primes − absences · Net = brut − cotisations salariales · Coût employeur = brut + cotisations patronales.</p>
+          <p style={{margin:"6px 0"}}>👉 Prêt(e) pour le <b>niveau 2</b> ? Tu y construiras TON bulletin détaillé (curseurs, lignes URSSAF, net social, impression…).</p>
+        </div>}/>
+    </div>);
+  }
+
+  const st=steps[i];
+  const correct=st.o.findIndex(o=>o.ok);
+  const choose=(idx)=>{ if(picked!==null) return; setPicked(idx); if(st.o[idx].ok) setScore(s=>s+1); };
+  const next=()=>{ if(revealed.indexOf(st.reveal)<0) setRevealed(r=>[...r,st.reveal]);
+    setPicked(null); if(i+1>=steps.length) setDone(true); else setI(i+1); };
+  const has=(k)=>revealed.indexOf(k)>=0 || (picked!==null && st.reveal===k);
+
+  return (<div className="game">{head}
+    {i===0&&<div className="sim-intro">🪜 <b>Niveau 1 — Introduction (noté sur 10).</b> On construit le bulletin de Maya <b>étage par étage</b>, du haut vers le bas. À chaque étage : une petite histoire, une question, et la ligne apparaît sur le bulletin. C'est parti !</div>}
+
+    <div className="pi-wrap">
+      {/* Colonne gauche : l'étage en cours */}
+      <div className="pi-step" key={"step-"+i}>
+        <div className="pi-progbar"><div className="pi-progfill" style={{width:((i)/steps.length*100)+"%"}}></div></div>
+        <div className="pi-prog">Étage {i+1} / {steps.length} · Score : {score} pt{score>1?"s":""}</div>
+        <div className="pi-bloc">{Acr(st.bloc)}</div>
+        <div className="pi-story">📖 {Acr(st.histoire)}</div>
+        <p className="pi-q">{Acr(st.consigne)}</p>
+        <div className="opts">{st.o.map((o,idx)=>{ let c="opt"; if(picked!==null){ if(o.ok)c+=" right"; else if(idx===picked)c+=" bad"; }
+          return <button key={idx} className={c} onClick={()=>choose(idx)}>{Acr(o.t)}</button>; })}</div>
+        {picked!==null&&(<div className={"fb "+(st.o[picked].ok?"good":"no")}>
+          <strong>{st.o[picked].ok?"✅ Bravo ! +1 point":"❌ Presque… (0 point, mais on continue !)"}</strong>
+          {!st.o[picked].ok&&<p style={{margin:"4px 0"}}>La bonne réponse : « {Acr(st.o[correct].t)} ».</p>}
+          <p style={{marginTop:6}}>{Acr(st.why)}</p>
+          <button className="next" onClick={next}>{i+1>=steps.length?"Voir mon bulletin complet 🎉":"Étage suivant ↓"}</button>
+        </div>)}
+      </div>
+
+      {/* Colonne droite : le bulletin qui se construit */}
+      <div className="pi-sheet">
+        <div className="pi-sheet-t">🧾 Le bulletin de {D.prenom}</div>
+        {has("entete")
+          ? <div className="pi-head pop"><div><b>Employeur</b><span>{D.entreprise}</span></div><div><b>Salariée</b><span>{D.prenom} · {D.emploi}</span></div></div>
+          : <div className="pi-skel">en-tête…</div>}
+        <div className="pi-lines">
+          {has("base")&&<div className="pi-l pop"><span>Salaire de base (151,67 h × 13,00 €)</span><b>{money(V.base)}</b></div>}
+          {has("hs")&&<div className="pi-l plus pop"><span>Heures supplémentaires (4 h × 16,25 €)</span><b>+ {money(V.hs)}</b></div>}
+          {has("abs")&&<div className="pi-l minus pop"><span>Absence non rémunérée (1 j × 7 h × 13 €)</span><b>− {money(V.abs)}</b></div>}
+          {has("prime")&&<div className="pi-l plus pop"><span>Prime</span><b>+ {money(V.prime)}</b></div>}
+          {has("brut")&&<div className="pi-l brut pop"><span>= SALAIRE BRUT</span><b>{money(V.brut)}</b></div>}
+          {has("cotsal")&&<div className="pi-l minus pop"><span>− Cotisations salariales ≈ 22 % <i className="pi-ex">ex. retraite 6,90 %</i></span><b>− {money(V.cotsal)}</b></div>}
+          {has("net")&&<div className="pi-l net pop"><span>= SALAIRE NET</span><b>{money(V.net)}</b></div>}
+          {has("cotpat")&&<div className="pi-l pat pop"><span>Côté entreprise : + cotisations patronales ≈ 42 % <i className="pi-ex">ex. santé 7 %</i> → coût employeur</span><b>{money(V.cout)}</b></div>}
+          {has("final")&&<div className="pi-l final pop"><span>NET À PAYER 💰</span><b>{money(V.net)}</b></div>}
+          {revealed.length===0&&picked===null&&<div className="pi-skel">Les lignes apparaîtront ici au fur et à mesure ↓</div>}
+        </div>
+      </div>
+    </div>
+  </div>);
+}
+
 const PAIE = {
   SMIC_H: 12.31,            // SMIC horaire brut 2026
   MAJ_HS1: 0.25,           // majoration des 1res heures supplémentaires : +25 %
@@ -8691,6 +8863,7 @@ function Stage({student,subject,theme,game,onDone,onQuit}){
   if(game==="ordre")   return <Ordre D={SD} theme={theme} head={head} onDone={onDone}/>;
   if(game==="reformule")return <Reformule D={SD} theme={theme} head={head} onDone={onDone}/>;
   if(game==="eval_entretien")return <EvalEntretien head={head} onDone={onDone}/>;
+  if(game==="paie_intro")return <PaieIntro head={head} onDone={onDone}/>;
   if(game==="simul_paie")return <SimulPaie head={head} onDone={onDone}/>;
   return null;
 }
@@ -10970,6 +11143,41 @@ abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;
 .liens-copy.ok{background:#16a34a}
 .liens-foot{font-size:13px;color:#5a5470;margin-top:8px}
 @media(max-width:680px){ .liens-row{flex-wrap:wrap} .liens-game{flex:1 1 100%} .liens-url{flex:1 1 60%} }
+/* Niveau 1 — Introduction progressive au bulletin */
+.pi-wrap{display:grid;grid-template-columns:1fr 0.9fr;gap:18px;align-items:start}
+.pi-step{min-width:0;animation:pistep .45s cubic-bezier(.22,1,.36,1)}
+@keyframes pistep{0%{opacity:0;transform:translateX(-14px)}100%{opacity:1;transform:none}}
+.pi-progbar{height:7px;background:#e6f3f7;border-radius:10px;overflow:hidden;margin-bottom:8px}
+.pi-progfill{height:100%;background:linear-gradient(90deg,#0891b2,#22d3ee);border-radius:10px;transition:width .6s cubic-bezier(.22,1,.36,1)}
+.pi-prog{font-size:13px;font-weight:700;color:#0891b2;margin-bottom:8px}
+.pi-bloc{font-family:'Fraunces',serif;font-weight:800;font-size:18px;margin-bottom:8px}
+.pi-story{background:linear-gradient(135deg,#fff8ec,#fdf1f4);border:1px solid #f6dfc4;border-radius:13px;padding:11px 14px;font-size:14px;line-height:1.6;color:#5a4a3a;margin-bottom:12px;box-shadow:0 8px 22px -16px rgba(180,83,9,.4)}
+.pi-q{font-size:15.5px;font-weight:600;line-height:1.55;color:#2a2440;margin-bottom:14px}
+.pi-sheet{position:sticky;top:14px;background:#fff;border:2px solid #cdeaf2;border-radius:16px;padding:14px;box-shadow:0 20px 46px -28px rgba(8,145,178,.5)}
+.pi-sheet-t{font-weight:800;color:#0891b2;font-size:14.5px;text-align:center;padding-bottom:10px;border-bottom:1px dashed #cdeaf2;margin-bottom:10px}
+.pi-head{display:flex;justify-content:space-between;gap:10px;background:#f0fbfe;border-radius:10px;padding:10px 12px;margin-bottom:10px}
+.pi-head div{display:flex;flex-direction:column}
+.pi-head b{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#0e7490}
+.pi-head span{font-size:13px;font-weight:600;color:#1a1430;margin-top:2px}
+.pi-lines{display:flex;flex-direction:column;gap:7px;min-height:40px}
+.pi-l{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:9px 12px;border-radius:9px;background:#f8fafc;font-size:13.5px;transition:transform .18s ease,box-shadow .18s ease}
+.pi-l:hover{transform:translateX(2px)}
+.pi-l span{color:#4b4660}
+.pi-l b{white-space:nowrap;font-variant-numeric:tabular-nums}
+.pi-l.plus b{color:#0d9488}
+.pi-l.brut{background:#eef4ff;color:#1d4ed8;font-weight:800}
+.pi-l.minus{background:#fff6f6}.pi-l.minus b{color:#dc2626}
+.pi-l.net{background:#e7f9ee;color:#15803d;font-weight:800}
+.pi-l.pat{background:#fff3e8;font-size:12.5px}.pi-l.pat b{color:#b45309;font-weight:800}
+.pi-l.final{background:linear-gradient(120deg,#0891b2,#06b6d4);color:#fff;font-weight:800;font-size:15px;box-shadow:0 10px 24px -10px rgba(8,145,178,.6)}
+.pi-l.final span{color:#fff}
+.pi-ex{display:block;font-style:italic;font-size:11px;color:#8a8398;font-weight:400}
+.pi-skel{font-size:12.5px;color:#9fb4bd;text-align:center;padding:14px 6px;font-style:italic}
+.pop{animation:pipop .55s cubic-bezier(.34,1.46,.42,1), piglow 1.3s ease-out}
+@keyframes pipop{0%{opacity:0;transform:translateY(-12px) scale(.94)}60%{opacity:1;transform:translateY(2px) scale(1.015)}100%{opacity:1;transform:none}}
+@keyframes piglow{0%{box-shadow:0 0 0 0 rgba(8,145,178,.45)}100%{box-shadow:0 0 0 14px rgba(8,145,178,0)}}
+@media(prefers-reduced-motion:reduce){ .pop,.pi-step,.pi-progfill{animation:none;transition:none} }
+@media(max-width:760px){ .pi-wrap{grid-template-columns:1fr} .pi-sheet{position:static;order:-1} }
 </style>
 </body>
 </html>
