@@ -7417,6 +7417,13 @@ const EVAL_GAME    = { id:"eval_entretien", nom:"L'entretien d'évaluation", ico
 const PAIE_INTRO_GAME = { id:"paie_intro", nom:"Introduction au bulletin de salaire", icon:"🪜", bloom:"Découvrir", diff:"Facile", desc:"Niveau 1 (noté /10) : construis un bulletin simple, étage par étage, du haut vers le bas.", color:"#0891b2", themes:[1] };
 const PAIE_GAME    = { id:"simul_paie", nom:"Le simulateur de bulletin de paie", icon:"🧾", bloom:"Comprendre", diff:"Moyen", desc:"Niveau 2 : construis un bulletin de paie détaillé (heures sup, primes, cotisations, coût employeur).", color:"#b45309", themes:[1] };
 
+/* ====== Thème 1 SDGN — Jeux « L'organisation » (placés en tête) ====== */
+const ORG_PQ_GAME   = { id:"org_pourquoi",    nom:"Pourquoi créer une organisation ?", icon:"🏛️", bloom:"Découvrir", diff:"Facile", desc:"Les 3 objectifs d'une organisation + la forme juridique (EI, SARL, SA, association).", color:"#0284c7", themes:[1] };
+const ORG_RES_GAME  = { id:"org_ressources",  nom:"Les ressources de l'organisation", icon:"🧰", bloom:"Classer", diff:"Moyen", desc:"Coche le type de chaque ressource (humaine, financière, matérielle, immatérielle) et l'organisation concernée.", color:"#16a34a", themes:[1] };
+const ORG_PROP_GAME = { id:"org_propriete",   nom:"À qui appartient l'organisation ?", icon:"🔑", bloom:"Comprendre", diff:"Moyen", desc:"Recompose le schéma de la structure de propriété (≠ hiérarchie).", color:"#d97706", themes:[1] };
+const ORG_GOUV_GAME = { id:"org_gouvernement",nom:"Gouverner une organisation", icon:"🎚️", bloom:"Analyser", diff:"Moyen", desc:"Reconnais comment chaque type d'organisation prend ses décisions.", color:"#0d9488", themes:[1] };
+const ORG_CTRL_GAME = { id:"org_controle",    nom:"Le contrôle des dirigeants", icon:"🔍", bloom:"Analyser", diff:"Moyen", desc:"Qui contrôle les dirigeants : associés, Cour des comptes, membres en AG ?", color:"#9333ea", themes:[1] };
+
 /* ====== ÉVALUATIONS NOTÉES /20 (catégorie à part, par matière) ====== */
 const EVAL_BULLETIN_DEF = { id:"evalnote_bulletin", nom:"Le bulletin de salaire", icon:"📝", bloom:"Appliquer", diff:"Évaluation", sur:20, theme:1, desc:"4 exercices progressifs (5 pts chacun) : effectue les calculs et remplis les bulletins de 4 salariés.", color:"#7c3aed" };
 const EVALS = { SDG:[EVAL_BULLETIN_DEF] };
@@ -7505,7 +7512,7 @@ function gamesFor(code){
   let g = hasDocs?[...GAMES_BASE,DOCS_GAME]:[...GAMES_BASE];
   if(code==="GO"||code==="MKT"||code==="FIN"||code==="SIG"||code==="RHC") g=[...g, PROBLEME_GAME, ORDRE_GAME];
   if(code==="GO") g=[...g, REFORMULE_GAME];
-  if(code==="SDG") g=[...g, EVAL_GAME, PAIE_INTRO_GAME, PAIE_GAME];
+  if(code==="SDG") g=[ORG_PQ_GAME, ORG_RES_GAME, ORG_PROP_GAME, ORG_GOUV_GAME, ORG_CTRL_GAME, ...g, EVAL_GAME, PAIE_INTRO_GAME, PAIE_GAME];
   if(code==="GO"){
     g=g.map(x=>{
       if(x.id==="mission") return {...x, nom:"Mission Grand oral"};
@@ -8184,8 +8191,607 @@ function EvalBulletin({head,onDone}){
   </div>);
 }
 
+/* ============================================================
+   SDGN 1ʳᵉ — Thème 1 · « L'organisation »
+   JEU 1 : Pourquoi créer une organisation ?
+   3 objectifs (existence juridique / organiser / pérenniser)
+   + mini-explicateur de la forme juridique, avec exemples.
+============================================================ */
+const ORGPQ = {
+  // Les 3 grands objectifs de la création d'une organisation
+  objectifs:[
+    { id:"juridique", emoji:"⚖️", titre:"Avoir une existence juridique", couleur:"#0ea5e9",
+      def:"L'organisation devient une « personne » aux yeux de la loi : elle peut signer des contrats, ouvrir un compte, embaucher, acheter… grâce à sa personnalité juridique." },
+    { id:"organiser", emoji:"🧩", titre:"Organiser les activités", couleur:"#16a34a",
+      def:"Les activités sont nombreuses et complexes. Une organisation claire permet de structurer, coordonner, répartir les tâches et allouer les moyens nécessaires." },
+    { id:"perenniser", emoji:"🤝", titre:"Pérenniser les activités", couleur:"#e11d48",
+      def:"Créer une organisation permet d'inscrire les activités dans le temps et de faire des choix de développement sur le long terme (au-delà des personnes qui la composent)." }
+  ],
+  // Situations à rattacher au bon objectif
+  situations:[
+    { t:"Une boulangerie signe un contrat de location pour son local et un contrat avec un fournisseur de farine.", ok:"juridique",
+      why:"Signer des contrats nécessite une existence juridique : seule une organisation dotée de la personnalité juridique peut s'engager officiellement." },
+    { t:"Un restaurant répartit les rôles : un chef en cuisine, deux serveurs en salle, un responsable des achats.", ok:"organiser",
+      why:"Répartir les tâches et coordonner les personnes, c'est organiser les activités pour les rendre efficaces." },
+    { t:"Une association prévoit un plan d'actions sur 5 ans pour continuer à exister même si ses fondateurs partent.", ok:"perenniser",
+      why:"Se projeter sur le long terme, indépendamment des personnes présentes, c'est pérenniser les activités." },
+    { t:"Une start-up ouvre un compte bancaire professionnel à son nom et dépose sa marque.", ok:"juridique",
+      why:"Ouvrir un compte ou déposer une marque suppose d'être une personne juridique reconnue par la loi." },
+    { t:"Une entreprise réunionnaise structure ses équipes en services : production, vente, comptabilité.", ok:"organiser",
+      why:"Découper l'activité en services et coordonner ces services, c'est organiser les activités." },
+    { t:"Une coopérative agricole investit dans du matériel durable pour assurer son activité pendant des décennies.", ok:"perenniser",
+      why:"Investir pour durer dans le temps relève de la pérennisation des activités." }
+  ],
+  // Mini-explicateur : la forme juridique
+  formeIntro:"La FORME JURIDIQUE, c'est le « statut légal » que choisit une organisation au moment de sa création. Elle fixe ses règles : qui décide, qui est responsable, comment sont partagés les bénéfices, quelles obligations comptables… On l'appelle aussi statut juridique.",
+  formes:[
+    { sigle:"EI", nom:"Entreprise individuelle", ex:"un coiffeur, un artisan-pâtissier qui travaille seul", note:"Une seule personne, pas de séparation forte entre la personne et l'activité." },
+    { sigle:"SARL", nom:"Société à responsabilité limitée", ex:"une petite ou moyenne entreprise familiale", note:"Plusieurs associés ; leur responsabilité est limitée à leur apport." },
+    { sigle:"SA", nom:"Société anonyme", ex:"une grande entreprise cotée en Bourse", note:"De nombreux actionnaires ; gouvernance plus lourde." },
+    { sigle:"Association", nom:"Association loi 1901", ex:"un club de sport, une association de quartier", note:"But non lucratif : pas de partage des bénéfices entre les membres." }
+  ],
+  // Quiz forme juridique : retrouver la forme adaptée
+  formeQuiz:[
+    { t:"Karim ouvre seul son petit salon de coiffure à Saint-Pierre.", ok:"EI",
+      why:"Seul, sans associés, l'entrepreneur individuel choisit souvent l'entreprise individuelle (EI)." },
+    { t:"Trois amis créent ensemble une PME et veulent limiter leurs risques à leurs apports.", ok:"SARL",
+      why:"Plusieurs associés + responsabilité limitée aux apports → la SARL est adaptée." },
+    { t:"Des bénévoles montent un club de foot sans but lucratif.", ok:"Association",
+      why:"Pas de but lucratif, des membres bénévoles → l'association loi 1901." },
+    { t:"Une grande entreprise veut entrer en Bourse et accueillir de nombreux actionnaires.", ok:"SA",
+      why:"Beaucoup d'actionnaires et accès à la Bourse → la société anonyme (SA)." }
+  ]
+};
+
+function OrgPourquoi({head,onDone}){
+  const D=ORGPQ;
+  // phases : 1) situations -> objectif  2) explicateur forme  3) quiz forme  4) result
+  const [phase,setPhase]=useState("intro");
+  const [sit]=useState(()=>D.situations.map(s=>s).sort(()=>Math.random()-0.5));
+  const [si,setSi]=useState(0);
+  const [pick,setPick]=useState(null);
+  const [score,setScore]=useState(0);
+  // quiz forme
+  const [fq]=useState(()=>D.formeQuiz.map(s=>s).sort(()=>Math.random()-0.5));
+  const [fi,setFi]=useState(0);
+  const [fpick,setFpick]=useState(null);
+  const [fcard,setFcard]=useState(null); // carte forme survolée/affichée
+  const total=sit.length+fq.length;
+
+  if(phase==="intro"){
+    return (<div className="game">{head}
+      <div className="org-intro org-pq-intro">
+        <div className="org-intro-emoji">🏛️</div>
+        <h2>Pourquoi crée-t-on une organisation ?</h2>
+        <p>Une organisation ne naît jamais par hasard : elle répond à des <b>objectifs</b> précis. Tu vas découvrir les 3 grandes raisons de créer une organisation, puis comprendre ce qu'est sa <b>forme juridique</b>.</p>
+        <div className="org-pq-cards">{D.objectifs.map((o,k)=>(
+          <div key={o.id} className="org-pq-card" style={{"--oc":o.couleur,animationDelay:(k*0.12)+"s"}}>
+            <div className="org-pq-ic">{o.emoji}</div><h3>{o.titre}</h3><p>{o.def}</p>
+          </div>))}
+        </div>
+        <button className="cta sm" onClick={()=>setPhase("sit")}>Commencer →</button>
+      </div>
+    </div>);
+  }
+
+  if(phase==="sit"){
+    const s=sit[si];
+    const choose=(id)=>{ if(pick!==null) return; setPick(id); if(id===s.ok) setScore(x=>x+1); };
+    const next=()=>{ setPick(null); if(si+1>=sit.length){ setPhase("forme"); } else setSi(si+1); };
+    const obj=D.objectifs.find(o=>o.id===s.ok);
+    return (<div className="game">{head}
+      <div className="org-prog"><span className="org-prog-fill" style={{width:(si/sit.length*100)+"%"}}></span></div>
+      <div className="org-h2">🎯 Quel objectif ? <small>{si+1} / {sit.length}</small></div>
+      <div className="org-scn">{Acr(s.t)}</div>
+      <div className="org-choices">{D.objectifs.map(o=>{ let c="org-choice"; if(pick!==null){ if(o.id===s.ok)c+=" ok"; else if(o.id===pick)c+=" bad"; }
+        return <button key={o.id} className={c} style={{"--oc":o.couleur}} onClick={()=>choose(o.id)}>
+          <span className="org-choice-ic">{o.emoji}</span><span>{o.titre}</span></button>; })}</div>
+      {pick!==null&&(<div className={"fb "+(pick===s.ok?"good":"no")}>
+        <strong>{pick===s.ok?"✅ Exact !":"❌ Pas tout à fait."}</strong>
+        {pick!==s.ok&&<p style={{margin:"4px 0"}}>Bonne réponse : <b>{obj.emoji} {obj.titre}</b>.</p>}
+        <p style={{marginTop:6}}>{Acr(s.why)}</p>
+        <button className="next" onClick={next}>{si+1>=sit.length?"Découvrir la forme juridique →":"Situation suivante →"}</button>
+      </div>)}
+    </div>);
+  }
+
+  if(phase==="forme"){
+    return (<div className="game">{head}
+      <div className="org-forme">
+        <div className="org-h2">📜 C'est quoi, une « forme juridique » ?</div>
+        <div className="org-def-box">{Acr(D.formeIntro)}</div>
+        <p className="org-sub">Voici 4 exemples de formes juridiques. Clique pour les explorer :</p>
+        <div className="org-forme-grid">{D.formes.map((f,k)=>(
+          <button key={f.sigle} className={"org-forme-card"+(fcard===f.sigle?" on":"")} style={{animationDelay:(k*0.1)+"s"}} onClick={()=>setFcard(fcard===f.sigle?null:f.sigle)}>
+            <div className="org-forme-sig">{f.sigle}</div>
+            <div className="org-forme-nom">{f.nom}</div>
+            {fcard===f.sigle&&<div className="org-forme-det"><p><b>Exemple :</b> {f.ex}</p><p>{f.note}</p></div>}
+          </button>))}
+        </div>
+        <button className="cta sm" onClick={()=>setPhase("fquiz")}>À toi de jouer : associe les formes →</button>
+      </div>
+    </div>);
+  }
+
+  if(phase==="fquiz"){
+    const q=fq[fi];
+    const choose=(sig)=>{ if(fpick!==null) return; setFpick(sig); if(sig===q.ok) setScore(x=>x+1); };
+    const next=()=>{ setFpick(null); if(fi+1>=fq.length){ setPhase("result"); } else setFi(fi+1); };
+    const good=D.formes.find(f=>f.sigle===q.ok);
+    return (<div className="game">{head}
+      <div className="org-prog"><span className="org-prog-fill" style={{width:(fi/fq.length*100)+"%",background:"#7c3aed"}}></span></div>
+      <div className="org-h2">📜 Quelle forme juridique ? <small>{fi+1} / {fq.length}</small></div>
+      <div className="org-scn">{Acr(q.t)}</div>
+      <div className="org-choices org-choices-4">{D.formes.map(f=>{ let c="org-choice org-choice-sm"; if(fpick!==null){ if(f.sigle===q.ok)c+=" ok"; else if(f.sigle===fpick)c+=" bad"; }
+        return <button key={f.sigle} className={c} onClick={()=>choose(f.sigle)}>
+          <span className="org-forme-sig sm">{f.sigle}</span><span>{f.nom}</span></button>; })}</div>
+      {fpick!==null&&(<div className={"fb "+(fpick===q.ok?"good":"no")}>
+        <strong>{fpick===q.ok?"✅ Bien vu !":"❌ Presque."}</strong>
+        {fpick!==q.ok&&<p style={{margin:"4px 0"}}>Bonne réponse : <b>{good.sigle} — {good.nom}</b>.</p>}
+        <p style={{marginTop:6}}>{Acr(q.why)}</p>
+        <button className="next" onClick={next}>{fi+1>=fq.length?"Voir mon score →":"Suivant →"}</button>
+      </div>)}
+    </div>);
+  }
+
+  return (<div className="game">{head}
+    <Result score={score} total={total} onDone={onDone}
+      recap={<div className="fb good" style={{textAlign:"left"}}>
+        <strong>🏛️ À retenir</strong>
+        <p style={{margin:"6px 0"}}>On crée une organisation pour <b>3 grandes raisons</b> : lui donner une <b>existence juridique</b> (signer des contrats, etc.), <b>organiser</b> ses activités (structurer, coordonner) et les <b>pérenniser</b> (durer dans le temps).</p>
+        <p style={{margin:"6px 0"}}>La <b>forme juridique</b> (EI, SARL, SA, association…) est le statut légal choisi à la création : il fixe les règles de fonctionnement, de responsabilité et de partage des bénéfices.</p>
+      </div>}/>
+  </div>);
+}
+
+/* ============================================================
+   JEU 2 : Les ressources de l'organisation
+   L'élève coche le(s) type(s) de ressource pour chaque élément,
+   puis détermine le(s) type(s) d'organisation concerné(s).
+============================================================ */
+const ORGRES = {
+  types:[
+    { id:"hum", lab:"Humaines", emoji:"👥", couleur:"#0ea5e9", def:"les personnes : leur travail, leurs compétences, leur engagement." },
+    { id:"fin", lab:"Financières", emoji:"💶", couleur:"#16a34a", def:"l'argent : apports, emprunts, dons, recettes, subventions." },
+    { id:"mat", lab:"Matérielles", emoji:"🏭", couleur:"#f59e0b", def:"les biens physiques : locaux, machines, outils, matières." },
+    { id:"imm", lab:"Immatérielles", emoji:"💡", couleur:"#8b5cf6", def:"les biens non physiques : marque, logiciel, savoir-faire, réputation." }
+  ],
+  // type attendu pour chaque élément (un seul type principal ici, pour rester clair)
+  items:[
+    { t:"Adhésion", type:"fin", why:"Une adhésion (cotisation versée par un membre) est une ressource financière.", org:["osc"] },
+    { t:"Bénévole", type:"hum", why:"Un bénévole apporte son travail : c'est une ressource humaine.", org:["osc"] },
+    { t:"Capital social", type:"fin", why:"Le capital social est l'argent apporté à la création : ressource financière.", org:["ent"] },
+    { t:"Don", type:"fin", why:"Un don est une somme reçue : ressource financière.", org:["osc"] },
+    { t:"Emprunt bancaire", type:"fin", why:"Un emprunt apporte de l'argent (à rembourser) : ressource financière.", org:["ent","pub","osc"] },
+    { t:"Fonctionnaire", type:"hum", why:"Un fonctionnaire est une personne qui travaille : ressource humaine.", org:["pub"] },
+    { t:"Impôts et taxes", type:"fin", why:"Les impôts et taxes financent l'action publique : ressource financière.", org:["pub"] },
+    { t:"Local", type:"mat", why:"Un local est un bien physique : ressource matérielle.", org:["ent","pub","osc"] },
+    { t:"Logiciel", type:"imm", why:"Un logiciel est un bien non physique : ressource immatérielle.", org:["ent","pub","osc"] },
+    { t:"Marque", type:"imm", why:"Une marque (image, notoriété) est une ressource immatérielle.", org:["ent"] },
+    { t:"Outils de production", type:"mat", why:"Les outils de production sont des biens physiques : ressource matérielle.", org:["ent"] },
+    { t:"Salarié", type:"hum", why:"Un salarié apporte son travail : ressource humaine.", org:["ent","osc"] },
+    { t:"Subvention de l'État", type:"fin", why:"Une subvention est une aide financière : ressource financière.", org:["pub","osc"] }
+  ],
+  orgs:[
+    { id:"ent", lab:"Entreprise", emoji:"🏢" },
+    { id:"pub", lab:"Organisation publique", emoji:"🏛️" },
+    { id:"osc", lab:"Organisation de la société civile", emoji:"🤝" }
+  ]
+};
+
+function OrgRessources({head,onDone}){
+  const D=ORGRES;
+  const [items]=useState(()=>D.items.map(x=>x).sort(()=>Math.random()-0.5));
+  const [i,setI]=useState(0);
+  const [typeSel,setTypeSel]=useState(null);   // type coché
+  const [orgSel,setOrgSel]=useState([]);        // organisations cochées (multi)
+  const [phase,setPhase]=useState("type");      // type -> org -> feedback
+  const [checked,setChecked]=useState(false);
+  const [score,setScore]=useState(0);
+  const [done,setDone]=useState(false);
+  const total=items.length*2; // 1 pt type + 1 pt org
+
+  if(done){
+    return (<div className="game">{head}
+      <Result score={score} total={total} onDone={onDone}
+        recap={<div className="fb good" style={{textAlign:"left"}}>
+          <strong>✅ À retenir</strong>
+          <p style={{margin:"6px 0"}}>Pour fonctionner, toute organisation mobilise 4 types de <b>ressources</b> : <b>humaines</b> (les personnes), <b>financières</b> (l'argent), <b>matérielles</b> (les biens physiques) et <b>immatérielles</b> (marque, logiciel, savoir-faire…).</p>
+          <p style={{margin:"6px 0"}}>Certaines ressources sont typiques d'un genre d'organisation : <b>capital social</b> et <b>marque</b> pour l'entreprise, <b>impôts/fonctionnaires</b> pour le public, <b>adhésions/bénévoles/dons</b> pour la société civile.</p>
+        </div>}/>
+    </div>);
+  }
+
+  const it=items[i];
+  const goodType=D.types.find(t=>t.id===it.type);
+  const orgOk = orgSel.length>0 && orgSel.length===it.org.length && it.org.every(o=>orgSel.includes(o));
+  const typeOk = typeSel===it.type;
+
+  const validateType=()=>{ if(typeSel===null) return; setPhase("org"); };
+  const toggleOrg=(id)=>{ if(checked) return; setOrgSel(s=>s.includes(id)?s.filter(x=>x!==id):[...s,id]); };
+  const check=()=>{ setChecked(true); let p=0; if(typeOk)p++; if(orgOk)p++; setScore(s=>s+p); };
+  const next=()=>{ setChecked(false); setPhase("type"); setTypeSel(null); setOrgSel([]);
+    if(i+1>=items.length) setDone(true); else setI(i+1); };
+
+  return (<div className="game">{head}
+    <div className="org-prog"><span className="org-prog-fill" style={{width:(i/items.length*100)+"%",background:"#16a34a"}}></span></div>
+    <div className="org-h2">🧰 Les ressources <small>{i+1} / {items.length}</small></div>
+    <div className="res-card pop" key={i}>
+      <div className="res-elem">« {Acr(it.t)} »</div>
+
+      <div className="res-q">1️⃣ De quel <b>type de ressource</b> s'agit-il ?</div>
+      <div className="res-types">{D.types.map(t=>{ let c="res-type"; const sel=typeSel===t.id;
+        if(sel)c+=" sel"; if(checked){ if(t.id===it.type)c+=" ok"; else if(sel)c+=" bad"; }
+        return <button key={t.id} className={c} style={{"--oc":t.couleur}} disabled={phase!=="type"&&!checked} onClick={()=>phase==="type"&&setTypeSel(t.id)}>
+          <span className="res-box">{sel?"☑":"☐"}</span><span className="res-emoji">{t.emoji}</span><span>{t.lab}</span></button>; })}</div>
+
+      {phase==="type"&&<button className="cta sm" disabled={typeSel===null} style={{opacity:typeSel===null?.45:1}} onClick={validateType}>Valider le type →</button>}
+
+      {(phase==="org"||checked)&&(<>
+        <div className="res-q res-q2">2️⃣ Quelle(s) <b>organisation(s)</b> mobilise(nt) typiquement cette ressource ? <small>(plusieurs choix possibles)</small></div>
+        <div className="res-orgs">{D.orgs.map(o=>{ let c="res-org"; const sel=orgSel.includes(o.id);
+          if(sel)c+=" sel"; if(checked){ if(it.org.includes(o.id))c+=" ok"; else if(sel)c+=" bad"; }
+          return <button key={o.id} className={c} disabled={checked} onClick={()=>toggleOrg(o.id)}>
+            <span className="res-box">{sel?"☑":"☐"}</span><span className="res-emoji">{o.emoji}</span><span>{o.lab}</span></button>; })}</div>
+        {!checked&&<button className="cta sm" disabled={orgSel.length===0} style={{opacity:orgSel.length===0?.45:1}} onClick={check}>✅ Vérifier</button>}
+      </>)}
+
+      {checked&&(<div className={"fb "+((typeOk&&orgOk)?"good":"no")}>
+        <strong>{typeOk&&orgOk?"✅ Parfait ! +2":typeOk||orgOk?"🟡 Presque ! +1":"❌ +0"}</strong>
+        <p style={{margin:"4px 0"}}>Type : <b>{goodType.emoji} {goodType.lab}</b> {typeOk?"✓":"(à revoir)"} · Organisation(s) : <b>{it.org.map(o=>D.orgs.find(x=>x.id===o).lab).join(", ")}</b> {orgOk?"✓":"(à revoir)"}</p>
+        <p style={{marginTop:4}}>{Acr(it.why)}</p>
+        <button className="next" onClick={next}>{i+1>=items.length?"Voir mon score →":"Élément suivant →"}</button>
+      </div>)}
+    </div>
+  </div>);
+}
+
+/* ============================================================
+   JEU 3 : À qui appartient l'organisation ?
+   Structure de PROPRIÉTÉ (≠ structure hiérarchique).
+   Schéma à recomposer : relier chaque organisation à son
+   propriétaire, avec exemples et explications.
+============================================================ */
+const ORGPROP = {
+  intro:"La structure de PROPRIÉTÉ indique À QUI APPARTIENT l'organisation. Attention : ce n'est PAS la structure hiérarchique (qui dit qui commande qui). Ici, on cherche les PROPRIÉTAIRES.",
+  paires:[
+    { org:"Entreprise", emoji:"🏢", prop:"Les actionnaires (ou associés)", propId:"actionnaires",
+      ex:"Dans une société comme Air Austral, ceux qui détiennent des actions/parts sont propriétaires.",
+      detail:"Les actionnaires apportent des capitaux ; en échange, ils possèdent une partie de l'entreprise et peuvent recevoir des bénéfices (dividendes)." },
+    { org:"Organisation publique", emoji:"🏛️", prop:"L'État (ou une collectivité)", propId:"etat",
+      ex:"Un hôpital public, une mairie, un lycée appartiennent à l'État ou à une collectivité territoriale.",
+      detail:"Les organisations publiques appartiennent à la collectivité (l'État, une région, une commune…) : elles servent l'intérêt général, pas des propriétaires privés." },
+    { org:"Organisation de la société civile", emoji:"🤝", prop:"Les membres (non propriétaires)", propId:"membres",
+      ex:"Dans une association, les adhérents votent en assemblée générale mais ne possèdent pas l'association.",
+      detail:"Particularité : les membres ne sont PAS propriétaires (on ne peut pas « vendre » ni « se partager » l'association). Ils en sont membres et votent en assemblée générale (AG)." }
+  ],
+  // distracteurs pour la pioche
+  bank:["Les actionnaires (ou associés)","L'État (ou une collectivité)","Les membres (non propriétaires)"],
+  // quiz de consolidation
+  quiz:[
+    { t:"Vrai ou faux : dans une association, les membres sont les propriétaires et peuvent se partager les biens.", vf:false,
+      why:"FAUX. Les membres ne sont pas propriétaires : ils votent en AG, mais ne peuvent ni vendre ni se partager l'association." },
+    { t:"Vrai ou faux : les actionnaires d'une entreprise en sont les propriétaires.", vf:true,
+      why:"VRAI. Les actionnaires détiennent des parts/actions : ils sont propriétaires de l'entreprise." },
+    { t:"Vrai ou faux : un hôpital public appartient à un actionnaire privé.", vf:false,
+      why:"FAUX. Une organisation publique appartient à la collectivité (l'État, une collectivité territoriale), pas à un propriétaire privé." },
+    { t:"Vrai ou faux : la structure de propriété et la structure hiérarchique, c'est la même chose.", vf:false,
+      why:"FAUX. La propriété dit À QUI APPARTIENT l'organisation ; la hiérarchie dit QUI COMMANDE QUI. Ce sont deux choses différentes." }
+  ]
+};
+
+function OrgPropriete({head,onDone}){
+  const D=ORGPROP;
+  const [phase,setPhase]=useState("intro"); // intro -> match -> quiz -> result
+  // schéma à relier
+  const [bank]=useState(()=>D.bank.map(b=>b).sort(()=>Math.random()-0.5));
+  const [slots,setSlots]=useState({});       // org index -> propId chosen (propText)
+  const [validated,setValidated]=useState(false);
+  const [activeBrick,setActiveBrick]=useState(null);
+  const [score,setScore]=useState(0);
+  // quiz
+  const [qz]=useState(()=>D.quiz.map(q=>q).sort(()=>Math.random()-0.5));
+  const [qi,setQi]=useState(0); const [qpick,setQpick]=useState(null);
+  const total=D.paires.length+qz.length;
+
+  if(phase==="intro"){
+    return (<div className="game">{head}
+      <div className="org-intro">
+        <div className="org-intro-emoji">🔑</div>
+        <h2>À qui appartient l'organisation ?</h2>
+        <div className="org-def-box" style={{marginTop:10}}>{Acr(D.intro)}</div>
+        <p style={{marginTop:12,color:"#5a5470"}}>Tu vas relier chaque organisation à son <b>propriétaire</b>, puis vérifier que tu ne confonds pas propriété et hiérarchie.</p>
+        <button className="cta sm" onClick={()=>setPhase("match")}>Construire le schéma →</button>
+      </div>
+    </div>);
+  }
+
+  if(phase==="match"){
+    const placeBrick=(orgIdx)=>{ if(validated) return;
+      if(activeBrick===null){ // si la case a déjà une brique, on la retire
+        if(slots[orgIdx]!==undefined) setSlots(s=>{ const n={...s}; delete n[orgIdx]; return n; });
+        return; }
+      setSlots(s=>{ const n={...s}; // enlève la brique d'une autre case si déjà placée
+        Object.keys(n).forEach(k=>{ if(n[k]===activeBrick) delete n[k]; }); n[orgIdx]=activeBrick; return n; });
+      setActiveBrick(null);
+    };
+    const used=Object.values(slots);
+    const allPlaced=D.paires.every((_,k)=>slots[k]!==undefined);
+    const validate=()=>{ let p=0; D.paires.forEach((pr,k)=>{ if(slots[k]===pr.prop) p++; }); setScore(s=>s+p); setValidated(true); };
+    return (<div className="game">{head}
+      <div className="org-h2">🔗 Relie chaque organisation à son propriétaire</div>
+      <p className="org-sub">Choisis une étiquette en bas, puis clique la case « propriétaire » de la bonne organisation.</p>
+      <div className="prop-schema">
+        {D.paires.map((pr,k)=>{ const val=slots[k]; const good=validated&&val===pr.prop; const bad=validated&&val&&val!==pr.prop;
+          return (<div key={k} className="prop-row">
+            <div className="prop-org"><span className="prop-emoji">{pr.emoji}</span><b>{pr.org}</b></div>
+            <div className="prop-arrow">→</div>
+            <button className={"prop-slot"+(val?" full":"")+(good?" ok":"")+(bad?" bad":"")} onClick={()=>placeBrick(k)}>
+              {val||"déposer ici…"}</button>
+            {validated&&<div className="prop-verdict">{good?"✓":"✗"}</div>}
+          </div>); })}
+      </div>
+      {!validated&&<div className="prop-bank">{bank.map((b,k)=>{ const isUsed=used.includes(b);
+        return <button key={k} className={"prop-brick"+(activeBrick===b?" active":"")+(isUsed?" used":"")} onClick={()=>setActiveBrick(activeBrick===b?null:b)}>{b}</button>; })}</div>}
+      {!validated
+        ? <button className="cta sm" disabled={!allPlaced} style={{opacity:allPlaced?1:.45}} onClick={validate}>✅ Vérifier le schéma</button>
+        : (<div className="fb good" style={{textAlign:"left"}}>
+            <strong>Correction</strong>
+            {D.paires.map((pr,k)=>(<p key={k} style={{margin:"6px 0"}}><b>{pr.emoji} {pr.org}</b> → <b>{pr.prop}</b>.<br/><span style={{color:"#5a5470"}}>{Acr(pr.detail)} <i>Ex. : {Acr(pr.ex)}</i></span></p>))}
+            <button className="next" onClick={()=>setPhase("quiz")}>Continuer →</button>
+          </div>)}
+    </div>);
+  }
+
+  if(phase==="quiz"){
+    const q=qz[qi];
+    const choose=(v)=>{ if(qpick!==null) return; setQpick(v); if(v===q.vf) setScore(s=>s+1); };
+    const next=()=>{ setQpick(null); if(qi+1>=qz.length) setPhase("result"); else setQi(qi+1); };
+    return (<div className="game">{head}
+      <div className="org-prog"><span className="org-prog-fill" style={{width:(qi/qz.length*100)+"%",background:"#e11d48"}}></span></div>
+      <div className="org-h2">⚖️ Vrai ou Faux ? <small>{qi+1} / {qz.length}</small></div>
+      <div className="org-scn">{Acr(q.t)}</div>
+      <div className="vf-btns">
+        <button className={"vf-btn vf-true"+(qpick!==null?(q.vf?" ok":(qpick===true?" bad":"")):"")} disabled={qpick!==null} onClick={()=>choose(true)}>✓ Vrai</button>
+        <button className={"vf-btn vf-false"+(qpick!==null?(!q.vf?" ok":(qpick===false?" bad":"")):"")} disabled={qpick!==null} onClick={()=>choose(false)}>✗ Faux</button>
+      </div>
+      {qpick!==null&&(<div className={"fb "+(qpick===q.vf?"good":"no")}>
+        <strong>{qpick===q.vf?"✅ Exact !":"❌ Raté."}</strong>
+        <p style={{marginTop:6}}>{Acr(q.why)}</p>
+        <button className="next" onClick={next}>{qi+1>=qz.length?"Voir mon score →":"Suivant →"}</button>
+      </div>)}
+    </div>);
+  }
+
+  return (<div className="game">{head}
+    <Result score={score} total={total} onDone={onDone}
+      recap={<div className="fb good" style={{textAlign:"left"}}>
+        <strong>🔑 À retenir</strong>
+        <p style={{margin:"6px 0"}}>La <b>structure de propriété</b> dit à qui appartient l'organisation : <b>entreprise → actionnaires/associés</b>, <b>organisation publique → l'État/collectivité</b>, <b>organisation de la société civile → ses membres</b> (qui votent en AG mais n'en sont PAS propriétaires).</p>
+        <p style={{margin:"6px 0"}}>À ne pas confondre avec la <b>structure hiérarchique</b> (qui commande qui) !</p>
+      </div>}/>
+  </div>);
+}
+
+/* ============================================================
+   JEU 4 : Gouverner une organisation
+   Le « gouvernement » = la manière de diriger / prendre les
+   décisions. Scénarios par type d'organisation.
+============================================================ */
+const ORGGOUV = {
+  intro:"Gouverner une organisation, c'est décider QUI prend les grandes décisions et COMMENT. Chaque type d'organisation a sa façon de se gouverner.",
+  modes:[
+    { id:"ent", emoji:"🏢", titre:"Entreprise", couleur:"#0ea5e9",
+      regle:"Les décisions appartiennent aux propriétaires (associés/actionnaires) et aux dirigeants qu'ils nomment. Le poids dans le vote dépend souvent du nombre de parts détenues." },
+    { id:"pub", emoji:"🏛️", titre:"Organisation publique", couleur:"#16a34a",
+      regle:"Les décisions sont encadrées par la loi et les élus (ou l'État). L'organisation publique poursuit l'intérêt général, sous contrôle démocratique." },
+    { id:"osc", emoji:"🤝", titre:"Organisation de la société civile", couleur:"#e11d48",
+      regle:"Les décisions se prennent démocratiquement en assemblée générale : « une personne = une voix », quelle que soit la somme apportée." }
+  ],
+  scenarios:[
+    { t:"Lors d'une assemblée, chaque membre dispose d'UNE voix, peu importe ce qu'il a versé. On vote pour élire le bureau.", ok:"osc",
+      why:"« Une personne = une voix » et l'élection d'un bureau en AG : c'est le gouvernement démocratique d'une organisation de la société civile (association)." },
+    { t:"Un actionnaire qui détient 60 % des actions impose le choix du nouveau directeur général.", ok:"ent",
+      why:"Le pouvoir dépend du nombre d'actions détenues : c'est typique de la gouvernance d'une entreprise." },
+    { t:"Un conseil municipal élu vote le budget de la commune, dans le respect de la loi.", ok:"pub",
+      why:"Des élus qui décident dans le cadre de la loi, pour l'intérêt général : gouvernance d'une organisation publique." },
+    { t:"Les associés se réunissent pour approuver les comptes et fixer la stratégie selon leurs parts.", ok:"ent",
+      why:"Décisions des associés selon leurs parts : gouvernance d'entreprise." },
+    { t:"Une décision doit respecter le Code général des collectivités et sert l'intérêt général.", ok:"pub",
+      why:"Encadrement par la loi + intérêt général : gouvernance publique." },
+    { t:"Le président d'une association est élu par les adhérents et rend des comptes en AG.", ok:"osc",
+      why:"Élection par les adhérents et reddition de comptes en AG : gouvernance d'une organisation de la société civile." }
+  ]
+};
+
+function OrgGouvernement({head,onDone}){
+  const D=ORGGOUV;
+  const [phase,setPhase]=useState("intro");
+  const [sc]=useState(()=>D.scenarios.map(s=>s).sort(()=>Math.random()-0.5));
+  const [i,setI]=useState(0); const [pick,setPick]=useState(null); const [score,setScore]=useState(0);
+
+  if(phase==="intro"){
+    return (<div className="game">{head}
+      <div className="org-intro">
+        <div className="org-intro-emoji">🎚️</div>
+        <h2>Gouverner une organisation</h2>
+        <div className="org-def-box" style={{marginTop:10}}>{Acr(D.intro)}</div>
+        <div className="gouv-modes">{D.modes.map((m,k)=>(
+          <div key={m.id} className="gouv-mode" style={{"--oc":m.couleur,animationDelay:(k*0.12)+"s"}}>
+            <div className="gouv-mode-ic">{m.emoji}</div><h3>{m.titre}</h3><p>{m.regle}</p>
+          </div>))}
+        </div>
+        <button className="cta sm" onClick={()=>setPhase("play")}>À toi : reconnais le mode de gouvernement →</button>
+      </div>
+    </div>);
+  }
+
+  if(phase==="play"){
+    const s=sc[i];
+    const choose=(id)=>{ if(pick!==null) return; setPick(id); if(id===s.ok) setScore(x=>x+1); };
+    const next=()=>{ setPick(null); if(i+1>=sc.length) setPhase("result"); else setI(i+1); };
+    const good=D.modes.find(m=>m.id===s.ok);
+    return (<div className="game">{head}
+      <div className="org-prog"><span className="org-prog-fill" style={{width:(i/sc.length*100)+"%",background:"#0d9488"}}></span></div>
+      <div className="org-h2">🎬 Quel mode de gouvernement ? <small>{i+1} / {sc.length}</small></div>
+      <div className="org-scn">{Acr(s.t)}</div>
+      <div className="org-choices">{D.modes.map(m=>{ let c="org-choice"; if(pick!==null){ if(m.id===s.ok)c+=" ok"; else if(m.id===pick)c+=" bad"; }
+        return <button key={m.id} className={c} style={{"--oc":m.couleur}} onClick={()=>choose(m.id)}>
+          <span className="org-choice-ic">{m.emoji}</span><span>{m.titre}</span></button>; })}</div>
+      {pick!==null&&(<div className={"fb "+(pick===s.ok?"good":"no")}>
+        <strong>{pick===s.ok?"✅ Exact !":"❌ Pas tout à fait."}</strong>
+        {pick!==s.ok&&<p style={{margin:"4px 0"}}>Bonne réponse : <b>{good.emoji} {good.titre}</b>.</p>}
+        <p style={{marginTop:6}}>{Acr(s.why)}</p>
+        <button className="next" onClick={next}>{i+1>=sc.length?"Voir mon score →":"Scénario suivant →"}</button>
+      </div>)}
+    </div>);
+  }
+
+  return (<div className="game">{head}
+    <Result score={score} total={sc.length} onDone={onDone}
+      recap={<div className="fb good" style={{textAlign:"left"}}>
+        <strong>🎚️ À retenir</strong>
+        <p style={{margin:"6px 0"}}>Le <b>gouvernement</b> d'une organisation, c'est la manière dont sont prises les grandes décisions :</p>
+        <p style={{margin:"6px 0"}}>🏢 <b>Entreprise</b> : pouvoir des associés/actionnaires, selon leurs parts. 🏛️ <b>Public</b> : décisions des élus/de l'État, encadrées par la loi, pour l'intérêt général. 🤝 <b>Société civile</b> : démocratie en AG, « une personne = une voix ».</p>
+      </div>}/>
+  </div>);
+}
+
+/* ============================================================
+   JEU 5 : Le contrôle de l'action des dirigeants
+   Qui contrôle les dirigeants dans chaque type d'organisation ?
+   (inspiré du Doc : association / public / entreprise)
+============================================================ */
+const ORGCTRL = {
+  intro:"Diriger, c'est bien… mais les dirigeants doivent rendre des comptes ! Chaque type d'organisation a une INSTANCE chargée de contrôler ses dirigeants.",
+  cas:[
+    { id:"ent", emoji:"🏢", org:"Entreprise",
+      instance:"Les associés (+ commissaire aux comptes)",
+      detail:"Au sein de l'entreprise, ce sont les associés qui contrôlent les dirigeants : ils approuvent les comptes annuels (souvent après vérification par un commissaire aux comptes), définissent les orientations stratégiques, et peuvent nommer ou révoquer les dirigeants." },
+    { id:"pub", emoji:"🏛️", org:"Organisation publique",
+      instance:"La Cour des comptes",
+      detail:"Dans une organisation publique, la Cour des comptes vérifie l'emploi des fonds publics et sanctionne les manquements à leur bon usage." },
+    { id:"osc", emoji:"🤝", org:"Organisation de la société civile",
+      instance:"Les membres (en assemblée générale)",
+      detail:"Dans une association, les membres réunis en assemblée générale annuelle approuvent le bilan financier et participent à un vote de confiance des membres du bureau." }
+  ],
+  // schéma à relier : org -> instance
+  scenarios:[
+    { t:"Réunis en assemblée générale annuelle, ils approuvent le bilan financier et votent la confiance au bureau.", ok:"osc",
+      why:"Ce sont les membres de l'association, en AG, qui contrôlent les dirigeants." },
+    { t:"Elle vérifie l'emploi des fonds publics et sanctionne les manquements à leur bon usage.", ok:"pub",
+      why:"C'est la Cour des comptes, qui contrôle les organisations publiques." },
+    { t:"Ils approuvent les comptes annuels après vérification par un commissaire aux comptes et peuvent révoquer le dirigeant.", ok:"ent",
+      why:"Ce sont les associés de l'entreprise qui contrôlent les dirigeants." },
+    { t:"Cette instance peut sanctionner un directeur d'hôpital public qui aurait mal utilisé l'argent public.", ok:"pub",
+      why:"La Cour des comptes contrôle l'usage des fonds publics." },
+    { t:"Lors du vote de confiance annuel, ils décident de renouveler ou non le bureau de l'association.", ok:"osc",
+      why:"Les membres contrôlent les dirigeants en AG." },
+    { t:"Ils définissent les orientations stratégiques et nomment ou révoquent les dirigeants de la société.", ok:"ent",
+      why:"Les associés exercent ce contrôle dans l'entreprise." }
+  ]
+};
+
+function OrgControle({head,onDone}){
+  const D=ORGCTRL;
+  const [phase,setPhase]=useState("intro"); // intro -> match -> play -> result
+  // schéma à relier org->instance
+  const [bank]=useState(()=>D.cas.map(c=>c.instance).sort(()=>Math.random()-0.5));
+  const [slots,setSlots]=useState({}); const [activeBrick,setActiveBrick]=useState(null); const [validated,setValidated]=useState(false);
+  const [score,setScore]=useState(0);
+  // scenarios
+  const [sc]=useState(()=>D.scenarios.map(s=>s).sort(()=>Math.random()-0.5));
+  const [i,setI]=useState(0); const [pick,setPick]=useState(null);
+  const total=D.cas.length+sc.length;
+
+  if(phase==="intro"){
+    return (<div className="game">{head}
+      <div className="org-intro">
+        <div className="org-intro-emoji">🔍</div>
+        <h2>Qui contrôle les dirigeants ?</h2>
+        <div className="org-def-box" style={{marginTop:10}}>{Acr(D.intro)}</div>
+        <div className="ctrl-cards">{D.cas.map((c,k)=>(
+          <div key={c.id} className="ctrl-card" style={{animationDelay:(k*0.12)+"s"}}>
+            <div className="ctrl-emoji">{c.emoji}</div><h3>{c.org}</h3>
+            <div className="ctrl-inst">{c.instance}</div>
+          </div>))}
+        </div>
+        <button className="cta sm" onClick={()=>setPhase("match")}>Relier organisation ↔ instance →</button>
+      </div>
+    </div>);
+  }
+
+  if(phase==="match"){
+    const placeBrick=(idx)=>{ if(validated) return;
+      if(activeBrick===null){ if(slots[idx]!==undefined) setSlots(s=>{ const n={...s}; delete n[idx]; return n; }); return; }
+      setSlots(s=>{ const n={...s}; Object.keys(n).forEach(k=>{ if(n[k]===activeBrick) delete n[k]; }); n[idx]=activeBrick; return n; });
+      setActiveBrick(null); };
+    const used=Object.values(slots);
+    const allPlaced=D.cas.every((_,k)=>slots[k]!==undefined);
+    const validate=()=>{ let p=0; D.cas.forEach((c,k)=>{ if(slots[k]===c.instance) p++; }); setScore(s=>s+p); setValidated(true); };
+    return (<div className="game">{head}
+      <div className="org-h2">🔗 Qui contrôle qui ?</div>
+      <p className="org-sub">Choisis une instance de contrôle, puis clique la case de la bonne organisation.</p>
+      <div className="prop-schema">
+        {D.cas.map((c,k)=>{ const val=slots[k]; const good=validated&&val===c.instance; const bad=validated&&val&&val!==c.instance;
+          return (<div key={k} className="prop-row">
+            <div className="prop-org"><span className="prop-emoji">{c.emoji}</span><b>{c.org}</b></div>
+            <div className="prop-arrow">est contrôlée par →</div>
+            <button className={"prop-slot"+(val?" full":"")+(good?" ok":"")+(bad?" bad":"")} onClick={()=>placeBrick(k)}>{val||"déposer ici…"}</button>
+            {validated&&<div className="prop-verdict">{good?"✓":"✗"}</div>}
+          </div>); })}
+      </div>
+      {!validated&&<div className="prop-bank">{bank.map((b,k)=>{ const isUsed=used.includes(b);
+        return <button key={k} className={"prop-brick"+(activeBrick===b?" active":"")+(isUsed?" used":"")} onClick={()=>setActiveBrick(activeBrick===b?null:b)}>{b}</button>; })}</div>}
+      {!validated
+        ? <button className="cta sm" disabled={!allPlaced} style={{opacity:allPlaced?1:.45}} onClick={validate}>✅ Vérifier</button>
+        : (<div className="fb good" style={{textAlign:"left"}}>
+            <strong>Correction</strong>
+            {D.cas.map((c,k)=>(<p key={k} style={{margin:"6px 0"}}><b>{c.emoji} {c.org}</b> → <b>{c.instance}</b>.<br/><span style={{color:"#5a5470"}}>{Acr(c.detail)}</span></p>))}
+            <button className="next" onClick={()=>setPhase("play")}>Continuer →</button>
+          </div>)}
+    </div>);
+  }
+
+  if(phase==="play"){
+    const s=sc[i];
+    const choose=(id)=>{ if(pick!==null) return; setPick(id); if(id===s.ok) setScore(x=>x+1); };
+    const next=()=>{ setPick(null); if(i+1>=sc.length) setPhase("result"); else setI(i+1); };
+    const good=D.cas.find(c=>c.id===s.ok);
+    return (<div className="game">{head}
+      <div className="org-prog"><span className="org-prog-fill" style={{width:(i/sc.length*100)+"%",background:"#9333ea"}}></span></div>
+      <div className="org-h2">🕵️ Qui exerce ce contrôle ? <small>{i+1} / {sc.length}</small></div>
+      <div className="org-scn">{Acr(s.t)}</div>
+      <div className="org-choices">{D.cas.map(c=>{ let cl="org-choice"; if(pick!==null){ if(c.id===s.ok)cl+=" ok"; else if(c.id===pick)cl+=" bad"; }
+        return <button key={c.id} className={cl} onClick={()=>choose(c.id)}>
+          <span className="org-choice-ic">{c.emoji}</span><span>{c.org}</span></button>; })}</div>
+      {pick!==null&&(<div className={"fb "+(pick===s.ok?"good":"no")}>
+        <strong>{pick===s.ok?"✅ Exact !":"❌ Pas tout à fait."}</strong>
+        {pick!==s.ok&&<p style={{margin:"4px 0"}}>Bonne réponse : <b>{good.emoji} {good.org}</b> — {good.instance}.</p>}
+        <p style={{marginTop:6}}>{Acr(s.why)}</p>
+        <button className="next" onClick={next}>{i+1>=sc.length?"Voir mon score →":"Suivant →"}</button>
+      </div>)}
+    </div>);
+  }
+
+  return (<div className="game">{head}
+    <Result score={score} total={total} onDone={onDone}
+      recap={<div className="fb good" style={{textAlign:"left"}}>
+        <strong>🔍 À retenir</strong>
+        <p style={{margin:"6px 0"}}>Les dirigeants sont contrôlés par une instance propre à chaque organisation :</p>
+        <p style={{margin:"6px 0"}}>🏢 <b>Entreprise</b> → les <b>associés</b> (aidés du commissaire aux comptes). 🏛️ <b>Public</b> → la <b>Cour des comptes</b>. 🤝 <b>Société civile</b> → les <b>membres</b> en assemblée générale.</p>
+      </div>}/>
+  </div>);
+}
+
 /* ====== STAGE : routeur de jeux ====== */
 const CONSIGNES = {
+  org_pourquoi:{but:"Comprendre pourquoi on crée une organisation, et ce qu'est une forme juridique.",comment:"Tu découvres les 3 objectifs d'une organisation (exister juridiquement, organiser, pérenniser), tu rattaches des situations au bon objectif, puis tu explores des formes juridiques (EI, SARL, SA, association) avant de les associer à des cas. Chaque réponse s'explique.",astuce:"La forme juridique est le « statut légal » choisi à la création : il fixe qui décide, qui est responsable et comment on partage les bénéfices."},
+  org_ressources:{but:"Classer les ressources d'une organisation et repérer qui les mobilise.",comment:"Pour chaque élément (adhésion, salarié, marque, impôts…), coche d'abord son type de ressource (humaine, financière, matérielle, immatérielle), puis la ou les organisations qui la mobilisent typiquement. Correction et explication à chaque fois.",astuce:"Humaines = les personnes · Financières = l'argent · Matérielles = les biens physiques · Immatérielles = marque, logiciel, savoir-faire."},
+  org_propriete:{but:"Comprendre à qui appartient une organisation (structure de propriété).",comment:"Recompose le schéma en reliant chaque organisation à son propriétaire, puis vérifie tes connaissances par un Vrai/Faux. Attention à ne pas confondre propriété (à qui ça appartient) et hiérarchie (qui commande qui) !",astuce:"Entreprise → actionnaires ; organisation publique → l'État ; société civile → ses membres (qui votent en AG sans être propriétaires)."},
+  org_gouvernement:{but:"Comprendre comment se gouverne chaque type d'organisation.",comment:"Après un rappel des 3 modes de gouvernement, identifie, pour chaque scénario, de quel type d'organisation il s'agit. Chaque réponse est expliquée.",astuce:"Entreprise : pouvoir selon les parts détenues · Public : élus/État, intérêt général · Société civile : « une personne = une voix » en AG."},
+  org_controle:{but:"Comprendre qui contrôle les dirigeants d'une organisation.",comment:"Relie chaque organisation à l'instance qui contrôle ses dirigeants, puis retrouve, dans des scénarios, qui exerce ce contrôle. Explications à l'appui.",astuce:"Entreprise → les associés (+ commissaire aux comptes) · Public → la Cour des comptes · Société civile → les membres en AG."},
+
   trieur:{but:"Ranger chaque élément dans la bonne catégorie pour bien distinguer les notions du thème.",comment:"Sélectionne un élément puis la catégorie qui lui correspond. Quand tout est classé, tu vois ton score et les bonnes réponses.",astuce:"Lis bien l'intitulé de chaque catégorie avant de commencer."},
   memory:{but:"Associer chaque notion à son explication pour mieux la mémoriser.",comment:"Retourne les cartes deux par deux. Si elles forment une paire (notion ↔ explication), elles restent visibles ; sinon, elles se retournent.",astuce:"Mémorise la position des cartes déjà vues."},
   flash:{but:"Vérifier que tu maîtrises les notions du thème, vite et bien.",comment:"Un QCM s'affiche avec un chronomètre. Choisis la bonne réponse avant la fin du temps. Les bonnes réponses qui s'enchaînent font monter ton combo.",astuce:"Réponds vite, mais lis bien : une erreur remet le combo à zéro."},
@@ -9063,6 +9669,11 @@ function Stage({student,subject,theme,game,onDone,onQuit}){
   if(game==="probleme")return <Probleme D={SD} theme={theme} head={head} onDone={onDone}/>;
   if(game==="ordre")   return <Ordre D={SD} theme={theme} head={head} onDone={onDone}/>;
   if(game==="reformule")return <Reformule D={SD} theme={theme} head={head} onDone={onDone}/>;
+  if(game==="org_pourquoi")return <OrgPourquoi head={head} onDone={onDone}/>;
+  if(game==="org_ressources")return <OrgRessources head={head} onDone={onDone}/>;
+  if(game==="org_propriete")return <OrgPropriete head={head} onDone={onDone}/>;
+  if(game==="org_gouvernement")return <OrgGouvernement head={head} onDone={onDone}/>;
+  if(game==="org_controle")return <OrgControle head={head} onDone={onDone}/>;
   if(game==="eval_entretien")return <EvalEntretien head={head} onDone={onDone}/>;
   if(game==="paie_intro")return <PaieIntro head={head} onDone={onDone}/>;
   if(game==="simul_paie")return <SimulPaie head={head} onDone={onDone}/>;
@@ -11515,6 +12126,95 @@ abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;
 .calc-eq{grid-row:span 2;background:linear-gradient(160deg,#7c3aed,#9333ea);color:#fff}
 .calc-zero{grid-column:span 2}
 @media(max-width:620px){ .calc{right:3vw;top:auto;bottom:14px;width:min(232px,82vw)} }
+/* ===== Jeux « L'organisation » (Thème 1 SDGN) — design partagé ===== */
+.org-intro{text-align:center;max-width:680px;margin:0 auto;animation:pistep .5s cubic-bezier(.22,1,.36,1)}
+.org-intro-emoji{font-size:48px;animation:pipop .6s cubic-bezier(.34,1.46,.42,1)}
+.org-intro h2{font-family:'Fraunces',serif;font-size:26px;margin:6px 0 10px}
+.org-intro>p{color:#5a5470;font-size:15px;line-height:1.6;margin-bottom:16px}
+.org-def-box{background:linear-gradient(135deg,#eef6ff,#f3f0ff);border:1px solid #cdd9f5;border-radius:14px;padding:14px 16px;font-size:14.5px;line-height:1.6;color:#37345a;text-align:left}
+.org-sub{font-size:14px;color:#5a5470;margin:12px 0 10px}
+.org-h2{font-family:'Fraunces',serif;font-weight:800;font-size:20px;margin-bottom:10px;display:flex;align-items:baseline;gap:8px}
+.org-h2 small{font-weight:600;color:#9a90b5;font-size:13px}
+.org-prog{height:7px;background:#ece6f3;border-radius:10px;overflow:hidden;margin-bottom:14px}
+.org-prog-fill{display:block;height:100%;background:#0284c7;border-radius:10px;transition:width .6s cubic-bezier(.22,1,.36,1)}
+.org-scn{background:linear-gradient(135deg,#fff8ec,#fdf1f4);border:1px solid #f6dfc4;border-radius:14px;padding:14px 16px;font-size:15.5px;line-height:1.6;color:#4a3f33;margin-bottom:14px;box-shadow:0 8px 22px -16px rgba(180,83,9,.4)}
+.org-choices{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:6px}
+.org-choices-4{grid-template-columns:1fr 1fr}
+.org-choice{display:flex;flex-direction:column;align-items:center;gap:6px;padding:16px 12px;border-radius:14px;background:#fff;border:2px solid #ece6f3;font-weight:700;font-size:14px;cursor:pointer;transition:transform .14s,border-color .14s,box-shadow .14s;text-align:center;color:#2a2440}
+.org-choice:hover{transform:translateY(-3px);border-color:var(--oc,#0284c7);box-shadow:0 14px 30px -20px var(--oc,#0284c7)}
+.org-choice-ic{font-size:28px}
+.org-choice.ok{border-color:#16a34a;background:#e7f9ee;animation:evbok .6s ease}
+.org-choice.bad{border-color:#dc2626;background:#fee9e9;animation:evbshake .45s ease}
+.org-choice-sm{flex-direction:row;justify-content:flex-start;text-align:left;font-size:13.5px}
+@media(max-width:640px){ .org-choices,.org-choices-4{grid-template-columns:1fr} }
+/* Jeu 1 — pourquoi */
+.org-pq-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+.org-pq-card{background:#fff;border:2px solid var(--oc);border-radius:16px;padding:16px 14px;text-align:center;box-shadow:0 16px 36px -26px var(--oc);animation:pipop .55s cubic-bezier(.34,1.46,.42,1) both}
+.org-pq-ic{font-size:32px}
+.org-pq-card h3{font-size:15px;margin:6px 0;color:var(--oc)}
+.org-pq-card p{font-size:12.5px;color:#5a5470;line-height:1.5}
+.org-forme-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 16px}
+.org-forme-card{text-align:left;background:#fff;border:2px solid #ece6f3;border-radius:14px;padding:13px;cursor:pointer;transition:.15s;animation:pipop .5s cubic-bezier(.34,1.46,.42,1) both}
+.org-forme-card:hover{border-color:#7c3aed;transform:translateY(-2px)}
+.org-forme-card.on{border-color:#7c3aed;background:#faf7ff}
+.org-forme-sig{display:inline-block;background:#7c3aed;color:#fff;font-weight:800;font-size:13px;border-radius:8px;padding:3px 10px;margin-bottom:6px}
+.org-forme-sig.sm{margin:0 8px 0 0;flex-shrink:0}
+.org-forme-nom{font-weight:700;font-size:14px;color:#2a2440}
+.org-forme-det{margin-top:8px;font-size:12.5px;color:#5a5470;line-height:1.5;animation:pipop .4s ease}
+.org-forme-det p{margin:3px 0}
+@media(max-width:640px){ .org-pq-cards,.org-forme-grid{grid-template-columns:1fr} }
+/* Jeu 2 — ressources */
+.res-card{background:#fff;border:2px solid #d3eede;border-radius:18px;padding:16px 18px;box-shadow:0 20px 46px -28px rgba(22,163,74,.45)}
+.res-elem{font-family:'Fraunces',serif;font-size:22px;font-weight:800;text-align:center;color:#15803d;margin-bottom:12px}
+.res-q{font-size:14.5px;font-weight:600;color:#2a2440;margin:8px 0 8px}
+.res-q2{margin-top:16px;padding-top:14px;border-top:1px dashed #d3eede}
+.res-q small{font-weight:500;color:#9a90b5}
+.res-types,.res-orgs{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+.res-type,.res-org{display:flex;align-items:center;gap:9px;padding:11px 13px;border-radius:11px;background:#f8fafc;border:2px solid #e8eef3;font-weight:700;font-size:13.5px;cursor:pointer;transition:.13s;text-align:left;color:#2a2440}
+.res-type:hover,.res-org:hover{border-color:var(--oc,#16a34a);transform:translateX(2px)}
+.res-type.sel,.res-org.sel{border-color:var(--oc,#16a34a);background:#fff}
+.res-box{font-size:18px;flex-shrink:0}
+.res-emoji{font-size:18px}
+.res-type.ok,.res-org.ok{border-color:#16a34a;background:#e7f9ee}
+.res-type.bad,.res-org.bad{border-color:#dc2626;background:#fee9e9}
+@media(max-width:560px){ .res-types,.res-orgs{grid-template-columns:1fr} }
+/* Jeux 3 & 5 — schéma à relier */
+.prop-schema{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.prop-row{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #ece6f3;border-radius:12px;padding:11px 13px;animation:pipop .5s cubic-bezier(.34,1.46,.42,1) both}
+.prop-org{flex:0 0 200px;display:flex;align-items:center;gap:8px;font-size:14px}
+.prop-emoji{font-size:22px}
+.prop-arrow{color:#9a90b5;font-size:12.5px;font-weight:700;flex-shrink:0}
+.prop-slot{flex:1;min-height:42px;border:2px dashed #c9b6e8;border-radius:10px;background:#faf7ff;color:#6b21a8;font-weight:700;font-size:13.5px;cursor:pointer;padding:8px 10px;transition:.13s}
+.prop-slot.full{border-style:solid;border-color:#7c3aed;background:#f3e8ff}
+.prop-slot.ok{border-color:#16a34a;background:#e7f9ee;color:#15803d}
+.prop-slot.bad{border-color:#dc2626;background:#fee9e9;color:#dc2626}
+.prop-verdict{font-size:18px;flex-shrink:0;font-weight:800}
+.prop-bank{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:14px}
+.prop-brick{padding:11px 15px;border-radius:11px;background:#ede4fb;border:2px solid #d4c2f0;color:#6b21a8;font-weight:700;font-size:13.5px;cursor:pointer;transition:.13s}
+.prop-brick:hover:not(.used){background:#e2d3f8;transform:translateY(-2px)}
+.prop-brick.active{background:#7c3aed;color:#fff;border-color:#7c3aed;box-shadow:0 8px 20px -8px rgba(124,58,237,.6)}
+.prop-brick.used{opacity:.32;cursor:default}
+@media(max-width:560px){ .prop-row{flex-wrap:wrap} .prop-org{flex:1 1 100%} .prop-arrow{display:none} }
+/* Vrai/Faux (jeu 3) */
+.vf-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px}
+.vf-btn{padding:18px;border-radius:14px;font-weight:800;font-size:16px;cursor:pointer;border:2px solid #ece6f3;background:#fff;transition:.14s}
+.vf-true:hover{border-color:#16a34a;background:#e7f9ee;transform:translateY(-2px)}
+.vf-false:hover{border-color:#dc2626;background:#fee9e9;transform:translateY(-2px)}
+.vf-btn.ok{border-color:#16a34a;background:#e7f9ee;animation:evbok .6s ease}
+.vf-btn.bad{border-color:#dc2626;background:#fee9e9;animation:evbshake .45s ease}
+/* Jeu 4 — gouvernement */
+.gouv-modes{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+.gouv-mode{background:#fff;border:2px solid var(--oc);border-radius:16px;padding:15px 13px;text-align:center;box-shadow:0 16px 36px -26px var(--oc);animation:pipop .55s cubic-bezier(.34,1.46,.42,1) both}
+.gouv-mode-ic{font-size:30px}
+.gouv-mode h3{font-size:14.5px;margin:6px 0;color:var(--oc)}
+.gouv-mode p{font-size:12.5px;color:#5a5470;line-height:1.5}
+/* Jeu 5 — contrôle */
+.ctrl-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0}
+.ctrl-card{background:#fff;border:2px solid #e4daf3;border-radius:16px;padding:15px 13px;text-align:center;box-shadow:0 16px 36px -26px rgba(124,58,237,.4);animation:pipop .55s cubic-bezier(.34,1.46,.42,1) both}
+.ctrl-emoji{font-size:30px}
+.ctrl-card h3{font-size:14px;margin:6px 0}
+.ctrl-inst{font-size:12.5px;font-weight:700;color:#7c3aed;background:#f3e8ff;border-radius:9px;padding:6px 8px;margin-top:6px}
+@media(max-width:640px){ .gouv-modes,.ctrl-cards{grid-template-columns:1fr} }
 </style>
 </body>
 </html>
