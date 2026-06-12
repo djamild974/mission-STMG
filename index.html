@@ -7424,6 +7424,14 @@ const ORG_PROP_GAME = { id:"org_propriete",   nom:"À qui appartient l'organisat
 const ORG_GOUV_GAME = { id:"org_gouvernement",nom:"Gouverner une organisation", icon:"🎚️", bloom:"Analyser", diff:"Moyen", desc:"Reconnais comment chaque type d'organisation prend ses décisions.", color:"#0d9488", themes:[1] };
 const ORG_CTRL_GAME = { id:"org_controle",    nom:"Le contrôle des dirigeants", icon:"🔍", bloom:"Analyser", diff:"Moyen", desc:"Qui contrôle les dirigeants : associés, Cour des comptes, membres en AG ?", color:"#9333ea", themes:[1] };
 
+/* ====== Thème 1 SDGN — Jeux « De l'individu à l'acteur » ====== */
+const PERSO_GAME = { id:"perso_traits", nom:"Les traits de personnalité", icon:"🧩", bloom:"Reconnaître", diff:"Moyen", desc:"Découvre et reconnais 8 traits : extraverti/introverti, stable/instable, logique/affectif, soumis/autonome.", color:"#7c3aed", themes:[1] };
+const EMO_GAME   = { id:"emotions", nom:"Reconnaître les émotions", icon:"😀", bloom:"Reconnaître", diff:"Facile", desc:"Découvre et reconnais les 6 émotions de base : joie, peur, tristesse, surprise, colère, dégoût.", color:"#ea580c", themes:[1] };
+const IDNUM_GAME = { id:"identite_num", nom:"L'identité numérique", icon:"🪪", bloom:"Comprendre", diff:"Moyen", desc:"Identité déclarative, agissante, calculée : reconnais les 3 facettes de l'identité numérique.", color:"#0891b2", themes:[1] };
+const ATTCOMP_GAME = { id:"attitude_comportement", nom:"Attitude ou comportement ?", icon:"🎭", bloom:"Distinguer", diff:"Moyen", desc:"Distingue l'attitude (intérieure, invisible) du comportement (visible, observable).", color:"#be185d", themes:[1] };
+
+const COMM_GAME = { id:"communication", nom:"La communication entre les individus", icon:"💬", bloom:"Maîtriser", diff:"Moyen", desc:"Parcours en 4 étapes : schéma de la communication, registres de langue, verbal/non-verbal/paraverbal, écoute active.", color:"#0ea5e9", themes:[1] };
+
 /* ====== ÉVALUATIONS NOTÉES /20 (catégorie à part, par matière) ====== */
 const EVAL_BULLETIN_DEF = { id:"evalnote_bulletin", nom:"Le bulletin de salaire", icon:"📝", bloom:"Appliquer", diff:"Évaluation", sur:20, theme:1, desc:"4 exercices progressifs (5 pts chacun) : effectue les calculs et remplis les bulletins de 4 salariés.", color:"#7c3aed" };
 const EVALS = { SDG:[EVAL_BULLETIN_DEF] };
@@ -7512,7 +7520,7 @@ function gamesFor(code){
   let g = hasDocs?[...GAMES_BASE,DOCS_GAME]:[...GAMES_BASE];
   if(code==="GO"||code==="MKT"||code==="FIN"||code==="SIG"||code==="RHC") g=[...g, PROBLEME_GAME, ORDRE_GAME];
   if(code==="GO") g=[...g, REFORMULE_GAME];
-  if(code==="SDG") g=[ORG_PQ_GAME, ORG_RES_GAME, ORG_PROP_GAME, ORG_GOUV_GAME, ORG_CTRL_GAME, ...g, EVAL_GAME, PAIE_INTRO_GAME, PAIE_GAME];
+  if(code==="SDG") g=[ORG_PQ_GAME, ORG_RES_GAME, ORG_PROP_GAME, ORG_GOUV_GAME, ORG_CTRL_GAME, PERSO_GAME, EMO_GAME, ATTCOMP_GAME, IDNUM_GAME, COMM_GAME, ...g, EVAL_GAME, PAIE_INTRO_GAME, PAIE_GAME];
   if(code==="GO"){
     g=g.map(x=>{
       if(x.id==="mission") return {...x, nom:"Mission Grand oral"};
@@ -8909,8 +8917,867 @@ function OrgControle({head,onDone}){
   </div>);
 }
 
+/* ============================================================
+   SDGN 1ʳᵉ — Thème 1 « De l'individu à l'acteur »
+   Moteur réutilisable de jeux de rôle « découvrir / expliquer /
+   reconnaître » : carrousel pédagogique illustré + scénarios
+   immersifs (patron ↔ salarié). Options mélangées, longueurs
+   harmonisées (géré dans les données).
+============================================================ */
+function IndivGame({head,onDone,D}){
+  // phases : intro (carrousel) -> play (scénarios) -> result
+  const [phase,setPhase]=useState("intro");
+  const [ci,setCi]=useState(0); // index carrousel
+  // scénarios : options mélangées une seule fois
+  const [scen]=useState(()=>D.scenarios.map(s=>{ const idx=s.o.map((_,i)=>i);
+    for(let k=idx.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[idx[k],idx[j]]=[idx[j],idx[k]];}
+    return {...s, o:idx.map(i=>s.o[i])}; }));
+  const [i,setI]=useState(0); const [pick,setPick]=useState(null); const [score,setScore]=useState(0);
+
+  // auto-rotation douce du carrousel
+  useEffect(()=>{ if(phase!=="intro") return; const t=setInterval(()=>setCi(x=>(x+1)%D.types.length), 3200); return ()=>clearInterval(t); },[phase,D.types.length]);
+
+  /* ---- INTRO : carrousel pédagogique ---- */
+  if(phase==="intro"){
+    const c=D.types[ci];
+    return (<div className="game">{head}
+      <div className="iv-intro">
+        <div className="iv-hero" style={{"--oc":D.color}}>
+          <div className="iv-hero-emoji">{D.emoji}</div>
+          <h2>{D.titre}</h2>
+          <p>{Acr(D.intro)}</p>
+        </div>
+        <div className="iv-card" style={{"--oc":c.couleur}} key={ci}>
+          <div className="iv-card-top">
+            <span className="iv-card-emoji">{c.emoji}</span>
+            <div><div className="iv-card-nom">{c.nom}</div><div className="iv-card-tag">{Acr(c.tag)}</div></div>
+          </div>
+          <div className="iv-card-def">{Acr(c.def)}</div>
+          <div className="iv-card-ex"><span className="iv-ex-lab">🔎 Exemple</span> {Acr(c.ex)}</div>
+        </div>
+        <div className="iv-dots">{D.types.map((t,k)=>(
+          <button key={k} className={"iv-dot"+(k===ci?" on":"")} style={{"--oc":t.couleur}} onClick={()=>setCi(k)} title={t.nom}>
+            <span>{t.emoji}</span></button>))}</div>
+        <button className="cta sm" onClick={()=>setPhase("play")}>{D.cta||"À toi de reconnaître →"}</button>
+      </div>
+    </div>);
+  }
+
+  /* ---- RÉSULTAT ---- */
+  if(phase==="result"){
+    return (<div className="game">{head}
+      <Result score={score} total={scen.length} onDone={onDone}
+        recap={<div className="fb good" style={{textAlign:"left"}}>
+          <strong>{D.emoji} À retenir</strong>
+          {D.recap}
+        </div>}/>
+    </div>);
+  }
+
+  /* ---- PLAY : scénarios ---- */
+  const s=scen[i];
+  const choose=(idx)=>{ if(pick!==null) return; setPick(idx); if(s.o[idx].ok) setScore(x=>x+1); };
+  const next=()=>{ setPick(null); if(i+1>=scen.length) setPhase("result"); else setI(i+1); };
+  const good=s.o.findIndex(o=>o.ok);
+  const goodType=D.types.find(t=>t.id===s.o[good].id);
+  return (<div className="game">{head}
+    <div className="iv-prog"><span className="iv-prog-fill" style={{width:(i/scen.length*100)+"%",background:D.color}}></span></div>
+    <div className="iv-moment">{D.playTitle||"🎬 Situation"} <small>· {i+1}/{scen.length}</small></div>
+    <div className="iv-scene">{Acr(s.contexte)}</div>
+    {s.boss&&<div className="iv-bubble iv-boss pop"><span className="iv-av iv-av-boss">👔</span><div className="iv-txt">{Acr(s.boss)}</div></div>}
+    {s.sal&&<div className="iv-bubble iv-sal pop"><span className="iv-av iv-av-sal">🧑‍💼</span><div className="iv-txt">{Acr(s.sal)}</div></div>}
+    <div className="iv-q">{Acr(s.q)}</div>
+    <div className="iv-opts">{s.o.map((o,idx)=>{ let c="iv-opt"; if(pick!==null){ if(o.ok)c+=" ok"; else if(idx===pick)c+=" bad"; }
+      const ty=D.types.find(t=>t.id===o.id);
+      return <button key={idx} className={c} onClick={()=>choose(idx)}>{ty&&<span className="iv-opt-emoji">{ty.emoji}</span>}<span>{Acr(o.t)}</span></button>; })}</div>
+    {pick!==null&&(<div className={"fb "+(s.o[pick].ok?"good":"no")}>
+      <strong>{s.o[pick].ok?"✅ Bien vu !":"❌ Pas tout à fait."}</strong>
+      {!s.o[pick].ok&&goodType&&<p style={{margin:"4px 0"}}>Bonne réponse : <b>{goodType.emoji} {goodType.nom}</b>.</p>}
+      <p style={{marginTop:6}}>{Acr(s.why)}</p>
+      <button className="next" onClick={next}>{i+1>=scen.length?"Voir mon score →":"Situation suivante →"}</button></div>)}
+  </div>);
+}
+
+/* ===== Jeu : Les traits de personnalité ===== */
+const PERSO_DATA = {
+  emoji:"🧩", color:"#7c3aed",
+  titre:"Les traits de personnalité",
+  intro:"La personnalité d'un individu se décrit par des traits stables. On les présente souvent par paires opposées. Découvre-les, puis reconnais-les chez les salariés de l'entreprise.",
+  cta:"À toi de reconnaître les traits →",
+  playTitle:"🎭 Qui est-ce ?",
+  types:[
+    { id:"extraverti", nom:"Extraverti", emoji:"🗣️", couleur:"#f59e0b",
+      tag:"tourné vers les autres",
+      def:"Une personne extravertie puise son énergie dans les autres : elle aime parler, échanger, être entourée et au centre de l'action.",
+      ex:"Karim adore l'accueil clients : il enchaîne les discussions, anime l'équipe et déteste rester seul au bureau." },
+    { id:"introverti", nom:"Introverti", emoji:"🤫", couleur:"#0ea5e9",
+      tag:"tourné vers soi",
+      def:"Une personne introvertie se ressource dans le calme et la réflexion : elle préfère les petits groupes et observe avant d'agir.",
+      ex:"Sofia donne le meilleur d'elle-même seule à son poste : elle réfléchit posément et fuit les grandes réunions bruyantes." },
+    { id:"stable", nom:"Stable", emoji:"🧘", couleur:"#16a34a",
+      tag:"émotions maîtrisées",
+      def:"Une personne stable garde son sang-froid : ses humeurs varient peu, elle reste calme même sous pression.",
+      ex:"Même un jour de gros rush, Léa garde son calme, sourit aux clients et ne se laisse pas déborder par le stress." },
+    { id:"instable", nom:"Instable", emoji:"🎢", couleur:"#e11d48",
+      tag:"émotions changeantes",
+      def:"Une personne instable a des humeurs qui changent vite : enthousiaste un moment, contrariée le suivant, elle réagit fortement aux événements.",
+      ex:"Tom passe d'une grande joie à l'agacement en quelques minutes : son humeur dépend beaucoup de ce qui se passe." },
+    { id:"logique", nom:"Logique", emoji:"🧠", couleur:"#2563eb",
+      tag:"décide par la raison",
+      def:"Une personne logique décide à partir des faits et du raisonnement : elle analyse, compare, cherche la solution rationnelle.",
+      ex:"Avant de choisir un fournisseur, Rachid aligne les chiffres et les compare froidement, sans se fier à son ressenti." },
+    { id:"affectif", nom:"Affectif", emoji:"💛", couleur:"#db2777",
+      tag:"décide avec le cœur",
+      def:"Une personne affective accorde de l'importance aux émotions et aux relations : elle décide aussi avec son cœur et son ressenti.",
+      ex:"Maya choisit d'aider un collègue en difficulté avant tout par empathie, parce qu'elle se met à sa place." },
+    { id:"soumis", nom:"Soumis", emoji:"🙇", couleur:"#a16207",
+      tag:"suit les consignes",
+      def:"Une personne soumise suit volontiers les consignes et l'autorité : elle préfère qu'on lui dise quoi faire plutôt que de décider seule.",
+      ex:"Hugo attend toujours la validation de son chef avant d'agir : il applique les consignes à la lettre, sans les discuter." },
+    { id:"autonome", nom:"Autonome", emoji:"🚀", couleur:"#0d9488",
+      tag:"agit par lui-même",
+      def:"Une personne autonome prend des initiatives et se débrouille seule : elle décide et avance sans avoir besoin qu'on la guide.",
+      ex:"Sans attendre d'ordre, Inès réorganise le rayon quand elle voit un problème : elle agit d'elle-même." }
+  ],
+  scenarios:[
+    { contexte:"Entretien annuel. Le manager observe le comportement de chaque salarié pour mieux les accompagner.",
+      boss:"Parle-moi un peu de ta façon de travailler cette année.",
+      sal:"J'adore être en contact : l'accueil, l'animation de l'équipe, parler avec les clients toute la journée !",
+      q:"Quel trait de personnalité domine ?",
+      o:[{id:"extraverti",t:"Extraverti : il puise son énergie dans le contact et les échanges avec les autres.",ok:true},
+         {id:"introverti",t:"Introverti : il a besoin de calme et de solitude pour vraiment se ressourcer au travail.",ok:false},
+         {id:"soumis",t:"Soumis : il attend systématiquement les consignes avant d'oser entreprendre la moindre action.",ok:false}],
+      why:"Aimer le contact, parler et animer en permanence est typique d'une personne extravertie, qui tire son énergie des autres." },
+    { contexte:"Le manager remarque qu'une salariée est très efficace, mais discrète.",
+      sal:"Je préfère travailler seule à mon poste, au calme ; les grandes réunions bruyantes, ça m'épuise vite.",
+      q:"Quel trait reconnais-tu ?",
+      o:[{id:"introverti",t:"Introverti : elle se ressource dans le calme et donne le meilleur loin de l'agitation.",ok:true},
+         {id:"extraverti",t:"Extraverti : elle a besoin d'être entourée et au centre de l'action pour se sentir bien.",ok:false},
+         {id:"instable",t:"Instable : ses humeurs changent très vite et elle réagit fortement au moindre événement.",ok:false}],
+      why:"Préférer le calme et la solitude, se sentir épuisée par l'agitation, est caractéristique d'une personne introvertie." },
+    { contexte:"Jour de très forte affluence en boutique : c'est la panique générale.",
+      sal:"Pas de souci, on gère ! Je reste calme, je souris aux clients et on avance tranquillement.",
+      q:"Quel trait domine ici ?",
+      o:[{id:"stable",t:"Stable : elle garde son sang-froid et ses émotions restent maîtrisées sous la pression.",ok:true},
+         {id:"instable",t:"Instable : elle passe d'une émotion à une autre très vite selon ce qui se déroule autour.",ok:false},
+         {id:"affectif",t:"Affectif : elle décide surtout avec son cœur et se laisse guider par son ressenti du moment.",ok:false}],
+      why:"Garder son calme et des émotions maîtrisées même sous forte pression révèle une personnalité stable." },
+    { contexte:"Le manager observe un salarié dont l'humeur varie beaucoup d'un moment à l'autre.",
+      sal:"Là je suis super motivé… mais dès qu'un truc cloche, ça m'énerve vraiment et ça se voit tout de suite.",
+      q:"Quel trait reconnais-tu ?",
+      o:[{id:"instable",t:"Instable : ses humeurs changent vite et il réagit fortement aux événements du quotidien.",ok:true},
+         {id:"stable",t:"Stable : ses humeurs varient peu et il conserve son calme même quand la pression monte.",ok:false},
+         {id:"autonome",t:"Autonome : il prend des initiatives seul et se débrouille sans avoir besoin d'être guidé.",ok:false}],
+      why:"Des humeurs qui changent rapidement et des réactions fortes aux événements caractérisent une personne instable." },
+    { contexte:"Choix d'un nouveau fournisseur pour la boutique.",
+      sal:"J'ai comparé les prix, les délais et la qualité dans un tableau : je choisis le plus avantageux, point.",
+      q:"Quel trait domine ?",
+      o:[{id:"logique",t:"Logique : il décide à partir des faits et d'un raisonnement rationnel, chiffres à l'appui.",ok:true},
+         {id:"affectif",t:"Affectif : il accorde beaucoup d'importance aux émotions et aux relations humaines pour se décider sur tout.",ok:false},
+         {id:"soumis",t:"Soumis : il attend toujours qu'on lui dise précisément quoi faire avant de trancher la moindre question tout seul.",ok:false}],
+      why:"Comparer froidement les faits et choisir la solution rationnelle est typique d'une personnalité logique." },
+    { contexte:"Un collègue traverse une période difficile.",
+      sal:"J'ai tout de suite proposé de l'aider : je me suis mise à sa place, je sentais qu'il en avait besoin.",
+      q:"Quel trait reconnais-tu ?",
+      o:[{id:"affectif",t:"Affectif : elle accorde de l'importance aux émotions et décide aussi avec son cœur.",ok:true},
+         {id:"logique",t:"Logique : elle s'appuie d'abord sur les faits et un raisonnement froid pour décider de tout.",ok:false},
+         {id:"stable",t:"Stable : ses émotions sont très maîtrisées et son humeur ne varie presque jamais au travail.",ok:false}],
+      why:"Se mettre à la place de l'autre et agir par empathie révèle une personnalité affective, sensible aux relations." },
+    { contexte:"Le manager confie une tâche sans donner toutes les étapes.",
+      sal:"Euh… vous pouvez me dire exactement quoi faire ? Je préfère attendre votre feu vert avant de bouger.",
+      q:"Quel trait domine ?",
+      o:[{id:"soumis",t:"Soumis : il suit les consignes et l'autorité, et préfère qu'on lui dise quoi faire.",ok:true},
+         {id:"autonome",t:"Autonome : il prend des initiatives et se débrouille parfaitement seul sans avoir besoin d'aide.",ok:false},
+         {id:"extraverti",t:"Extraverti : il tire son énergie des autres et adore être au centre de l'attention générale.",ok:false}],
+      why:"Attendre les consignes et la validation avant d'agir, sans les discuter, caractérise une personne soumise." },
+    { contexte:"Un problème survient dans le rayon ; personne n'a rien demandé.",
+      sal:"J'ai vu le souci, alors j'ai réorganisé le rayon moi-même sans attendre qu'on me le demande.",
+      q:"Quel trait reconnais-tu ?",
+      o:[{id:"autonome",t:"Autonome : elle prend des initiatives et agit d'elle-même sans attendre qu'on la guide.",ok:true},
+         {id:"soumis",t:"Soumis : elle suit les consignes et attend toujours une validation avant d'oser agir seule.",ok:false},
+         {id:"introverti",t:"Introverti : elle se ressource dans le calme et préfère nettement éviter l'agitation du magasin.",ok:false}],
+      why:"Repérer un problème et agir de soi-même, sans attendre d'ordre, est la marque d'une personne autonome." }
+  ],
+  recap:(<>
+    <p style={{margin:"6px 0"}}>La personnalité se décrit par des <b>traits</b> souvent opposés deux à deux : <b>extraverti</b> ↔ <b>introverti</b>, <b>stable</b> ↔ <b>instable</b>, <b>logique</b> ↔ <b>affectif</b>, <b>soumis</b> ↔ <b>autonome</b>.</p>
+    <p style={{margin:"6px 0"}}>Ces traits aident à comprendre comment chacun travaille et communique. Aucun n'est « meilleur » : un bon manager adapte son accompagnement à la personnalité de chaque salarié.</p>
+  </>)
+};
+
+/* ===== Jeu : Reconnaître les émotions ===== */
+const EMO_DATA = {
+  emoji:"😀", color:"#ea580c",
+  titre:"Les émotions d'un individu",
+  intro:"Une émotion est une réaction courte et intense face à une situation. Il existe 6 émotions « de base ». Découvre-les, puis reconnais-les chez les salariés au fil de l'entretien.",
+  cta:"À toi de reconnaître les émotions →",
+  playTitle:"💬 Quelle émotion ?",
+  types:[
+    { id:"joie", nom:"La joie", emoji:"😀", couleur:"#f59e0b",
+      tag:"quand un besoin est satisfait",
+      def:"La joie apparaît quand quelque chose de positif arrive : on se sent bien, léger, on a envie de sourire et de partager.",
+      ex:"Léa apprend qu'elle a battu son record de ventes : elle sourit, saute de joie et veut l'annoncer à toute l'équipe." },
+    { id:"peur", nom:"La peur", emoji:"😨", couleur:"#7c3aed",
+      tag:"face à un danger / une menace",
+      def:"La peur surgit face à un danger ou une menace, réelle ou imaginée : le cœur s'accélère, on a envie de fuir ou de se protéger.",
+      ex:"Avant de présenter son bilan devant la direction, Tom a les mains moites et la voix qui tremble." },
+    { id:"tristesse", nom:"La tristesse", emoji:"😢", couleur:"#0ea5e9",
+      tag:"face à une perte / un manque",
+      def:"La tristesse apparaît après une perte ou une déception : on se sent abattu, sans énergie, parfois au bord des larmes.",
+      ex:"Sofia n'a pas obtenu la promotion espérée : elle reste silencieuse, le regard baissé, l'air découragé." },
+    { id:"surprise", nom:"La surprise", emoji:"😲", couleur:"#16a34a",
+      tag:"face à l'inattendu",
+      def:"La surprise est une réaction très brève face à quelque chose d'inattendu : les yeux s'écarquillent, on reste un instant figé.",
+      ex:"En ouvrant la réserve, Maya découvre une livraison qu'elle n'attendait pas du tout : « Oh ! Mais d'où ça vient ?! »" },
+    { id:"colere", nom:"La colère", emoji:"😠", couleur:"#e11d48",
+      tag:"face à un obstacle / une injustice",
+      def:"La colère monte face à une injustice ou un obstacle : le ton monte, le visage se crispe, on a envie de réagir avec force.",
+      ex:"Rachid apprend qu'on lui a pris le mérite de son travail : il serre les poings et hausse le ton." },
+    { id:"degout", nom:"Le dégoût", emoji:"🤢", couleur:"#0d9488",
+      tag:"face à quelque chose de repoussant",
+      def:"Le dégoût est une réaction de rejet face à quelque chose de repoussant : on grimace, on recule, on détourne le regard.",
+      ex:"En nettoyant un frigo oublié, Hugo découvre des aliments moisis : il grimace et recule aussitôt, écœuré." }
+  ],
+  scenarios:[
+    { contexte:"Entretien annuel. Le manager évoque les bons résultats de l'année.",
+      boss:"Tu as battu ton record de ventes ce trimestre, bravo !",
+      sal:"C'est vrai ?! Oh, je suis tellement contente, j'ai envie de l'annoncer à toute l'équipe !",
+      q:"Quelle émotion exprime la salariée ?",
+      o:[{id:"joie",t:"La joie : un événement positif la rend heureuse et lui donne envie de partager sa réussite.",ok:true},
+         {id:"surprise",t:"La surprise : une réaction très brève et figée face à un événement totalement inattendu pour elle.",ok:false},
+         {id:"peur",t:"La peur : une réaction face à une menace qui lui donne envie de fuir et de se protéger vite.",ok:false}],
+      why:"Se sentir heureuse après une réussite et vouloir la partager est l'expression typique de la joie." },
+    { contexte:"Un salarié doit présenter son bilan devant toute la direction.",
+      sal:"J'ai les mains moites et la voix qui tremble… j'ai peur de ne pas y arriver devant tout le monde.",
+      q:"Quelle émotion reconnais-tu ?",
+      o:[{id:"peur",t:"La peur : face à une situation menaçante, son corps réagit et il aimerait pouvoir l'éviter.",ok:true},
+         {id:"colere",t:"La colère : face à une injustice flagrante, le ton monte et il a envie de réagir avec force.",ok:false},
+         {id:"degout",t:"Le dégoût : face à quelque chose de repoussant, il grimace et recule pour s'en éloigner vite.",ok:false}],
+      why:"Les mains moites, la voix qui tremble et l'envie d'éviter la situation sont des signes clairs de la peur." },
+    { contexte:"Le manager annonce une décision difficile à une salariée.",
+      boss:"Je suis désolé, la promotion a finalement été attribuée à quelqu'un d'autre.",
+      sal:"Ah… d'accord. (Elle baisse les yeux, reste silencieuse, l'air abattu.)",
+      q:"Quelle émotion ressent-elle ?",
+      o:[{id:"tristesse",t:"La tristesse : la déception la rend abattue et silencieuse, comme privée de son énergie.",ok:true},
+         {id:"joie",t:"La joie : un événement positif la remplit de bonheur et lui donne envie de sourire largement.",ok:false},
+         {id:"surprise",t:"La surprise : une réaction courte et figée provoquée par un événement vraiment inattendu pour elle.",ok:false}],
+      why:"Être abattue et silencieuse après une déception (une promotion manquée) traduit la tristesse, liée à une perte." },
+    { contexte:"En ouvrant la réserve, une salariée tombe sur une livraison non prévue.",
+      sal:"Oh ! Mais… d'où ça vient ?! Je ne m'attendais vraiment pas à ça !",
+      q:"Quelle émotion exprime-t-elle ?",
+      o:[{id:"surprise",t:"La surprise : un événement inattendu la fige un instant et écarquille ses yeux d'étonnement.",ok:true},
+         {id:"peur",t:"La peur : une menace l'inquiète au point d'accélérer son cœur et de lui donner envie de fuir.",ok:false},
+         {id:"tristesse",t:"La tristesse : une perte la rend abattue, silencieuse et lui retire toute son énergie d'un coup.",ok:false}],
+      why:"Une réaction brève et figée (« Oh ! d'où ça vient ?! ») face à l'inattendu est l'expression de la surprise." },
+    { contexte:"Un salarié découvre qu'un collègue s'est attribué son travail.",
+      sal:"C'est moi qui ai tout fait ! C'est injuste, je ne peux pas laisser passer ça ! (Le ton monte.)",
+      q:"Quelle émotion domine ?",
+      o:[{id:"colere",t:"La colère : face à une injustice, le ton monte et il a envie de réagir avec force.",ok:true},
+         {id:"joie",t:"La joie : un événement agréable le rend heureux et lui donne envie de partager sa bonne humeur.",ok:false},
+         {id:"peur",t:"La peur : une menace le pousse à se protéger, le cœur s'emballe et il cherche surtout à fuir.",ok:false}],
+      why:"Le ton qui monte face à une injustice ressentie est l'expression caractéristique de la colère." },
+    { contexte:"Pendant le ménage, un salarié ouvre un frigo oublié depuis des semaines.",
+      sal:"Beurk… c'est tout moisi là-dedans ! (Il grimace et recule aussitôt.)",
+      q:"Quelle émotion reconnais-tu ?",
+      o:[{id:"degout",t:"Le dégoût : face à quelque chose de repoussant, il grimace et recule pour s'en éloigner.",ok:true},
+         {id:"surprise",t:"La surprise : un événement inattendu le fige un court instant et écarquille ses yeux étonnés.",ok:false},
+         {id:"colere",t:"La colère : face à une injustice manifeste, le ton monte et il veut réagir avec beaucoup de force.",ok:false}],
+      why:"Grimacer et reculer face à quelque chose de repoussant (des aliments moisis) exprime le dégoût." }
+  ],
+  recap:(<>
+    <p style={{margin:"6px 0"}}>Il existe 6 <b>émotions de base</b> : <b>joie</b> 😀, <b>peur</b> 😨, <b>tristesse</b> 😢, <b>surprise</b> 😲, <b>colère</b> 😠 et <b>dégoût</b> 🤢. Chacune est une réaction courte à une situation.</p>
+    <p style={{margin:"6px 0"}}>Reconnaître les émotions (les siennes et celles des autres) aide à mieux communiquer et à désamorcer les tensions : c'est essentiel pour un manager comme pour un salarié.</p>
+  </>)
+};
+
+/* ===== Jeu : L'identité numérique ===== */
+const IDNUM_DATA = {
+  emoji:"🪪", color:"#0891b2",
+  titre:"L'identité numérique",
+  intro:"Sur Internet, chacun laisse des traces qui composent son identité numérique. On en distingue 3 sortes : ce qu'on dit de soi, ce qu'on fait, et ce que les machines déduisent de nous. Découvre-les avec des exemples concrets, puis reconnais-les.",
+  cta:"À toi de reconnaître →",
+  playTitle:"🌐 Quelle identité numérique ?",
+  types:[
+    { id:"declarative", nom:"Identité déclarative", emoji:"📝", couleur:"#0891b2",
+      tag:"ce que JE DIS de moi",
+      def:"L'identité déclarative, c'est ce que tu renseignes toi-même sur toi : ton nom, ta date de naissance, ta photo de profil, ta bio… Tu la déclares volontairement.",
+      ex:"Sur son profil, Léa écrit « Vendeuse passionnée à Saint-Pierre, 22 ans » et met une photo : c'est elle qui le déclare." },
+    { id:"agissante", nom:"Identité agissante", emoji:"👣", couleur:"#16a34a",
+      tag:"ce que JE FAIS en ligne",
+      def:"L'identité agissante, c'est ce que tu fais en ligne et les traces de tes actions : tes likes, tes commentaires, tes partages, tes publications, ce que d'autres disent de toi.",
+      ex:"Léa like des pages de pâtisserie, commente des recettes et partage des photos de la boutique : ce sont ses actions." },
+    { id:"calculee", nom:"Identité calculée", emoji:"🧮", couleur:"#7c3aed",
+      tag:"ce que les MACHINES déduisent",
+      def:"L'identité calculée, c'est ce que les algorithmes déduisent de toi à partir de tes traces : tes centres d'intérêt supposés, des pubs ciblées, des suggestions… Tu ne la déclares pas, elle est calculée.",
+      ex:"À force de likes sur la pâtisserie, l'appli déduit « passionnée de gâteaux » et affiche à Léa des pubs de moules à gâteaux." }
+  ],
+  scenarios:[
+    { contexte:"Léa crée son profil sur un réseau professionnel pour la boutique.",
+      sal:"Je remplis mon nom, mon poste « vendeuse », ma ville et je mets une jolie photo de profil.",
+      q:"De quelle identité numérique s'agit-il ?",
+      o:[{id:"declarative",t:"Déclarative : ce sont les informations qu'elle renseigne elle-même, volontairement, sur elle.",ok:true},
+         {id:"agissante",t:"Agissante : ce sont les traces de ses actions en ligne, comme ses likes, partages et commentaires.",ok:false},
+         {id:"calculee",t:"Calculée : ce sont les informations que les algorithmes déduisent d'elle sans qu'elle les déclare.",ok:false}],
+      why:"Renseigner soi-même son nom, son poste et sa photo relève de l'identité déclarative : on la déclare volontairement." },
+    { contexte:"Léa est très active en ligne pour faire connaître la boutique.",
+      sal:"Je like des pages de pâtisserie, je commente des recettes et je partage les photos de nos gâteaux.",
+      q:"Quelle identité numérique est concernée ?",
+      o:[{id:"agissante",t:"Agissante : ce sont les traces de ses actions en ligne (likes, commentaires, partages).",ok:true},
+         {id:"declarative",t:"Déclarative : ce sont les informations qu'elle renseigne elle-même volontairement dans son profil.",ok:false},
+         {id:"calculee",t:"Calculée : ce sont les déductions faites par les algorithmes à partir de toutes ses traces réunies.",ok:false}],
+      why:"Liker, commenter et partager sont des actions : elles composent l'identité agissante (ce qu'on fait en ligne)." },
+    { contexte:"En ouvrant son application, Léa remarque des publicités très ciblées.",
+      sal:"Bizarre, l'appli m'affiche plein de pubs de moules à gâteaux… je n'ai jamais dit que j'adorais ça !",
+      q:"Quelle identité numérique explique cela ?",
+      o:[{id:"calculee",t:"Calculée : l'algorithme a déduit ses goûts à partir de ses traces, sans qu'elle les déclare.",ok:true},
+         {id:"declarative",t:"Déclarative : ce sont les informations qu'elle a renseignées elle-même, volontairement, dans son profil.",ok:false},
+         {id:"agissante",t:"Agissante : ce sont directement les actions qu'elle réalise en ligne, comme ses likes et partages.",ok:false}],
+      why:"Des pubs ciblées déduites de ses comportements (sans qu'elle ait rien déclaré) relèvent de l'identité calculée." },
+    { contexte:"Le manager sensibilise l'équipe à l'image en ligne de l'entreprise.",
+      sal:"Sur la fiche de la boutique, j'ai écrit notre histoire, nos horaires et notre adresse.",
+      q:"Quelle identité numérique est en jeu ?",
+      o:[{id:"declarative",t:"Déclarative : l'entreprise renseigne elle-même ces informations, volontairement, sur sa fiche.",ok:true},
+         {id:"calculee",t:"Calculée : ces informations sont déduites automatiquement par les algorithmes à partir des traces.",ok:false},
+         {id:"agissante",t:"Agissante : ce sont les traces des actions menées en ligne, comme les publications et les partages.",ok:false}],
+      why:"Une fiche d'entreprise remplie volontairement (histoire, horaires, adresse) relève de l'identité déclarative." },
+    { contexte:"Le manager regarde l'activité de la page de la boutique.",
+      sal:"Cette semaine, on a publié 3 photos, répondu à 12 avis et partagé une recette.",
+      q:"Quelle identité numérique est concernée ?",
+      o:[{id:"agissante",t:"Agissante : publier, répondre et partager sont des actions qui laissent des traces en ligne.",ok:true},
+         {id:"declarative",t:"Déclarative : ce sont les informations fixes renseignées volontairement dans la description du profil.",ok:false},
+         {id:"calculee",t:"Calculée : ce sont les centres d'intérêt déduits par les algorithmes à partir de toutes les traces.",ok:false}],
+      why:"Publier, répondre aux avis et partager sont des actions en ligne : c'est l'identité agissante." },
+    { contexte:"Un fournisseur reçoit des suggestions de contacts « que vous pourriez connaître ».",
+      sal:"L'appli me propose pile les gens de mon secteur, alors que je ne les ai jamais cherchés…",
+      q:"Quelle identité numérique explique ces suggestions ?",
+      o:[{id:"calculee",t:"Calculée : l'algorithme déduit ses relations probables à partir de ses traces, sans qu'il les déclare.",ok:true},
+         {id:"agissante",t:"Agissante : ce sont directement les actions qu'il réalise lui-même en ligne, comme ses propres likes et ses partages.",ok:false},
+         {id:"declarative",t:"Déclarative : ce sont les informations personnelles qu'il a saisies lui-même, volontairement, dans son propre profil.",ok:false}],
+      why:"Des suggestions déduites automatiquement de ses traces (sans qu'il les ait demandées) relèvent de l'identité calculée." }
+  ],
+  recap:(<>
+    <p style={{margin:"6px 0"}}>L'identité numérique a 3 facettes : <b>déclarative</b> 📝 (ce que je dis de moi), <b>agissante</b> 👣 (ce que je fais en ligne) et <b>calculée</b> 🧮 (ce que les algorithmes déduisent de moi).</p>
+    <p style={{margin:"6px 0"}}>Bien comprendre ces 3 facettes aide à maîtriser son image en ligne : on contrôle le déclaratif, on fait attention à ses actions, et on reste conscient que des machines nous « profilent ».</p>
+  </>)
+};
+
+/* ===== Jeu : Attitude vs Comportement ===== */
+const ATTCOMP_DATA = {
+  emoji:"🎭", color:"#be185d",
+  titre:"Attitude ou comportement ?",
+  intro:"On confond souvent attitude et comportement. L'ATTITUDE est intérieure : c'est ce que l'on pense ou ressent (invisible). Le COMPORTEMENT est extérieur : c'est ce que l'on fait réellement (visible). Découvre la différence, puis reconnais-la.",
+  cta:"À toi de distinguer →",
+  playTitle:"👀 Attitude ou comportement ?",
+  types:[
+    { id:"attitude", nom:"Une attitude", emoji:"💭", couleur:"#be185d",
+      tag:"ce que je PENSE / ressens (invisible)",
+      def:"L'attitude est une disposition intérieure : une opinion, un état d'esprit, un ressenti envers quelque chose ou quelqu'un. On ne la voit pas directement, on la devine.",
+      ex:"Léa aime profondément le contact client (attitude positive) — c'est dans sa tête, on ne le voit pas tant qu'elle n'agit pas." },
+    { id:"comportement", nom:"Un comportement", emoji:"🏃", couleur:"#0d9488",
+      tag:"ce que je FAIS (visible)",
+      def:"Le comportement est l'action observable : ce que la personne fait concrètement, et qu'on peut voir ou mesurer. C'est souvent la traduction visible d'une attitude.",
+      ex:"Léa sourit à chaque client et engage la conversation : ça, c'est visible, c'est son comportement." }
+  ],
+  scenarios:[
+    { contexte:"Entretien annuel. Le manager cherche à distinguer ce que ressent Léa de ce qu'elle fait.",
+      sal:"Au fond de moi, j'adore vraiment le contact avec les clients, ça me tient à cœur.",
+      q:"Attitude ou comportement ?",
+      o:[{id:"attitude",t:"Une attitude : c'est un ressenti intérieur, ce qu'elle pense au fond d'elle, qu'on ne voit pas directement.",ok:true},
+         {id:"comportement",t:"Un comportement : c'est une action tout à fait concrète et visible que l'on peut directement observer ou bien mesurer.",ok:false}],
+      why:"« Adorer au fond de soi le contact » est une disposition intérieure invisible : c'est une attitude, pas une action." },
+    { contexte:"Le manager observe Léa en boutique.",
+      sal:"(Elle sourit à chaque client qui entre et engage la conversation avec eux.)",
+      q:"Attitude ou comportement ?",
+      o:[{id:"comportement",t:"Un comportement : c'est une action concrète et visible que l'on peut directement observer.",ok:true},
+         {id:"attitude",t:"Une attitude : c'est une disposition intérieure, ce qu'elle ressent, qu'on ne voit pas directement.",ok:false}],
+      why:"Sourire et engager la conversation sont des actions observables : c'est un comportement, la partie visible." },
+    { contexte:"Un salarié confie son ressenti sur les réunions.",
+      sal:"Honnêtement, je trouve les réunions du lundi inutiles, ça m'agace un peu.",
+      q:"Attitude ou comportement ?",
+      o:[{id:"attitude",t:"Une attitude : c'est une opinion intérieure, un état d'esprit, qui ne se voit pas directement.",ok:true},
+         {id:"comportement",t:"Un comportement : c'est une action concrète et visible, observable directement par les autres personnes.",ok:false}],
+      why:"« Trouver les réunions inutiles » est une opinion, un état d'esprit intérieur : c'est une attitude." },
+    { contexte:"Pendant la réunion, le manager observe ce salarié.",
+      sal:"(Il arrive en retard, soupire bruyamment et regarde son téléphone pendant la réunion.)",
+      q:"Attitude ou comportement ?",
+      o:[{id:"comportement",t:"Un comportement : ce sont des actions concrètes et visibles que tout le monde peut observer.",ok:true},
+         {id:"attitude",t:"Une attitude : c'est une disposition intérieure, un ressenti, que l'on ne peut pas voir directement.",ok:false}],
+      why:"Arriver en retard, soupirer et regarder son téléphone sont des actions visibles : ce sont des comportements." },
+    { contexte:"Le manager discute avec une nouvelle recrue.",
+      sal:"Je suis convaincue que le travail d'équipe, c'est ce qu'il y a de plus important.",
+      q:"Attitude ou comportement ?",
+      o:[{id:"attitude",t:"Une attitude : c'est une conviction intérieure, une opinion, qu'on ne voit pas tant qu'elle n'agit pas.",ok:true},
+         {id:"comportement",t:"Un comportement : c'est une action bien concrète et observable, que l'on peut clairement voir ou mesurer directement.",ok:false}],
+      why:"Une conviction (« le travail d'équipe est le plus important ») est une opinion intérieure : c'est une attitude." },
+    { contexte:"Plus tard, le manager voit cette recrue à l'œuvre.",
+      sal:"(Elle aide spontanément un collègue débordé et partage ses astuces avec l'équipe.)",
+      q:"Attitude ou comportement ?",
+      o:[{id:"comportement",t:"Un comportement : aider et partager sont des actions concrètes et visibles par les autres.",ok:true},
+         {id:"attitude",t:"Une attitude : c'est une disposition intérieure, une opinion, qui reste invisible aux yeux des autres.",ok:false}],
+      why:"Aider un collègue et partager ses astuces sont des actions observables : ce sont des comportements." },
+    { contexte:"Le manager analyse le lien entre les deux.",
+      boss:"Tu vois, ton attitude positive envers les clients explique sûrement ton excellent comportement à l'accueil.",
+      sal:"C'est vrai : comme j'aime vraiment ça, ça se traduit dans ce que je fais tous les jours.",
+      q:"La phrase « comme j'aime vraiment ça » décrit…",
+      o:[{id:"attitude",t:"Une attitude : c'est le ressenti intérieur qui, ensuite, se traduit en actions visibles.",ok:true},
+         {id:"comportement",t:"Un comportement : c'est directement l'action visible réalisée et observable par l'entourage au quotidien.",ok:false}],
+      why:"« Aimer vraiment ça » décrit le ressenti intérieur (l'attitude), qui se traduit ensuite en comportement visible." }
+  ],
+  recap:(<>
+    <p style={{margin:"6px 0"}}>L'<b>attitude</b> 💭 est intérieure et invisible (ce que je pense, ressens, mon opinion). Le <b>comportement</b> 🏃 est extérieur et visible (ce que je fais concrètement).</p>
+    <p style={{margin:"6px 0"}}>Le comportement est souvent la <b>traduction visible</b> d'une attitude : une attitude positive envers les clients se traduit par un comportement accueillant. Mais on n'évalue objectivement que ce qui est observable : le comportement.</p>
+  </>)
+};
+
+/* ============================================================
+   SDGN 1ʳᵉ — Thème 1 · « La communication entre les individus »
+   Parcours en plusieurs étapes : schéma de la communication
+   interpersonnelle, registres de langue, signes verbaux /
+   non-verbaux / paraverbaux, et écoute active (10 situations).
+============================================================ */
+const COMM_DATA = {
+  emoji:"💬", color:"#0ea5e9",
+  // ---- Étape 1 : le schéma de la communication ----
+  schemaIntro:"La communication interpersonnelle est un échange d'informations entre deux personnes qui s'influencent mutuellement. Pour bien la comprendre, on la décompose en éléments. Découvre-les sur une vraie scène, puis place chaque terme au bon endroit.",
+  // éléments du schéma (chacun expliqué + exemple)
+  elements:[
+    { id:"emetteur", nom:"L'émetteur", emoji:"🗣️", couleur:"#0ea5e9",
+      def:"La personne qui envoie le message (qui parle, écrit…). Elle a un objectif et une personnalité.",
+      ex:"Dans la boutique, Léa (la vendeuse) lance la conversation : c'est l'émettrice." },
+    { id:"recepteur", nom:"Le récepteur", emoji:"👂", couleur:"#16a34a",
+      def:"La personne qui reçoit le message (qui écoute, lit…). Elle aussi a un objectif.",
+      ex:"Le client qui écoute Léa est le récepteur du message." },
+    { id:"message", nom:"Le message", emoji:"✉️", couleur:"#f59e0b",
+      def:"Le contenu de l'information transmise : ce que l'on veut faire passer.",
+      ex:"« Notre nouvelle tarte au citron est en promotion aujourd'hui » : voilà le message." },
+    { id:"codage", nom:"Le codage", emoji:"🔤", couleur:"#8b5cf6",
+      def:"La manière dont on met en forme le message : les mots choisis, les gestes, l'intonation, la posture.",
+      ex:"Léa sourit, parle avec enthousiasme et montre la tarte du doigt : c'est son codage." },
+    { id:"canal", nom:"Le canal", emoji:"📡", couleur:"#0d9488",
+      def:"Le mode de transmission du message : oral, écrit, téléphone, e-mail…",
+      ex:"Ici, Léa parle de vive voix, en face à face : le canal est oral." },
+    { id:"bruit", nom:"Les bruits", emoji:"🔊", couleur:"#e11d48",
+      def:"Tout ce qui gêne la bonne transmission : bruit ambiant, mot mal compris, interlocuteur distrait…",
+      ex:"La musique forte de la boutique couvre la voix de Léa : c'est un bruit." },
+    { id:"retroaction", nom:"La rétroaction", emoji:"🔁", couleur:"#d97706",
+      def:"La réponse du récepteur, qui revient vers l'émetteur (aussi appelée feed-back). Elle montre qu'on a compris (ou non).",
+      ex:"Le client répond « Ah oui, j'en prends une ! » : c'est la rétroaction." },
+    { id:"contexte", nom:"Le contexte", emoji:"📍", couleur:"#64748b",
+      def:"L'environnement dans lequel se déroule l'échange : le lieu, le moment, la relation entre les personnes.",
+      ex:"L'échange a lieu dans la boutique, un samedi de forte affluence : c'est le contexte." }
+  ],
+  // questions de placement (scène vivante) — options mélangées + longueurs harmonisées
+  schemaScenarios:[
+    { phrase:"Léa, la vendeuse, dit au client : « Notre tarte au citron est en promo aujourd'hui ! »",
+      target:"emetteur", q:"Qui est l'ÉMETTEUR dans cette scène ?",
+      o:[{id:"emetteur",t:"Léa, la vendeuse : c'est elle qui lance le message et cherche à le transmettre au client.",ok:true},
+         {id:"recepteur",t:"Le client : c'est lui qui reçoit le message et l'écoute attentivement pendant l'échange.",ok:false},
+         {id:"canal",t:"La voix de Léa : c'est par elle que le message circule oralement jusqu'au client présent.",ok:false}],
+      why:"L'émetteur est la personne qui envoie le message. Ici, c'est Léa qui parle : elle est l'émettrice." },
+    { phrase:"Le client écoute attentivement Léa lui présenter la tarte.",
+      target:"recepteur", q:"Qui est le RÉCEPTEUR ?",
+      o:[{id:"recepteur",t:"Le client : c'est lui qui reçoit le message et l'écoute pendant tout l'échange.",ok:true},
+         {id:"emetteur",t:"Léa, la vendeuse : c'est elle qui lance le message et cherche à le transmettre au client.",ok:false},
+         {id:"message",t:"La promotion sur la tarte : c'est le contenu même de l'information transmise au client.",ok:false}],
+      why:"Le récepteur est la personne qui reçoit le message. Ici, c'est le client qui écoute : il est le récepteur." },
+    { phrase:"« Notre tarte au citron est en promotion aujourd'hui. »",
+      target:"message", q:"Quel élément représente cette phrase ?",
+      o:[{id:"message",t:"Le message : c'est le contenu de l'information que Léa veut faire passer au client.",ok:true},
+         {id:"codage",t:"Le codage : c'est la façon de mettre en forme l'information, avec les mots, gestes et intonation.",ok:false},
+         {id:"canal",t:"Le canal : c'est le mode de transmission emprunté par l'information pour aller jusqu'au client.",ok:false}],
+      why:"Le message est le contenu de l'information transmise. Ici, l'annonce de la promotion est le message." },
+    { phrase:"Léa sourit, parle avec enthousiasme et montre la tarte du doigt.",
+      target:"codage", q:"Comment appelle-t-on cette mise en forme du message ?",
+      o:[{id:"codage",t:"Le codage : c'est la manière de mettre en forme le message (mots, gestes, intonation, posture).",ok:true},
+         {id:"message",t:"Le message : c'est le contenu de l'information que Léa veut réellement faire passer au client.",ok:false},
+         {id:"retroaction",t:"La rétroaction : c'est la réponse que le récepteur renvoie vers l'émetteur après avoir compris.",ok:false}],
+      why:"Le codage est la manière de mettre en forme le message : mots, gestes, sourire, intonation. C'est bien le cas ici." },
+    { phrase:"Léa parle de vive voix, en face à face avec le client.",
+      target:"canal", q:"Quel est le CANAL utilisé ?",
+      o:[{id:"canal",t:"Le canal oral : le message est transmis par la voix, en face à face, sans support écrit.",ok:true},
+         {id:"codage",t:"Le codage du message : c'est la façon de le mettre en forme avec les mots, gestes et intonation.",ok:false},
+         {id:"contexte",t:"Le contexte de l'échange : c'est l'environnement (lieu, moment, relation) dans lequel on communique.",ok:false}],
+      why:"Le canal est le mode de transmission. Ici, on parle de vive voix : le canal est oral." },
+    { phrase:"La musique de la boutique est si forte que le client n'entend pas bien Léa.",
+      target:"bruit", q:"Comment qualifie-t-on cette gêne ?",
+      o:[{id:"bruit",t:"Un bruit : c'est un obstacle qui gêne la bonne transmission du message entre les deux personnes.",ok:true},
+         {id:"canal",t:"Un canal : c'est le mode de transmission par lequel le message circule de l'un vers l'autre.",ok:false},
+         {id:"contexte",t:"Un contexte : c'est l'environnement (lieu, moment, relation) dans lequel se déroule l'échange.",ok:false}],
+      why:"Un bruit est tout ce qui gêne la transmission : ici, la musique trop forte empêche le client de bien entendre." },
+    { phrase:"Le client répond : « Ah super, j'en prends une ! »",
+      target:"retroaction", q:"Comment appelle-t-on cette réponse qui revient vers Léa ?",
+      o:[{id:"retroaction",t:"La rétroaction : c'est la réponse du récepteur qui revient vers l'émetteur (le feed-back).",ok:true},
+         {id:"message",t:"Le message : c'est le contenu de l'information que l'émetteur souhaitait au départ faire passer.",ok:false},
+         {id:"emetteur",t:"L'émetteur : c'est la personne qui envoie le message en cherchant à le transmettre à l'autre.",ok:false}],
+      why:"La rétroaction (ou feed-back) est la réponse du récepteur qui revient vers l'émetteur. Ici, le client réagit à Léa." },
+    { phrase:"L'échange a lieu dans la boutique, un samedi de forte affluence.",
+      target:"contexte", q:"Quel élément correspond à ce cadre ?",
+      o:[{id:"contexte",t:"Le contexte : c'est l'environnement (lieu, moment, relation) dans lequel se déroule l'échange.",ok:true},
+         {id:"canal",t:"Le canal : c'est le mode de transmission par lequel le message circule entre les deux personnes.",ok:false},
+         {id:"bruit",t:"Le bruit : c'est un obstacle qui vient gêner la bonne transmission du message entre les individus.",ok:false}],
+      why:"Le contexte est l'environnement de l'échange : ici, la boutique un samedi chargé constitue le contexte." }
+  ],
+  // ---- Étape 2 : les registres de langue ----
+  registresIntro:"Selon à qui l'on parle et dans quelle situation, on n'emploie pas le même niveau de langue. On distingue 3 registres : familier, courant et soutenu. Repère le bon registre dans chaque conversation.",
+  registres:[
+    { id:"familier", nom:"Familier", emoji:"😎", couleur:"#f59e0b",
+      def:"Langage relâché, entre proches : mots simples, parfois de l'argot, phrases courtes.",
+      ex:"« Salut, ça roule ? T'as vu le nouveau gâteau, il déchire ! »" },
+    { id:"courant", nom:"Courant", emoji:"🙂", couleur:"#16a34a",
+      def:"Langage de tous les jours, correct et neutre : celui qu'on utilise au travail, avec un client.",
+      ex:"« Bonjour, avez-vous vu notre nouvelle pâtisserie ? Elle a beaucoup de succès. »" },
+    { id:"soutenu", nom:"Soutenu", emoji:"🎩", couleur:"#7c3aed",
+      def:"Langage très soigné, vocabulaire riche et phrases élaborées : courriers officiels, discours.",
+      ex:"« Permettez-moi de vous présenter notre nouvelle création, qui rencontre un vif succès. »" }
+  ],
+  registresScenarios:[
+    { phrase:"« Salut mec ! T'as capté le nouveau gâteau ? Il est trop bon, franchement ! »",
+      target:"familier", q:"Quel registre de langue est employé ?",
+      o:[{id:"familier",t:"Familier : un langage relâché entre proches, avec des mots simples et un peu d'argot.",ok:true},
+         {id:"courant",t:"Courant : un langage correct et neutre, comme celui qu'on emploie au travail avec un client.",ok:false},
+         {id:"soutenu",t:"Soutenu : un langage très soigné, au vocabulaire riche et aux phrases longues et élaborées.",ok:false}],
+      why:"« Salut mec », « t'as capté », « trop bon » : mots relâchés et familiers, typiques du registre familier." },
+    { phrase:"« Bonjour, avez-vous goûté notre nouvelle pâtisserie ? Elle plaît beaucoup à nos clients. »",
+      target:"courant", q:"Quel registre reconnais-tu ?",
+      o:[{id:"courant",t:"Courant : un langage correct et neutre, comme celui qu'on emploie au travail avec un client.",ok:true},
+         {id:"familier",t:"Familier : un langage relâché entre proches, fait de mots simples et parfois d'un peu d'argot.",ok:false},
+         {id:"soutenu",t:"Soutenu : un langage très soigné, au vocabulaire riche et aux phrases longues et bien élaborées.",ok:false}],
+      why:"Phrases correctes, polies et neutres, sans familiarité ni recherche excessive : c'est le registre courant." },
+    { phrase:"« Permettez-moi de vous présenter notre dernière création, qui suscite un véritable engouement. »",
+      target:"soutenu", q:"Quel registre est utilisé ici ?",
+      o:[{id:"soutenu",t:"Soutenu : un langage très soigné, au vocabulaire riche et aux phrases élaborées et recherchées.",ok:true},
+         {id:"courant",t:"Courant : un langage correct et neutre, comme celui qu'on emploie au travail avec un client.",ok:false},
+         {id:"familier",t:"Familier : un langage relâché entre proches, fait de mots simples et parfois d'un peu d'argot.",ok:false}],
+      why:"« Permettez-moi », « suscite un véritable engouement » : vocabulaire riche et phrases soignées, registre soutenu." },
+    { phrase:"Un courrier officiel : « Nous vous prions d'agréer l'expression de nos salutations distinguées. »",
+      target:"soutenu", q:"Quel registre correspond à cette formule ?",
+      o:[{id:"soutenu",t:"Soutenu : un langage très soigné et formel, réservé aux courriers officiels et aux discours.",ok:true},
+         {id:"familier",t:"Familier : un langage relâché entre proches, fait de mots simples et parfois d'un peu d'argot.",ok:false},
+         {id:"courant",t:"Courant : un langage correct et neutre, comme celui qu'on emploie au travail avec un client.",ok:false}],
+      why:"Cette formule de politesse très codifiée appartient au registre soutenu, typique des courriers officiels." },
+    { phrase:"À un collègue, à la pause : « Ouais, j'suis crevé, vivement ce soir ! »",
+      target:"familier", q:"Quel registre est employé ?",
+      o:[{id:"familier",t:"Familier : un langage relâché entre proches, avec des mots simples et des phrases raccourcies.",ok:true},
+         {id:"soutenu",t:"Soutenu : un langage très soigné, au vocabulaire riche et aux phrases longues et bien élaborées.",ok:false},
+         {id:"courant",t:"Courant : un langage correct et neutre, comme celui qu'on emploie au travail avec un client.",ok:false}],
+      why:"« Ouais », « j'suis crevé », « vivement ce soir » : langage relâché entre collègues, c'est le registre familier." },
+    { phrase:"Au téléphone avec un client : « Bonjour, je vous confirme votre commande pour vendredi. »",
+      target:"courant", q:"Quel registre reconnais-tu ?",
+      o:[{id:"courant",t:"Courant : un langage correct et neutre, parfaitement adapté à un échange professionnel avec un client.",ok:true},
+         {id:"familier",t:"Familier : un langage relâché entre proches, fait de mots simples et parfois d'un peu d'argot.",ok:false},
+         {id:"soutenu",t:"Soutenu : un langage très soigné, au vocabulaire riche et aux phrases longues et bien élaborées.",ok:false}],
+      why:"Phrase polie, claire et neutre, adaptée à un client : c'est le registre courant, celui du quotidien professionnel." }
+  ]
+};
+
+/* ===== Suite des données du jeu Communication ===== */
+COMM_DATA.signesIntro = "Quand on communique, on transmet bien plus que des mots ! On distingue : le VERBAL (les mots eux-mêmes), le NON-VERBAL (le corps : gestes, regard, posture) et le PARAVERBAL (la voix : ton, débit, volume). Glisse chaque élément dans la bonne catégorie.";
+COMM_DATA.signesCats = [
+  { id:"verbal", nom:"Verbal", emoji:"💬", couleur:"#0ea5e9", def:"Les MOTS eux-mêmes : le vocabulaire, ce qui est dit ou écrit." },
+  { id:"nonverbal", nom:"Non-verbal", emoji:"🙆", couleur:"#16a34a", def:"Le CORPS : gestes, regard, sourire, posture, distance, tenue." },
+  { id:"paraverbal", nom:"Paraverbal", emoji:"🔊", couleur:"#d97706", def:"La VOIX : ton, intonation, débit (vitesse), volume, silences." }
+];
+COMM_DATA.signesItems = [
+  { t:"Le choix des mots employés", cat:"verbal", why:"Les mots qu'on choisit, c'est du verbal (le contenu dit)." },
+  { t:"Un sourire", cat:"nonverbal", why:"Un sourire, c'est le corps : du non-verbal." },
+  { t:"Le ton de la voix (chaleureux, sec…)", cat:"paraverbal", why:"Le ton fait partie de la voix : c'est du paraverbal." },
+  { t:"Une poignée de main", cat:"nonverbal", why:"Un geste du corps : c'est du non-verbal." },
+  { t:"Le vocabulaire d'un e-mail", cat:"verbal", why:"Les mots écrits dans l'e-mail : du verbal." },
+  { t:"Le débit (parler vite ou lentement)", cat:"paraverbal", why:"La vitesse de la parole, c'est la voix : du paraverbal." },
+  { t:"Le regard et le contact visuel", cat:"nonverbal", why:"Le regard est une attitude du corps : du non-verbal." },
+  { t:"Le volume de la voix (fort ou doux)", cat:"paraverbal", why:"Le volume, c'est une caractéristique de la voix : du paraverbal." },
+  { t:"La posture (droite, avachie…)", cat:"nonverbal", why:"La posture du corps, c'est du non-verbal." },
+  { t:"Une phrase de politesse", cat:"verbal", why:"Une phrase, ce sont des mots : du verbal." }
+];
+
+// ---- Étape finale : écoute active, empathie, erreurs de communication ----
+COMM_DATA.ecouteIntro = "Bien communiquer, c'est aussi savoir écouter ! Dans 10 situations professionnelles variées, choisis la réaction qui fait preuve d'écoute active et d'empathie, ou qui corrige une erreur de communication.";
+COMM_DATA.ecoute = [
+  { org:"🛍️ Commerce", contexte:"Une cliente, agacée, explique qu'elle a attendu 20 minutes.",
+    boss:"Cliente : « Ça fait 20 minutes que j'attends, c'est inadmissible ! »",
+    q:"Quelle est la meilleure réaction (écoute active) ?",
+    o:[{t:"« Je comprends votre agacement, vous avez attendu longtemps. Je m'occupe de vous tout de suite. »",ok:true},
+       {t:"« Ce n'est pas ma faute, on est en sous-effectif aujourd'hui, il fallait revenir un autre jour. »",ok:false},
+       {t:"« Vingt minutes ce n'est rien du tout, d'autres clients patientent bien plus longtemps que vous. »",ok:false}],
+    why:"L'écoute active reconnaît l'émotion (« je comprends votre agacement ») et propose une solution, sans se justifier ni minimiser." },
+  { org:"🏥 Santé", contexte:"À l'accueil d'un cabinet, un patient inquiet pose beaucoup de questions.",
+    boss:"Patient : « Je suis un peu perdu, je ne comprends pas bien ce rendez-vous… »",
+    q:"Quelle réponse montre de l'empathie ?",
+    o:[{t:"« Prenez votre temps, je vous explique calmement chaque étape jusqu'à ce que tout soit clair. »",ok:true},
+       {t:"« C'est pourtant marqué sur le papier, vous n'avez qu'à le relire attentivement vous-même. »",ok:false},
+       {t:"« Dépêchez-vous de vous décider, il y a d'autres patients qui attendent derrière vous là. »",ok:false}],
+    why:"L'empathie consiste à rassurer et à se rendre disponible (« prenez votre temps, je vous explique »), pas à presser ni à renvoyer la personne à elle-même." },
+  { org:"🏢 Entreprise", contexte:"En réunion, un collègue coupe sans cesse la parole à un autre.",
+    boss:"Un collègue : « Laisse-moi finir, je n'ai pas pu terminer mon idée… »",
+    q:"Comment améliorer la communication ?",
+    o:[{t:"« Tu as raison, écoutons-le aller au bout de son idée, puis chacun pourra réagir ensuite. »",ok:true},
+       {t:"« On n'a pas le temps pour ça, on va trancher tout de suite sans écouter la fin de l'idée. »",ok:false},
+       {t:"« De toute façon ton idée n'était pas très intéressante, autant passer directement à la suite. »",ok:false}],
+    why:"Améliorer la communication, c'est garantir à chacun de pouvoir s'exprimer jusqu'au bout : on rétablit l'écoute." },
+  { org:"📞 Centre d'appels", contexte:"Au téléphone, un client s'exprime très vite et semble stressé.",
+    boss:"Client : « Tout va de travers avec ma commande, je n'y comprends plus rien ! »",
+    q:"Quelle est la bonne attitude d'écoute active ?",
+    o:[{t:"« Je vous écoute, reprenons ensemble point par point pour que je règle bien votre souci. »",ok:true},
+       {t:"« Calmez-vous d'abord, je ne peux rien faire pour vous tant que vous parlez sur ce ton. »",ok:false},
+       {t:"« Ce n'est pas mon service, je vous repasse quelqu'un d'autre, ne quittez pas la ligne surtout. »",ok:false}],
+    why:"L'écoute active reformule et structure (« reprenons ensemble point par point ») pour rassurer et aider, sans juger le ton du client ni se débarrasser de lui." },
+  { org:"🏨 Hôtellerie", contexte:"Un client signale poliment que sa chambre n'était pas prête.",
+    boss:"Client : « Ma chambre n'était pas prête à l'heure prévue, c'est embêtant. »",
+    q:"Quelle réponse répare la relation ?",
+    o:[{t:"« Je suis désolé pour ce contretemps, je vérifie immédiatement et je vous tiens informé. »",ok:true},
+       {t:"« Vous êtes arrivé bien trop tôt aussi, normalement la chambre n'est prête qu'en fin d'après-midi. »",ok:false},
+       {t:"« Ça arrive tout le temps ici, ce n'est vraiment pas la peine d'en faire toute une histoire. »",ok:false}],
+    why:"Reconnaître le désagrément et agir (« je suis désolé, je vérifie immédiatement ») répare la relation ; se justifier ou minimiser l'aggrave." },
+  { org:"🏫 Établissement scolaire", contexte:"Un parent vient se plaindre, inquiet pour son enfant.",
+    boss:"Parent : « Je m'inquiète vraiment pour mon enfant, personne ne m'écoute ici. »",
+    q:"Quelle réaction fait preuve d'écoute active ?",
+    o:[{t:"« Je vous écoute, expliquez-moi ce qui vous inquiète, nous allons regarder cela ensemble. »",ok:true},
+       {t:"« Tout se passe très bien, vous vous inquiétez pour rien, il n'y a aucun problème à signaler. »",ok:false},
+       {t:"« Ce n'est pas le bon moment, revenez plus tard quand vous serez vraiment calmé et disponible. »",ok:false}],
+    why:"L'écoute active accueille l'inquiétude et invite à en parler (« je vous écoute, regardons ensemble »), au lieu de nier le problème ou de repousser la personne." },
+  { org:"🏭 Industrie", contexte:"Un opérateur signale un risque, mais on ne l'a pas pris au sérieux.",
+    boss:"Opérateur : « J'avais pourtant prévenu qu'il y avait un risque sur la machine… »",
+    q:"Comment corriger l'erreur de communication ?",
+    o:[{t:"« Tu as raison, on aurait dû t'écouter ; explique-moi, on corrige ça tout de suite ensemble. »",ok:true},
+       {t:"« Tu exagères toujours, ce n'était sûrement pas si grave que ça en avait l'air sur le moment. »",ok:false},
+       {t:"« Ce n'est plus le moment d'en parler, le problème est arrivé, on verra ça beaucoup plus tard. »",ok:false}],
+    why:"Reconnaître qu'on n'a pas écouté et agir aussitôt corrige l'erreur ; nier ou reporter laisse le problème entier." },
+  { org:"🏛️ Service public", contexte:"À un guichet, une usagère ne comprend pas un formulaire.",
+    boss:"Usagère : « Je n'arrive pas à remplir ce formulaire, c'est compliqué pour moi. »",
+    q:"Quelle attitude facilite la communication ?",
+    o:[{t:"« Pas de souci, je reprends chaque case avec vous, on va le remplir tranquillement ensemble. »",ok:true},
+       {t:"« C'est pourtant très simple, lisez les consignes, tout est écrit noir sur blanc sur le document. »",ok:false},
+       {t:"« Je n'ai pas le temps de tout vous expliquer, demandez plutôt à quelqu'un d'autre dans la file. »",ok:false}],
+    why:"Accompagner concrètement (« je reprends chaque case avec vous ») facilite la communication ; renvoyer aux consignes ou à autrui la bloque." },
+  { org:"🍽️ Restauration", contexte:"Un serveur s'est trompé de plat ; le client le fait remarquer poliment.",
+    boss:"Client : « Ce n'est pas ce que j'avais commandé, je crois qu'il y a une erreur. »",
+    q:"Quelle est la meilleure réponse ?",
+    o:[{t:"« Vous avez raison, je suis désolé pour l'erreur, je vous apporte le bon plat tout de suite. »",ok:true},
+       {t:"« Vous aviez sûrement mal formulé votre commande, je vous ai apporté ce que j'avais bien compris. »",ok:false},
+       {t:"« Mangez celui-là, il est très bon aussi, ça revient finalement exactement au même au final. »",ok:false}],
+    why:"Reconnaître l'erreur et la réparer (« je suis désolé, je vous apporte le bon plat ») satisfait le client ; rejeter la faute sur lui l'agace." },
+  { org:"🤝 Association", contexte:"Un nouveau bénévole, timide, hésite à donner son avis.",
+    boss:"Bénévole : « Je ne sais pas si mon idée vaut la peine d'être proposée… »",
+    q:"Comment encourager une bonne communication ?",
+    o:[{t:"« Bien sûr que oui, partage-la, toutes les idées sont les bienvenues et méritent qu'on les écoute. »",ok:true},
+       {t:"« Si tu hésites autant à la proposer, c'est que ça ne devait sûrement pas être une très bonne idée au fond. »",ok:false},
+       {t:"« On a déjà bien assez d'idées comme celle-là, ce n'est franchement pas la peine d'en rajouter une de plus. »",ok:false}],
+    why:"Encourager à s'exprimer et valoriser la prise de parole (« partage-la, toutes les idées sont les bienvenues ») crée un climat de communication ouvert." }
+];
+
+COMM_DATA.recap = (<>
+  <p style={{margin:"6px 0"}}>La <b>communication interpersonnelle</b> se décompose : <b>émetteur</b> et <b>récepteur</b> (les acteurs), <b>message</b> (le contenu), <b>codage</b> (la mise en forme), <b>canal</b> (oral, écrit…), <b>bruits</b> (les obstacles), <b>rétroaction</b> (le feed-back) et <b>contexte</b> (l'environnement).</p>
+  <p style={{margin:"6px 0"}}>On adapte son <b>registre</b> (familier, courant, soutenu) à la situation, et on communique par 3 canaux : <b>verbal</b> (les mots), <b>non-verbal</b> (le corps) et <b>paraverbal</b> (la voix).</p>
+  <p style={{margin:"6px 0"}}>Enfin, bien communiquer, c'est <b>écouter activement</b> : reconnaître l'émotion de l'autre, reformuler, faire preuve d'empathie et corriger les malentendus.</p>
+</>);
+
+function CommGame({head,onDone}){
+  const D=COMM_DATA;
+  // phases : intro -> schema -> registres -> signes -> ecoute -> result
+  const [phase,setPhase]=useState("intro");
+  const [score,setScore]=useState(0);
+
+  // util : mélange options d'une liste de scénarios
+  const shuf=(arr)=>arr.map(s=>{ if(!s.o) return s; const idx=s.o.map((_,i)=>i);
+    for(let k=idx.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[idx[k],idx[j]]=[idx[j],idx[k]];}
+    return {...s, o:idx.map(i=>s.o[i])}; });
+
+  // états par sous-jeu
+  const [schemaSc]=useState(()=>shuf(D.schemaScenarios));
+  const [regSc]=useState(()=>shuf(D.registresScenarios));
+  const [ecSc]=useState(()=>shuf(D.ecoute));
+  const [step,setStep]=useState(0); const [pick,setPick]=useState(null);
+  // signes (drag&drop)
+  const [items]=useState(()=>D.signesItems.map(x=>x).sort(()=>Math.random()-0.5));
+  const [placed,setPlaced]=useState({}); // itemIndex -> catId
+  const [held,setHeld]=useState(null);    // item en cours de saisie
+  const [sgChecked,setSgChecked]=useState(false);
+
+  const totalMax = D.schemaScenarios.length + D.registresScenarios.length + D.signesItems.length + D.ecoute.length;
+
+  // carrousel d'éléments (intro de chaque sous-partie)
+  const [ci,setCi]=useState(0);
+  useEffect(()=>{ if(phase!=="schemaIntro"&&phase!=="regIntro"&&phase!=="signesIntro") return;
+    const list = phase==="schemaIntro"?D.elements : phase==="regIntro"?D.registres : D.signesCats;
+    const t=setInterval(()=>setCi(x=>(x+1)%list.length),3000); return ()=>clearInterval(t); },[phase]);
+
+  /* ====== INTRO GÉNÉRALE ====== */
+  if(phase==="intro"){
+    return (<div className="game">{head}
+      <div className="cm-intro">
+        <div className="cm-hero">
+          <div className="cm-hero-emoji">💬</div>
+          <h2>La communication entre les individus</h2>
+          <p>La <b>communication interpersonnelle</b> est un échange d'informations entre deux personnes qui s'influencent mutuellement. Tu vas la maîtriser en 4 étapes :</p>
+        </div>
+        <div className="cm-steps-list">
+          <div className="cm-stepcard" style={{"--oc":"#0ea5e9"}}><span>1</span><div><b>Le schéma de la communication</b><small>émetteur, message, canal, bruits, rétroaction…</small></div></div>
+          <div className="cm-stepcard" style={{"--oc":"#16a34a"}}><span>2</span><div><b>Les registres de langue</b><small>familier, courant, soutenu</small></div></div>
+          <div className="cm-stepcard" style={{"--oc":"#d97706"}}><span>3</span><div><b>Verbal, non-verbal, paraverbal</b><small>les mots, le corps, la voix (glisser-déposer)</small></div></div>
+          <div className="cm-stepcard" style={{"--oc":"#7c3aed"}}><span>4</span><div><b>L'écoute active</b><small>10 situations professionnelles</small></div></div>
+        </div>
+        <button className="cta sm" onClick={()=>{setCi(0);setPhase("schemaIntro");}}>Commencer l'étape 1 →</button>
+      </div>
+    </div>);
+  }
+
+  /* ====== ÉTAPE 1 — SCHÉMA : carrousel d'éléments ====== */
+  if(phase==="schemaIntro"){
+    const c=D.elements[ci];
+    return (<div className="game">{head}
+      <div className="cm-substep">📡 Étape 1 — Le schéma de la communication</div>
+      <div className="cm-defbox">{Acr(D.schemaIntro)}</div>
+      <div className="cm-card" style={{"--oc":c.couleur}} key={ci}>
+        <div className="cm-card-top"><span className="cm-card-emoji">{c.emoji}</span><span className="cm-card-nom">{c.nom}</span></div>
+        <div className="cm-card-def">{Acr(c.def)}</div>
+        <div className="cm-card-ex"><b>🔎 Exemple :</b> {Acr(c.ex)}</div>
+      </div>
+      <div className="cm-dots">{D.elements.map((e,k)=><button key={k} className={"cm-dot"+(k===ci?" on":"")} style={{"--oc":e.couleur}} onClick={()=>setCi(k)}>{e.emoji}</button>)}</div>
+      <button className="cta sm" onClick={()=>{setStep(0);setPick(null);setPhase("schema");}}>À toi : reconnais les éléments →</button>
+    </div>);
+  }
+  if(phase==="schema"){
+    const s=schemaSc[step]; const good=s.o.findIndex(o=>o.ok); const goodEl=D.elements.find(e=>e.id===s.target);
+    const choose=(idx)=>{ if(pick!==null) return; setPick(idx); if(s.o[idx].ok) setScore(x=>x+1); };
+    const next=()=>{ setPick(null); if(step+1>=schemaSc.length){ setCi(0); setPhase("regIntro"); } else setStep(step+1); };
+    return (<div className="game">{head}
+      <div className="cm-prog"><span style={{width:(step/schemaSc.length*100)+"%",background:"#0ea5e9"}}></span></div>
+      <div className="cm-substep cm-sub-sm">📡 Le schéma · {step+1}/{schemaSc.length}</div>
+      <div className="cm-scene-comm">
+        <span className="cm-pers cm-pe">🗣️</span>
+        <div className="cm-bubble pop">{Acr(s.phrase)}</div>
+        <span className="cm-pers cm-pr">👂</span>
+      </div>
+      <div className="cm-q">{Acr(s.q)}</div>
+      <div className="cm-opts">{s.o.map((o,idx)=>{ let c="cm-opt"; if(pick!==null){ if(o.ok)c+=" ok"; else if(idx===pick)c+=" bad"; }
+        const el=D.elements.find(e=>e.id===o.id);
+        return <button key={idx} className={c} onClick={()=>choose(idx)}>{el&&<span className="cm-opt-emoji">{el.emoji}</span>}<span>{Acr(o.t)}</span></button>; })}</div>
+      {pick!==null&&(<div className={"fb "+(s.o[pick].ok?"good":"no")}>
+        <strong>{s.o[pick].ok?"✅ Bien vu !":"❌ Pas tout à fait."}</strong>
+        {!s.o[pick].ok&&goodEl&&<p style={{margin:"4px 0"}}>Bonne réponse : <b>{goodEl.emoji} {goodEl.nom}</b>.</p>}
+        <p style={{marginTop:6}}>{Acr(s.why)}</p>
+        <button className="next" onClick={next}>{step+1>=schemaSc.length?"Étape 2 : les registres →":"Suivant →"}</button></div>)}
+    </div>);
+  }
+
+  /* ====== ÉTAPE 2 — REGISTRES ====== */
+  if(phase==="regIntro"){
+    const c=D.registres[ci];
+    return (<div className="game">{head}
+      <div className="cm-substep cm-sub-g">🎚️ Étape 2 — Les registres de langue</div>
+      <div className="cm-defbox">{Acr(D.registresIntro)}</div>
+      <div className="cm-card" style={{"--oc":c.couleur}} key={ci}>
+        <div className="cm-card-top"><span className="cm-card-emoji">{c.emoji}</span><span className="cm-card-nom">{c.nom}</span></div>
+        <div className="cm-card-def">{Acr(c.def)}</div>
+        <div className="cm-card-ex"><b>🔎 Exemple :</b> {Acr(c.ex)}</div>
+      </div>
+      <div className="cm-dots">{D.registres.map((e,k)=><button key={k} className={"cm-dot"+(k===ci?" on":"")} style={{"--oc":e.couleur}} onClick={()=>setCi(k)}>{e.emoji}</button>)}</div>
+      <button className="cta sm" onClick={()=>{setStep(0);setPick(null);setPhase("registres");}}>À toi : reconnais les registres →</button>
+    </div>);
+  }
+  if(phase==="registres"){
+    const s=regSc[step]; const good=s.o.findIndex(o=>o.ok); const goodR=D.registres.find(e=>e.id===s.target);
+    const choose=(idx)=>{ if(pick!==null) return; setPick(idx); if(s.o[idx].ok) setScore(x=>x+1); };
+    const next=()=>{ setPick(null); if(step+1>=regSc.length){ setCi(0); setPhase("signesIntro"); } else setStep(step+1); };
+    return (<div className="game">{head}
+      <div className="cm-prog"><span style={{width:(step/regSc.length*100)+"%",background:"#16a34a"}}></span></div>
+      <div className="cm-substep cm-sub-sm cm-sub-g">🎚️ Les registres · {step+1}/{regSc.length}</div>
+      <div className="cm-quote pop">{Acr(s.phrase)}</div>
+      <div className="cm-q">{Acr(s.q)}</div>
+      <div className="cm-opts">{s.o.map((o,idx)=>{ let c="cm-opt"; if(pick!==null){ if(o.ok)c+=" ok"; else if(idx===pick)c+=" bad"; }
+        const r=D.registres.find(e=>e.id===o.id);
+        return <button key={idx} className={c} onClick={()=>choose(idx)}>{r&&<span className="cm-opt-emoji">{r.emoji}</span>}<span>{Acr(o.t)}</span></button>; })}</div>
+      {pick!==null&&(<div className={"fb "+(s.o[pick].ok?"good":"no")}>
+        <strong>{s.o[pick].ok?"✅ Bien vu !":"❌ Pas tout à fait."}</strong>
+        {!s.o[pick].ok&&goodR&&<p style={{margin:"4px 0"}}>Bonne réponse : <b>{goodR.emoji} {goodR.nom}</b>.</p>}
+        <p style={{marginTop:6}}>{Acr(s.why)}</p>
+        <button className="next" onClick={next}>{step+1>=regSc.length?"Étape 3 : verbal / non-verbal →":"Suivant →"}</button></div>)}
+    </div>);
+  }
+
+  /* ====== ÉTAPE 3 — SIGNES (glisser-déposer) ====== */
+  if(phase==="signesIntro"){
+    const c=D.signesCats[ci];
+    return (<div className="game">{head}
+      <div className="cm-substep cm-sub-o">🙆 Étape 3 — Verbal, non-verbal, paraverbal</div>
+      <div className="cm-defbox">{Acr(D.signesIntro)}</div>
+      <div className="cm-card" style={{"--oc":c.couleur}} key={ci}>
+        <div className="cm-card-top"><span className="cm-card-emoji">{c.emoji}</span><span className="cm-card-nom">{c.nom}</span></div>
+        <div className="cm-card-def">{Acr(c.def)}</div>
+      </div>
+      <div className="cm-dots">{D.signesCats.map((e,k)=><button key={k} className={"cm-dot"+(k===ci?" on":"")} style={{"--oc":e.couleur}} onClick={()=>setCi(k)}>{e.emoji}</button>)}</div>
+      <button className="cta sm" onClick={()=>setPhase("signes")}>À toi : glisse chaque élément →</button>
+    </div>);
+  }
+  if(phase==="signes"){
+    const remaining=items.map((it,idx)=>({it,idx})).filter(x=>placed[x.idx]===undefined);
+    const dropTo=(catId)=>{ if(sgChecked||held===null) return; setPlaced(p=>({...p,[held]:catId})); setHeld(null); };
+    const removeFrom=(idx)=>{ if(sgChecked) return; setPlaced(p=>{ const n={...p}; delete n[idx]; return n; }); };
+    const allPlaced=items.every((_,idx)=>placed[idx]!==undefined);
+    const check=()=>{ let p=0; items.forEach((it,idx)=>{ if(placed[idx]===it.cat) p++; }); setScore(s=>s+p); setSgChecked(true); };
+    const next=()=>{ setStep(0); setPick(null); setPhase("ecoute"); };
+    const nbOk=items.filter((it,idx)=>placed[idx]===it.cat).length;
+    return (<div className="game">{head}
+      <div className="cm-substep cm-sub-sm cm-sub-o">🙆 Glisse chaque élément dans la bonne catégorie</div>
+      {!sgChecked&&<p className="cm-help">Touche un élément ci-dessous pour le saisir, puis touche la bonne colonne. (Pour le retirer, touche-le dans la colonne.)</p>}
+      {!sgChecked&&(<div className="cm-pool">{remaining.map(({it,idx})=>(
+        <button key={idx} className={"cm-chip"+(held===idx?" held":"")} onClick={()=>setHeld(held===idx?null:idx)}>{Acr(it.t)}</button>))}
+        {remaining.length===0&&<span className="cm-pool-empty">Tout est placé ! Vérifie ↓</span>}</div>)}
+      <div className="cm-baskets">{D.signesCats.map(cat=>(
+        <div key={cat.id} className={"cm-basket"+(held!==null&&!sgChecked?" target":"")} style={{"--oc":cat.couleur}} onClick={()=>dropTo(cat.id)}>
+          <div className="cm-basket-h"><span>{cat.emoji}</span> {cat.nom}</div>
+          <div className="cm-basket-body">
+            {items.map((it,idx)=> placed[idx]===cat.id ? (
+              <div key={idx} className={"cm-dropped"+(sgChecked?(it.cat===cat.id?" ok":" bad"):"")} onClick={()=>removeFrom(idx)}>
+                {sgChecked&&(it.cat===cat.id?"✓ ":"✗ ")}{Acr(it.t)}</div>) : null)}
+          </div>
+        </div>))}</div>
+      {!sgChecked
+        ? <button className="cta sm" disabled={!allPlaced} style={{opacity:allPlaced?1:.45}} onClick={check}>✅ Vérifier mon classement</button>
+        : (<div className={"fb "+(nbOk===items.length?"good":"no")}>
+            <strong>{nbOk}/{items.length} bien classés !</strong>
+            <p style={{marginTop:6}}>Rappel : <b>verbal</b> = les mots · <b>non-verbal</b> = le corps (gestes, regard, posture) · <b>paraverbal</b> = la voix (ton, débit, volume). Les éléments mal placés sont signalés ci-dessus.</p>
+            <button className="next" onClick={next}>Étape 4 : l'écoute active →</button></div>)}
+    </div>);
+  }
+
+  /* ====== ÉTAPE 4 — ÉCOUTE ACTIVE ====== */
+  if(phase==="ecoute"){
+    const s=ecSc[step]; const good=s.o.findIndex(o=>o.ok);
+    const choose=(idx)=>{ if(pick!==null) return; setPick(idx); if(s.o[idx].ok) setScore(x=>x+1); };
+    const next=()=>{ setPick(null); if(step+1>=ecSc.length){ setPhase("result"); } else setStep(step+1); };
+    return (<div className="game">{head}
+      <div className="cm-prog"><span style={{width:(step/ecSc.length*100)+"%",background:"#7c3aed"}}></span></div>
+      <div className="cm-substep cm-sub-sm cm-sub-v">👂 Écoute active · situation {step+1}/{ecSc.length}</div>
+      <div className="cm-org">{Acr(s.org)}</div>
+      <div className="cm-scene-txt">{Acr(s.contexte)}</div>
+      <div className="cm-bubble2 pop"><span className="cm-av">🧑</span><div className="cm-txt">{Acr(s.boss)}</div></div>
+      <div className="cm-q">{Acr(s.q)}</div>
+      <div className="cm-opts">{s.o.map((o,idx)=>{ let c="cm-opt"; if(pick!==null){ if(o.ok)c+=" ok"; else if(idx===pick)c+=" bad"; }
+        return <button key={idx} className={c} onClick={()=>choose(idx)}>{Acr(o.t)}</button>; })}</div>
+      {pick!==null&&(<div className={"fb "+(s.o[pick].ok?"good":"no")}>
+        <strong>{s.o[pick].ok?"✅ Belle écoute !":"❌ À éviter."}</strong>
+        {!s.o[pick].ok&&<p style={{margin:"4px 0"}}>Meilleure réaction : « {Acr(s.o[good].t)} »</p>}
+        <p style={{marginTop:6}}>{Acr(s.why)}</p>
+        <button className="next" onClick={next}>{step+1>=ecSc.length?"Voir mon bilan →":"Situation suivante →"}</button></div>)}
+    </div>);
+  }
+
+  /* ====== RÉSULTAT ====== */
+  return (<div className="game">{head}
+    <Result score={score} total={totalMax} onDone={onDone}
+      recap={<div className="fb good" style={{textAlign:"left"}}>
+        <strong>💬 À retenir</strong>{D.recap}
+      </div>}/>
+  </div>);
+}
+
 /* ====== STAGE : routeur de jeux ====== */
 const CONSIGNES = {
+  communication:{but:"Comprendre et maîtriser la communication entre les individus, en 4 étapes.",comment:"1) Le schéma de la communication : reconnais l'émetteur, le récepteur, le message, le codage, le canal, les bruits, la rétroaction et le contexte sur une vraie scène. 2) Les registres de langue (familier, courant, soutenu). 3) Le verbal, le non-verbal et le paraverbal, à classer par glisser-déposer. 4) L'écoute active : réagis à 10 situations professionnelles avec empathie. Chaque réponse est expliquée.",astuce:"Émetteur = qui parle · Récepteur = qui écoute · Message = le contenu · Canal = le moyen (oral/écrit) · Bruit = ce qui gêne · Rétroaction = la réponse. Verbal = les mots, non-verbal = le corps, paraverbal = la voix."},
+  perso_traits:{but:"Découvrir, comprendre et reconnaître les principaux traits de personnalité d'un individu.",comment:"Un carrousel illustré te présente d'abord 8 traits (extraverti/introverti, stable/instable, logique/affectif, soumis/autonome) avec une explication imagée et un exemple. Puis, dans des situations d'entretien, tu reconnais le trait qui domine chez chaque salarié. Chaque réponse est expliquée.",astuce:"Les traits vont souvent par paires opposées. Aucun n'est « meilleur » : ils décrivent simplement des façons d'être différentes."},
+  emotions:{but:"Découvrir, comprendre et reconnaître les 6 émotions de base.",comment:"Un carrousel illustré te présente les 6 émotions (joie, peur, tristesse, surprise, colère, dégoût) avec une explication simple et un exemple. Puis, au fil de l'entretien, tu reconnais l'émotion exprimée par chaque personne. Chaque réponse est expliquée.",astuce:"Une émotion est une réaction courte à une situation. Observe les signes : le ton, le visage, le corps, les mots employés."},
+  identite_num:{but:"Comprendre et reconnaître les 3 facettes de l'identité numérique.",comment:"Un carrousel avec des exemples concrets te présente d'abord les 3 identités (déclarative = ce que je dis, agissante = ce que je fais, calculée = ce que les algorithmes déduisent). Puis tu reconnais, dans des situations réelles, de quelle identité il s'agit. Chaque réponse est expliquée.",astuce:"Déclarative = je la renseigne moi-même · Agissante = mes actions (likes, partages) · Calculée = déduite par les machines (pubs ciblées, suggestions)."},
+  attitude_comportement:{but:"Distinguer l'attitude (intérieure) du comportement (visible).",comment:"Un carrousel avec des exemples te montre d'abord la différence (attitude = ce que je pense/ressens, invisible ; comportement = ce que je fais, visible). Puis, dans des situations d'entretien, tu dis s'il s'agit d'une attitude ou d'un comportement. Chaque réponse est expliquée.",astuce:"Si on peut le VOIR ou le mesurer → comportement. Si c'est dans la tête (opinion, ressenti) → attitude. Le comportement est souvent la traduction visible d'une attitude."},
   org_pourquoi:{but:"Comprendre pourquoi on crée une organisation, et ce qu'est une forme juridique.",comment:"Tu découvres les 3 objectifs d'une organisation (exister juridiquement, organiser, pérenniser), tu rattaches des situations au bon objectif, puis tu explores des formes juridiques (EI, SARL, SA, association) avant de les associer à des cas. Chaque réponse s'explique.",astuce:"La forme juridique est le « statut légal » choisi à la création : il fixe qui décide, qui est responsable et comment on partage les bénéfices."},
   org_ressources:{but:"Classer les ressources d'une organisation et repérer qui les mobilise.",comment:"Pour chaque élément (adhésion, salarié, marque, impôts…), coche d'abord son type de ressource (humaine, financière, matérielle, immatérielle), puis la ou les organisations qui la mobilisent typiquement. Correction et explication à chaque fois.",astuce:"Humaines = les personnes · Financières = l'argent · Matérielles = les biens physiques · Immatérielles = marque, logiciel, savoir-faire."},
   org_propriete:{but:"Comprendre à qui appartient une organisation (structure de propriété).",comment:"Recompose le schéma en reliant chaque organisation à son propriétaire, puis vérifie tes connaissances par un Vrai/Faux. Attention à ne pas confondre propriété (à qui ça appartient) et hiérarchie (qui commande qui) !",astuce:"Entreprise → actionnaires ; organisation publique → l'État ; société civile → ses membres (qui votent en AG sans être propriétaires)."},
@@ -9100,9 +9967,9 @@ const EVAL_DATA = {
       q:"Comment ouvres-tu l'entretien ?",
       o:[{t:"« Bonjour Léa, installe-toi. L'idée aujourd'hui, c'est de faire le point ensemble, pas de te juger. »",ok:true,
           fb:"Parfait : mettre à l'aise et clarifier le but rassure et installe un climat de confiance."},
-         {t:"« Bon, on va voir tes mauvais chiffres tout de suite. »",ok:false,
+         {t:"« Bon, asseyons-nous et regardons tout de suite tes mauvais chiffres, parce qu'il y a vraiment des choses qui ne vont pas cette année. »",ok:false,
           fb:"Trop agressif : on démarre par le négatif, Léa se braque et l'échange est faussé."},
-         {t:"« Dépêchons-nous, j'ai 12 entretiens aujourd'hui. »",ok:false,
+         {t:"« Dépêchons-nous si tu veux bien, parce que j'ai encore douze autres entretiens à faire après toi et la journée est déjà bien chargée. »",ok:false,
           fb:"Dévalorisant : Léa se sent comme un numéro, pas comme une collaboratrice."}] },
     { moment:"📊 Le bilan des résultats",
       contexte:"Tu présentes le tableau de bord de Léa : objectif 500 ventes, 450 réalisées (taux de réalisation 90 %).",
@@ -9110,9 +9977,9 @@ const EVAL_DATA = {
       q:"Que réponds-tu, tableau de bord à l'appui ?",
       o:[{t:"« Tu as atteint 90 % de l'objectif : c'est un bon résultat, regardons ensemble ce qui explique les 10 % manquants. »",ok:true,
           fb:"Excellent : tu t'appuies sur l'indicateur, tu valorises et tu analyses l'écart de façon constructive."},
-         {t:"« Oui, c'est un échec, tu n'as pas atteint 500. »",ok:false,
+         {t:"« Oui, clairement c'est un échec puisque tu n'as pas atteint les 500 ventes fixées : il va vraiment falloir te ressaisir l'an prochain. »",ok:false,
           fb:"Un taux de réalisation de 90 % n'est pas un échec ; le présenter ainsi est injuste et démotivant."},
-         {t:"« Ce n'est pas grave, on oublie les chiffres. »",ok:false,
+         {t:"« Ce n'est pas grave du tout, on va simplement oublier les chiffres et passer directement à la suite, ça n'a pas vraiment d'importance. »",ok:false,
           fb:"L'entretien doit s'appuyer sur des indicateurs mesurables ; ignorer les chiffres vide l'évaluation de son sens."}] },
     { moment:"🔎 L'analyse de l'écart",
       contexte:"Vous cherchez ensemble pourquoi 10 % manquent.",
@@ -9120,9 +9987,9 @@ const EVAL_DATA = {
       q:"Comment réagis-tu ?",
       o:[{t:"« Merci de l'expliquer. Le sous-effectif aux pics est un vrai facteur : ce n'est pas qu'une question de motivation. »",ok:true,
           fb:"Tu distingues ce qui dépend de Léa de ce qui relève de l'organisation : analyse juste et honnête."},
-         {t:"« Ce sont des excuses, il fallait travailler plus vite. »",ok:false,
+         {t:"« Pour moi ce sont juste des excuses : pendant les pics, il fallait simplement travailler plus vite et mieux t'organiser toute seule. »",ok:false,
           fb:"Tu ignores un facteur organisationnel réel et tu rejettes toute la faute sur Léa : injuste."},
-         {t:"« Peu importe les raisons, le résultat est là. »",ok:false,
+         {t:"« Peu importe les raisons que tu avances, au final le résultat chiffré est là et c'est uniquement lui que je retiens pour ton évaluation. »",ok:false,
           fb:"Sans analyser les causes, impossible de progresser : on répétera les mêmes difficultés."}] },
     { moment:"🎯 Le nouvel objectif",
       contexte:"Il faut fixer un objectif pour l'année à venir.",
@@ -9130,9 +9997,9 @@ const EVAL_DATA = {
       q:"Quel objectif proposes-tu (méthode SMART) ?",
       o:[{t:"« Passer de 450 à 480 ventes par mois d'ici 6 mois, avec un renfort prévu aux heures de pointe. »",ok:true,
           fb:"SMART : précis, mesurable, atteignable (progressif), réaliste (renfort prévu) et daté. Bravo !"},
-         {t:"« Faire beaucoup mieux et te donner à fond. »",ok:false,
+         {t:"« Je te fixe comme objectif de faire beaucoup mieux que cette année et de vraiment te donner à fond dans ton travail au quotidien. »",ok:false,
           fb:"Ni précis ni mesurable : impossible de savoir si l'objectif est atteint."},
-         {t:"« Vendre 900, le double, dès le mois prochain. »",ok:false,
+         {t:"« Je te fixe 900 ventes par mois, soit le double de cette année, et je veux que ce soit atteint dès le mois prochain sans discuter. »",ok:false,
           fb:"Irréaliste et démotivant : un objectif inatteignable décourage au lieu de stimuler."}] },
     { moment:"🌱 La clôture",
       contexte:"Tu termines l'entretien.",
@@ -9140,9 +10007,9 @@ const EVAL_DATA = {
       q:"Comment conclus-tu ?",
       o:[{t:"« Merci Léa. On note l'objectif et le renfort, et on refait un point dans 3 mois pour s'ajuster. »",ok:true,
           fb:"Tu formalises les engagements et tu prévois un suivi : l'évaluation devient un vrai outil de progrès."},
-         {t:"« Voilà, c'est fini, tu peux y aller. »",ok:false,
+         {t:"« Voilà, je crois qu'on a fait le tour, c'est fini pour aujourd'hui, tu peux retourner en boutique, merci d'être passée. »",ok:false,
           fb:"Sans engagement écrit ni suivi, l'entretien ne sert à rien : tout sera oublié."},
-         {t:"« Si tu n'atteins pas l'objectif, ça ira mal pour toi. »",ok:false,
+         {t:"« Et je te préviens clairement : si tu n'atteins pas l'objectif que je viens de fixer, ça va vraiment mal se passer pour toi ici. »",ok:false,
           fb:"Terminer par une menace détruit la confiance construite pendant l'entretien."}] },
     { moment:"💬 Reconnaître une réussite",
       contexte:"Léa a obtenu 88 % de satisfaction client, son meilleur score.",
@@ -9150,9 +10017,9 @@ const EVAL_DATA = {
       q:"Que réponds-tu ?",
       o:[{t:"« Au contraire ! 88 %, c'est excellent : un client satisfait revient et recommande la boutique. Bravo. »",ok:true,
           fb:"Valoriser une vraie réussite avec un indicateur chiffré renforce la motivation et montre que tu suis son travail."},
-         {t:"« Effectivement, ça ne compte pas vraiment. »",ok:false,
+         {t:"« Effectivement, tu as raison, la satisfaction client ne compte pas vraiment dans l'évaluation, ce qui m'intéresse ce sont surtout les ventes. »",ok:false,
           fb:"Faux : la satisfaction client est un indicateur de performance essentiel. Le minimiser dévalorise un point fort."},
-         {t:"« On verra ça une autre fois. »",ok:false,
+         {t:"« Écoute, on verra ça une autre fois si tu veux bien, là tout de suite ce n'est pas le moment d'en parler, passons à la suite. »",ok:false,
           fb:"Éviter de reconnaître une réussite est une occasion manquée de motiver Léa."}] },
     { moment:"🧰 Identifier un besoin de formation",
       contexte:"Léa dit avoir du mal avec le nouveau logiciel de caisse.",
@@ -9160,9 +10027,9 @@ const EVAL_DATA = {
       q:"Comment réagis-tu en tant que manager ?",
       o:[{t:"« Notons-le : je te propose une formation courte sur le logiciel, ça t'aidera et c'est normal d'être accompagnée. »",ok:true,
           fb:"L'entretien sert aussi à détecter les besoins de formation. Proposer un accompagnement, c'est faire grandir le salarié."},
-         {t:"« Débrouille-toi, tout le monde y arrive. »",ok:false,
+         {t:"« Franchement, débrouille-toi avec ce logiciel : tout le monde y arrive sans problème dans l'équipe, donc tu devrais y arriver aussi toute seule. »",ok:false,
           fb:"Refuser d'aider laisse la difficulté s'installer et démotive : ce n'est pas le rôle d'un manager."},
-         {t:"« Si tu n'y arrives pas, c'est ton problème. »",ok:false,
+         {t:"« Si tu n'y arrives toujours pas avec ce logiciel, honnêtement c'est ton problème à toi, ce n'est pas à l'entreprise de gérer ça à ta place. »",ok:false,
           fb:"Rejeter la responsabilité ferme la porte au progrès et casse la confiance."}] },
     { moment:"⚖️ Rester juste et factuel",
       contexte:"Tu apprécies beaucoup Léa personnellement, mais ses ventes du T4 ont baissé.",
@@ -9170,9 +10037,9 @@ const EVAL_DATA = {
       q:"Quelle posture adoptes-tu ?",
       o:[{t:"« Je t'apprécie, mais mon évaluation reste basée sur les faits et les chiffres, pour être juste envers tout le monde. »",ok:true,
           fb:"L'évaluation doit être objective et factuelle, jamais basée sur la sympathie : c'est une question d'équité."},
-         {t:"« Bien sûr, entre nous, je vais arranger tes résultats. »",ok:false,
+         {t:"« Bien sûr, puisqu'on s'entend bien tous les deux, je vais discrètement arranger un peu tes résultats sur la fiche pour te faire plaisir. »",ok:false,
           fb:"Fausser l'évaluation par favoritisme est injuste envers les autres et trompe le salarié sur sa situation réelle."},
-         {t:"« Comme je t'aime bien, je ne regarde pas les chiffres. »",ok:false,
+         {t:"« Comme je t'apprécie beaucoup et qu'on s'entend bien, je ne vais même pas regarder les chiffres et je te mettrai une bonne évaluation. »",ok:false,
           fb:"Ignorer les indicateurs vide l'évaluation de tout sens et crée des inégalités de traitement."}] },
     { moment:"🚀 Évoquer l'évolution",
       contexte:"Léa montre de l'intérêt pour encadrer une équipe un jour.",
@@ -9180,9 +10047,9 @@ const EVAL_DATA = {
       q:"Comment accompagnes-tu ce projet ?",
       o:[{t:"« C'est un beau projet. On peut te confier peu à peu des responsabilités et envisager une formation au management. »",ok:true,
           fb:"L'entretien sert aussi à parler évolution professionnelle : tracer un chemin concret motive durablement."},
-         {t:"« Reste à ta place, ce n'est pas pour toi. »",ok:false,
+         {t:"« Reste plutôt à ta place de vendeuse, encadrer une équipe ce n'est franchement pas pour toi, je ne te vois pas du tout dans ce rôle. »",ok:false,
           fb:"Brider l'ambition d'un salarié est démotivant et fait perdre un potentiel à l'entreprise."},
-         {t:"« On verra ça dans dix ans peut-être. »",ok:false,
+         {t:"« On verra peut-être ça dans une dizaine d'années si l'occasion se présente, mais pour l'instant ce n'est vraiment pas le moment d'y penser. »",ok:false,
           fb:"Repousser vaguement un projet d'évolution équivaut à l'enterrer : aucune perspective concrète."}] },
     { moment:"🤝 Gérer une tension",
       contexte:"Léa évoque un désaccord avec un collègue qui pèse sur l'ambiance.",
@@ -9190,9 +10057,9 @@ const EVAL_DATA = {
       q:"Quelle est la meilleure réaction de manager ?",
       o:[{t:"« Merci de m'en parler. Je te propose qu'on en discute à trois, calmement, pour trouver une solution. »",ok:true,
           fb:"Un manager prend au sérieux les tensions d'équipe et cherche une solution apaisée : cela protège la motivation et le collectif."},
-         {t:"« Ce ne sont pas mes affaires, débrouillez-vous entre vous. »",ok:false,
+         {t:"« Honnêtement, ce ne sont pas mes affaires, vos histoires entre collègues : débrouillez-vous entre vous, je n'ai pas de temps à perdre avec ça. »",ok:false,
           fb:"Ignorer un conflit le laisse pourrir et nuit à toute l'équipe : ce n'est pas une posture responsable."},
-         {t:"« C'est sûrement de ta faute, fais des efforts. »",ok:false,
+         {t:"« Si ça coince avec Marc, c'est sûrement en grande partie de ta faute : fais des efforts de ton côté et arrange-toi pour que ça s'arrange. »",ok:false,
           fb:"Accuser sans écouter aggrave la tension et brise la confiance."}] }
   ],
   // Jeu de rôle inversé : l'élève est dans la peau de LÉA (la salariée évaluée)
@@ -9203,9 +10070,9 @@ const EVAL_DATA = {
       q:"Quelle est la meilleure attitude pour bien te préparer ?",
       o:[{t:"Je relis mes objectifs de l'année et je note mes réussites et mes difficultés pour en parler.",ok:true,
           fb:"Se préparer, c'est se donner les moyens d'un échange constructif : le salarié est acteur de son évaluation."},
-         {t:"Je n'y pense pas, j'improviserai sur le moment.",ok:false,
+         {t:"Je n'y pense pas du tout d'ici là, je verrai bien une fois sur place et j'improviserai tranquillement au moment de l'entretien.",ok:false,
           fb:"Arriver sans préparation, c'est subir l'entretien au lieu d'y participer activement."},
-         {t:"Je prépare des excuses pour tout ce qui n'a pas marché.",ok:false,
+         {t:"Je prépare surtout une série d'excuses bien ficelées pour justifier à l'avance tout ce qui n'a pas marché cette année.",ok:false,
           fb:"Chercher des excuses braque la discussion ; mieux vaut analyser honnêtement les causes."}] },
     { moment:"💪 Recevoir un compliment",
       contexte:"Ton manager commence par tes points forts.",
@@ -9213,9 +10080,9 @@ const EVAL_DATA = {
       q:"Comment réagis-tu professionnellement ?",
       o:[{t:"« Merci, ça me fait plaisir. J'ai vraiment soigné l'accueil cette année. »",ok:true,
           fb:"Accepter un compliment avec simplicité et expliquer ce qu'on a fait, c'est une posture professionnelle mûre."},
-         {t:"« Bof, c'est rien, n'importe qui ferait pareil. »",ok:false,
+         {t:"« Bof, vous savez, ce n'est vraiment rien d'extraordinaire, n'importe qui à ma place dans la boutique aurait fait exactement pareil. »",ok:false,
           fb:"Se dévaloriser efface ses réussites : il est sain de reconnaître ce qu'on réussit."},
-         {t:"« Ah enfin vous le remarquez, c'était pas trop tôt ! »",ok:false,
+         {t:"« Ah, enfin vous le remarquez, ce n'était pas trop tôt ! Ça fait des mois que je me donne du mal sans que personne ne dise rien. »",ok:false,
           fb:"Une réaction agressive gâche un moment positif et dégrade la relation."}] },
     { moment:"📉 Entendre un résultat en baisse",
       contexte:"Le manager aborde la baisse des ventes au trimestre 4.",
@@ -9223,9 +10090,9 @@ const EVAL_DATA = {
       q:"Quelle est la bonne posture ?",
       o:[{t:"« C'est vrai. En décembre, j'étais souvent seule pendant les pics : j'explique le contexte sans me chercher d'excuses. »",ok:true,
           fb:"Reconnaître les faits ET apporter un éclairage factuel, c'est honnête et constructif."},
-         {t:"« Ce n'est pas ma faute, c'est l'organisation, point. »",ok:false,
+         {t:"« Ce n'est absolument pas ma faute, c'est entièrement la faute de l'organisation et du manque de personnel, un point c'est tout. »",ok:false,
           fb:"Tout rejeter sur les autres, sans nuance, ferme le dialogue."},
-         {t:"« Je ne vois pas de quoi vous parlez, tout allait bien. »",ok:false,
+         {t:"« Honnêtement, je ne vois pas du tout de quoi vous parlez : pour moi tout allait très bien ce trimestre, il n'y a eu aucune baisse. »",ok:false,
           fb:"Nier un fait mesurable décrédibilise et empêche toute analyse utile."}] },
     { moment:"🙋 Demander des moyens",
       contexte:"Tu sais qu'un renfort t'aiderait aux heures de pointe.",
@@ -9233,9 +10100,9 @@ const EVAL_DATA = {
       q:"Comment formules-tu ta demande ?",
       o:[{t:"« Un renfort aux heures de pointe m'aiderait beaucoup à mieux servir les clients et à atteindre l'objectif. »",ok:true,
           fb:"Exprimer un besoin concret, relié à la performance, est une démarche professionnelle légitime."},
-         {t:"« Rien, je me débrouillerai toute seule comme d'habitude. »",ok:false,
+         {t:"« Rien de spécial, ne vous embêtez pas pour moi : je me débrouillerai toute seule comme d'habitude, j'ai l'habitude de gérer sans aide. »",ok:false,
           fb:"Ne jamais exprimer ses besoins peut mener à l'épuisement et à des objectifs non atteints."},
-         {t:"« Il faudrait surtout virer ma collègue qui ne sert à rien. »",ok:false,
+         {t:"« Ce qu'il faudrait surtout, c'est virer ma collègue qui ne sert vraiment à rien : à elle seule, elle me fait perdre un temps fou. »",ok:false,
           fb:"Attaquer un collègue est déplacé et contre-productif : on parle de moyens, pas de règlements de comptes."}] },
     { moment:"🎯 Négocier un objectif",
       contexte:"Le manager propose de passer de 450 à 480 ventes/mois.",
@@ -9243,9 +10110,9 @@ const EVAL_DATA = {
       q:"Quelle réponse est la plus professionnelle ?",
       o:[{t:"« C'est ambitieux mais atteignable avec le renfort prévu. Je suis d'accord pour viser 480. »",ok:true,
           fb:"Évaluer un objectif et s'engager en connaissance de cause, c'est être actrice de sa progression."},
-         {t:"« 480 ? Jamais ! Vous voulez ma mort. »",ok:false,
+         {t:"« 480 ventes par mois ? Jamais de la vie, c'est totalement impossible ! Vous voulez carrément ma mort ou quoi, là franchement. »",ok:false,
           fb:"Un refus dramatisé bloque la négociation ; mieux vaut discuter calmement la faisabilité."},
-         {t:"« Mettez ce que vous voulez, je m'en fiche. »",ok:false,
+         {t:"« Écoutez, mettez ce que vous voulez comme objectif sur la fiche, de toute façon je m'en fiche complètement, ça ne changera rien pour moi. »",ok:false,
           fb:"Le désengagement total est une mauvaise posture : l'objectif te concerne directement."}] },
     { moment:"🗣️ Exprimer un désaccord",
       contexte:"Le manager te reproche un retard que tu juges injustifié.",
@@ -9253,9 +10120,9 @@ const EVAL_DATA = {
       q:"Comment exprimes-tu ton désaccord ?",
       o:[{t:"« Je ne suis pas d'accord : voici mes horaires pointés, je suis à l'heure. Peut-on vérifier ensemble ? »",ok:true,
           fb:"Exprimer un désaccord calmement, avec des faits, est une posture professionnelle assertive et respectueuse."},
-         {t:"« C'est faux et celui qui a dit ça est un menteur ! »",ok:false,
+         {t:"« C'est complètement faux, et celui qui a osé raconter ça sur moi est un sale menteur : je veux savoir tout de suite qui c'est ! »",ok:false,
           fb:"S'emporter et attaquer décrédibilise ton propos, même si tu as raison."},
-         {t:"Je ne dis rien et je laisse croire que c'est vrai.",ok:false,
+         {t:"Je préfère ne rien dire du tout et laisser croire que c'est vrai, même si je sais que ce reproche est totalement injustifié.",ok:false,
           fb:"Se taire face à une information inexacte te dessert : il est légitime de rétablir les faits."}] },
     { moment:"🧠 Recevoir une critique utile",
       contexte:"Le manager te signale un point à améliorer sur la tenue de la caisse.",
@@ -9263,9 +10130,9 @@ const EVAL_DATA = {
       q:"Quelle est la bonne posture ?",
       o:[{t:"« Vous avez raison, je vais mettre en place une vérification systématique le soir. Merci du conseil. »",ok:true,
           fb:"Accueillir une critique constructive et proposer une solution, c'est une marque de professionnalisme."},
-         {t:"« Vous critiquez toujours tout, ça suffit ! »",ok:false,
+         {t:"« Franchement, vous critiquez toujours absolument tout ce que je fais, ça suffit maintenant : je ne peux jamais avoir un seul moment tranquille ! »",ok:false,
           fb:"Prendre toute remarque comme une attaque empêche de progresser."},
-         {t:"« Oui oui » (sans rien changer ensuite).",ok:false,
+         {t:"« Oui oui, d'accord, pas de souci » — mais en réalité je ne changerai rien du tout à ma façon de compter la caisse le soir.",ok:false,
           fb:"Acquiescer sans agir ne règle rien : une critique utile appelle un vrai changement."}] },
     { moment:"🌟 Parler de ses ambitions",
       contexte:"Le manager te demande comment tu te projettes.",
@@ -9273,9 +10140,9 @@ const EVAL_DATA = {
       q:"Comment évoques-tu tes ambitions ?",
       o:[{t:"« J'aimerais à terme encadrer une petite équipe. Quelles compétences dois-je développer pour ça ? »",ok:true,
           fb:"Exprimer un projet et demander comment l'atteindre, c'est prendre en main son évolution professionnelle."},
-         {t:"« Aucune idée, je verrai bien ce que vous déciderez pour moi. »",ok:false,
+         {t:"« Aucune idée, franchement je n'y ai jamais réfléchi : je verrai bien ce que vous déciderez pour moi, c'est vous le chef après tout. »",ok:false,
           fb:"Tout déléguer à l'employeur, c'est renoncer à être acteur de sa carrière."},
-         {t:"« Je veux votre poste, et vite. »",ok:false,
+         {t:"« Pour être claire, c'est votre poste à vous que je veux récupérer, et le plus vite possible : je m'estime largement prête dès maintenant. »",ok:false,
           fb:"Une ambition formulée de façon agressive et irréaliste dessert ton image."}] },
     { moment:"📝 Vérifier ce qui est noté",
       contexte:"Le manager rédige le compte rendu de l'entretien.",
@@ -9283,9 +10150,9 @@ const EVAL_DATA = {
       q:"Que fais-tu, en bonne professionnelle ?",
       o:[{t:"« D'accord. Peut-on aussi noter le renfort aux heures de pointe, puisqu'il conditionne l'objectif ? »",ok:true,
           fb:"Vérifier que les engagements réciproques sont bien consignés protège les deux parties et clarifie le suivi."},
-         {t:"« Notez ce que vous voulez, je ne lis jamais ces papiers. »",ok:false,
+         {t:"« Notez ce que vous voulez là-dessus, de toute façon je ne lis jamais ce genre de papiers administratifs et je n'y prête aucune attention. »",ok:false,
           fb:"Ignorer le compte rendu, c'est risquer de subir des engagements qu'on n'a pas validés."},
-         {t:"Je signe sans lire pour aller plus vite.",ok:false,
+         {t:"Je signe tout de suite le compte rendu sans même le lire, histoire d'aller plus vite et d'en finir au plus tôt avec cet entretien.",ok:false,
           fb:"Signer sans lire est imprudent : le compte rendu engage sur l'année."}] },
     { moment:"🤝 Conclure l'entretien",
       contexte:"L'entretien se termine.",
@@ -9293,9 +10160,9 @@ const EVAL_DATA = {
       q:"Comment conclus-tu côté salariée ?",
       o:[{t:"« Merci pour cet échange. Le point à 3 mois me convient, ça me motive d'avoir un cap clair. »",ok:true,
           fb:"Conclure positivement et s'approprier le suivi, c'est ressortir de l'entretien comme actrice de sa progression."},
-         {t:"« Enfin fini, j'espère ne pas vous revoir avant un an. »",ok:false,
+         {t:"« Ah, enfin fini cet entretien ! J'espère vraiment ne pas avoir à vous revoir pour ce genre de chose avant au moins un an entier. »",ok:false,
           fb:"Une conclusion désengagée gâche la dynamique installée et la relation de travail."},
-         {t:"Je sors sans rien dire en haussant les épaules.",ok:false,
+         {t:"Je me lève et je sors du bureau sans rien dire, en me contentant de hausser les épaules d'un air désintéressé et fermé.",ok:false,
           fb:"Une attitude fermée renvoie une image peu professionnelle et clôt mal l'échange."}] }
   ]
 };
@@ -9317,8 +10184,11 @@ function EvalEntretien({head,onDone}){
   const prod = heures>0 ? qte/heures : 0;
   const taux = obj>0 ? real/obj*100 : 0;
   // --- Jeu de rôle (manager) ---
+  const shuffleOpts=(arr)=>arr.map(s=>{ const idx=s.o.map((_,i)=>i); for(let k=idx.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[idx[k],idx[j]]=[idx[j],idx[k]];} return {...s, o:idx.map(i=>s.o[i])}; });
+  const [roleplay]=useState(()=>shuffleOpts(D.roleplay));
   const [rp,setRp]=useState(0); const [rpick,setRpick]=useState(null); const [scoreRP,setScoreRP]=useState(0);
   // --- Jeu de rôle inversé (dans la peau de Léa) ---
+  const [roleplayLea]=useState(()=>shuffleOpts(D.roleplayLea));
   const [rpL,setRpL]=useState(0); const [rpLpick,setRpLpick]=useState(null); const [scoreRPL,setScoreRPL]=useState(0);
 
   const totalScore=()=> scoreQuiz + scoreRP + scoreRPL;
@@ -9365,7 +10235,7 @@ function EvalEntretien({head,onDone}){
 
       <div className="ind-card pop" style={{animationDelay:".1s"}}>
         <div className="ind-h ind-h2">🎯 Taux de réalisation de l'objectif</div>
-        <div className="ind-formula"><span className="ind-num">Résultat obtenu</span><span className="ind-op">÷</span><span className="ind-den">Objectif fixé</span><span className="ind-op">×</span><span className="ind-eq2">100</span><span className="ind-op">=</span><span className="ind-eq">{taux.toLocaleString("fr-FR",{maximumFractionDigits:1})}</span><span className="ind-unit">%</span></div>
+        <div className="ind-formula"><span className="ind-paren">(</span><span className="ind-num">Résultat obtenu</span><span className="ind-op">÷</span><span className="ind-den">Objectif fixé</span><span className="ind-paren">)</span><span className="ind-op">×</span><span className="ind-eq2">100</span><span className="ind-op">=</span><span className="ind-eq">{taux.toLocaleString("fr-FR",{maximumFractionDigits:1})}</span><span className="ind-unit">%</span></div>
         <div className="ind-ctrl">
           <label>Objectif fixé : <b>{obj}</b> ventes</label>
           <input type="range" min="100" max="800" step="10" value={obj} onChange={e=>setObj(+e.target.value)}/>
@@ -9374,7 +10244,8 @@ function EvalEntretien({head,onDone}){
           <label>Ventes réalisées : <b>{real}</b> ventes</label>
           <input type="range" min="0" max="800" step="10" value={real} onChange={e=>setReal(+e.target.value)}/>
         </div>
-        <div className="ind-calc">{real} ÷ {obj} × 100 = <b>{taux.toLocaleString("fr-FR",{maximumFractionDigits:1})} %</b></div>
+        <div className="ind-calc"><span className="ind-cp">(</span>{real} ÷ {obj}<span className="ind-cp">)</span> × 100 = <b>{taux.toLocaleString("fr-FR",{maximumFractionDigits:1})} %</b></div>
+        <div className="ind-paren-note">🔢 <b>Les parenthèses d'abord !</b> On calcule <b>(Résultat ÷ Objectif)</b>, <u>puis</u> on multiplie par 100. Exemple : (430 ÷ 560) × 100 = 76,8 %.</div>
         <div className={"ind-verdict "+(taux>=100?"v-top":taux>=80?"v-ok":taux>=50?"v-mid":"v-low")}>
           {taux>=100?"🌟 Objectif atteint ou dépassé !":taux>=80?"👍 Très bon résultat, proche de l'objectif.":taux>=50?"🟡 Objectif partiellement atteint.":"🔴 Objectif loin d'être atteint."}
         </div>
@@ -9421,13 +10292,13 @@ function EvalEntretien({head,onDone}){
 
   /* ====== PHASE JEU DE RÔLE (manager) ====== */
   if(phase==="roleplay"){
-    const sc=D.roleplay[rp];
+    const sc=roleplay[rp];
     const choose=(idx)=>{ if(rpick!==null) return; setRpick(idx); if(sc.o[idx].ok) setScoreRP(s=>s+1); };
-    const next=()=>{ setRpick(null); if(rp+1>=D.roleplay.length){ setPhase("switch"); } else setRp(rp+1); };
+    const next=()=>{ setRpick(null); if(rp+1>=roleplay.length){ setPhase("switch"); } else setRp(rp+1); };
     const good=sc.o.findIndex(o=>o.ok);
     return (<div className="game">{head}
-      <div className="rp-prog"><span className="rp-prog-fill" style={{width:(rp/D.roleplay.length*100)+"%"}}></span></div>
-      <div className="rp-moment">{Acr(sc.moment)} <small>· entretien {rp+1}/{D.roleplay.length}</small></div>
+      <div className="rp-prog"><span className="rp-prog-fill" style={{width:(rp/roleplay.length*100)+"%"}}></span></div>
+      <div className="rp-moment">{Acr(sc.moment)} <small>· entretien {rp+1}/{roleplay.length}</small></div>
       <div className="rp-scene">{Acr(sc.contexte)}</div>
       <div className="rp-bubble rp-lea pop"><span className="rp-av">🧑‍🍳</span><div className="rp-txt">{Acr(sc.lea)}</div></div>
       <div className="rp-you">👔 Toi (manager) : <b>{Acr(sc.q)}</b></div>
@@ -9437,7 +10308,7 @@ function EvalEntretien({head,onDone}){
         <strong>{sc.o[rpick].ok?"✅ Belle réponse !":"❌ Maladroit."}</strong>
         {!sc.o[rpick].ok&&<p style={{margin:"4px 0"}}>Meilleure attitude : « {Acr(sc.o[good].t)} »</p>}
         <p style={{marginTop:6}}>{Acr(sc.o[rpick].fb)}</p>
-        <button className="next" onClick={next}>{rp+1>=D.roleplay.length?"Inverser les rôles →":"Continuer l'entretien →"}</button></div>)}
+        <button className="next" onClick={next}>{rp+1>=roleplay.length?"Inverser les rôles →":"Continuer l'entretien →"}</button></div>)}
     </div>);
   }
 
@@ -9457,14 +10328,14 @@ function EvalEntretien({head,onDone}){
 
   /* ====== PHASE JEU DE RÔLE INVERSÉ (dans la peau de Léa) ====== */
   if(phase==="roleplayLea"){
-    const sc=D.roleplayLea[rpL];
+    const sc=roleplayLea[rpL];
     const choose=(idx)=>{ if(rpLpick!==null) return; setRpLpick(idx); if(sc.o[idx].ok) setScoreRPL(s=>s+1); };
-    const next=()=>{ setRpLpick(null); if(rpL+1>=D.roleplayLea.length){ setPhase("result"); } else setRpL(rpL+1); };
+    const next=()=>{ setRpLpick(null); if(rpL+1>=roleplayLea.length){ setPhase("result"); } else setRpL(rpL+1); };
     const good=sc.o.findIndex(o=>o.ok);
     return (<div className="game">{head}
       <div className="rp-roletag">🧑‍🍳 Tu incarnes <b>Léa</b>, la salariée</div>
-      <div className="rp-prog"><span className="rp-prog-fill rp-prog-lea" style={{width:(rpL/D.roleplayLea.length*100)+"%"}}></span></div>
-      <div className="rp-moment">{Acr(sc.moment)} <small>· situation {rpL+1}/{D.roleplayLea.length}</small></div>
+      <div className="rp-prog"><span className="rp-prog-fill rp-prog-lea" style={{width:(rpL/roleplayLea.length*100)+"%"}}></span></div>
+      <div className="rp-moment">{Acr(sc.moment)} <small>· situation {rpL+1}/{roleplayLea.length}</small></div>
       <div className="rp-scene">{Acr(sc.contexte)}</div>
       <div className="rp-bubble rp-boss pop"><span className="rp-av rp-av-boss">👔</span><div className="rp-txt">{Acr(sc.boss)}</div></div>
       <div className="rp-you rp-you-lea">🧑‍🍳 Toi (Léa) : <b>{Acr(sc.q)}</b></div>
@@ -9474,7 +10345,7 @@ function EvalEntretien({head,onDone}){
         <strong>{sc.o[rpLpick].ok?"✅ Posture professionnelle !":"❌ À éviter."}</strong>
         {!sc.o[rpLpick].ok&&<p style={{margin:"4px 0"}}>Meilleure attitude : « {Acr(sc.o[good].t)} »</p>}
         <p style={{marginTop:6}}>{Acr(sc.o[rpLpick].fb)}</p>
-        <button className="next" onClick={next}>{rpL+1>=D.roleplayLea.length?"Voir mon bilan →":"Situation suivante →"}</button></div>)}
+        <button className="next" onClick={next}>{rpL+1>=roleplayLea.length?"Voir mon bilan →":"Situation suivante →"}</button></div>)}
     </div>);
   }
 
@@ -10170,6 +11041,11 @@ function Stage({student,subject,theme,game,onDone,onQuit}){
   if(game==="org_propriete")return <OrgPropriete head={head} onDone={onDone}/>;
   if(game==="org_gouvernement")return <OrgGouvernement head={head} onDone={onDone}/>;
   if(game==="org_controle")return <OrgControle head={head} onDone={onDone}/>;
+  if(game==="perso_traits")return <IndivGame head={head} onDone={onDone} D={PERSO_DATA}/>;
+  if(game==="emotions")return <IndivGame head={head} onDone={onDone} D={EMO_DATA}/>;
+  if(game==="identite_num")return <IndivGame head={head} onDone={onDone} D={IDNUM_DATA}/>;
+  if(game==="attitude_comportement")return <IndivGame head={head} onDone={onDone} D={ATTCOMP_DATA}/>;
+  if(game==="communication")return <CommGame head={head} onDone={onDone}/>;
   if(game==="eval_entretien")return <EvalEntretien head={head} onDone={onDone}/>;
   if(game==="paie_intro")return <PaieIntro head={head} onDone={onDone}/>;
   if(game==="simul_paie")return <SimulPaie head={head} onDone={onDone}/>;
@@ -12750,6 +13626,10 @@ abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;
 .ind-verdict{text-align:center;font-weight:700;font-size:14px;border-radius:10px;padding:9px;margin-bottom:8px}
 .v-top{background:#dcfce7;color:#15803d}.v-ok{background:#d1fae5;color:#0f766e}.v-mid{background:#fef9c3;color:#a16207}.v-low{background:#fee2e2;color:#b91c1c}
 .ind-note{font-size:12.5px;line-height:1.5;color:#5a5470;background:#f0fdfa;border:1px solid #cce9e4;border-radius:10px;padding:9px 12px}
+.ind-paren{font-weight:900;font-size:22px;color:#d97706;line-height:1}
+.ind-cp{font-weight:900;color:#d97706}
+.ind-paren-note{font-size:12.5px;line-height:1.5;color:#7c4a02;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:9px 12px;margin-bottom:8px}
+.ind-paren-note u{text-decoration-color:#d97706}
 /* ===== Tableau de bord ===== */
 .dash{background:linear-gradient(160deg,#0f172a,#1e293b);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 30px 70px -30px rgba(15,23,42,.8);color:#e2e8f0}
 .dash-id{display:flex;align-items:center;gap:12px;margin-bottom:16px}
@@ -12804,6 +13684,103 @@ abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;
 .rp-bubble.rp-boss .rp-txt{background:#fff;border:2px solid #cdd9f5;border-radius:4px 16px 16px 16px;padding:11px 14px;font-size:14.5px;color:#2a2440;box-shadow:0 10px 26px -20px rgba(37,99,235,.5)}
 .rp-av-boss{background:#e0e9ff}
 .rp-you-lea{color:#9d2463;background:#fdf2f8}
+/* ===== Jeux « De l'individu à l'acteur » (moteur IndivGame) ===== */
+.iv-intro{max-width:640px;margin:0 auto;text-align:center;animation:pistep .5s cubic-bezier(.22,1,.36,1)}
+.iv-hero{background:linear-gradient(160deg,var(--oc),color-mix(in srgb,var(--oc) 70%,#000));border-radius:20px;padding:18px;color:#fff;margin-bottom:16px;box-shadow:0 24px 56px -28px var(--oc)}
+.iv-hero-emoji{font-size:44px;animation:pipop .6s cubic-bezier(.34,1.46,.42,1)}
+.iv-hero h2{font-family:'Fraunces',serif;font-size:23px;margin:4px 0 8px;color:#fff}
+.iv-hero p{font-size:13.5px;line-height:1.55;color:rgba(255,255,255,.92)}
+.iv-card{background:#fff;border:2px solid var(--oc);border-radius:18px;padding:16px 18px;text-align:left;box-shadow:0 20px 46px -28px var(--oc);animation:ivflip .5s cubic-bezier(.22,1,.36,1)}
+@keyframes ivflip{0%{opacity:0;transform:translateY(10px) scale(.98)}100%{opacity:1;transform:none}}
+.iv-card-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.iv-card-emoji{font-size:38px;line-height:1}
+.iv-card-nom{font-family:'Fraunces',serif;font-weight:800;font-size:19px;color:var(--oc)}
+.iv-card-tag{font-size:12.5px;font-weight:600;color:#8a8398}
+.iv-card-def{font-size:14px;line-height:1.55;color:#3a3550;margin-bottom:10px}
+.iv-card-ex{font-size:13px;line-height:1.5;color:#5a5470;background:color-mix(in srgb,var(--oc) 8%,#fff);border:1px solid color-mix(in srgb,var(--oc) 25%,#fff);border-radius:11px;padding:9px 12px}
+.iv-ex-lab{font-weight:800;color:var(--oc);margin-right:4px}
+.iv-dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}
+.iv-dot{width:42px;height:42px;border-radius:12px;border:2px solid #e8e3f0;background:#fff;font-size:20px;cursor:pointer;transition:.16s;display:flex;align-items:center;justify-content:center}
+.iv-dot:hover{transform:translateY(-2px)}
+.iv-dot.on{border-color:var(--oc);background:color-mix(in srgb,var(--oc) 12%,#fff);transform:translateY(-2px) scale(1.08);box-shadow:0 8px 18px -8px var(--oc)}
+.iv-prog{height:7px;background:#ece6f3;border-radius:10px;overflow:hidden;margin-bottom:12px}
+.iv-prog-fill{display:block;height:100%;border-radius:10px;transition:width .5s cubic-bezier(.22,1,.36,1)}
+.iv-moment{font-family:'Fraunces',serif;font-weight:800;font-size:18px;margin-bottom:8px}
+.iv-moment small{font-family:inherit;font-weight:500;color:#9a90b5;font-size:12.5px}
+.iv-scene{font-size:13.5px;font-style:italic;color:#64748b;background:#f8fafc;border-left:3px solid #cbd5e1;border-radius:0 8px 8px 0;padding:8px 12px;margin-bottom:12px}
+.iv-bubble{display:flex;gap:10px;align-items:flex-start;margin-bottom:11px}
+.iv-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.iv-av-boss{background:#e0e9ff}
+.iv-av-sal{background:#dcfce7}
+.iv-boss .iv-txt{background:#fff;border:2px solid #cdd9f5;border-radius:4px 16px 16px 16px;padding:11px 14px;font-size:14.5px;color:#2a2440;box-shadow:0 10px 26px -20px rgba(37,99,235,.5)}
+.iv-sal .iv-txt{background:#fff;border:2px solid #bbf0cf;border-radius:4px 16px 16px 16px;padding:11px 14px;font-size:14.5px;color:#2a2440;box-shadow:0 10px 26px -20px rgba(13,148,136,.5)}
+.iv-q{font-size:15px;font-weight:700;color:#2a2440;margin:12px 0 12px;background:#faf7ff;border-radius:11px;padding:10px 13px}
+.iv-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:6px}
+.iv-opt{display:flex;align-items:center;gap:10px;text-align:left;padding:13px 15px;border-radius:13px;background:#fff;border:2px solid #e2e8f0;font-size:14px;font-weight:600;color:#2a2440;cursor:pointer;transition:transform .14s,border-color .14s,box-shadow .14s;line-height:1.4}
+.iv-opt:hover{transform:translateX(3px);border-color:#7c3aed;box-shadow:0 12px 26px -20px rgba(124,58,237,.6)}
+.iv-opt-emoji{font-size:22px;flex-shrink:0}
+.iv-opt.ok{border-color:#16a34a;background:#e7f9ee;animation:evbok .6s ease}
+.iv-opt.bad{border-color:#dc2626;background:#fee9e9;animation:evbshake .45s ease}
+/* ===== Jeu « La communication entre les individus » ===== */
+.cm-intro{max-width:640px;margin:0 auto;text-align:center;animation:pistep .5s cubic-bezier(.22,1,.36,1)}
+.cm-hero{background:linear-gradient(160deg,#0ea5e9,#0369a1);border-radius:20px;padding:18px;color:#fff;margin-bottom:16px;box-shadow:0 24px 56px -28px #0ea5e9}
+.cm-hero-emoji{font-size:44px;animation:pipop .6s cubic-bezier(.34,1.46,.42,1)}
+.cm-hero h2{font-family:'Fraunces',serif;font-size:23px;margin:4px 0 8px;color:#fff}
+.cm-hero p{font-size:13.5px;line-height:1.55;color:rgba(255,255,255,.92)}
+.cm-steps-list{display:flex;flex-direction:column;gap:9px;margin-bottom:16px;text-align:left}
+.cm-stepcard{display:flex;align-items:center;gap:12px;background:#fff;border:2px solid var(--oc);border-radius:14px;padding:12px 14px;box-shadow:0 14px 32px -26px var(--oc)}
+.cm-stepcard span{width:30px;height:30px;border-radius:50%;background:var(--oc);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cm-stepcard b{font-size:14.5px;color:#2a2440;display:block}
+.cm-stepcard small{font-size:12px;color:#8a8398}
+.cm-substep{font-family:'Fraunces',serif;font-weight:800;font-size:18px;margin-bottom:10px;color:#0369a1}
+.cm-sub-sm{font-size:15px}
+.cm-sub-g{color:#15803d}.cm-sub-o{color:#b45309}.cm-sub-v{color:#6b21a8}
+.cm-defbox{background:linear-gradient(135deg,#eff6ff,#f0fdfa);border:1px solid #cde3f5;border-radius:14px;padding:13px 15px;font-size:14px;line-height:1.55;color:#37425a;margin-bottom:14px}
+.cm-card{background:#fff;border:2px solid var(--oc);border-radius:18px;padding:16px 18px;text-align:left;box-shadow:0 20px 46px -28px var(--oc);animation:ivflip .5s cubic-bezier(.22,1,.36,1)}
+.cm-card-top{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.cm-card-emoji{font-size:34px}
+.cm-card-nom{font-family:'Fraunces',serif;font-weight:800;font-size:19px;color:var(--oc)}
+.cm-card-def{font-size:14px;line-height:1.55;color:#3a3550;margin-bottom:10px}
+.cm-card-ex{font-size:13px;line-height:1.5;color:#5a5470;background:color-mix(in srgb,var(--oc) 8%,#fff);border:1px solid color-mix(in srgb,var(--oc) 22%,#fff);border-radius:11px;padding:9px 12px}
+.cm-dots{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:14px 0}
+.cm-dot{width:40px;height:40px;border-radius:11px;border:2px solid #e2e8f0;background:#fff;font-size:19px;cursor:pointer;transition:.16s}
+.cm-dot.on{border-color:var(--oc);background:color-mix(in srgb,var(--oc) 12%,#fff);transform:translateY(-2px) scale(1.08);box-shadow:0 8px 18px -8px var(--oc)}
+.cm-prog{height:7px;background:#e2e8f0;border-radius:10px;overflow:hidden;margin-bottom:12px}
+.cm-prog span{display:block;height:100%;border-radius:10px;transition:width .5s cubic-bezier(.22,1,.36,1)}
+/* scène de communication (étape 1) */
+.cm-scene-comm{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.cm-pers{font-size:38px;flex-shrink:0;animation:pipop .5s cubic-bezier(.34,1.46,.42,1)}
+.cm-bubble{flex:1;background:#fff;border:2px solid #cde3f5;border-radius:16px;padding:12px 15px;font-size:14.5px;color:#2a2440;box-shadow:0 12px 30px -22px rgba(14,165,233,.6);position:relative;text-align:center}
+.cm-quote{background:#fff;border:2px solid #bbf0cf;border-left:5px solid #16a34a;border-radius:0 14px 14px 0;padding:14px 16px;font-size:15.5px;font-style:italic;color:#1a3a26;margin-bottom:14px;box-shadow:0 12px 30px -24px rgba(22,163,74,.5)}
+.cm-q{font-size:15px;font-weight:700;color:#2a2440;margin:6px 0 12px;background:#f8fafc;border-radius:11px;padding:10px 13px}
+.cm-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:6px}
+.cm-opt{display:flex;align-items:center;gap:10px;text-align:left;padding:13px 15px;border-radius:13px;background:#fff;border:2px solid #e2e8f0;font-size:14px;font-weight:600;color:#2a2440;cursor:pointer;transition:transform .14s,border-color .14s,box-shadow .14s;line-height:1.4}
+.cm-opt:hover{transform:translateX(3px);border-color:#0ea5e9;box-shadow:0 12px 26px -20px rgba(14,165,233,.6)}
+.cm-opt-emoji{font-size:21px;flex-shrink:0}
+.cm-opt.ok{border-color:#16a34a;background:#e7f9ee;animation:evbok .6s ease}
+.cm-opt.bad{border-color:#dc2626;background:#fee9e9;animation:evbshake .45s ease}
+/* écoute active */
+.cm-org{display:inline-block;background:#f3e8ff;color:#6b21a8;border:1px solid #e4d0f7;border-radius:16px;padding:4px 12px;font-size:12.5px;font-weight:700;margin-bottom:8px}
+.cm-scene-txt{font-size:13.5px;font-style:italic;color:#64748b;background:#f8fafc;border-left:3px solid #cbd5e1;border-radius:0 8px 8px 0;padding:8px 12px;margin-bottom:10px}
+.cm-bubble2{display:flex;gap:10px;align-items:flex-start;margin-bottom:8px}
+.cm-av{width:42px;height:42px;border-radius:50%;background:#fde7c8;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.cm-bubble2 .cm-txt{background:#fff;border:2px solid #f3dcb8;border-radius:4px 16px 16px 16px;padding:11px 14px;font-size:14.5px;color:#2a2440;box-shadow:0 10px 26px -20px rgba(180,83,9,.4)}
+/* glisser-déposer signes */
+.cm-help{font-size:12.5px;color:#64748b;margin-bottom:10px}
+.cm-pool{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;min-height:30px}
+.cm-chip{background:#eef2ff;border:2px solid #c7d2fe;color:#3730a3;border-radius:20px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;transition:.14s}
+.cm-chip:hover{transform:translateY(-2px)}
+.cm-chip.held{background:#4f46e5;color:#fff;border-color:#4f46e5;box-shadow:0 8px 18px -8px rgba(79,70,229,.7);transform:scale(1.04)}
+.cm-pool-empty{font-size:13px;color:#16a34a;font-weight:600;padding:6px}
+.cm-baskets{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+.cm-basket{background:#fff;border:2px dashed color-mix(in srgb,var(--oc) 45%,#fff);border-radius:14px;padding:10px;min-height:120px;transition:.16s;cursor:pointer}
+.cm-basket.target{border-style:solid;border-color:var(--oc);background:color-mix(in srgb,var(--oc) 7%,#fff);box-shadow:0 10px 26px -18px var(--oc)}
+.cm-basket-h{font-weight:800;font-size:13.5px;color:var(--oc);text-align:center;padding-bottom:8px;border-bottom:1px solid color-mix(in srgb,var(--oc) 20%,#fff);margin-bottom:8px}
+.cm-basket-body{display:flex;flex-direction:column;gap:6px}
+.cm-dropped{background:#f8fafc;border:1px solid #e2e8f0;border-radius:9px;padding:7px 9px;font-size:12px;color:#2a2440;cursor:pointer;animation:pipop .4s ease}
+.cm-dropped.ok{background:#e7f9ee;border-color:#16a34a;color:#15803d}
+.cm-dropped.bad{background:#fee9e9;border-color:#dc2626;color:#b91c1c}
+@media(max-width:620px){ .cm-baskets{grid-template-columns:1fr} .cm-basket{min-height:auto} }
 </style>
 </body>
 </html>
