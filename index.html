@@ -8197,29 +8197,98 @@ function EvalBulletin({head,onDone}){
    3 objectifs (existence juridique / organiser / pérenniser)
    + mini-explicateur de la forme juridique, avec exemples.
 ============================================================ */
+/* ============================================================
+   Illustrations SVG vectorielles (nettes, légères, responsive,
+   animées) pour les jeux « L'organisation ». Aucune image
+   bitmap : tout est dessiné en SVG → parfait sur PC et mobile.
+============================================================ */
+const ORG_ILLUS = {
+  // — contrats / existence juridique —
+  contrat:(<g><rect x="78" y="34" width="84" height="104" rx="8" fill="#fff" stroke="#0284c7" strokeWidth="3"/><line x1="92" y1="58" x2="148" y2="58" stroke="#bcd8ec" strokeWidth="4"/><line x1="92" y1="74" x2="148" y2="74" stroke="#bcd8ec" strokeWidth="4"/><line x1="92" y1="90" x2="130" y2="90" stroke="#bcd8ec" strokeWidth="4"/><path d="M96 116 q10 -12 20 0 t20 0" stroke="#e11d48" strokeWidth="3" fill="none"><animate attributeName="stroke-dasharray" from="0 80" to="80 0" dur="1.1s" fill="freeze"/></path><circle cx="170" cy="112" r="16" fill="#0284c7" opacity=".15"/><text x="170" y="118" textAnchor="middle" fontSize="18">✍️</text></g>),
+  banque:(<g><rect x="74" y="60" width="92" height="62" rx="6" fill="#fff" stroke="#0284c7" strokeWidth="3"/><polygon points="120,30 170,60 70,60" fill="#0284c7"/><rect x="86" y="72" width="10" height="38" fill="#bcd8ec"/><rect x="106" y="72" width="10" height="38" fill="#bcd8ec"/><rect x="126" y="72" width="10" height="38" fill="#bcd8ec"/><rect x="146" y="72" width="10" height="38" fill="#bcd8ec"/><text x="120" y="50" textAnchor="middle" fontSize="16" fill="#fff">€</text><circle cx="120" cy="92" r="0" fill="#16a34a"><animate attributeName="r" values="0;14;0" dur="2s" repeatCount="indefinite"/></circle></g>),
+  marqueDepot:(<g><circle cx="120" cy="86" r="40" fill="#8b5cf6" opacity=".12"/><text x="120" y="98" textAnchor="middle" fontSize="40">®️</text><path d="M150 60 l8 -8 m-8 8 l8 8" stroke="#8b5cf6" strokeWidth="3"><animate attributeName="opacity" values="0;1;0" dur="1.6s" repeatCount="indefinite"/></path></g>),
+  // — organiser —
+  equipe:(<g><circle cx="120" cy="56" r="14" fill="#16a34a"/><circle cx="84" cy="92" r="12" fill="#16a34a" opacity=".75"/><circle cx="156" cy="92" r="12" fill="#16a34a" opacity=".75"/><line x1="120" y1="70" x2="84" y2="82" stroke="#16a34a" strokeWidth="3"><animate attributeName="stroke-dasharray" from="0 50" to="50 0" dur="1s" fill="freeze"/></line><line x1="120" y1="70" x2="156" y2="82" stroke="#16a34a" strokeWidth="3"><animate attributeName="stroke-dasharray" from="0 50" to="50 0" dur="1s" begin=".3s" fill="freeze"/></line><rect x="74" y="108" width="92" height="24" rx="6" fill="#dcfce7"/><text x="120" y="124" textAnchor="middle" fontSize="12" fill="#15803d">organisation</text></g>),
+  organigramme:(<g><rect x="100" y="36" width="40" height="22" rx="5" fill="#16a34a"/><rect x="64" y="84" width="40" height="22" rx="5" fill="#4ade80"/><rect x="136" y="84" width="40" height="22" rx="5" fill="#4ade80"/><line x1="120" y1="58" x2="120" y2="70" stroke="#16a34a" strokeWidth="3"/><line x1="84" y1="70" x2="156" y2="70" stroke="#16a34a" strokeWidth="3"/><line x1="84" y1="70" x2="84" y2="84" stroke="#16a34a" strokeWidth="3"/><line x1="156" y1="70" x2="156" y2="84" stroke="#16a34a" strokeWidth="3"/><rect x="46" y="120" width="34" height="18" rx="4" fill="#bbf7d0"><animate attributeName="opacity" values="0;1" dur=".5s" begin=".2s" fill="freeze"/></rect><rect x="160" y="120" width="34" height="18" rx="4" fill="#bbf7d0"><animate attributeName="opacity" values="0;1" dur=".5s" begin=".5s" fill="freeze"/></rect></g>),
+  // — pérenniser —
+  croissance:(<g><line x1="64" y1="124" x2="180" y2="124" stroke="#e11d48" strokeWidth="3"/><line x1="64" y1="124" x2="64" y2="40" stroke="#e11d48" strokeWidth="3"/><polyline points="64,116 96,98 128,82 160,52" fill="none" stroke="#e11d48" strokeWidth="4" strokeLinecap="round"><animate attributeName="stroke-dasharray" from="0 200" to="200 0" dur="1.4s" fill="freeze"/></polyline><polygon points="160,52 150,54 158,62" fill="#e11d48"/><text x="120" y="142" textAnchor="middle" fontSize="11" fill="#9f1239">le temps →</text></g>),
+  calendrier:(<g><rect x="78" y="44" width="84" height="86" rx="8" fill="#fff" stroke="#e11d48" strokeWidth="3"/><rect x="78" y="44" width="84" height="22" rx="8" fill="#e11d48"/><circle cx="96" cy="40" r="5" fill="#e11d48"/><circle cx="144" cy="40" r="5" fill="#e11d48"/>{[0,1,2,3].map(c=>[0,1,2].map(r=><rect key={c+'-'+r} x={90+c*18} y={76+r*16} width="12" height="11" rx="2" fill="#fbcfe8"/>))}<rect x="126" y="92" width="12" height="11" rx="2" fill="#e11d48"><animate attributeName="opacity" values="1;.3;1" dur="1.6s" repeatCount="indefinite"/></rect></g>),
+  // — ressources —
+  res_hum:(<g><circle cx="120" cy="62" r="18" fill="#0ea5e9"/><path d="M88 128 q32 -40 64 0 z" fill="#0ea5e9"/><circle cx="120" cy="62" r="24" fill="none" stroke="#0ea5e9" strokeWidth="2" opacity=".4"><animate attributeName="r" values="24;30;24" dur="2s" repeatCount="indefinite"/></circle></g>),
+  res_fin:(<g><circle cx="120" cy="86" r="34" fill="#fde68a" stroke="#16a34a" strokeWidth="3"/><text x="120" y="98" textAnchor="middle" fontSize="34" fill="#15803d" fontWeight="bold">€</text><circle cx="120" cy="86" r="40" fill="none" stroke="#16a34a" strokeWidth="2" opacity=".3"><animate attributeName="r" values="40;46;40" dur="1.8s" repeatCount="indefinite"/></circle></g>),
+  res_mat:(<g><rect x="80" y="70" width="80" height="54" rx="6" fill="#fed7aa" stroke="#f59e0b" strokeWidth="3"/><circle cx="100" cy="124" r="9" fill="#92400e"/><circle cx="140" cy="124" r="9" fill="#92400e"/><rect x="150" y="54" width="22" height="20" fill="#f59e0b"><animateTransform attributeName="transform" type="rotate" from="0 161 64" to="360 161 64" dur="3s" repeatCount="indefinite"/></rect></g>),
+  res_imm:(<g><text x="120" y="100" textAnchor="middle" fontSize="44">💡</text><circle cx="120" cy="80" r="36" fill="#8b5cf6" opacity=".10"><animate attributeName="opacity" values=".05;.18;.05" dur="2s" repeatCount="indefinite"/></circle></g>),
+  // — propriété —
+  actionnaires:(<g><rect x="84" y="64" width="72" height="58" rx="6" fill="#fff" stroke="#0ea5e9" strokeWidth="3"/><polygon points="120,40 156,64 84,64" fill="#0ea5e9"/><circle cx="64" cy="118" r="11" fill="#0284c7"/><circle cx="176" cy="118" r="11" fill="#0284c7"/><text x="64" y="123" textAnchor="middle" fontSize="11" fill="#fff">%</text><text x="176" y="123" textAnchor="middle" fontSize="11" fill="#fff">%</text><line x1="74" y1="112" x2="100" y2="96" stroke="#0284c7" strokeWidth="2"/><line x1="166" y1="112" x2="140" y2="96" stroke="#0284c7" strokeWidth="2"/></g>),
+  etat:(<g><rect x="72" y="66" width="96" height="58" rx="4" fill="#dcfce7" stroke="#16a34a" strokeWidth="3"/><polygon points="120,38 176,66 64,66" fill="#16a34a"/>{[0,1,2,3].map(i=><rect key={i} x={84+i*20} y="78" width="8" height="36" fill="#16a34a" opacity=".5"/>)}<text x="120" y="58" textAnchor="middle" fontSize="13">🏛️</text></g>),
+  ag:(<g><ellipse cx="120" cy="120" rx="56" ry="14" fill="#fce7f3"/><circle cx="86" cy="96" r="9" fill="#e11d48"/><circle cx="120" cy="88" r="9" fill="#e11d48"/><circle cx="154" cy="96" r="9" fill="#e11d48"/><text x="120" y="58" textAnchor="middle" fontSize="22">🗳️</text><text x="120" y="138" textAnchor="middle" fontSize="11" fill="#9f1239">1 personne = 1 voix</text></g>),
+  // — gouvernement —
+  gouv_ent:(<g><rect x="86" y="58" width="68" height="64" rx="6" fill="#fff" stroke="#0ea5e9" strokeWidth="3"/><text x="120" y="100" textAnchor="middle" fontSize="30">🏢</text><circle cx="120" cy="44" r="13" fill="#0284c7"/><text x="120" y="49" textAnchor="middle" fontSize="13">👔</text></g>),
+  gouv_pub:(<g><text x="120" y="86" textAnchor="middle" fontSize="40">🏛️</text><rect x="70" y="104" width="100" height="20" rx="5" fill="#dcfce7"/><text x="120" y="119" textAnchor="middle" fontSize="11" fill="#15803d">loi · intérêt général</text></g>),
+  gouv_osc:(<g><text x="120" y="84" textAnchor="middle" fontSize="38">🤝</text><rect x="64" y="102" width="112" height="22" rx="5" fill="#fce7f3"/><text x="120" y="117" textAnchor="middle" fontSize="11" fill="#9f1239">vote en assemblée</text></g>),
+  vote:(<g><rect x="92" y="70" width="56" height="48" rx="5" fill="#fff" stroke="#0d9488" strokeWidth="3"/><path d="M120 70 v-14" stroke="#0d9488" strokeWidth="3"/><rect x="108" y="44" width="24" height="16" rx="3" fill="#0d9488"/><path d="M104 94 l10 10 l20 -22" fill="none" stroke="#0d9488" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><animate attributeName="stroke-dasharray" from="0 60" to="60 0" dur="1s" fill="freeze"/></path></g>),
+  // — contrôle —
+  loupe:(<g><circle cx="110" cy="80" r="30" fill="none" stroke="#9333ea" strokeWidth="5"/><line x1="132" y1="102" x2="158" y2="128" stroke="#9333ea" strokeWidth="6" strokeLinecap="round"/><circle cx="110" cy="80" r="30" fill="#9333ea" opacity=".08"/><path d="M98 80 l8 8 l16 -18" fill="none" stroke="#9333ea" strokeWidth="3" strokeLinecap="round"><animate attributeName="opacity" values="0;1;1;0" dur="2.4s" repeatCount="indefinite"/></path></g>),
+  comptes:(<g><rect x="82" y="44" width="76" height="92" rx="6" fill="#fff" stroke="#9333ea" strokeWidth="3"/><line x1="96" y1="64" x2="144" y2="64" stroke="#e9d5ff" strokeWidth="5"/><line x1="96" y1="80" x2="144" y2="80" stroke="#e9d5ff" strokeWidth="5"/><line x1="96" y1="96" x2="128" y2="96" stroke="#e9d5ff" strokeWidth="5"/><circle cx="142" cy="108" r="18" fill="#9333ea" opacity=".15"/><text x="142" y="114" textAnchor="middle" fontSize="18">🔍</text></g>),
+  cour:(<g><text x="120" y="86" textAnchor="middle" fontSize="38">⚖️</text><rect x="70" y="104" width="100" height="20" rx="5" fill="#f3e8ff"/><text x="120" y="119" textAnchor="middle" fontSize="11" fill="#6b21a8">fonds publics</text></g>),
+  bureau:(<g><circle cx="92" cy="84" r="12" fill="#9333ea"/><circle cx="120" cy="78" r="12" fill="#9333ea"/><circle cx="148" cy="84" r="12" fill="#9333ea"/><rect x="74" y="106" width="92" height="20" rx="5" fill="#f3e8ff"/><text x="120" y="121" textAnchor="middle" fontSize="11" fill="#6b21a8">vote de confiance</text></g>)
+};
+function OrgIll({name,bg}){
+  const g=ORG_ILLUS[name]; if(!g) return null;
+  return (<div className="org-ill" style={bg?{background:bg}:undefined}>
+    <svg viewBox="0 0 240 168" role="img" aria-hidden="true" preserveAspectRatio="xMidYMid meet">{g}</svg>
+  </div>);
+}
+/* Petit carrousel d'exemples animés pour les écrans d'intro */
+function OrgExamples({items,color}){
+  const [i,setI]=useState(0);
+  useEffect(()=>{ const t=setInterval(()=>setI(x=>(x+1)%items.length),2600); return ()=>clearInterval(t); },[items.length]);
+  return (<div className="org-ex" style={{"--oc":color}}>
+    <div className="org-ex-track">
+      {items.map((it,k)=>(<div key={k} className={"org-ex-item"+(k===i?" on":"")}>
+        <span className="org-ex-emoji">{it.e}</span>
+        <div className="org-ex-txt"><b>{it.t}</b><span>{it.d}</span></div>
+      </div>))}
+    </div>
+    <div className="org-ex-dots">{items.map((_,k)=><i key={k} className={k===i?"on":""} onClick={()=>setI(k)}></i>)}</div>
+  </div>);
+}
+
 const ORGPQ = {
   // Les 3 grands objectifs de la création d'une organisation
   objectifs:[
     { id:"juridique", emoji:"⚖️", titre:"Avoir une existence juridique", couleur:"#0ea5e9",
-      def:"L'organisation devient une « personne » aux yeux de la loi : elle peut signer des contrats, ouvrir un compte, embaucher, acheter… grâce à sa personnalité juridique." },
+      def:"L'organisation devient une « personne » aux yeux de la loi : elle peut signer des contrats, ouvrir un compte, embaucher, acheter… grâce à sa personnalité juridique.",
+      ex:[ {e:"📝", t:"Signer un bail", d:"louer un local commercial à son nom"},
+           {e:"🏦", t:"Ouvrir un compte pro", d:"déposer l'argent de l'activité"},
+           {e:"🧑‍💼", t:"Embaucher", d:"signer un contrat de travail avec un salarié"},
+           {e:"®️", t:"Déposer une marque", d:"protéger son nom et son logo"} ] },
     { id:"organiser", emoji:"🧩", titre:"Organiser les activités", couleur:"#16a34a",
-      def:"Les activités sont nombreuses et complexes. Une organisation claire permet de structurer, coordonner, répartir les tâches et allouer les moyens nécessaires." },
+      def:"Les activités sont nombreuses et complexes. Une organisation claire permet de structurer, coordonner, répartir les tâches et allouer les moyens nécessaires.",
+      ex:[ {e:"📋", t:"Répartir les tâches", d:"chacun sait ce qu'il doit faire"},
+           {e:"🗂️", t:"Créer des services", d:"production, vente, comptabilité…"},
+           {e:"🔗", t:"Coordonner", d:"faire travailler les équipes ensemble"},
+           {e:"⚙️", t:"Allouer les moyens", d:"donner à chacun les outils nécessaires"} ] },
     { id:"perenniser", emoji:"🤝", titre:"Pérenniser les activités", couleur:"#e11d48",
-      def:"Créer une organisation permet d'inscrire les activités dans le temps et de faire des choix de développement sur le long terme (au-delà des personnes qui la composent)." }
+      def:"Créer une organisation permet d'inscrire les activités dans le temps et de faire des choix de développement sur le long terme (au-delà des personnes qui la composent).",
+      ex:[ {e:"📅", t:"Durer dans le temps", d:"continuer même si les fondateurs partent"},
+           {e:"📈", t:"Se développer", d:"grandir et investir sur le long terme"},
+           {e:"🌱", t:"Transmettre", d:"l'activité survit aux personnes"},
+           {e:"🎯", t:"Choix stratégiques", d:"préparer l'avenir, pas seulement aujourd'hui"} ] }
   ],
   // Situations à rattacher au bon objectif
   situations:[
-    { t:"Une boulangerie signe un contrat de location pour son local et un contrat avec un fournisseur de farine.", ok:"juridique",
+    { t:"Une boulangerie signe un contrat de location pour son local et un contrat avec un fournisseur de farine.", ok:"juridique", ill:"contrat",
       why:"Signer des contrats nécessite une existence juridique : seule une organisation dotée de la personnalité juridique peut s'engager officiellement." },
-    { t:"Un restaurant répartit les rôles : un chef en cuisine, deux serveurs en salle, un responsable des achats.", ok:"organiser",
+    { t:"Un restaurant répartit les rôles : un chef en cuisine, deux serveurs en salle, un responsable des achats.", ok:"organiser", ill:"equipe",
       why:"Répartir les tâches et coordonner les personnes, c'est organiser les activités pour les rendre efficaces." },
-    { t:"Une association prévoit un plan d'actions sur 5 ans pour continuer à exister même si ses fondateurs partent.", ok:"perenniser",
+    { t:"Une association prévoit un plan d'actions sur 5 ans pour continuer à exister même si ses fondateurs partent.", ok:"perenniser", ill:"croissance",
       why:"Se projeter sur le long terme, indépendamment des personnes présentes, c'est pérenniser les activités." },
-    { t:"Une start-up ouvre un compte bancaire professionnel à son nom et dépose sa marque.", ok:"juridique",
+    { t:"Une start-up ouvre un compte bancaire professionnel à son nom et dépose sa marque.", ok:"juridique", ill:"banque",
       why:"Ouvrir un compte ou déposer une marque suppose d'être une personne juridique reconnue par la loi." },
-    { t:"Une entreprise réunionnaise structure ses équipes en services : production, vente, comptabilité.", ok:"organiser",
+    { t:"Une entreprise réunionnaise structure ses équipes en services : production, vente, comptabilité.", ok:"organiser", ill:"organigramme",
       why:"Découper l'activité en services et coordonner ces services, c'est organiser les activités." },
-    { t:"Une coopérative agricole investit dans du matériel durable pour assurer son activité pendant des décennies.", ok:"perenniser",
+    { t:"Une coopérative agricole investit dans du matériel durable pour assurer son activité pendant des décennies.", ok:"perenniser", ill:"calendrier",
       why:"Investir pour durer dans le temps relève de la pérennisation des activités." }
   ],
   // Mini-explicateur : la forme juridique
@@ -8267,6 +8336,7 @@ function OrgPourquoi({head,onDone}){
         <div className="org-pq-cards">{D.objectifs.map((o,k)=>(
           <div key={o.id} className="org-pq-card" style={{"--oc":o.couleur,animationDelay:(k*0.12)+"s"}}>
             <div className="org-pq-ic">{o.emoji}</div><h3>{o.titre}</h3><p>{o.def}</p>
+            <OrgExamples items={o.ex} color={o.couleur}/>
           </div>))}
         </div>
         <button className="cta sm" onClick={()=>setPhase("sit")}>Commencer →</button>
@@ -8283,6 +8353,7 @@ function OrgPourquoi({head,onDone}){
       <div className="org-prog"><span className="org-prog-fill" style={{width:(si/sit.length*100)+"%"}}></span></div>
       <div className="org-h2">🎯 Quel objectif ? <small>{si+1} / {sit.length}</small></div>
       <div className="org-scn">{Acr(s.t)}</div>
+      <OrgIll name={s.ill}/>
       <div className="org-choices">{D.objectifs.map(o=>{ let c="org-choice"; if(pick!==null){ if(o.id===s.ok)c+=" ok"; else if(o.id===pick)c+=" bad"; }
         return <button key={o.id} className={c} style={{"--oc":o.couleur}} onClick={()=>choose(o.id)}>
           <span className="org-choice-ic">{o.emoji}</span><span>{o.titre}</span></button>; })}</div>
@@ -8358,19 +8429,19 @@ const ORGRES = {
   ],
   // type attendu pour chaque élément (un seul type principal ici, pour rester clair)
   items:[
-    { t:"Adhésion", type:"fin", why:"Une adhésion (cotisation versée par un membre) est une ressource financière.", org:["osc"] },
-    { t:"Bénévole", type:"hum", why:"Un bénévole apporte son travail : c'est une ressource humaine.", org:["osc"] },
-    { t:"Capital social", type:"fin", why:"Le capital social est l'argent apporté à la création : ressource financière.", org:["ent"] },
-    { t:"Don", type:"fin", why:"Un don est une somme reçue : ressource financière.", org:["osc"] },
-    { t:"Emprunt bancaire", type:"fin", why:"Un emprunt apporte de l'argent (à rembourser) : ressource financière.", org:["ent","pub","osc"] },
-    { t:"Fonctionnaire", type:"hum", why:"Un fonctionnaire est une personne qui travaille : ressource humaine.", org:["pub"] },
-    { t:"Impôts et taxes", type:"fin", why:"Les impôts et taxes financent l'action publique : ressource financière.", org:["pub"] },
-    { t:"Local", type:"mat", why:"Un local est un bien physique : ressource matérielle.", org:["ent","pub","osc"] },
-    { t:"Logiciel", type:"imm", why:"Un logiciel est un bien non physique : ressource immatérielle.", org:["ent","pub","osc"] },
-    { t:"Marque", type:"imm", why:"Une marque (image, notoriété) est une ressource immatérielle.", org:["ent"] },
-    { t:"Outils de production", type:"mat", why:"Les outils de production sont des biens physiques : ressource matérielle.", org:["ent"] },
-    { t:"Salarié", type:"hum", why:"Un salarié apporte son travail : ressource humaine.", org:["ent","osc"] },
-    { t:"Subvention de l'État", type:"fin", why:"Une subvention est une aide financière : ressource financière.", org:["pub","osc"] }
+    { t:"Adhésion", type:"fin", ill:"res_fin", why:"Une adhésion (cotisation versée par un membre) est une ressource financière.", org:["osc"] },
+    { t:"Bénévole", type:"hum", ill:"res_hum", why:"Un bénévole apporte son travail : c'est une ressource humaine.", org:["osc"] },
+    { t:"Capital social", type:"fin", ill:"res_fin", why:"Le capital social est l'argent apporté à la création : ressource financière.", org:["ent"] },
+    { t:"Don", type:"fin", ill:"res_fin", why:"Un don est une somme reçue : ressource financière.", org:["osc"] },
+    { t:"Emprunt bancaire", type:"fin", ill:"res_fin", why:"Un emprunt apporte de l'argent (à rembourser) : ressource financière.", org:["ent","pub","osc"] },
+    { t:"Fonctionnaire", type:"hum", ill:"res_hum", why:"Un fonctionnaire est une personne qui travaille : ressource humaine.", org:["pub"] },
+    { t:"Impôts et taxes", type:"fin", ill:"res_fin", why:"Les impôts et taxes financent l'action publique : ressource financière.", org:["pub"] },
+    { t:"Local", type:"mat", ill:"res_mat", why:"Un local est un bien physique : ressource matérielle.", org:["ent","pub","osc"] },
+    { t:"Logiciel", type:"imm", ill:"res_imm", why:"Un logiciel est un bien non physique : ressource immatérielle.", org:["ent","pub","osc"] },
+    { t:"Marque", type:"imm", ill:"res_imm", why:"Une marque (image, notoriété) est une ressource immatérielle.", org:["ent"] },
+    { t:"Outils de production", type:"mat", ill:"res_mat", why:"Les outils de production sont des biens physiques : ressource matérielle.", org:["ent"] },
+    { t:"Salarié", type:"hum", ill:"res_hum", why:"Un salarié apporte son travail : ressource humaine.", org:["ent","osc"] },
+    { t:"Subvention de l'État", type:"fin", ill:"res_fin", why:"Une subvention est une aide financière versée par l'État. Elle peut bénéficier à une entreprise (aide économique), à une organisation publique ou à une association : les trois types d'organisations peuvent en recevoir.", org:["ent","pub","osc"] }
   ],
   orgs:[
     { id:"ent", lab:"Entreprise", emoji:"🏢" },
@@ -8418,6 +8489,7 @@ function OrgRessources({head,onDone}){
     <div className="org-h2">🧰 Les ressources <small>{i+1} / {items.length}</small></div>
     <div className="res-card pop" key={i}>
       <div className="res-elem">« {Acr(it.t)} »</div>
+      <OrgIll name={it.ill}/>
 
       <div className="res-q">1️⃣ De quel <b>type de ressource</b> s'agit-il ?</div>
       <div className="res-types">{D.types.map(t=>{ let c="res-type"; const sel=typeSel===t.id;
@@ -8455,27 +8527,30 @@ function OrgRessources({head,onDone}){
 const ORGPROP = {
   intro:"La structure de PROPRIÉTÉ indique À QUI APPARTIENT l'organisation. Attention : ce n'est PAS la structure hiérarchique (qui dit qui commande qui). Ici, on cherche les PROPRIÉTAIRES.",
   paires:[
-    { org:"Entreprise", emoji:"🏢", prop:"Les actionnaires (ou associés)", propId:"actionnaires",
+    { org:"Entreprise", emoji:"🏢", prop:"Les actionnaires (ou associés)", propId:"actionnaires", ill:"actionnaires",
       ex:"Dans une société comme Air Austral, ceux qui détiennent des actions/parts sont propriétaires.",
-      detail:"Les actionnaires apportent des capitaux ; en échange, ils possèdent une partie de l'entreprise et peuvent recevoir des bénéfices (dividendes)." },
-    { org:"Organisation publique", emoji:"🏛️", prop:"L'État (ou une collectivité)", propId:"etat",
+      detail:"Les actionnaires apportent des capitaux ; en échange, ils possèdent une partie de l'entreprise et peuvent recevoir des bénéfices (dividendes).",
+      notion:{mot:"Les capitaux", def:"ce sont les sommes d'argent et les biens apportés à l'entreprise pour la financer et la faire fonctionner (par exemple l'argent versé pour acheter des machines, du stock, payer les premiers salaires…). Celui qui apporte des capitaux reçoit en échange une part de l'entreprise."} },
+    { org:"Organisation publique", emoji:"🏛️", prop:"L'État (ou une collectivité)", propId:"etat", ill:"etat",
       ex:"Un hôpital public, une mairie, un lycée appartiennent à l'État ou à une collectivité territoriale.",
-      detail:"Les organisations publiques appartiennent à la collectivité (l'État, une région, une commune…) : elles servent l'intérêt général, pas des propriétaires privés." },
-    { org:"Organisation de la société civile", emoji:"🤝", prop:"Les membres (non propriétaires)", propId:"membres",
+      detail:"Les organisations publiques appartiennent à la collectivité (l'État, une région, une commune…) : elles servent l'intérêt général, pas des propriétaires privés.",
+      notion:{mot:"Une collectivité", def:"c'est une administration qui gère un territoire pour l'ensemble des habitants : la commune (mairie), le département, la région. On parle de « collectivité » car elle agit au nom de tous les citoyens, pas d'un propriétaire privé."} },
+    { org:"Organisation de la société civile", emoji:"🤝", prop:"Les membres (non propriétaires)", propId:"membres", ill:"ag",
       ex:"Dans une association, les adhérents votent en assemblée générale mais ne possèdent pas l'association.",
-      detail:"Particularité : les membres ne sont PAS propriétaires (on ne peut pas « vendre » ni « se partager » l'association). Ils en sont membres et votent en assemblée générale (AG)." }
+      detail:"Particularité : les membres ne sont PAS propriétaires (on ne peut pas « vendre » ni « se partager » l'association). Ils en sont membres et votent en assemblée générale (AG).",
+      notion:{mot:"L'assemblée générale (AG)", def:"c'est la réunion de tous les membres d'une organisation (par exemple une fois par an). Chacun y a généralement une voix : on y vote les grandes décisions, on approuve les comptes et on élit les responsables (le bureau)."} }
   ],
   // distracteurs pour la pioche
   bank:["Les actionnaires (ou associés)","L'État (ou une collectivité)","Les membres (non propriétaires)"],
   // quiz de consolidation
   quiz:[
-    { t:"Vrai ou faux : dans une association, les membres sont les propriétaires et peuvent se partager les biens.", vf:false,
+    { t:"Vrai ou faux : dans une association, les membres sont les propriétaires et peuvent se partager les biens.", vf:false, ill:"ag",
       why:"FAUX. Les membres ne sont pas propriétaires : ils votent en AG, mais ne peuvent ni vendre ni se partager l'association." },
-    { t:"Vrai ou faux : les actionnaires d'une entreprise en sont les propriétaires.", vf:true,
+    { t:"Vrai ou faux : les actionnaires d'une entreprise en sont les propriétaires.", vf:true, ill:"actionnaires",
       why:"VRAI. Les actionnaires détiennent des parts/actions : ils sont propriétaires de l'entreprise." },
-    { t:"Vrai ou faux : un hôpital public appartient à un actionnaire privé.", vf:false,
+    { t:"Vrai ou faux : un hôpital public appartient à un actionnaire privé.", vf:false, ill:"etat",
       why:"FAUX. Une organisation publique appartient à la collectivité (l'État, une collectivité territoriale), pas à un propriétaire privé." },
-    { t:"Vrai ou faux : la structure de propriété et la structure hiérarchique, c'est la même chose.", vf:false,
+    { t:"Vrai ou faux : la structure de propriété et la structure hiérarchique, c'est la même chose.", vf:false, ill:"organigramme",
       why:"FAUX. La propriété dit À QUI APPARTIENT l'organisation ; la hiérarchie dit QUI COMMANDE QUI. Ce sont deux choses différentes." }
   ]
 };
@@ -8537,7 +8612,10 @@ function OrgPropriete({head,onDone}){
         ? <button className="cta sm" disabled={!allPlaced} style={{opacity:allPlaced?1:.45}} onClick={validate}>✅ Vérifier le schéma</button>
         : (<div className="fb good" style={{textAlign:"left"}}>
             <strong>Correction</strong>
-            {D.paires.map((pr,k)=>(<p key={k} style={{margin:"6px 0"}}><b>{pr.emoji} {pr.org}</b> → <b>{pr.prop}</b>.<br/><span style={{color:"#5a5470"}}>{Acr(pr.detail)} <i>Ex. : {Acr(pr.ex)}</i></span></p>))}
+            {D.paires.map((pr,k)=>(<div key={k} className="prop-corr">
+              <p style={{margin:"6px 0"}}><b>{pr.emoji} {pr.org}</b> → <b>{pr.prop}</b>.<br/><span style={{color:"#5a5470"}}>{Acr(pr.detail)} <i>Ex. : {Acr(pr.ex)}</i></span></p>
+              {pr.notion&&<div className="org-notion"><span className="org-notion-mot">💬 {pr.notion.mot}</span> : {Acr(pr.notion.def)}</div>}
+            </div>))}
             <button className="next" onClick={()=>setPhase("quiz")}>Continuer →</button>
           </div>)}
     </div>);
@@ -8551,6 +8629,7 @@ function OrgPropriete({head,onDone}){
       <div className="org-prog"><span className="org-prog-fill" style={{width:(qi/qz.length*100)+"%",background:"#e11d48"}}></span></div>
       <div className="org-h2">⚖️ Vrai ou Faux ? <small>{qi+1} / {qz.length}</small></div>
       <div className="org-scn">{Acr(q.t)}</div>
+      <OrgIll name={q.ill}/>
       <div className="vf-btns">
         <button className={"vf-btn vf-true"+(qpick!==null?(q.vf?" ok":(qpick===true?" bad":"")):"")} disabled={qpick!==null} onClick={()=>choose(true)}>✓ Vrai</button>
         <button className={"vf-btn vf-false"+(qpick!==null?(!q.vf?" ok":(qpick===false?" bad":"")):"")} disabled={qpick!==null} onClick={()=>choose(false)}>✗ Faux</button>
@@ -8582,25 +8661,46 @@ const ORGGOUV = {
   intro:"Gouverner une organisation, c'est décider QUI prend les grandes décisions et COMMENT. Chaque type d'organisation a sa façon de se gouverner.",
   modes:[
     { id:"ent", emoji:"🏢", titre:"Entreprise", couleur:"#0ea5e9",
-      regle:"Les décisions appartiennent aux propriétaires (associés/actionnaires) et aux dirigeants qu'ils nomment. Le poids dans le vote dépend souvent du nombre de parts détenues." },
+      regle:"Les décisions appartiennent aux propriétaires (associés/actionnaires) et aux dirigeants qu'ils nomment. Le poids dans le vote dépend souvent du nombre de parts détenues.",
+      ex:[ {e:"💼", t:"Vote selon les parts", d:"plus on a d'actions, plus on pèse"},
+           {e:"👔", t:"Nommer un dirigeant", d:"les associés choisissent le directeur"},
+           {e:"📊", t:"Fixer la stratégie", d:"décider des grands choix de l'entreprise"} ] },
     { id:"pub", emoji:"🏛️", titre:"Organisation publique", couleur:"#16a34a",
-      regle:"Les décisions sont encadrées par la loi et les élus (ou l'État). L'organisation publique poursuit l'intérêt général, sous contrôle démocratique." },
+      regle:"Les décisions sont encadrées par la loi et les élus (ou l'État). L'organisation publique poursuit l'intérêt général, sous contrôle démocratique.",
+      ex:[ {e:"🗳️", t:"Des élus décident", d:"conseil municipal, régional…"},
+           {e:"📜", t:"Respect de la loi", d:"les décisions suivent des règles strictes"},
+           {e:"🌍", t:"Intérêt général", d:"servir tous les citoyens, pas un propriétaire"} ] },
     { id:"osc", emoji:"🤝", titre:"Organisation de la société civile", couleur:"#e11d48",
-      regle:"Les décisions se prennent démocratiquement en assemblée générale : « une personne = une voix », quelle que soit la somme apportée." }
+      regle:"Les décisions se prennent démocratiquement en assemblée générale : « une personne = une voix », quelle que soit la somme apportée.",
+      ex:[ {e:"✋", t:"Une personne = une voix", d:"égalité entre tous les membres"},
+           {e:"🗳️", t:"Élire le bureau", d:"les adhérents choisissent leurs responsables"},
+           {e:"📋", t:"Voter en AG", d:"les grandes décisions sont votées ensemble"} ] }
   ],
   scenarios:[
-    { t:"Lors d'une assemblée, chaque membre dispose d'UNE voix, peu importe ce qu'il a versé. On vote pour élire le bureau.", ok:"osc",
+    { t:"Lors d'une assemblée, chaque membre dispose d'UNE voix, peu importe ce qu'il a versé. On vote pour élire le bureau.", ok:"osc", ill:"ag",
       why:"« Une personne = une voix » et l'élection d'un bureau en AG : c'est le gouvernement démocratique d'une organisation de la société civile (association)." },
-    { t:"Un actionnaire qui détient 60 % des actions impose le choix du nouveau directeur général.", ok:"ent",
+    { t:"Un actionnaire qui détient 60 % des actions impose le choix du nouveau directeur général.", ok:"ent", ill:"actionnaires",
       why:"Le pouvoir dépend du nombre d'actions détenues : c'est typique de la gouvernance d'une entreprise." },
-    { t:"Un conseil municipal élu vote le budget de la commune, dans le respect de la loi.", ok:"pub",
+    { t:"Un conseil municipal élu vote le budget de la commune, dans le respect de la loi.", ok:"pub", ill:"etat",
       why:"Des élus qui décident dans le cadre de la loi, pour l'intérêt général : gouvernance d'une organisation publique." },
-    { t:"Les associés se réunissent pour approuver les comptes et fixer la stratégie selon leurs parts.", ok:"ent",
+    { t:"Les associés se réunissent pour approuver les comptes et fixer la stratégie selon leurs parts.", ok:"ent", ill:"gouv_ent",
       why:"Décisions des associés selon leurs parts : gouvernance d'entreprise." },
-    { t:"Une décision doit respecter le Code général des collectivités et sert l'intérêt général.", ok:"pub",
+    { t:"Une décision doit respecter le Code général des collectivités et sert l'intérêt général.", ok:"pub", ill:"gouv_pub",
       why:"Encadrement par la loi + intérêt général : gouvernance publique." },
-    { t:"Le président d'une association est élu par les adhérents et rend des comptes en AG.", ok:"osc",
-      why:"Élection par les adhérents et reddition de comptes en AG : gouvernance d'une organisation de la société civile." }
+    { t:"Le président d'une association est élu par les adhérents et rend des comptes en AG.", ok:"osc", ill:"vote",
+      why:"Élection par les adhérents et reddition de comptes en AG : gouvernance d'une organisation de la société civile." },
+    { t:"À la coopérative sportive de Saint-Paul, le trésorier est élu à main levée : chaque adhérent lève la main, une voix chacun.", ok:"osc", ill:"vote",
+      why:"Vote égalitaire (« une personne = une voix ») entre adhérents : gouvernance d'une organisation de la société civile." },
+    { t:"Le maire de la commune présente son projet d'école au conseil municipal, qui le vote en respectant le budget public.", ok:"pub", ill:"gouv_pub",
+      why:"Des élus, un cadre légal et l'intérêt général (une école pour tous) : gouvernance publique." },
+    { t:"Deux associés possèdent chacun 50 % d'une SARL réunionnaise : ils doivent se mettre d'accord pour toute décision importante.", ok:"ent", ill:"gouv_ent",
+      why:"Le pouvoir se partage selon les parts détenues (50/50) : gouvernance d'entreprise." },
+    { t:"Le directeur d'un hôpital public applique une réforme décidée par le ministère de la Santé.", ok:"pub", ill:"gouv_pub",
+      why:"L'organisation publique agit dans le cadre fixé par l'État, pour l'intérêt général : gouvernance publique." },
+    { t:"Un investisseur rachète la majorité des actions d'une entreprise et remplace aussitôt l'équipe dirigeante.", ok:"ent", ill:"actionnaires",
+      why:"Détenir la majorité des actions donne le pouvoir de décision : gouvernance d'entreprise." },
+    { t:"Lors de l'assemblée générale annuelle d'une association de quartier, les adhérents votent le programme d'activités de l'année.", ok:"osc", ill:"ag",
+      why:"Décision votée par les membres en AG : gouvernance d'une organisation de la société civile." }
   ]
 };
 
@@ -8619,6 +8719,7 @@ function OrgGouvernement({head,onDone}){
         <div className="gouv-modes">{D.modes.map((m,k)=>(
           <div key={m.id} className="gouv-mode" style={{"--oc":m.couleur,animationDelay:(k*0.12)+"s"}}>
             <div className="gouv-mode-ic">{m.emoji}</div><h3>{m.titre}</h3><p>{m.regle}</p>
+            <OrgExamples items={m.ex} color={m.couleur}/>
           </div>))}
         </div>
         <button className="cta sm" onClick={()=>setPhase("play")}>À toi : reconnais le mode de gouvernement →</button>
@@ -8635,6 +8736,7 @@ function OrgGouvernement({head,onDone}){
       <div className="org-prog"><span className="org-prog-fill" style={{width:(i/sc.length*100)+"%",background:"#0d9488"}}></span></div>
       <div className="org-h2">🎬 Quel mode de gouvernement ? <small>{i+1} / {sc.length}</small></div>
       <div className="org-scn">{Acr(s.t)}</div>
+      <OrgIll name={s.ill}/>
       <div className="org-choices">{D.modes.map(m=>{ let c="org-choice"; if(pick!==null){ if(m.id===s.ok)c+=" ok"; else if(m.id===pick)c+=" bad"; }
         return <button key={m.id} className={c} style={{"--oc":m.couleur}} onClick={()=>choose(m.id)}>
           <span className="org-choice-ic">{m.emoji}</span><span>{m.titre}</span></button>; })}</div>
@@ -8665,30 +8767,51 @@ function OrgGouvernement({head,onDone}){
 const ORGCTRL = {
   intro:"Diriger, c'est bien… mais les dirigeants doivent rendre des comptes ! Chaque type d'organisation a une INSTANCE chargée de contrôler ses dirigeants.",
   cas:[
-    { id:"ent", emoji:"🏢", org:"Entreprise",
+    { id:"ent", emoji:"🏢", org:"Entreprise", ill:"comptes",
       instance:"Les associés (+ commissaire aux comptes)",
-      detail:"Au sein de l'entreprise, ce sont les associés qui contrôlent les dirigeants : ils approuvent les comptes annuels (souvent après vérification par un commissaire aux comptes), définissent les orientations stratégiques, et peuvent nommer ou révoquer les dirigeants." },
-    { id:"pub", emoji:"🏛️", org:"Organisation publique",
+      detail:"Au sein de l'entreprise, ce sont les associés qui contrôlent les dirigeants : ils approuvent les comptes annuels (souvent après vérification par un commissaire aux comptes), définissent les orientations stratégiques, et peuvent nommer ou révoquer les dirigeants.",
+      ex:[ {e:"📊", t:"Approuver les comptes", d:"valider les résultats de l'année"},
+           {e:"🔍", t:"Commissaire aux comptes", d:"un expert vérifie les chiffres"},
+           {e:"🔄", t:"Nommer / révoquer", d:"changer le dirigeant si besoin"} ] },
+    { id:"pub", emoji:"🏛️", org:"Organisation publique", ill:"cour",
       instance:"La Cour des comptes",
-      detail:"Dans une organisation publique, la Cour des comptes vérifie l'emploi des fonds publics et sanctionne les manquements à leur bon usage." },
-    { id:"osc", emoji:"🤝", org:"Organisation de la société civile",
+      detail:"Dans une organisation publique, la Cour des comptes vérifie l'emploi des fonds publics et sanctionne les manquements à leur bon usage.",
+      ex:[ {e:"⚖️", t:"La Cour des comptes", d:"une institution qui contrôle l'État"},
+           {e:"💰", t:"Vérifier les fonds publics", d:"l'argent public est-il bien utilisé ?"},
+           {e:"⚠️", t:"Sanctionner", d:"punir les mauvais usages de l'argent"} ] },
+    { id:"osc", emoji:"🤝", org:"Organisation de la société civile", ill:"bureau",
       instance:"Les membres (en assemblée générale)",
-      detail:"Dans une association, les membres réunis en assemblée générale annuelle approuvent le bilan financier et participent à un vote de confiance des membres du bureau." }
+      detail:"Dans une association, les membres réunis en assemblée générale annuelle approuvent le bilan financier et participent à un vote de confiance des membres du bureau.",
+      ex:[ {e:"🗳️", t:"En assemblée générale", d:"tous les membres se réunissent"},
+           {e:"📋", t:"Approuver le bilan", d:"valider les comptes de l'association"},
+           {e:"🤔", t:"Vote de confiance", d:"renouveler ou non le bureau"} ] }
   ],
   // schéma à relier : org -> instance
   scenarios:[
-    { t:"Réunis en assemblée générale annuelle, ils approuvent le bilan financier et votent la confiance au bureau.", ok:"osc",
+    { t:"Réunis en assemblée générale annuelle, ils approuvent le bilan financier et votent la confiance au bureau.", ok:"osc", ill:"bureau",
       why:"Ce sont les membres de l'association, en AG, qui contrôlent les dirigeants." },
-    { t:"Elle vérifie l'emploi des fonds publics et sanctionne les manquements à leur bon usage.", ok:"pub",
+    { t:"Elle vérifie l'emploi des fonds publics et sanctionne les manquements à leur bon usage.", ok:"pub", ill:"cour",
       why:"C'est la Cour des comptes, qui contrôle les organisations publiques." },
-    { t:"Ils approuvent les comptes annuels après vérification par un commissaire aux comptes et peuvent révoquer le dirigeant.", ok:"ent",
+    { t:"Ils approuvent les comptes annuels après vérification par un commissaire aux comptes et peuvent révoquer le dirigeant.", ok:"ent", ill:"comptes",
       why:"Ce sont les associés de l'entreprise qui contrôlent les dirigeants." },
-    { t:"Cette instance peut sanctionner un directeur d'hôpital public qui aurait mal utilisé l'argent public.", ok:"pub",
+    { t:"Cette instance peut sanctionner un directeur d'hôpital public qui aurait mal utilisé l'argent public.", ok:"pub", ill:"cour",
       why:"La Cour des comptes contrôle l'usage des fonds publics." },
-    { t:"Lors du vote de confiance annuel, ils décident de renouveler ou non le bureau de l'association.", ok:"osc",
+    { t:"Lors du vote de confiance annuel, ils décident de renouveler ou non le bureau de l'association.", ok:"osc", ill:"bureau",
       why:"Les membres contrôlent les dirigeants en AG." },
-    { t:"Ils définissent les orientations stratégiques et nomment ou révoquent les dirigeants de la société.", ok:"ent",
-      why:"Les associés exercent ce contrôle dans l'entreprise." }
+    { t:"Ils définissent les orientations stratégiques et nomment ou révoquent les dirigeants de la société.", ok:"ent", ill:"comptes",
+      why:"Les associés exercent ce contrôle dans l'entreprise." },
+    { t:"Un expert indépendant est mandaté pour vérifier que les comptes d'une SARL reflètent la réalité avant leur approbation par les associés.", ok:"ent", ill:"loupe",
+      why:"Le commissaire aux comptes aide les associés à contrôler les dirigeants de l'entreprise." },
+    { t:"Après un rapport pointant des dépenses injustifiées dans une mairie, des sanctions sont prononcées contre les responsables.", ok:"pub", ill:"cour",
+      why:"La Cour des comptes contrôle l'usage des fonds publics et sanctionne les manquements." },
+    { t:"À l'assemblée générale de l'association de quartier, les adhérents refusent de réélire le président sortant.", ok:"osc", ill:"bureau",
+      why:"Les membres exercent leur contrôle en votant en AG : ils peuvent ne pas renouveler les dirigeants." },
+    { t:"Les actionnaires d'une grande entreprise votent en assemblée pour révoquer un directeur général jugé inefficace.", ok:"ent", ill:"comptes",
+      why:"Les associés/actionnaires contrôlent et peuvent révoquer les dirigeants de l'entreprise." },
+    { t:"Cette institution publique contrôle qu'une région a bien dépensé les subventions reçues pour construire un lycée.", ok:"pub", ill:"cour",
+      why:"La Cour des comptes vérifie le bon emploi des fonds publics par les organisations publiques." },
+    { t:"Le trésorier d'un club sportif présente le bilan financier ; les membres l'approuvent par un vote.", ok:"osc", ill:"bureau",
+      why:"Les membres, en AG, approuvent les comptes : c'est leur façon de contrôler les dirigeants." }
   ]
 };
 
@@ -8714,6 +8837,7 @@ function OrgControle({head,onDone}){
           <div key={c.id} className="ctrl-card" style={{animationDelay:(k*0.12)+"s"}}>
             <div className="ctrl-emoji">{c.emoji}</div><h3>{c.org}</h3>
             <div className="ctrl-inst">{c.instance}</div>
+            <OrgExamples items={c.ex} color="#9333ea"/>
           </div>))}
         </div>
         <button className="cta sm" onClick={()=>setPhase("match")}>Relier organisation ↔ instance →</button>
@@ -8762,6 +8886,7 @@ function OrgControle({head,onDone}){
       <div className="org-prog"><span className="org-prog-fill" style={{width:(i/sc.length*100)+"%",background:"#9333ea"}}></span></div>
       <div className="org-h2">🕵️ Qui exerce ce contrôle ? <small>{i+1} / {sc.length}</small></div>
       <div className="org-scn">{Acr(s.t)}</div>
+      <OrgIll name={s.ill}/>
       <div className="org-choices">{D.cas.map(c=>{ let cl="org-choice"; if(pick!==null){ if(c.id===s.ok)cl+=" ok"; else if(c.id===pick)cl+=" bad"; }
         return <button key={c.id} className={cl} onClick={()=>choose(c.id)}>
           <span className="org-choice-ic">{c.emoji}</span><span>{c.org}</span></button>; })}</div>
@@ -8803,7 +8928,7 @@ const CONSIGNES = {
   probleme:{but:"Transformer une simple question de gestion en une vraie problématique de Grand oral.",comment:"Pars d'une question de gestion. En trois étapes — repérer la notion, choisir la formulation la plus ouverte, vérifier les critères — tu construis ta problématique. À la fin, elle s'affiche en entier.",astuce:"Une bonne problématique est ouverte, se discute et tient 10 minutes."},
   ordre:{but:"Remettre dans le bon ordre les étapes d'un exposé de Grand oral.",comment:"Les étapes de l'exposé sont mélangées. Touche-les dans l'ordre logique, de l'accroche à l'ouverture. Si une étape n'est pas à sa place, on te le signale.",astuce:"Souviens-toi : on introduit, on développe, puis on conclut et on ouvre."},
   reformule:{but:"Trouver, parmi 6 reformulations, la problématique la plus impactante pour le Grand oral.",comment:"Pour chaque sujet (issu des 4 enseignements spécifiques : mercatique, RH & communication, gestion-finance, SIG), six reformulations te sont proposées. Choisis celle qui ouvre un vrai débat et donnera envie au jury de te questionner. Une explication te dit ensuite pourquoi c'était la meilleure.",astuce:"La meilleure problématique oppose deux idées (un « ou bien… ou bien »), reste ouverte et ne se répond pas en un seul mot."},
-  eval_entretien:{but:"Comprendre comment on évalue l'activité d'un salarié lors de l'entretien individuel d'évaluation.",comment:"Tu joues un manager qui mène un entretien d'évaluation. À chaque étape, choisis la meilleure pratique : fixer un objectif clair, choisir le bon indicateur (productivité, taux de réalisation, efficacité…), mesurer la performance et adopter la bonne posture. Chaque réponse s'explique.",astuce:"Un bon objectif est précis et mesurable (méthode SMART) ; un bon indicateur mesure un résultat, pas une simple présence."},
+  eval_entretien:{but:"Mener un véritable entretien annuel d'évaluation, puis l'expérimenter des deux côtés : manager ET salarié.",comment:"5 temps : (1) les bases de l'évaluation en quiz ; (2) un simulateur où tu calcules en direct la productivité et le taux de réalisation ; (3) le tableau de bord visuel de Léa (jauges, KPI, courbe trimestrielle) ; (4) un jeu de rôle où tu mènes l'entretien côté manager ; (5) les rôles s'inversent : tu te mets dans la peau de Léa pour travailler la posture professionnelle du salarié. Chaque choix est expliqué.",astuce:"Productivité = quantité ÷ heures. Taux de réalisation = résultat ÷ objectif × 100. Bonne posture : côté manager, valoriser et fixer un objectif SMART ; côté salarié, se préparer, accueillir les retours et exprimer ses besoins avec calme."},
   paie_intro:{but:"Découvrir, étage par étage, comment se lit un bulletin de salaire (niveau 1, noté sur 10).",comment:"On construit le bulletin de Maya ENSEMBLE, du haut vers le bas : 10 étages, 10 points. À chaque étage, une petite histoire et une question ; la ligne correspondante apparaît alors sur le bulletin (en-tête, salaire de base, heures supplémentaires, absence, prime, brut, cotisations salariales, net, cotisations patronales, net à payer).",astuce:"Retiens le sens de lecture : brut = base + heures sup + primes − absences ; on retire les cotisations salariales pour obtenir le net. Les cotisations patronales, elles, sont payées par l'entreprise en plus."},
   simul_paie:{but:"Construire un vrai bulletin de salaire détaillé, du brut au net à payer (niveau 2).",comment:"Après l'introduction (niveau 1), tu règles ici tous les paramètres : taux horaire, heures, heures supplémentaires (+25 %/+50 %), absences, plusieurs primes. Le bulletin se construit en direct, avec les lignes URSSAF détaillées, le net social, le coût employeur et le cumul annuel. Tu reconstruis les formules puis tu réponds à un quiz.",astuce:"Brut = base + heures sup + primes − absences. Net = brut − cotisations salariales. Coût employeur = brut + cotisations patronales."},
   evalnote_bulletin:{but:"Évaluation NOTÉE SUR 20 : remplir des bulletins de salaire en effectuant toi-même tous les calculs.",comment:"4 exercices de difficulté croissante, 5 points chacun. Pour chaque scénario (Tom, Sofia, Rachid, Léna), calcule les montants demandés — salaire de base, heures supplémentaires majorées, retenue d'absence, primes, cotisations, net, coût employeur — et saisis-les dans le bulletin. Tu valides chaque exercice : la correction et les formules s'affichent, puis tu passes au suivant. Ta note finale sur 20 est transmise à ton professeur dans la catégorie Évaluations.",astuce:"Garde tes formules en tête : base = heures × taux · HS = heures × taux × 1,25 · absence = jours × 7 h × taux (en MOINS) · net = brut − cotisations salariales · coût employeur = brut + cotisations patronales. Arrondis tes résultats à deux chiffres après la virgule. Une calculatrice déplaçable (🧮) est intégrée à l'évaluation."}
@@ -8959,58 +9084,429 @@ const EVAL_DATA = {
         {t:"Sa tenue vestimentaire et sa coiffure.",ok:false},
         {t:"Le nombre de pauses qu'il prend dans la journée.",ok:false}],
      why:"Un indicateur de performance mesure un RÉSULTAT lié à l'activité. Le chiffre d'affaires réalisé mesure ce que le vendeur produit. Être présent (heures) ou prendre des pauses mesure une présence, pas une performance." },
-   { phase:"4. Mesurer la productivité",
-     q:"Karim a fabriqué 240 pâtisseries en 8 heures. Quelle est sa PRODUCTIVITÉ HORAIRE ?",
-     o:[{t:"30 pâtisseries par heure (240 ÷ 8).",ok:true},
-        {t:"240 pâtisseries par heure.",ok:false},
-        {t:"8 pâtisseries par heure.",ok:false},
-        {t:"1 920 pâtisseries par heure (240 × 8).",ok:false}],
-     why:"La productivité horaire = quantité produite ÷ nombre d'heures = 240 ÷ 8 = 30 pâtisseries/heure. Elle mesure la quantité produite pour chaque heure travaillée." },
-   { phase:"5. Le taux de réalisation",
-     q:"Léa avait un objectif de 500 ventes ce mois-ci. Elle en a réalisé 450. Quel est son TAUX DE RÉALISATION de l'objectif ?",
-     o:[{t:"90 % (450 ÷ 500 × 100).",ok:true},
-        {t:"50 % (objectif raté de moitié).",ok:false},
-        {t:"110 % (objectif dépassé).",ok:false},
-        {t:"45 % (450 ÷ 1000).",ok:false}],
-     why:"Le taux de réalisation = résultat obtenu ÷ objectif fixé × 100 = 450 ÷ 500 × 100 = 90 %. Léa a atteint 90 % de son objectif : c'est très correct, on en discute avec elle." },
-   { phase:"6. Efficacité vs efficience",
+   { phase:"4. Efficacité vs efficience",
      q:"Deux équipes atteignent le même objectif de production. L'équipe A utilise MOINS de ressources (temps, matières) que l'équipe B. Que peut-on dire ?",
      o:[{t:"L'équipe A est plus efficiente : même résultat avec moins de moyens.",ok:true},
         {t:"L'équipe B est meilleure car elle a utilisé plus de moyens.",ok:false},
         {t:"Les deux équipes sont identiques en tout point.",ok:false},
         {t:"L'équipe A a forcément triché.",ok:false}],
-     why:"Être EFFICACE = atteindre l'objectif. Être EFFICIENT = atteindre l'objectif en utilisant le MOINS de ressources possible. Les deux équipes sont efficaces, mais l'équipe A est plus efficiente (même résultat, moins de moyens)." },
-   { phase:"7. La posture du manager",
-     q:"Léa a atteint 90 % de son objectif mais elle est déçue. Quelle est la meilleure attitude d'évaluateur ?",
-     o:[{t:"Reconnaître ses points forts, analyser ensemble les écarts et fixer un nouvel objectif réaliste.",ok:true},
-        {t:"Ne parler que de ses erreurs pour qu'elle se ressaisisse.",ok:false},
-        {t:"Lui dire que tout va bien sans rien analyser.",ok:false},
-        {t:"Comparer publiquement ses résultats à ceux des collègues.",ok:false}],
-     why:"Une bonne évaluation est constructive : elle valorise les réussites, analyse les écarts SANS juger la personne, et débouche sur des objectifs réalistes. Humilier ou comparer publiquement démotive et n'aide pas à progresser." }
+     why:"Être EFFICACE = atteindre l'objectif. Être EFFICIENT = atteindre l'objectif en utilisant le MOINS de ressources possible. Les deux équipes sont efficaces, mais l'équipe A est plus efficiente (même résultat, moins de moyens)." }
+  ],
+  // Jeu de rôle : entretien annuel (dialogue patron ↔ salariée)
+  roleplay:[
+    { moment:"🚪 L'accueil",
+      contexte:"Léa entre dans ton bureau pour son entretien annuel. Elle a l'air un peu tendue.",
+      lea:"Bonjour… j'avoue que ces entretiens me stressent toujours un peu.",
+      q:"Comment ouvres-tu l'entretien ?",
+      o:[{t:"« Bonjour Léa, installe-toi. L'idée aujourd'hui, c'est de faire le point ensemble, pas de te juger. »",ok:true,
+          fb:"Parfait : mettre à l'aise et clarifier le but rassure et installe un climat de confiance."},
+         {t:"« Bon, on va voir tes mauvais chiffres tout de suite. »",ok:false,
+          fb:"Trop agressif : on démarre par le négatif, Léa se braque et l'échange est faussé."},
+         {t:"« Dépêchons-nous, j'ai 12 entretiens aujourd'hui. »",ok:false,
+          fb:"Dévalorisant : Léa se sent comme un numéro, pas comme une collaboratrice."}] },
+    { moment:"📊 Le bilan des résultats",
+      contexte:"Tu présentes le tableau de bord de Léa : objectif 500 ventes, 450 réalisées (taux de réalisation 90 %).",
+      lea:"90 %… donc j'ai raté mon objectif, c'est ça ?",
+      q:"Que réponds-tu, tableau de bord à l'appui ?",
+      o:[{t:"« Tu as atteint 90 % de l'objectif : c'est un bon résultat, regardons ensemble ce qui explique les 10 % manquants. »",ok:true,
+          fb:"Excellent : tu t'appuies sur l'indicateur, tu valorises et tu analyses l'écart de façon constructive."},
+         {t:"« Oui, c'est un échec, tu n'as pas atteint 500. »",ok:false,
+          fb:"Un taux de réalisation de 90 % n'est pas un échec ; le présenter ainsi est injuste et démotivant."},
+         {t:"« Ce n'est pas grave, on oublie les chiffres. »",ok:false,
+          fb:"L'entretien doit s'appuyer sur des indicateurs mesurables ; ignorer les chiffres vide l'évaluation de son sens."}] },
+    { moment:"🔎 L'analyse de l'écart",
+      contexte:"Vous cherchez ensemble pourquoi 10 % manquent.",
+      lea:"En décembre, j'étais seule en boutique pendant les pics… je n'arrivais pas à tout gérer.",
+      q:"Comment réagis-tu ?",
+      o:[{t:"« Merci de l'expliquer. Le sous-effectif aux pics est un vrai facteur : ce n'est pas qu'une question de motivation. »",ok:true,
+          fb:"Tu distingues ce qui dépend de Léa de ce qui relève de l'organisation : analyse juste et honnête."},
+         {t:"« Ce sont des excuses, il fallait travailler plus vite. »",ok:false,
+          fb:"Tu ignores un facteur organisationnel réel et tu rejettes toute la faute sur Léa : injuste."},
+         {t:"« Peu importe les raisons, le résultat est là. »",ok:false,
+          fb:"Sans analyser les causes, impossible de progresser : on répétera les mêmes difficultés."}] },
+    { moment:"🎯 Le nouvel objectif",
+      contexte:"Il faut fixer un objectif pour l'année à venir.",
+      lea:"Du coup, quel objectif tu me fixes ?",
+      q:"Quel objectif proposes-tu (méthode SMART) ?",
+      o:[{t:"« Passer de 450 à 480 ventes par mois d'ici 6 mois, avec un renfort prévu aux heures de pointe. »",ok:true,
+          fb:"SMART : précis, mesurable, atteignable (progressif), réaliste (renfort prévu) et daté. Bravo !"},
+         {t:"« Faire beaucoup mieux et te donner à fond. »",ok:false,
+          fb:"Ni précis ni mesurable : impossible de savoir si l'objectif est atteint."},
+         {t:"« Vendre 900, le double, dès le mois prochain. »",ok:false,
+          fb:"Irréaliste et démotivant : un objectif inatteignable décourage au lieu de stimuler."}] },
+    { moment:"🌱 La clôture",
+      contexte:"Tu termines l'entretien.",
+      lea:"Merci… franchement je ressors moins stressée que je ne pensais.",
+      q:"Comment conclus-tu ?",
+      o:[{t:"« Merci Léa. On note l'objectif et le renfort, et on refait un point dans 3 mois pour s'ajuster. »",ok:true,
+          fb:"Tu formalises les engagements et tu prévois un suivi : l'évaluation devient un vrai outil de progrès."},
+         {t:"« Voilà, c'est fini, tu peux y aller. »",ok:false,
+          fb:"Sans engagement écrit ni suivi, l'entretien ne sert à rien : tout sera oublié."},
+         {t:"« Si tu n'atteins pas l'objectif, ça ira mal pour toi. »",ok:false,
+          fb:"Terminer par une menace détruit la confiance construite pendant l'entretien."}] },
+    { moment:"💬 Reconnaître une réussite",
+      contexte:"Léa a obtenu 88 % de satisfaction client, son meilleur score.",
+      lea:"Bon, la satisfaction client c'est pas vraiment important, si ?",
+      q:"Que réponds-tu ?",
+      o:[{t:"« Au contraire ! 88 %, c'est excellent : un client satisfait revient et recommande la boutique. Bravo. »",ok:true,
+          fb:"Valoriser une vraie réussite avec un indicateur chiffré renforce la motivation et montre que tu suis son travail."},
+         {t:"« Effectivement, ça ne compte pas vraiment. »",ok:false,
+          fb:"Faux : la satisfaction client est un indicateur de performance essentiel. Le minimiser dévalorise un point fort."},
+         {t:"« On verra ça une autre fois. »",ok:false,
+          fb:"Éviter de reconnaître une réussite est une occasion manquée de motiver Léa."}] },
+    { moment:"🧰 Identifier un besoin de formation",
+      contexte:"Léa dit avoir du mal avec le nouveau logiciel de caisse.",
+      lea:"Le nouveau logiciel de caisse, je galère vraiment avec…",
+      q:"Comment réagis-tu en tant que manager ?",
+      o:[{t:"« Notons-le : je te propose une formation courte sur le logiciel, ça t'aidera et c'est normal d'être accompagnée. »",ok:true,
+          fb:"L'entretien sert aussi à détecter les besoins de formation. Proposer un accompagnement, c'est faire grandir le salarié."},
+         {t:"« Débrouille-toi, tout le monde y arrive. »",ok:false,
+          fb:"Refuser d'aider laisse la difficulté s'installer et démotive : ce n'est pas le rôle d'un manager."},
+         {t:"« Si tu n'y arrives pas, c'est ton problème. »",ok:false,
+          fb:"Rejeter la responsabilité ferme la porte au progrès et casse la confiance."}] },
+    { moment:"⚖️ Rester juste et factuel",
+      contexte:"Tu apprécies beaucoup Léa personnellement, mais ses ventes du T4 ont baissé.",
+      lea:"Comme on s'entend bien, tu vas me mettre une super évaluation, hein ?",
+      q:"Quelle posture adoptes-tu ?",
+      o:[{t:"« Je t'apprécie, mais mon évaluation reste basée sur les faits et les chiffres, pour être juste envers tout le monde. »",ok:true,
+          fb:"L'évaluation doit être objective et factuelle, jamais basée sur la sympathie : c'est une question d'équité."},
+         {t:"« Bien sûr, entre nous, je vais arranger tes résultats. »",ok:false,
+          fb:"Fausser l'évaluation par favoritisme est injuste envers les autres et trompe le salarié sur sa situation réelle."},
+         {t:"« Comme je t'aime bien, je ne regarde pas les chiffres. »",ok:false,
+          fb:"Ignorer les indicateurs vide l'évaluation de tout sens et crée des inégalités de traitement."}] },
+    { moment:"🚀 Évoquer l'évolution",
+      contexte:"Léa montre de l'intérêt pour encadrer une équipe un jour.",
+      lea:"Plus tard, j'aimerais bien gérer une petite équipe… mais je sais pas si c'est réaliste.",
+      q:"Comment accompagnes-tu ce projet ?",
+      o:[{t:"« C'est un beau projet. On peut te confier peu à peu des responsabilités et envisager une formation au management. »",ok:true,
+          fb:"L'entretien sert aussi à parler évolution professionnelle : tracer un chemin concret motive durablement."},
+         {t:"« Reste à ta place, ce n'est pas pour toi. »",ok:false,
+          fb:"Brider l'ambition d'un salarié est démotivant et fait perdre un potentiel à l'entreprise."},
+         {t:"« On verra ça dans dix ans peut-être. »",ok:false,
+          fb:"Repousser vaguement un projet d'évolution équivaut à l'enterrer : aucune perspective concrète."}] },
+    { moment:"🤝 Gérer une tension",
+      contexte:"Léa évoque un désaccord avec un collègue qui pèse sur l'ambiance.",
+      lea:"Et puis avec Marc, ça coince… ça me démotive un peu, je dois dire.",
+      q:"Quelle est la meilleure réaction de manager ?",
+      o:[{t:"« Merci de m'en parler. Je te propose qu'on en discute à trois, calmement, pour trouver une solution. »",ok:true,
+          fb:"Un manager prend au sérieux les tensions d'équipe et cherche une solution apaisée : cela protège la motivation et le collectif."},
+         {t:"« Ce ne sont pas mes affaires, débrouillez-vous entre vous. »",ok:false,
+          fb:"Ignorer un conflit le laisse pourrir et nuit à toute l'équipe : ce n'est pas une posture responsable."},
+         {t:"« C'est sûrement de ta faute, fais des efforts. »",ok:false,
+          fb:"Accuser sans écouter aggrave la tension et brise la confiance."}] }
+  ],
+  // Jeu de rôle inversé : l'élève est dans la peau de LÉA (la salariée évaluée)
+  roleplayLea:[
+    { moment:"🎬 Avant l'entretien",
+      contexte:"Tu es Léa. Ton manager t'a convoquée pour ton entretien annuel. Tu te prépares.",
+      boss:"Bonjour Léa, on se voit cet après-midi pour ton entretien annuel.",
+      q:"Quelle est la meilleure attitude pour bien te préparer ?",
+      o:[{t:"Je relis mes objectifs de l'année et je note mes réussites et mes difficultés pour en parler.",ok:true,
+          fb:"Se préparer, c'est se donner les moyens d'un échange constructif : le salarié est acteur de son évaluation."},
+         {t:"Je n'y pense pas, j'improviserai sur le moment.",ok:false,
+          fb:"Arriver sans préparation, c'est subir l'entretien au lieu d'y participer activement."},
+         {t:"Je prépare des excuses pour tout ce qui n'a pas marché.",ok:false,
+          fb:"Chercher des excuses braque la discussion ; mieux vaut analyser honnêtement les causes."}] },
+    { moment:"💪 Recevoir un compliment",
+      contexte:"Ton manager commence par tes points forts.",
+      boss:"Ta satisfaction client est à 88 %, c'est vraiment très bien, bravo.",
+      q:"Comment réagis-tu professionnellement ?",
+      o:[{t:"« Merci, ça me fait plaisir. J'ai vraiment soigné l'accueil cette année. »",ok:true,
+          fb:"Accepter un compliment avec simplicité et expliquer ce qu'on a fait, c'est une posture professionnelle mûre."},
+         {t:"« Bof, c'est rien, n'importe qui ferait pareil. »",ok:false,
+          fb:"Se dévaloriser efface ses réussites : il est sain de reconnaître ce qu'on réussit."},
+         {t:"« Ah enfin vous le remarquez, c'était pas trop tôt ! »",ok:false,
+          fb:"Une réaction agressive gâche un moment positif et dégrade la relation."}] },
+    { moment:"📉 Entendre un résultat en baisse",
+      contexte:"Le manager aborde la baisse des ventes au trimestre 4.",
+      boss:"En revanche, tes ventes ont baissé au dernier trimestre. Tu l'expliques comment ?",
+      q:"Quelle est la bonne posture ?",
+      o:[{t:"« C'est vrai. En décembre, j'étais souvent seule pendant les pics : j'explique le contexte sans me chercher d'excuses. »",ok:true,
+          fb:"Reconnaître les faits ET apporter un éclairage factuel, c'est honnête et constructif."},
+         {t:"« Ce n'est pas ma faute, c'est l'organisation, point. »",ok:false,
+          fb:"Tout rejeter sur les autres, sans nuance, ferme le dialogue."},
+         {t:"« Je ne vois pas de quoi vous parlez, tout allait bien. »",ok:false,
+          fb:"Nier un fait mesurable décrédibilise et empêche toute analyse utile."}] },
+    { moment:"🙋 Demander des moyens",
+      contexte:"Tu sais qu'un renfort t'aiderait aux heures de pointe.",
+      boss:"Que te faudrait-il pour mieux réussir l'an prochain ?",
+      q:"Comment formules-tu ta demande ?",
+      o:[{t:"« Un renfort aux heures de pointe m'aiderait beaucoup à mieux servir les clients et à atteindre l'objectif. »",ok:true,
+          fb:"Exprimer un besoin concret, relié à la performance, est une démarche professionnelle légitime."},
+         {t:"« Rien, je me débrouillerai toute seule comme d'habitude. »",ok:false,
+          fb:"Ne jamais exprimer ses besoins peut mener à l'épuisement et à des objectifs non atteints."},
+         {t:"« Il faudrait surtout virer ma collègue qui ne sert à rien. »",ok:false,
+          fb:"Attaquer un collègue est déplacé et contre-productif : on parle de moyens, pas de règlements de comptes."}] },
+    { moment:"🎯 Négocier un objectif",
+      contexte:"Le manager propose de passer de 450 à 480 ventes/mois.",
+      boss:"Je te propose un objectif de 480 ventes par mois d'ici 6 mois. Qu'en penses-tu ?",
+      q:"Quelle réponse est la plus professionnelle ?",
+      o:[{t:"« C'est ambitieux mais atteignable avec le renfort prévu. Je suis d'accord pour viser 480. »",ok:true,
+          fb:"Évaluer un objectif et s'engager en connaissance de cause, c'est être actrice de sa progression."},
+         {t:"« 480 ? Jamais ! Vous voulez ma mort. »",ok:false,
+          fb:"Un refus dramatisé bloque la négociation ; mieux vaut discuter calmement la faisabilité."},
+         {t:"« Mettez ce que vous voulez, je m'en fiche. »",ok:false,
+          fb:"Le désengagement total est une mauvaise posture : l'objectif te concerne directement."}] },
+    { moment:"🗣️ Exprimer un désaccord",
+      contexte:"Le manager te reproche un retard que tu juges injustifié.",
+      boss:"On m'a dit que tu étais souvent en retard le matin.",
+      q:"Comment exprimes-tu ton désaccord ?",
+      o:[{t:"« Je ne suis pas d'accord : voici mes horaires pointés, je suis à l'heure. Peut-on vérifier ensemble ? »",ok:true,
+          fb:"Exprimer un désaccord calmement, avec des faits, est une posture professionnelle assertive et respectueuse."},
+         {t:"« C'est faux et celui qui a dit ça est un menteur ! »",ok:false,
+          fb:"S'emporter et attaquer décrédibilise ton propos, même si tu as raison."},
+         {t:"Je ne dis rien et je laisse croire que c'est vrai.",ok:false,
+          fb:"Se taire face à une information inexacte te dessert : il est légitime de rétablir les faits."}] },
+    { moment:"🧠 Recevoir une critique utile",
+      contexte:"Le manager te signale un point à améliorer sur la tenue de la caisse.",
+      boss:"Il faudrait être plus rigoureuse sur le comptage de la caisse en fin de journée.",
+      q:"Quelle est la bonne posture ?",
+      o:[{t:"« Vous avez raison, je vais mettre en place une vérification systématique le soir. Merci du conseil. »",ok:true,
+          fb:"Accueillir une critique constructive et proposer une solution, c'est une marque de professionnalisme."},
+         {t:"« Vous critiquez toujours tout, ça suffit ! »",ok:false,
+          fb:"Prendre toute remarque comme une attaque empêche de progresser."},
+         {t:"« Oui oui » (sans rien changer ensuite).",ok:false,
+          fb:"Acquiescer sans agir ne règle rien : une critique utile appelle un vrai changement."}] },
+    { moment:"🌟 Parler de ses ambitions",
+      contexte:"Le manager te demande comment tu te projettes.",
+      boss:"Et toi, comment tu vois ton évolution dans l'entreprise ?",
+      q:"Comment évoques-tu tes ambitions ?",
+      o:[{t:"« J'aimerais à terme encadrer une petite équipe. Quelles compétences dois-je développer pour ça ? »",ok:true,
+          fb:"Exprimer un projet et demander comment l'atteindre, c'est prendre en main son évolution professionnelle."},
+         {t:"« Aucune idée, je verrai bien ce que vous déciderez pour moi. »",ok:false,
+          fb:"Tout déléguer à l'employeur, c'est renoncer à être acteur de sa carrière."},
+         {t:"« Je veux votre poste, et vite. »",ok:false,
+          fb:"Une ambition formulée de façon agressive et irréaliste dessert ton image."}] },
+    { moment:"📝 Vérifier ce qui est noté",
+      contexte:"Le manager rédige le compte rendu de l'entretien.",
+      boss:"Je note donc l'objectif de 480 ventes et la formation au logiciel de caisse.",
+      q:"Que fais-tu, en bonne professionnelle ?",
+      o:[{t:"« D'accord. Peut-on aussi noter le renfort aux heures de pointe, puisqu'il conditionne l'objectif ? »",ok:true,
+          fb:"Vérifier que les engagements réciproques sont bien consignés protège les deux parties et clarifie le suivi."},
+         {t:"« Notez ce que vous voulez, je ne lis jamais ces papiers. »",ok:false,
+          fb:"Ignorer le compte rendu, c'est risquer de subir des engagements qu'on n'a pas validés."},
+         {t:"Je signe sans lire pour aller plus vite.",ok:false,
+          fb:"Signer sans lire est imprudent : le compte rendu engage sur l'année."}] },
+    { moment:"🤝 Conclure l'entretien",
+      contexte:"L'entretien se termine.",
+      boss:"On se refait un point dans 3 mois pour voir où tu en es. Merci Léa.",
+      q:"Comment conclus-tu côté salariée ?",
+      o:[{t:"« Merci pour cet échange. Le point à 3 mois me convient, ça me motive d'avoir un cap clair. »",ok:true,
+          fb:"Conclure positivement et s'approprier le suivi, c'est ressortir de l'entretien comme actrice de sa progression."},
+         {t:"« Enfin fini, j'espère ne pas vous revoir avant un an. »",ok:false,
+          fb:"Une conclusion désengagée gâche la dynamique installée et la relation de travail."},
+         {t:"Je sors sans rien dire en haussant les épaules.",ok:false,
+          fb:"Une attitude fermée renvoie une image peu professionnelle et clôt mal l'échange."}] }
   ]
 };
 
 function EvalEntretien({head,onDone}){
   const D=EVAL_DATA;
+  // phases : intro -> quiz -> simu -> dashboard -> roleplay -> result
+  const [phase,setPhase]=useState("quiz");
+  // --- Quiz ---
   const [steps]=useState(()=>D.steps.map(s=>{ const idx=s.o.map((_,i)=>i); for(let k=idx.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[idx[k],idx[j]]=[idx[j],idx[k]];}
     return {...s, o:idx.map(i=>s.o[i])}; }));
   const [i,setI]=useState(0); const [picked,setPicked]=useState(null);
-  const [score,setScore]=useState(0); const [done,setDone]=useState(false);
-  if(done) return (<div className="game">{head}<Result score={score} total={steps.length} onDone={onDone}/></div>);
-  const st=steps[i]; const correct=st.o.findIndex(o=>o.ok);
-  const choose=(idx)=>{ if(picked!==null) return; setPicked(idx); if(st.o[idx].ok) setScore(s=>s+1); };
-  const next=()=>{ setPicked(null); if(i+1>=steps.length) setDone(true); else setI(i+1); };
+  const [scoreQuiz,setScoreQuiz]=useState(0);
+  // --- Simulateur d'indicateurs ---
+  const [qte,setQte]=useState(240);     // quantité produite
+  const [heures,setHeures]=useState(8); // heures travaillées
+  const [obj,setObj]=useState(500);     // objectif de ventes
+  const [real,setReal]=useState(450);   // ventes réalisées
+  const prod = heures>0 ? qte/heures : 0;
+  const taux = obj>0 ? real/obj*100 : 0;
+  // --- Jeu de rôle (manager) ---
+  const [rp,setRp]=useState(0); const [rpick,setRpick]=useState(null); const [scoreRP,setScoreRP]=useState(0);
+  // --- Jeu de rôle inversé (dans la peau de Léa) ---
+  const [rpL,setRpL]=useState(0); const [rpLpick,setRpLpick]=useState(null); const [scoreRPL,setScoreRPL]=useState(0);
+
+  const totalScore=()=> scoreQuiz + scoreRP + scoreRPL;
+  const totalMax = steps.length + D.roleplay.length + D.roleplayLea.length;
+
+  /* ====== PHASE QUIZ ====== */
+  if(phase==="quiz"){
+    const st=steps[i]; const correct=st.o.findIndex(o=>o.ok);
+    const choose=(idx)=>{ if(picked!==null) return; setPicked(idx); if(st.o[idx].ok) setScoreQuiz(s=>s+1); };
+    const next=()=>{ setPicked(null); if(i+1>=steps.length){ setPhase("simu"); } else setI(i+1); };
+    return (<div className="game">{head}
+      {i===0&&<div className="sim-intro">🎭 {Acr(D.intro)}</div>}
+      <div className="ee-prog">🧠 Les bases · Étape {i+1} / {steps.length}</div>
+      <div className="case"><div className="ctag">🎯 {Acr(st.phase)}</div><p className="cq">{Acr(st.q)}</p></div>
+      <div className="opts">{st.o.map((o,idx)=>{ let c="opt"; if(picked!==null){ if(o.ok)c+=" right"; else if(idx===picked)c+=" bad"; }
+        return <button key={idx} className={c} onClick={()=>choose(idx)}>{Acr(o.t)}</button>; })}</div>
+      {picked!==null&&(<div className={"fb "+(st.o[picked].ok?"good":"no")}>
+        <strong>{st.o[picked].ok?"✅ Bon choix !":"❌ Pas le meilleur choix."}</strong>
+        {!st.o[picked].ok&&<p style={{margin:"4px 0"}}>La meilleure réponse : « {Acr(st.o[correct].t)} ».</p>}
+        <p style={{marginTop:6}}><b>À retenir :</b> {Acr(st.why)}</p>
+        <button className="next" onClick={next}>{i+1>=steps.length?"Passer au simulateur d'indicateurs →":"Étape suivante →"}</button></div>)}
+    </div>);
+  }
+
+  /* ====== PHASE SIMULATEUR ====== */
+  if(phase==="simu"){
+    return (<div className="game">{head}
+      <div className="sim-intro">📐 <b>Simulateur d'indicateurs.</b> Avant de recevoir Léa, calcule ses indicateurs. Fais varier les curseurs : les formules et les résultats se mettent à jour en direct.</div>
+
+      <div className="ind-card pop">
+        <div className="ind-h">⚡ Productivité horaire</div>
+        <div className="ind-formula"><span className="ind-num">Quantité produite</span><span className="ind-op">÷</span><span className="ind-den">Heures travaillées</span><span className="ind-op">=</span><span className="ind-eq">{prod.toLocaleString("fr-FR",{maximumFractionDigits:1})}</span><span className="ind-unit">/ h</span></div>
+        <div className="ind-ctrl">
+          <label>Quantité produite : <b>{qte}</b> pâtisseries</label>
+          <input type="range" min="0" max="600" step="10" value={qte} onChange={e=>setQte(+e.target.value)}/>
+        </div>
+        <div className="ind-ctrl">
+          <label>Heures travaillées : <b>{heures} h</b></label>
+          <input type="range" min="1" max="20" step="1" value={heures} onChange={e=>setHeures(+e.target.value)}/>
+        </div>
+        <div className="ind-calc">{qte} ÷ {heures} = <b>{prod.toLocaleString("fr-FR",{maximumFractionDigits:1})}</b> pâtisseries par heure</div>
+        <div className="ind-note">💡 La <b>productivité</b> mesure la quantité produite pour chaque heure travaillée. Plus elle est élevée, plus le travail est productif (à qualité égale).</div>
+      </div>
+
+      <div className="ind-card pop" style={{animationDelay:".1s"}}>
+        <div className="ind-h ind-h2">🎯 Taux de réalisation de l'objectif</div>
+        <div className="ind-formula"><span className="ind-num">Résultat obtenu</span><span className="ind-op">÷</span><span className="ind-den">Objectif fixé</span><span className="ind-op">×</span><span className="ind-eq2">100</span><span className="ind-op">=</span><span className="ind-eq">{taux.toLocaleString("fr-FR",{maximumFractionDigits:1})}</span><span className="ind-unit">%</span></div>
+        <div className="ind-ctrl">
+          <label>Objectif fixé : <b>{obj}</b> ventes</label>
+          <input type="range" min="100" max="800" step="10" value={obj} onChange={e=>setObj(+e.target.value)}/>
+        </div>
+        <div className="ind-ctrl">
+          <label>Ventes réalisées : <b>{real}</b> ventes</label>
+          <input type="range" min="0" max="800" step="10" value={real} onChange={e=>setReal(+e.target.value)}/>
+        </div>
+        <div className="ind-calc">{real} ÷ {obj} × 100 = <b>{taux.toLocaleString("fr-FR",{maximumFractionDigits:1})} %</b></div>
+        <div className={"ind-verdict "+(taux>=100?"v-top":taux>=80?"v-ok":taux>=50?"v-mid":"v-low")}>
+          {taux>=100?"🌟 Objectif atteint ou dépassé !":taux>=80?"👍 Très bon résultat, proche de l'objectif.":taux>=50?"🟡 Objectif partiellement atteint.":"🔴 Objectif loin d'être atteint."}
+        </div>
+        <div className="ind-note">💡 Le <b>taux de réalisation</b> compare ce qui a été fait à ce qui était visé. 100 % = objectif atteint ; au-dessus = dépassé ; en dessous = partiellement atteint.</div>
+      </div>
+
+      <button className="cta sm" onClick={()=>setPhase("dashboard")}>Voir le tableau de bord de Léa →</button>
+    </div>);
+  }
+
+  /* ====== PHASE TABLEAU DE BORD ====== */
+  if(phase==="dashboard"){
+    // valeurs « officielles » du scénario de Léa (indépendantes du simulateur)
+    const L={ objVentes:500, realVentes:450, prodH:30, prodCible:32, caReal:18500, caObj:20000, satisfaction:88, absences:3 };
+    const tauxV=L.realVentes/L.objVentes*100;
+    const tauxCA=L.caReal/L.caObj*100;
+    const tauxProd=L.prodH/L.prodCible*100;
+    return (<div className="game">{head}
+      <div className="sim-intro">📊 <b>Tableau de bord de Léa</b> — voici la synthèse de son année. Tu vas t'appuyer dessus pour mener l'entretien.</div>
+      <div className="dash">
+        <div className="dash-id"><div className="dash-av">🧑‍🍳</div><div><div className="dash-nom">Léa PAYET</div><div className="dash-role">Vendeuse · Kaz'Délices · Bilan annuel</div></div></div>
+        <div className="dash-grid">
+          <Gauge label="Taux de réalisation (ventes)" value={tauxV} sub={L.realVentes+" / "+L.objVentes+" ventes"} color="#0d9488"/>
+          <Gauge label="Objectif chiffre d'affaires" value={tauxCA} sub={L.caReal.toLocaleString("fr-FR")+" / "+L.caObj.toLocaleString("fr-FR")+" €"} color="#2563eb"/>
+          <Gauge label="Productivité vs cible" value={tauxProd} sub={L.prodH+" / "+L.prodCible+" ventes/h"} color="#d97706"/>
+        </div>
+        <div className="dash-kpis">
+          <div className="dk"><div className="dk-v">{L.prodH}</div><div className="dk-l">ventes / heure</div></div>
+          <div className="dk"><div className="dk-v">{L.satisfaction}%</div><div className="dk-l">satisfaction client</div></div>
+          <div className="dk"><div className="dk-v">{L.absences} j</div><div className="dk-l">absences sur l'année</div></div>
+          <div className="dk"><div className="dk-v">{L.caReal.toLocaleString("fr-FR")} €</div><div className="dk-l">CA généré</div></div>
+        </div>
+        <div className="dash-bars">
+          <div className="db-row"><span>Trim. 1</span><div className="db-track"><div className="db-fill" style={{width:"82%"}}></div></div><b>410</b></div>
+          <div className="db-row"><span>Trim. 2</span><div className="db-track"><div className="db-fill" style={{width:"94%"}}></div></div><b>470</b></div>
+          <div className="db-row"><span>Trim. 3</span><div className="db-track"><div className="db-fill" style={{width:"96%"}}></div></div><b>480</b></div>
+          <div className="db-row"><span>Trim. 4</span><div className="db-track"><div className="db-fill db-low" style={{width:"68%"}}></div></div><b>340</b></div>
+        </div>
+        <div className="dash-read">📉 On remarque un <b>trimestre 4 plus faible</b> (340 ventes) : ce sera un point à comprendre avec Léa pendant l'entretien.</div>
+      </div>
+      <button className="cta sm" onClick={()=>setPhase("roleplay")}>🎭 Démarrer l'entretien avec Léa →</button>
+    </div>);
+  }
+
+  /* ====== PHASE JEU DE RÔLE (manager) ====== */
+  if(phase==="roleplay"){
+    const sc=D.roleplay[rp];
+    const choose=(idx)=>{ if(rpick!==null) return; setRpick(idx); if(sc.o[idx].ok) setScoreRP(s=>s+1); };
+    const next=()=>{ setRpick(null); if(rp+1>=D.roleplay.length){ setPhase("switch"); } else setRp(rp+1); };
+    const good=sc.o.findIndex(o=>o.ok);
+    return (<div className="game">{head}
+      <div className="rp-prog"><span className="rp-prog-fill" style={{width:(rp/D.roleplay.length*100)+"%"}}></span></div>
+      <div className="rp-moment">{Acr(sc.moment)} <small>· entretien {rp+1}/{D.roleplay.length}</small></div>
+      <div className="rp-scene">{Acr(sc.contexte)}</div>
+      <div className="rp-bubble rp-lea pop"><span className="rp-av">🧑‍🍳</span><div className="rp-txt">{Acr(sc.lea)}</div></div>
+      <div className="rp-you">👔 Toi (manager) : <b>{Acr(sc.q)}</b></div>
+      <div className="rp-opts">{sc.o.map((o,idx)=>{ let c="rp-opt"; if(rpick!==null){ if(o.ok)c+=" ok"; else if(idx===rpick)c+=" bad"; }
+        return <button key={idx} className={c} onClick={()=>choose(idx)}>{Acr(o.t)}</button>; })}</div>
+      {rpick!==null&&(<div className={"fb "+(sc.o[rpick].ok?"good":"no")}>
+        <strong>{sc.o[rpick].ok?"✅ Belle réponse !":"❌ Maladroit."}</strong>
+        {!sc.o[rpick].ok&&<p style={{margin:"4px 0"}}>Meilleure attitude : « {Acr(sc.o[good].t)} »</p>}
+        <p style={{marginTop:6}}>{Acr(sc.o[rpick].fb)}</p>
+        <button className="next" onClick={next}>{rp+1>=D.roleplay.length?"Inverser les rôles →":"Continuer l'entretien →"}</button></div>)}
+    </div>);
+  }
+
+  /* ====== ÉCRAN DE BASCULE : on inverse les rôles ====== */
+  if(phase==="switch"){
+    return (<div className="game">{head}
+      <div className="rp-switch">
+        <div className="rp-switch-ic">🔄</div>
+        <h2>On inverse les rôles !</h2>
+        <p>Tu as mené l'entretien <b>côté manager</b> 👔. Maintenant, mets-toi <b>dans la peau de Léa</b> 🧑‍🍳, la salariée évaluée.</p>
+        <p>L'objectif : t'entraîner à la <b>posture professionnelle</b> du salarié — se préparer, accepter un compliment, reconnaître un point faible sans se braquer, exprimer un besoin ou un désaccord avec calme, accueillir une critique, parler de ses ambitions…</p>
+        <div className="rp-switch-hint">10 situations t'attendent. À chaque fois, choisis la réponse la plus professionnelle.</div>
+        <button className="cta sm" onClick={()=>setPhase("roleplayLea")}>🧑‍🍳 Devenir Léa →</button>
+      </div>
+    </div>);
+  }
+
+  /* ====== PHASE JEU DE RÔLE INVERSÉ (dans la peau de Léa) ====== */
+  if(phase==="roleplayLea"){
+    const sc=D.roleplayLea[rpL];
+    const choose=(idx)=>{ if(rpLpick!==null) return; setRpLpick(idx); if(sc.o[idx].ok) setScoreRPL(s=>s+1); };
+    const next=()=>{ setRpLpick(null); if(rpL+1>=D.roleplayLea.length){ setPhase("result"); } else setRpL(rpL+1); };
+    const good=sc.o.findIndex(o=>o.ok);
+    return (<div className="game">{head}
+      <div className="rp-roletag">🧑‍🍳 Tu incarnes <b>Léa</b>, la salariée</div>
+      <div className="rp-prog"><span className="rp-prog-fill rp-prog-lea" style={{width:(rpL/D.roleplayLea.length*100)+"%"}}></span></div>
+      <div className="rp-moment">{Acr(sc.moment)} <small>· situation {rpL+1}/{D.roleplayLea.length}</small></div>
+      <div className="rp-scene">{Acr(sc.contexte)}</div>
+      <div className="rp-bubble rp-boss pop"><span className="rp-av rp-av-boss">👔</span><div className="rp-txt">{Acr(sc.boss)}</div></div>
+      <div className="rp-you rp-you-lea">🧑‍🍳 Toi (Léa) : <b>{Acr(sc.q)}</b></div>
+      <div className="rp-opts">{sc.o.map((o,idx)=>{ let c="rp-opt"; if(rpLpick!==null){ if(o.ok)c+=" ok"; else if(idx===rpLpick)c+=" bad"; }
+        return <button key={idx} className={c} onClick={()=>choose(idx)}>{Acr(o.t)}</button>; })}</div>
+      {rpLpick!==null&&(<div className={"fb "+(sc.o[rpLpick].ok?"good":"no")}>
+        <strong>{sc.o[rpLpick].ok?"✅ Posture professionnelle !":"❌ À éviter."}</strong>
+        {!sc.o[rpLpick].ok&&<p style={{margin:"4px 0"}}>Meilleure attitude : « {Acr(sc.o[good].t)} »</p>}
+        <p style={{marginTop:6}}>{Acr(sc.o[rpLpick].fb)}</p>
+        <button className="next" onClick={next}>{rpL+1>=D.roleplayLea.length?"Voir mon bilan →":"Situation suivante →"}</button></div>)}
+    </div>);
+  }
+
+  /* ====== RÉSULTAT ====== */
   return (<div className="game">{head}
-    {i===0&&<div className="sim-intro">🎭 {Acr(D.intro)}</div>}
-    <div className="ee-prog">Étape {i+1} / {steps.length}</div>
-    <div className="case"><div className="ctag">🎯 {Acr(st.phase)}</div><p className="cq">{Acr(st.q)}</p></div>
-    <div className="opts">{st.o.map((o,idx)=>{ let c="opt"; if(picked!==null){ if(o.ok)c+=" right"; else if(idx===picked)c+=" bad"; }
-      return <button key={idx} className={c} onClick={()=>choose(idx)}>{Acr(o.t)}</button>; })}</div>
-    {picked!==null&&(<div className={"fb "+(st.o[picked].ok?"good":"no")}>
-      <strong>{st.o[picked].ok?"✅ Bon choix !":"❌ Pas le meilleur choix."}</strong>
-      {!st.o[picked].ok&&<p style={{margin:"4px 0"}}>La meilleure réponse : « {Acr(st.o[correct].t)} ».</p>}
-      <p style={{marginTop:6}}><b>À retenir :</b> {Acr(st.why)}</p>
-      <button className="next" onClick={next}>{i+1>=steps.length?"Voir mon score":"Étape suivante →"}</button></div>)}
+    <Result score={totalScore()} total={totalMax} onDone={onDone}
+      recap={<div className="fb good" style={{textAlign:"left"}}>
+        <strong>🎯 À retenir</strong>
+        <p style={{margin:"6px 0"}}>L'entretien d'évaluation s'appuie sur des <b>indicateurs mesurables</b> : la <b>productivité</b> (quantité ÷ heures) et le <b>taux de réalisation</b> (résultat ÷ objectif × 100). Un <b>tableau de bord</b> les rend lisibles d'un coup d'œil.</p>
+        <p style={{margin:"6px 0"}}><b>Côté manager</b> : mettre à l'aise, s'appuyer sur les chiffres, valoriser, analyser les écarts sans juger, fixer un objectif <b>SMART</b> et prévoir un suivi.</p>
+        <p style={{margin:"6px 0"}}><b>Côté salarié</b> : se préparer, accepter les compliments, reconnaître ses points faibles sans se braquer, exprimer ses besoins et désaccords avec calme, accueillir les critiques et parler de son évolution. C'est la <b>posture professionnelle</b>.</p>
+      </div>}/>
+  </div>);
+}
+
+/* Jauge circulaire animée (tableau de bord) */
+function Gauge({label,value,sub,color}){
+  const v=Math.max(0,Math.min(value,120));
+  const r=42, c=2*Math.PI*r;
+  const off=c*(1-Math.min(v,100)/100);
+  return (<div className="gauge">
+    <svg viewBox="0 0 110 110">
+      <circle cx="55" cy="55" r={r} fill="none" stroke="#eceaf3" strokeWidth="10"/>
+      <circle cx="55" cy="55" r={r} fill="none" stroke={color} strokeWidth="10" strokeLinecap="round"
+        strokeDasharray={c} strokeDashoffset={c} transform="rotate(-90 55 55)">
+        <animate attributeName="stroke-dashoffset" from={c} to={off} dur="1.1s" fill="freeze" calcMode="spline" keySplines="0.22 1 0.36 1" keyTimes="0;1"/>
+      </circle>
+      <text x="55" y="52" textAnchor="middle" fontSize="20" fontWeight="800" fill={color}>{Math.round(value)}%</text>
+      <text x="55" y="70" textAnchor="middle" fontSize="9" fill="#8a8398">{value>=100?"atteint":"en cours"}</text>
+    </svg>
+    <div className="gauge-l">{label}</div>
+    <div className="gauge-s">{sub}</div>
   </div>);
 }
 
@@ -12215,6 +12711,99 @@ abbr.acr{text-decoration:underline dotted;text-underline-offset:2px;cursor:help;
 .ctrl-card h3{font-size:14px;margin:6px 0}
 .ctrl-inst{font-size:12.5px;font-weight:700;color:#7c3aed;background:#f3e8ff;border-radius:9px;padding:6px 8px;margin-top:6px}
 @media(max-width:640px){ .gouv-modes,.ctrl-cards{grid-template-columns:1fr} }
+/* Illustration SVG sous chaque question (responsive PC + mobile) */
+.org-ill{margin:0 auto 14px;max-width:300px;background:linear-gradient(135deg,#f8fbff,#fbf7ff);border:1px solid #e7edf6;border-radius:16px;padding:8px;box-shadow:0 12px 30px -24px rgba(40,40,90,.45);animation:pipop .5s cubic-bezier(.34,1.46,.42,1)}
+.org-ill svg{display:block;width:100%;height:auto}
+@media(max-width:560px){ .org-ill{max-width:200px} }
+/* Carrousel d'exemples animés (écrans d'intro) */
+.org-ex{margin-top:10px;border-top:1px dashed #e7e0ee;padding-top:8px}
+.org-ex-track{position:relative;min-height:46px}
+.org-ex-item{position:absolute;inset:0;display:flex;align-items:center;gap:9px;opacity:0;transform:translateY(6px);transition:opacity .5s,transform .5s;pointer-events:none;text-align:left}
+.org-ex-item.on{opacity:1;transform:none}
+.org-ex-emoji{font-size:24px;flex-shrink:0;filter:drop-shadow(0 2px 4px rgba(0,0,0,.12))}
+.org-ex-txt{display:flex;flex-direction:column;line-height:1.25}
+.org-ex-txt b{font-size:13px;color:var(--oc,#333)}
+.org-ex-txt span{font-size:11.5px;color:#7a7390}
+.org-ex-dots{display:flex;gap:5px;justify-content:center;margin-top:6px}
+.org-ex-dots i{width:6px;height:6px;border-radius:50%;background:#d8d2e0;cursor:pointer;transition:.2s}
+.org-ex-dots i.on{background:var(--oc,#7c3aed);width:18px;border-radius:4px}
+/* Encadré « notion expliquée » */
+.org-notion{background:#fffbeb;border:1px solid #fde9b8;border-left:4px solid #f59e0b;border-radius:0 10px 10px 0;padding:9px 12px;margin:4px 0 10px;font-size:13px;line-height:1.5;color:#5a4a2a}
+.org-notion-mot{font-weight:800;color:#b45309}
+.prop-corr{margin-bottom:4px}
+/* ===== Entretien d'évaluation : simulateur d'indicateurs ===== */
+.ind-card{background:#fff;border:2px solid #cce9e4;border-radius:18px;padding:16px 18px;margin-bottom:14px;box-shadow:0 20px 46px -28px rgba(13,148,136,.45)}
+.ind-h{font-family:'Fraunces',serif;font-weight:800;font-size:18px;color:#0d9488;margin-bottom:10px}
+.ind-h2{color:#b45309}
+.ind-formula{display:flex;flex-wrap:wrap;align-items:center;gap:8px;background:linear-gradient(135deg,#f0fdfa,#f8fbff);border:1px dashed #b9e3db;border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:14px}
+.ind-num,.ind-den{font-weight:700;color:#0f766e;background:#fff;border-radius:8px;padding:4px 9px;border:1px solid #cce9e4}
+.ind-h2~.ind-formula .ind-num,.ind-h2~.ind-formula .ind-den{color:#b45309;border-color:#f3dcc0}
+.ind-op{font-weight:800;color:#64748b;font-size:18px}
+.ind-eq,.ind-eq2{font-weight:800;color:#0d9488;background:#ccfbf1;border-radius:8px;padding:4px 10px;font-size:16px;font-variant-numeric:tabular-nums}
+.ind-h2~.ind-formula .ind-eq{color:#b45309;background:#fef0e0}
+.ind-unit{font-weight:700;color:#64748b}
+.ind-ctrl{margin-bottom:12px}
+.ind-ctrl label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.ind-ctrl input[type=range]{width:100%;accent-color:#0d9488}
+.ind-h2~.ind-ctrl input,.ind-card:nth-of-type(2) input[type=range]{accent-color:#b45309}
+.ind-calc{text-align:center;font-size:15px;color:#334155;background:#f8fafc;border-radius:10px;padding:9px;margin-bottom:8px;font-variant-numeric:tabular-nums}
+.ind-verdict{text-align:center;font-weight:700;font-size:14px;border-radius:10px;padding:9px;margin-bottom:8px}
+.v-top{background:#dcfce7;color:#15803d}.v-ok{background:#d1fae5;color:#0f766e}.v-mid{background:#fef9c3;color:#a16207}.v-low{background:#fee2e2;color:#b91c1c}
+.ind-note{font-size:12.5px;line-height:1.5;color:#5a5470;background:#f0fdfa;border:1px solid #cce9e4;border-radius:10px;padding:9px 12px}
+/* ===== Tableau de bord ===== */
+.dash{background:linear-gradient(160deg,#0f172a,#1e293b);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 30px 70px -30px rgba(15,23,42,.8);color:#e2e8f0}
+.dash-id{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.dash-av{width:50px;height:50px;border-radius:14px;background:linear-gradient(135deg,#0d9488,#14b8a6);display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 8px 20px -8px rgba(13,148,136,.7)}
+.dash-nom{font-family:'Fraunces',serif;font-weight:800;font-size:18px;color:#fff}
+.dash-role{font-size:12px;color:#94a3b8}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+.gauge{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px 8px;text-align:center}
+.gauge svg{width:96px;height:96px;display:block;margin:0 auto}
+.gauge-l{font-size:11.5px;font-weight:700;margin-top:4px;color:#e2e8f0;line-height:1.25}
+.gauge-s{font-size:11px;color:#94a3b8;margin-top:2px}
+.dash-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.dk{background:rgba(255,255,255,.05);border-radius:12px;padding:11px 8px;text-align:center}
+.dk-v{font-family:'Fraunces',serif;font-weight:800;font-size:19px;color:#5eead4}
+.dk-l{font-size:10.5px;color:#94a3b8;margin-top:2px;line-height:1.2}
+.dash-bars{background:rgba(255,255,255,.04);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.db-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:12.5px}
+.db-row:last-child{margin-bottom:0}
+.db-row span{width:52px;color:#94a3b8;flex-shrink:0}
+.db-row b{width:38px;text-align:right;color:#e2e8f0;font-variant-numeric:tabular-nums}
+.db-track{flex:1;height:14px;background:rgba(255,255,255,.08);border-radius:8px;overflow:hidden}
+.db-fill{height:100%;background:linear-gradient(90deg,#0d9488,#2dd4bf);border-radius:8px;width:0;animation:dbgrow 1.1s cubic-bezier(.22,1,.36,1) forwards}
+.db-fill.db-low{background:linear-gradient(90deg,#f59e0b,#fbbf24)}
+@keyframes dbgrow{from{width:0 !important}}
+.dash-read{font-size:13px;line-height:1.5;color:#cbd5e1;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:10px;padding:10px 12px}
+@media(max-width:620px){ .dash-grid{grid-template-columns:1fr} .dash-kpis{grid-template-columns:1fr 1fr} }
+/* ===== Jeu de rôle ===== */
+.rp-prog{height:7px;background:#cce9e4;border-radius:10px;overflow:hidden;margin-bottom:12px}
+.rp-prog-fill{display:block;height:100%;background:linear-gradient(90deg,#0d9488,#2dd4bf);border-radius:10px;transition:width .5s cubic-bezier(.22,1,.36,1)}
+.rp-moment{font-family:'Fraunces',serif;font-weight:800;font-size:18px;margin-bottom:8px}
+.rp-moment small{font-family:inherit;font-weight:500;color:#9a90b5;font-size:12.5px}
+.rp-scene{font-size:13.5px;font-style:italic;color:#64748b;background:#f8fafc;border-left:3px solid #cbd5e1;border-radius:0 8px 8px 0;padding:8px 12px;margin-bottom:12px}
+.rp-bubble{display:flex;gap:10px;align-items:flex-start;margin-bottom:14px}
+.rp-av{width:42px;height:42px;border-radius:50%;background:#fce7f3;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.rp-lea .rp-txt{background:#fff;border:2px solid #f5d0e5;border-radius:4px 16px 16px 16px;padding:11px 14px;font-size:14.5px;color:#2a2440;box-shadow:0 10px 26px -20px rgba(225,29,72,.5);position:relative}
+.rp-you{font-size:14px;color:#0f766e;background:#f0fdfa;border-radius:12px;padding:10px 13px;margin-bottom:12px}
+.rp-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:6px}
+.rp-opt{text-align:left;padding:13px 15px;border-radius:13px;background:#fff;border:2px solid #e2e8f0;font-size:14px;font-weight:600;color:#2a2440;cursor:pointer;transition:transform .14s,border-color .14s,box-shadow .14s;line-height:1.4}
+.rp-opt:hover{transform:translateX(3px);border-color:#0d9488;box-shadow:0 12px 26px -20px rgba(13,148,136,.6)}
+.rp-opt.ok{border-color:#16a34a;background:#e7f9ee;animation:evbok .6s ease}
+.rp-opt.bad{border-color:#dc2626;background:#fee9e9;animation:evbshake .45s ease}
+/* Bascule des rôles */
+.rp-switch{text-align:center;max-width:560px;margin:0 auto;animation:pistep .5s cubic-bezier(.22,1,.36,1)}
+.rp-switch-ic{font-size:54px;animation:rpspin 1s cubic-bezier(.34,1.46,.42,1)}
+@keyframes rpspin{0%{transform:rotate(-180deg) scale(.4);opacity:0}100%{transform:none;opacity:1}}
+.rp-switch h2{font-family:'Fraunces',serif;font-size:24px;margin:6px 0 10px}
+.rp-switch p{color:#5a5470;font-size:14.5px;line-height:1.6;margin-bottom:10px}
+.rp-switch-hint{background:#f0fdfa;border:1px solid #cce9e4;border-radius:12px;padding:11px 14px;font-size:14px;font-weight:600;color:#0f766e;margin:6px 0 16px}
+/* Jeu de rôle inversé (Léa) */
+.rp-roletag{display:inline-block;background:#fce7f3;color:#9d2463;border:1px solid #f5d0e5;border-radius:18px;padding:5px 13px;font-size:12.5px;font-weight:700;margin-bottom:10px}
+.rp-prog-lea{background:linear-gradient(90deg,#db2777,#f472b6)}
+.rp-bubble.rp-boss .rp-txt{background:#fff;border:2px solid #cdd9f5;border-radius:4px 16px 16px 16px;padding:11px 14px;font-size:14.5px;color:#2a2440;box-shadow:0 10px 26px -20px rgba(37,99,235,.5)}
+.rp-av-boss{background:#e0e9ff}
+.rp-you-lea{color:#9d2463;background:#fdf2f8}
 </style>
 </body>
 </html>
